@@ -5,14 +5,6 @@
 
 {% block content %}
 <section class="hero">
-    <div class="lang-selector-container">
-        <select onchange="location = this.value;" class="lang-dropdown">
-            <option value="?lang=en" {% if lang == 'en' %}selected{% endif %}>English</option>
-            <option value="?lang=kn" {% if lang == 'kn' %}selected{% endif %}>ಕನ್ನಡ</option>
-            <option value="?lang=mr" {% if lang == 'mr' %}selected{% endif %}>मराठी</option>
-            <option value="?lang=hi" {% if lang == 'hi' %}selected{% endif %}>हिन्दी</option>
-        </select>
-    </div>
     <div class="container reveal">
         <div class="hero-om">ॐ</div>
         <h2>{{ labels.hero_title|safe }}</h2>
@@ -217,6 +209,18 @@
         document.querySelectorAll('.reveal').forEach(el => {
             revealObserver.observe(el);
         });
+
+        // Header scroll shrink effect
+        const header = document.querySelector('.site-header');
+        if (header) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
     });
 </script>
 {% endblock %}
