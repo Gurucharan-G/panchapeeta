@@ -5,6 +5,14 @@
 
 {% block content %}
 <section class="hero">
+    <!-- Flanking Decorative Murals -->
+    <div class="hero-mural mural-left reveal">
+        <img src="{% static 'images/hero_left.jpg' %}" alt="Panchamukha Shiva and Family">
+    </div>
+    <div class="hero-mural mural-right reveal">
+        <img src="{% static 'images/hero_right.jpg' %}" alt="Veerabhadra Swami">
+    </div>
+
     <div class="container reveal">
         <div class="hero-om">ॐ</div>
         <h2>{{ labels.hero_title|safe }}</h2>
