@@ -260,8 +260,8 @@ img {
 .hero-mural {
     position: absolute;
     top: 50%;
-    width: 280px;
-    height: 380px;
+    width: 380px;
+    height: 250px;
     border-radius: var(--radius-lg);
     overflow: hidden;
     border: 3px solid rgba(184, 134, 11, 0.25);
@@ -280,12 +280,12 @@ img {
 
 .mural-left {
     left: 4%;
-    transform: translateY(-40%) rotate(-3deg);
+    transform: translateY(-40%);
 }
 
 .mural-right {
     right: 4%;
-    transform: translateY(-40%) rotate(3deg);
+    transform: translateY(-40%);
 }
 
 /* Custom reveal state for murals */
@@ -294,11 +294,11 @@ img {
 }
 
 .mural-left.revealed {
-    transform: translateY(-50%) rotate(-1.5deg);
+    transform: translateY(-50%);
 }
 
 .mural-right.revealed {
-    transform: translateY(-50%) rotate(1.5deg);
+    transform: translateY(-50%);
 }
 
 /* Hover effects */
@@ -311,11 +311,11 @@ img {
 }
 
 .mural-left:hover {
-    transform: translateY(-53%) rotate(-0.5deg);
+    transform: translateY(-53%);
 }
 
 .mural-right:hover {
-    transform: translateY(-53%) rotate(0.5deg);
+    transform: translateY(-53%);
 }
 
 .hero-mural img {
@@ -331,10 +331,10 @@ img {
 }
 
 /* Responsive adjustments for murals */
-@media (max-width: 1400px) {
+@media (max-width: 1500px) {
     .hero-mural {
-        width: 220px;
-        height: 300px;
+        width: 300px;
+        height: 200px;
         left: 2%;
         right: 2%;
     }
@@ -342,8 +342,8 @@ img {
 
 @media (max-width: 1100px) {
     .hero-mural {
-        width: 200px;
-        height: 280px;
+        width: 260px;
+        height: 170px;
         opacity: 0.12 !important;
         z-index: 0;
         pointer-events: none;
@@ -367,6 +367,7 @@ img {
         display: none;
     }
 }
+
 
 
 
