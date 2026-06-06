@@ -1,0 +1,155 @@
+{% extends "peethas/index.html" %}
+
+{% block title %}Edit {{ edit_type|capfirst }} — {{ labels.site_title }}{% endblock %}
+
+{% block content %}
+<section class="edit-section">
+    <div class="container">
+        <div class="edit-card">
+            <div class="edit-header">
+                <h2>Edit {% if edit_type == 'media' %}Media Item{% else %}Travel Event{% endif %}</h2>
+                <p>For: <span class="peetha-name" style="color: {{ peetha.color }};">{{ peetha.name }}</span></p>
+            </div>
+
+            {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                <div class="alert-message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="dashboard-form edit-form">
+                {% csrf_token %}
+                
+                {% if edit_type == 'media' %}
+                    <div class="form-group">
+                        <label for="media-type-select">Media Type</label>
+                        {{ form.media_type }}
+                    </div>
+                    
+                    <div class="form-group" id="photo-field-wrapper" {% if media_item.media_type != 'photo' %}style="display: none;"{% endif %}>
+                        <label for="photo-file-input">Photo Upload</label>
+                        {% if media_item.photo_file %}
+                        <div class="current-file-label">Current Photo:</div>
+                        <img src="{{ media_item.photo_file.url }}" alt="current photo" class="edit-thumbnail">
+                        {% endif %}
+                        {{ form.photo_file }}
+                    </div>
+
+                    <div class="form-group" id="video-field-wrapper" {% if media_item.media_type != 'video' %}style="display: none;"{% endif %}>
+                        <label for="youtube-url-input">YouTube Video URL</label>
+                        {{ form.youtube_url }}
+                    </div>
+                    
+                    <hr class="form-divider">
+                    
+                    <div class="form-group">
+                        <label>Title (English)</label>
+                        {{ form.title }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Description (English)</label>
+                        {{ form.description }}
+                    </div>
+
+                    <details class="multilingual-details" open>
+                        <summary>Translations (Kannada, Marathi, Hindi)</summary>
+                        <div class="translation-fields">
+                            <div class="lang-section-block">
+                                <h5>ಕನ್ನಡ (Kannada)</h5>
+                                {{ form.title_kn }}
+                                {{ form.description_kn }}
+                            </div>
+                            <div class="lang-section-block">
+                                <h5>मराठी (Marathi)</h5>
+                                {{ form.title_mr }}
+                                {{ form.description_mr }}
+                            </div>
+                            <div class="lang-section-block">
+                                <h5>हिन्दी (Hindi)</h5>
+                                {{ form.title_hi }}
+                                {{ form.description_hi }}
+                            </div>
+                        </div>
+                    </details>
+                {% else %}
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        {{ form.start_date }}
+                    </div>
+                    <div class="form-group">
+                        <label>End Date (Optional)</label>
+                        {{ form.end_date }}
+                    </div>
+                    <div class="form-group">
+                        <label>Location (English)</label>
+                        {{ form.location }}
+                    </div>
+                    <div class="form-group">
+                        <label>Title / Event Name (English)</label>
+                        {{ form.title }}
+                    </div>
+                    <div class="form-group">
+                        <label>Description (English)</label>
+                        {{ form.description }}
+                    </div>
+
+                    <details class="multilingual-details" open>
+                        <summary>Translations (Kannada, Marathi, Hindi)</summary>
+                        <div class="translation-fields">
+                            <div class="lang-section-block">
+                                <h5>ಕನ್ನಡ (Kannada)</h5>
+                                {{ form.title_kn }}
+                                {{ form.location_kn }}
+                                {{ form.description_kn }}
+                            </div>
+                            <div class="lang-section-block">
+                                <h5>मराठी (Marathi)</h5>
+                                {{ form.title_mr }}
+                                {{ form.location_mr }}
+                                {{ form.description_mr }}
+                            </div>
+                            <div class="lang-section-block">
+                                <h5>हिन्दी (Hindi)</h5>
+                                {{ form.title_hi }}
+                                {{ form.location_hi }}
+                                {{ form.description_hi }}
+                            </div>
+                        </div>
+                    </details>
+                {% endif %}
+                
+                <div class="form-actions edit-actions">
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                    <a href="{% url 'peethas:dashboard_peetha' peetha.slug %}" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Toggle fields based on media type select (Photo vs Video)
+    document.addEventListener('DOMContentLoaded', () => {
+        const typeSelect = document.getElementById('media-type-select');
+        const photoWrapper = document.getElementById('photo-field-wrapper');
+        const videoWrapper = document.getElementById('video-field-wrapper');
+
+        if (typeSelect) {
+            typeSelect.addEventListener('change', () => {
+                if (typeSelect.value === 'photo') {
+                    photoWrapper.style.display = 'block';
+                    videoWrapper.style.display = 'none';
+                } else {
+                    photoWrapper.style.display = 'none';
+                    videoWrapper.style.display = 'block';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

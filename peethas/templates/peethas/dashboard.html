@@ -1,0 +1,343 @@
+{% extends "peethas/index.html" %}
+
+{% block title %}Dashboard — {{ labels.site_title }}{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="container">
+        
+        <!-- Dashboard Header -->
+        <div class="dashboard-header-bar">
+            <div>
+                <h2>Control Panel</h2>
+                {% if is_admin and not peetha %}
+                <p class="role-badge">Super Admin Account</p>
+                {% else %}
+                <p class="role-badge">Handler for {{ peetha.name }}</p>
+                {% endif %}
+            </div>
+            <div class="header-actions">
+                <a href="{% url 'peethas:home' %}" class="btn-secondary">Go to Homepage</a>
+                <a href="{% url 'peethas:logout' %}" class="btn-danger">Logout</a>
+            </div>
+        </div>
+
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="alert-message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if is_admin and not peetha %}
+        <!-- Super Admin Main View: Select Peetha -->
+        <div class="admin-grid-section">
+            <h3>Select a Peetha to Manage</h3>
+            <div class="admin-peethas-grid">
+                {% for p in peethas %}
+                <a href="{% url 'peethas:dashboard_peetha' p.slug %}" class="admin-peetha-card" style="border-left: 6px solid {{ p.color }};">
+                    <h4>{{ p.name }}</h4>
+                    <p>{{ p.simhasana }}</p>
+                    <span class="manage-link">Manage Media & Travel →</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        
+        {% else %}
+        
+        <!-- Specific Peetha Dashboard View (either Handler or Admin managing a Peetha) -->
+        <div class="peetha-dashboard-wrapper">
+            <div class="peetha-dashboard-nav">
+                {% if is_admin %}
+                <a href="{% url 'peethas:dashboard_home' %}" class="back-admin-link">← Back to Admin Portal</a>
+                {% endif %}
+                <h3>Managing: <span class="peetha-title" style="color: {{ peetha.color }};">{{ peetha.name }}</span></h3>
+            </div>
+
+            <!-- Tab Toggles -->
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="switchTab('media-section', this)">Media Gallery (Photos & Videos)</button>
+                <button class="tab-btn" onclick="switchTab('travel-section', this)">Swamiji Travel Plans</button>
+            </div>
+
+            <!-- TAB 1: Media Gallery Section -->
+            <div id="media-section" class="tab-content active">
+                <div class="dashboard-grid">
+                    <!-- Media List -->
+                    <div class="dashboard-card list-card">
+                        <h3>Uploaded Media Items</h3>
+                        <div class="media-table-wrapper">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Title</th>
+                                        <th>Content</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in media_list %}
+                                    <tr>
+                                        <td>
+                                            {% if item.media_type == 'photo' %}
+                                            <span class="badge badge-photo">📸 Photo</span>
+                                            {% else %}
+                                            <span class="badge badge-video">🎥 Video</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <strong>{{ item.title }}</strong>
+                                            {% if item.title_kn %}<div class="lang-indicator">KN: {{ item.title_kn }}</div>{% endif %}
+                                            {% if item.title_mr %}<div class="lang-indicator">MR: {{ item.title_mr }}</div>{% endif %}
+                                            {% if item.title_hi %}<div class="lang-indicator">HI: {{ item.title_hi }}</div>{% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.media_type == 'photo' %}
+                                            {% if item.photo_file %}
+                                            <img src="{{ item.photo_file.url }}" alt="{{ item.title }}" class="table-thumbnail">
+                                            {% else %}
+                                            <span class="no-file">No file uploaded</span>
+                                            {% endif %}
+                                            {% else %}
+                                            <a href="{{ item.youtube_url }}" target="_blank" class="yt-link">YouTube Video</a>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <a href="{% url 'peethas:media_edit' peetha.slug item.pk %}" class="btn-edit">Edit</a>
+                                                <form action="{% url 'peethas:media_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this media item?');" style="display:inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn-delete">Delete</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="no-records">No media items uploaded yet.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Add Media Form -->
+                    <div class="dashboard-card form-card">
+                        <h3>Add New Photo or Video</h3>
+                        <form method="post" action="{% url 'peethas:media_add' peetha.slug %}" enctype="multipart/form-data" class="dashboard-form">
+                            {% csrf_token %}
+                            
+                            <div class="form-group">
+                                <label for="media-type-select">Media Type</label>
+                                {{ media_form.media_type }}
+                            </div>
+                            
+                            <!-- File input (only for photos) -->
+                            <div class="form-group" id="photo-field-wrapper">
+                                <label for="photo-file-input">Photo Upload</label>
+                                {{ media_form.photo_file }}
+                            </div>
+
+                            <!-- YouTube URL (only for videos) -->
+                            <div class="form-group" id="video-field-wrapper" style="display: none;">
+                                <label for="youtube-url-input">YouTube Video URL</label>
+                                {{ media_form.youtube_url }}
+                            </div>
+
+                            <hr class="form-divider">
+                            
+                            <div class="form-group">
+                                <label>Title (English)</label>
+                                {{ media_form.title }}
+                            </div>
+                            <div class="form-group">
+                                <label>Description (English)</label>
+                                {{ media_form.description }}
+                            </div>
+
+                            <!-- Multilingual collapse -->
+                            <details class="multilingual-details">
+                                <summary>Add Translations (Kannada, Marathi, Hindi)</summary>
+                                <div class="translation-fields">
+                                    <div class="lang-section-block">
+                                        <h5>ಕನ್ನಡ (Kannada)</h5>
+                                        {{ media_form.title_kn }}
+                                        {{ media_form.description_kn }}
+                                    </div>
+                                    <div class="lang-section-block">
+                                        <h5>मराठी (Marathi)</h5>
+                                        {{ media_form.title_mr }}
+                                        {{ media_form.description_mr }}
+                                    </div>
+                                    <div class="lang-section-block">
+                                        <h5>हिन्दी (Hindi)</h5>
+                                        {{ media_form.title_hi }}
+                                        {{ media_form.description_hi }}
+                                    </div>
+                                </div>
+                            </details>
+
+                            <button type="submit" class="btn-primary">Add Media</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: Travel Plans Section -->
+            <div id="travel-section" class="tab-content">
+                <div class="dashboard-grid">
+                    <!-- Travel List -->
+                    <div class="dashboard-card list-card">
+                        <h3>Scheduled Travel Plans</h3>
+                        <div class="media-table-wrapper">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Dates</th>
+                                        <th>Location</th>
+                                        <th>Title</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in travel_list %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ item.start_date }}</strong>
+                                            {% if item.end_date %}
+                                            <div class="end-date-label">to {{ item.end_date }}</div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ item.location }}
+                                            {% if item.location_kn %}<div class="lang-indicator">KN: {{ item.location_kn }}</div>{% endif %}
+                                            {% if item.location_mr %}<div class="lang-indicator">MR: {{ item.location_mr }}</div>{% endif %}
+                                            {% if item.location_hi %}<div class="lang-indicator">HI: {{ item.location_hi }}</div>{% endif %}
+                                        </td>
+                                        <td>
+                                            <strong>{{ item.title }}</strong>
+                                            {% if item.title_kn %}<div class="lang-indicator">KN: {{ item.title_kn }}</div>{% endif %}
+                                            {% if item.title_mr %}<div class="lang-indicator">MR: {{ item.title_mr }}</div>{% endif %}
+                                            {% if item.title_hi %}<div class="lang-indicator">HI: {{ item.title_hi }}</div>{% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <a href="{% url 'peethas:travel_edit' peetha.slug item.pk %}" class="btn-edit">Edit</a>
+                                                <form action="{% url 'peethas:travel_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this travel plan?');" style="display:inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn-delete">Delete</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="no-records">No travel plans scheduled yet.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Add Travel Form -->
+                    <div class="dashboard-card form-card">
+                        <h3>Add Swamiji Travel Plan</h3>
+                        <form method="post" action="{% url 'peethas:travel_add' peetha.slug %}" class="dashboard-form">
+                            {% csrf_token %}
+                            
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                {{ travel_form.start_date }}
+                            </div>
+                            <div class="form-group">
+                                <label>End Date (Optional)</label>
+                                {{ travel_form.end_date }}
+                            </div>
+                            <div class="form-group">
+                                <label>Location (English)</label>
+                                {{ travel_form.location }}
+                            </div>
+                            <div class="form-group">
+                                <label>Title / Event Name (English)</label>
+                                {{ travel_form.title }}
+                            </div>
+                            <div class="form-group">
+                                <label>Description (English)</label>
+                                {{ travel_form.description }}
+                            </div>
+
+                            <!-- Multilingual collapse -->
+                            <details class="multilingual-details">
+                                <summary>Add Translations (Kannada, Marathi, Hindi)</summary>
+                                <div class="translation-fields">
+                                    <div class="lang-section-block">
+                                        <h5>ಕನ್ನಡ (Kannada)</h5>
+                                        {{ travel_form.title_kn }}
+                                        {{ travel_form.location_kn }}
+                                        {{ travel_form.description_kn }}
+                                    </div>
+                                    <div class="lang-section-block">
+                                        <h5>मराठी (Marathi)</h5>
+                                        {{ travel_form.title_mr }}
+                                        {{ travel_form.location_mr }}
+                                        {{ travel_form.description_mr }}
+                                    </div>
+                                    <div class="lang-section-block">
+                                        <h5>हिन्दी (Hindi)</h5>
+                                        {{ travel_form.title_hi }}
+                                        {{ travel_form.location_hi }}
+                                        {{ travel_form.description_hi }}
+                                    </div>
+                                </div>
+                            </details>
+
+                            <button type="submit" class="btn-primary">Add Event</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function switchTab(tabId, btn) {
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    // Toggle fields based on media type select (Photo vs Video)
+    document.addEventListener('DOMContentLoaded', () => {
+        const typeSelect = document.getElementById('media-type-select');
+        const photoWrapper = document.getElementById('photo-field-wrapper');
+        const videoWrapper = document.getElementById('video-field-wrapper');
+
+        if (typeSelect) {
+            typeSelect.addEventListener('change', () => {
+                if (typeSelect.value === 'photo') {
+                    photoWrapper.style.display = 'block';
+                    videoWrapper.style.display = 'none';
+                } else {
+                    photoWrapper.style.display = 'none';
+                    videoWrapper.style.display = 'block';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
