@@ -2,7 +2,7 @@
 
 HERITAGE_CONTENT = {
     'kn': {
-        'title': 'ಪಂಚಪೀಠಗಳು ಮತ್ತು ದಿವ್ಯ ಪರಂಪರೆ',
+        'title': 'ಪಂಚಪೀಠಗಳು',
         'intro_paragraphs': [
             "ಭಾರತ ಮಣ್ಯಭೂಮಿಯಲ್ಲಿ ಯಾವುದೇ ಧರ್ಮದ ಹುಟ್ಟಿನ ಮೂಲ ಉದ್ದೇಶ ಆಯಾ ಜನಸಮುದಾಯದ ಸಂಸ್ಕೃತಿಯನ್ನು ವಿಕಾಸಗೊಳಿಸುವುದೇ ಆಗಿದೆಯೇ ಹೊರತು ವಿಕಾರಗೊಳಿಸುವುದಲ್ಲ. ಆದರ್ಶವನ್ನು ಧರ್ಮ ಹೇಳಿದರೆ, ಬದುಕು ಹೀಗಿದೆಯೆಂಬ ವಾಸ್ತವವನ್ನು ಸಂಸ್ಕೃತಿ ತಿಳಿಸುತ್ತದೆ. ಮಾನವ ಜೀವನದ ಜೀವಾಳ ಧರ್ಮ, ನಿಜವಾದ ಆಚರಣೆ ಧರ್ಮವೆಂದು ಕರೆಯಿಸಿಕೊಳ್ಳುತ್ತದೆ. ಇಹ ಮತ್ತು ಪರದಲ್ಲಿ ಸಿದ್ಧಿಯನ್ನಿಡುವುದೇ ಧರ್ಮ, ಆಧ್ಯಾತ್ಮ ಪ್ರವೃತ್ತಿ, ಸನ್ಮಾರ್ಗ ನಡತೆ ಧರ್ಮ ಸಾಧನೆಯ ಅಡಿಗಲ್ಲು, ಅಂತೆಯೇ \"ಧರ್ಮಂ ಚರ' ಎಂದು ಸಾರಿದೆ ಉಪನಿಷತ್ತು.",
             "ಧರ್ಮದಿಂದ ದೂರವಾದ ಅರ್ಥ, ಕಾಮನೆಗಳು ಊರ್ಜಿತಗೊಳ್ಳಲಾರವು. ಇವು ಧರ್ಮದ ಚೌಕಟ್ಟಿನಲ್ಲಿ ಬೆಳೆದಾಗ ನಿಜವಾದ ಶ್ರೇಯಸ್ಸು ಪ್ರಾಪ್ತವಾಗುತ್ತದೆ. ಬದುಕನ್ನು ತಿದ್ದುವ, ಬಾಳನ್ನು ಹಸನುಗೊಳಿಸುವ, ಜೀವನ ಪಾವನಗೊಳಿಸುವ ಕೆಲಸ ಧರ್ಮದ್ದು. ಇಂತಹ ಗುಣಾದರ್ಶಗಳಿರುವ ಧರ್ಮ ಯಾರಿಗೆ ಬೇಡ, ಅಹಿಸಾಂದಿ ಧ್ಯಾನ ಪರ್ಯಂತರವಾದ ದಶಧರ್ಮ ಸೂತ್ರಗಳನ್ನು ಬೋಧಿಸಿದ ಹಿರಿಮೆ ವೀರಶೈವದ್ದು.",
@@ -45,7 +45,7 @@ HERITAGE_CONTENT = {
         'conclusion': 'ವೀರಶೈವ ಧರ್ಮದ ಮಹಾಮನೆಯಲ್ಲಿ ಕಂಡುಬರುವ ವಿಶ್ವವಿಕಾಸ ತತ್ವಗಳನ್ನು ಒಮ್ಮೆ ಅವಲೋಕಿಸಿದಾಗ ಆದಿಯಿಂದ ಪಂಚಪೀಠಗಳಿಗೆ ಸರ್ವರೂ ಪ್ರಧಾನ ಮಾನ್ಯತೆ ನೀಡಿರುವುದನ್ನು ಸ್ಪಷ್ಟಿಕರಿಸಬಹುದಾಗಿದೆ. ಸನಾತನ ಪಂಚಪೀಠಗಳು ಸಾಗರದಾಚೆ ಅಲ್ಲದೇ ಹಿಮಾಲಯದಾಚೆಗೂ ತಮ್ಮ ಶಾಖೋಪಶಾಖೆಗಳನ್ನು ಹೊಂದಿ ಸಹಸ್ರ ಸಹಸ್ರ ವರ್ಷಗಳಿಂದ ಧರ್ಮ ಪ್ರಸಾರ, ಪ್ರಚಾರ ಮತ್ತು ರಕ್ಷಣಾ ಕಾರ್ಯವನ್ನು ತಾತ್ವಿಕ ಬದ್ಧತೆಯಲ್ಲಿ ನಡೆಸಿಕೊಂಡು ಬಂದಿರುವುದು ಇತಿಹಾಸ ಪ್ರಸಿದ್ಧವಾಗಿದೆ. ಇಂತಹ ಪರಮ ಪೀಠಗಳ ಪಾವನಮಯ ಪರಂಪರೆಯು ಇಂದು-ಮುಂದು ಎಂದೆಂದೂ ಭವ್ಯತೆಯಿಂದ ಮುಂದುವರಿಯುವುದಾಗಿದೆ.'
     },
     'en': {
-        'title': 'The Divine Heritage',
+        'title': 'Panchapeetas',
         'intro_paragraphs': [
             "In the sacred land of India, the fundamental purpose of every religion's origin has been to develop and refine the culture of its people — not to distort it. While Dharma speaks of ideals, culture reveals the reality of how life truly is. Dharma is the lifeblood of human existence; true practice alone earns the name of Dharma. Dharma is that which grants fulfillment in both this world and the hereafter. Spiritual inclination and righteous conduct form the cornerstone of Dharmic achievement — thus the Upanishads have proclaimed: \"Dharmam Chara\" (Practice Dharma).",
             "Wealth and desires severed from Dharma cannot bear fruit. Only when they grow within the framework of Dharma does true welfare and well-being become attainable. It is the task of Dharma to correct life, to make existence pleasant, and to sanctify living. Who would not want such a Dharma filled with noble ideals? The glory of Veerashaivism lies in having taught the ten principles of Dharma — from non-violence to meditation.",
@@ -89,7 +89,7 @@ HERITAGE_CONTENT = {
         'conclusion': "When one surveys the principles of universal evolution found within the great household of Veerashaiva Dharma, it becomes evident that from the very beginning, the Pancha Peethas have been accorded supreme reverence by all. The ancient Pancha Peethas, with their branches extending not only across the seas but also beyond the Himalayas, have been carrying out the work of Dharma propagation, promotion, and protection with philosophical commitment for thousands upon thousands of years — a fact renowned in history. The sacred tradition of these supreme Peethas shall continue to advance with grandeur — today, tomorrow, and forevermore."
     },
     'hi': {
-        'title': 'दिव्य धरोहर और पंचपीठ',
+        'title': 'पंचपीठ',
         'intro_paragraphs': [
             "भारत की पुण्यभूमि में किसी भी धर्म की उत्पत्ति का मूल उद्देश्य अपने जनसमुदाय की संस्कृति का विकास करना है, विकृत करना नहीं। धर्म आदर्श बताता है, तो संस्कृति यह बताती है कि जीवन वास्तव में कैसा है। मानव जीवन का प्राण धर्म है; सच्चा आचरण ही धर्म कहलाता है। इहलोक और परलोक दोनों में सिद्धि प्रदान करना ही धर्म है। आध्यात्मिक प्रवृत्ति और सन्मार्ग का आचरण धर्म साधना की आधारशिला है — इसीलिए उपनिषदों ने घोषित किया है: \"धर्मं चर\" (धर्म का आचरण करो)।",
             "धर्म से विमुख अर्थ और कामनाएँ फलीभूत नहीं हो सकतीं। जब ये धर्म की चौखट में विकसित होती हैं, तभी सच्चा कल्याण प्राप्त होता है। जीवन को सुधारना, आयुष्य को सुखमय बनाना, जीवन को पावन करना — यह धर्म का कार्य है। ऐसे गुणादर्शों वाला धर्म किसे नहीं चाहिए? अहिंसा से ध्यान तक के दश धर्म सूत्रों की शिक्षा देने का गौरव वीरशैव धर्म को प्राप्त है।",
@@ -132,7 +132,7 @@ HERITAGE_CONTENT = {
         'conclusion': "वीरशैव धर्म के महागृह में विद्यमान विश्व-विकास तत्वों का एक बार अवलोकन करने पर यह स्पष्ट होता है कि आदिकाल से पंचपीठों को सभी ने प्रधान मान्यता प्रदान की है। सनातन पंचपीठों ने सागर पार ही नहीं, हिमालय पार भी अपनी शाखा-प्रशाखाएँ फैलाकर सहस्र-सहस्र वर्षों से धर्म का प्रसार, प्रचार और रक्षा का कार्य सैद्धांतिक प्रतिबद्धता के साथ किया है — यह ऐतिहासिक रूप से प्रसिद्ध है। ऐसे परम पीठों की पावन परंपरा आज, कल और सदा-सर्वदा भव्यता से आगे बढ़ती रहेगी।"
     },
     'mr': {
-        'title': 'पंचपीठे आणि दिव्य वारसा',
+        'title': 'पंचपीठे',
         'intro_paragraphs': [
             "भारताच्या पुण्यभूमीवर कोणत्याही धर्माच्या उत्पत्तीचा मूळ हेतू त्या जनसमुदायाच्या संस्कृतीचा विकास करणे हा आहे, विकृत करणे नव्हे. धर्म आदर्श सांगतो, तर संस्कृती \"जगणे कसे आहे\" याचे वास्तव दाखवते. मानवी जीवनाचा प्राण म्हणजे धर्म; खरे आचरण हेच धर्म म्हणविले जाते. इहलोक आणि परलोक या दोन्हींमध्ये सिद्धी देणे हेच धर्माचे कार्य आहे. आध्यात्मिक प्रवृत्ती आणि सन्मार्गाचे आचरण हे धर्मसाधनेचा पाया आहेत — म्हणूनच उपनिषदांनी \"धर्मं चर\" (धर्माचे आचरण कर) असे सांगितले आहे.",
             "धर्मापासून दूर गेलेले अर्थ आणि कामना फलद्रूप होऊ शकत नाहीत. जेव्हा ती धर्माच्या चौकटीत वाढतात, तेव्हाच खरे कल्याण प्राप्त होते. जीवन सुधारणे, आयुष्य सुखकर करणे, जगणे पावन करणे — हे धर्माचे कार्य आहे. अशा गुणादर्शांचा धर्म कोणाला नको? अहिंसेपासून ध्यानापर्यंतच्या दशधर्म सूत्रांची शिकवण देण्याचा मान वीरशैव धर्माला मिळतो.",
