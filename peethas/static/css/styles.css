@@ -508,6 +508,11 @@ img {
 
 
 /* ===== Detail Page ===== */
+.detail-hero .container,
+.detail-body .container {
+    max-width: 1650px;
+}
+
 .detail-hero {
     background: linear-gradient(135deg, color-mix(in srgb, var(--peetha-color) 8%, white), var(--bg-light));
     padding: 40px 0 50px;
