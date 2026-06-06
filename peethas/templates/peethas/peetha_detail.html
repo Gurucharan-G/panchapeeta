@@ -53,21 +53,9 @@
                         {% endif %}
                     </dl>
                 </div>
-            </div>
-
-            <div class="detail-content">
-                <div class="content-section">
-                    <h3>{{ labels.about_label }}</h3>
-                    <p>{{ peetha.description }}</p>
-                </div>
-
-                <div class="content-section">
-                    <h3>{{ labels.history_label }}</h3>
-                    {{ peetha.history|linebreaks }}
-                </div>
 
                 <!-- Swamiji Travel Calendar / Timeline -->
-                <div class="content-section">
+                <div class="content-section" style="margin-top: 32px;">
                     <h3>🗓️ {{ labels.travel_plans_title }}</h3>
                     <div class="travel-timeline">
                         {% for group in travel_plans_grouped %}
@@ -101,7 +89,7 @@
                 </div>
 
                 <!-- Media Gallery Section -->
-                <div class="content-section">
+                <div class="content-section" style="margin-top: 32px;">
                     <h3>📸 {{ labels.media_gallery_title }}</h3>
                     <div class="media-gallery-grid">
                         {% for item in media_gallery %}
@@ -133,6 +121,18 @@
                             <p class="no-data-msg">{{ labels.no_media }}</p>
                         {% endfor %}
                     </div>
+                </div>
+            </div>
+
+            <div class="detail-content">
+                <div class="content-section">
+                    <h3>{{ labels.about_label }}</h3>
+                    <p>{{ peetha.description }}</p>
+                </div>
+
+                <div class="content-section">
+                    <h3>{{ labels.history_label }}</h3>
+                    {{ peetha.history|linebreaks }}
                 </div>
             </div>
         </div>
