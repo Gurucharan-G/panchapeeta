@@ -13,21 +13,27 @@
             <option value="?lang=hi" {% if lang == 'hi' %}selected{% endif %}>हिन्दी</option>
         </select>
     </div>
-    <div class="container">
+    <div class="container reveal">
         <div class="hero-om">ॐ</div>
         <h2>{{ labels.hero_title|safe }}</h2>
         <p class="hero-subtitle">
             {{ labels.hero_subtitle|safe }}
         </p>
     </div>
+    <div class="scroll-indicator" onclick="document.getElementById('peethas-section').scrollIntoView({behavior: 'smooth'});">
+        <div class="scroll-mouse">
+            <div class="scroll-wheel"></div>
+        </div>
+    </div>
 </section>
 
-<section class="peethas-section">
+<section class="peethas-section" id="peethas-section">
     <div class="container">
         <div class="peethas-grid{% if use_rectangular_portraits %} use-rectangle{% endif %}">
             {% for peetha in peethas %}
-            <a href="{% url 'peethas:peetha_detail' peetha.slug %}" class="peetha-card{% if peetha.slug == 'srisaila' %} is-white{% endif %}"
-                style="--peetha-color: {{ peetha.color }};">
+            <a href="{% url 'peethas:peetha_detail' peetha.slug %}" 
+               class="peetha-card reveal reveal-delay-{{ forloop.counter }}{% if peetha.slug == 'srisaila' %} is-white{% endif %}"
+               style="--peetha-color: {{ peetha.color }};">
                 <!-- Protruding Acharya portrait at top center -->
                 <div class="card-portrait-wrapper">
                     <div class="card-portrait">
@@ -73,7 +79,7 @@
 
 <!-- Divine Heritage Section -->
 <section class="divine-heritage-section" id="divine-heritage">
-    <div class="container">
+    <div class="container reveal">
         <div class="section-decor">
             <span class="decor-line"></span>
             <span class="decor-symbol">🔱</span>
@@ -82,13 +88,13 @@
         
         <h2 class="section-title">{{ labels.divine_heritage_title }}</h2>
         
-        <div class="heritage-intro">
+        <div class="heritage-intro reveal reveal-delay-1">
             {% for para in heritage_content.intro_paragraphs %}
                 <p>{{ para }}</p>
             {% endfor %}
         </div>
         
-        <div class="shloka-box">
+        <div class="shloka-box reveal reveal-delay-2">
             <div class="shloka-symbol">🪷</div>
             <p class="shloka-verse">{{ heritage_content.shloka.verse|linebreaksbr }}</p>
             {% if heritage_content.shloka.translation %}
@@ -97,7 +103,7 @@
             <p class="shloka-ref">— {{ heritage_content.shloka.reference }}</p>
         </div>
         
-        <div class="heritage-tabs-container">
+        <div class="heritage-tabs-container reveal reveal-delay-3">
             <div class="heritage-tabs-nav">
                 {% for p in peethas %}
                 <button class="heritage-tab-btn{% if forloop.first %} active{% endif %}" 
@@ -121,14 +127,14 @@
             </div>
         </div>
         
-        <div class="heritage-conclusion">
+        <div class="heritage-conclusion reveal reveal-delay-2">
             <p>{{ heritage_content.conclusion }}</p>
         </div>
     </div>
 </section>
 
 <section class="about-section">
-    <div class="container">
+    <div class="container reveal">
         <h2>{{ labels.about_title|safe }}</h2>
         <div class="about-content">
             <p>{{ labels.about_p1|safe }}</p>
@@ -190,6 +196,26 @@
                     targetPane.classList.add('active');
                 }
             });
+        });
+
+        // Intersection Observer for scroll-driven animations
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target); // trigger animation only once
+                }
+            });
+        };
+
+        const revealObserver = new IntersectionObserver(revealCallback, {
+            root: null,
+            threshold: 0.1,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
         });
     });
 </script>
