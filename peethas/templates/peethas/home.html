@@ -135,6 +135,85 @@
         <div class="heritage-conclusion reveal reveal-delay-2">
             <p>{{ heritage_content.conclusion }}</p>
         </div>
+        <div class="scroll-indicator block-indicator" onclick="document.getElementById('veerashaiva-section').scrollIntoView({behavior: 'smooth'});">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Veerashaiva-Lingayat Section -->
+<section class="veerashaiva-section" id="veerashaiva-section">
+    <div class="container reveal">
+        <div class="section-decor">
+            <span class="decor-line"></span>
+            <span class="decor-symbol">🔱</span>
+            <span class="decor-line"></span>
+        </div>
+        
+        <h2 class="section-title">{{ labels.veerashaiva_title }}</h2>
+        
+        <!-- Opening Shloka -->
+        <div class="shloka-box reveal reveal-delay-1">
+            <div class="shloka-symbol">🪷</div>
+            <p class="shloka-verse">{{ veerashaiva_content.opening_shloka.verse|linebreaksbr }}</p>
+            {% if veerashaiva_content.opening_shloka.translation %}
+                <p class="shloka-translation">{{ veerashaiva_content.opening_shloka.translation|linebreaksbr }}</p>
+            {% endif %}
+            <p class="shloka-ref">— {{ veerashaiva_content.opening_shloka.reference }}</p>
+        </div>
+        
+        <!-- Intro Paragraphs -->
+        <div class="heritage-intro reveal reveal-delay-2">
+            {% for para in veerashaiva_content.intro_paragraphs %}
+                <p>{{ para }}</p>
+            {% endfor %}
+        </div>
+
+        <!-- Siddhanta Shikhamani Verse -->
+        {% if veerashaiva_content.siddhanta %}
+        <div class="siddhanta-block reveal reveal-delay-2">
+            <p class="siddhanta-intro">{{ veerashaiva_content.siddhanta.intro }}</p>
+            <div class="shloka-box siddhanta-verse-box">
+                <p class="shloka-verse">{{ veerashaiva_content.siddhanta.verse|linebreaksbr }}</p>
+                {% if veerashaiva_content.siddhanta.translation %}
+                    <p class="siddhanta-label">{{ veerashaiva_content.siddhanta.translation_label }}</p>
+                    <p class="shloka-translation">{{ veerashaiva_content.siddhanta.translation|linebreaksbr }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Body Paragraphs -->
+        <div class="heritage-intro reveal reveal-delay-3">
+            {% for para in veerashaiva_content.body_paragraphs %}
+                <p>{{ para }}</p>
+            {% endfor %}
+        </div>
+
+        <!-- Teachings List (English) -->
+        {% if veerashaiva_content.teachings %}
+        <div class="veerashaiva-teachings reveal reveal-delay-3">
+            {% if veerashaiva_content.teachings_intro %}
+                <p class="teachings-intro-text">{{ veerashaiva_content.teachings_intro }}</p>
+            {% endif %}
+            <ul class="teachings-list">
+                {% for teaching in veerashaiva_content.teachings %}
+                    <li>{{ teaching }}</li>
+                {% endfor %}
+            </ul>
+            {% if veerashaiva_content.teachings_note %}
+                <p class="teachings-note">{{ veerashaiva_content.teachings_note }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Conclusion -->
+        <div class="heritage-conclusion reveal reveal-delay-2">
+            <p>{{ veerashaiva_content.conclusion }}</p>
+        </div>
+
         <div class="scroll-indicator block-indicator" onclick="document.getElementById('about-section').scrollIntoView({behavior: 'smooth'});">
             <div class="scroll-mouse">
                 <div class="scroll-wheel"></div>

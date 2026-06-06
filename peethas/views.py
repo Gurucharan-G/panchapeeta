@@ -8,6 +8,7 @@ import datetime
 from .models import Peetha, PeethaHandler, PeethaMedia, TravelPlan
 from .forms import PeethaMediaForm, TravelPlanForm
 from .heritage_content import HERITAGE_CONTENT
+from .veerashaiva_content import VEERASHAIVA_CONTENT
 
 # UI Static Labels Translations
 TRANSLATIONS = {
@@ -39,7 +40,8 @@ TRANSLATIONS = {
         'media_gallery_title': 'Photos & Videos',
         'no_travel_plans': 'No travel plans scheduled for this month.',
         'no_media': 'No photos or videos uploaded yet.',
-        'divine_heritage_title': 'Panchapeetas'
+        'divine_heritage_title': 'Panchapeetas',
+        'veerashaiva_title': 'Veerashaiva-Lingayat'
     },
     'kn': {
         'site_title': 'ವೀರಶೈವ ಪಂಚಪೀಠಗಳು',
@@ -69,7 +71,8 @@ TRANSLATIONS = {
         'media_gallery_title': 'ಚಿತ್ರಗಳು ಮತ್ತು ವಿಡಿಯೋಗಳು',
         'no_travel_plans': 'ಈ ತಿಂಗಳಲ್ಲಿ ಯಾವುದೇ ಪ್ರವಾಸ ಯೋಜನೆಗಳಿಲ್ಲ.',
         'no_media': 'ಇನ್ನೂ ಯಾವುದೇ ಚಿತ್ರಗಳು ಅಥವಾ ವಿಡಿಯೋಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ.',
-        'divine_heritage_title': 'ಪಂಚಪೀಠಗಳು'
+        'divine_heritage_title': 'ಪಂಚಪೀಠಗಳು',
+        'veerashaiva_title': 'ವೀರಶೈವ-ಲಿಂಗಾಯತ'
     },
     'mr': {
         'site_title': 'वीरशैव पंचपीठ',
@@ -99,7 +102,8 @@ TRANSLATIONS = {
         'media_gallery_title': 'छायाचित्रे आणि व्हिडिओ',
         'no_travel_plans': 'या महिन्यात कोणतेही प्रवास नियोजन नाही.',
         'no_media': 'अद्याप कोणतेही फोटो किंवा व्हिडिओ अपलोड केलेले नाहीत.',
-        'divine_heritage_title': 'पंचपीठे'
+        'divine_heritage_title': 'पंचपीठे',
+        'veerashaiva_title': 'वीरशैव-लिंगायत'
     },
     'hi': {
         'site_title': 'वीरशैव पंचपीठ',
@@ -129,7 +133,8 @@ TRANSLATIONS = {
         'media_gallery_title': 'चित्र और वीडियो',
         'no_travel_plans': 'इस माह में कोई यात्रा कार्यक्रम निर्धारित नहीं है।',
         'no_media': 'अभी तक कोई फोटो या वीडियो अपलोड नहीं किया गया है.',
-        'divine_heritage_title': 'पंचपीठ'
+        'divine_heritage_title': 'पंचपीठ',
+        'veerashaiva_title': 'वीरशैव-लिंगायत'
     }
 }
 
@@ -190,6 +195,7 @@ def home(request):
         'lang': lang,
         'labels': TRANSLATIONS[lang],
         'heritage_content': HERITAGE_CONTENT[lang],
+        'veerashaiva_content': VEERASHAIVA_CONTENT[lang],
     })
 
 

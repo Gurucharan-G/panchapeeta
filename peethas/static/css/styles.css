@@ -2396,6 +2396,153 @@ img {
     text-align: justify;
 }
 
+/* ===== Veerashaiva-Lingayat Section ===== */
+.veerashaiva-section {
+    background: linear-gradient(135deg, #0a0d1a 0%, #111527 50%, #0d1020 100%);
+    border-top: 1px solid rgba(139, 92, 246, 0.2);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    padding: 90px 0;
+    color: #f5ebe0;
+    position: relative;
+}
+
+.veerashaiva-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 50% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.veerashaiva-section .section-decor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.veerashaiva-section .decor-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(139, 92, 246, 0.7), transparent);
+}
+
+.veerashaiva-section .decor-symbol {
+    font-size: 1.3rem;
+    color: #a78bfa;
+    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.5));
+}
+
+.veerashaiva-section .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.veerashaiva-section .shloka-box {
+    border-color: rgba(139, 92, 246, 0.25);
+    background: linear-gradient(145deg, rgba(139, 92, 246, 0.08) 0%, rgba(30, 27, 75, 0.3) 100%);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1);
+}
+
+.veerashaiva-section .shloka-symbol {
+    color: #a78bfa;
+}
+
+.veerashaiva-section .shloka-ref {
+    color: #a78bfa;
+}
+
+.veerashaiva-section .heritage-intro p {
+    text-align: justify;
+}
+
+/* Siddhanta Shikhamani Verse Block */
+.veerashaiva-section .siddhanta-block {
+    max-width: 850px;
+    margin: 40px auto;
+}
+
+.veerashaiva-section .siddhanta-intro {
+    font-size: 1.05rem;
+    color: #c4b5a8;
+    margin-bottom: 16px;
+    font-style: italic;
+}
+
+.veerashaiva-section .siddhanta-verse-box {
+    border-color: rgba(139, 92, 246, 0.3);
+    background: linear-gradient(145deg, rgba(139, 92, 246, 0.1) 0%, rgba(30, 27, 75, 0.35) 100%);
+    box-shadow: 0 4px 24px rgba(139, 92, 246, 0.12);
+}
+
+.veerashaiva-section .siddhanta-label {
+    font-size: 0.9rem;
+    color: #a78bfa;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+/* Teachings List */
+.veerashaiva-teachings {
+    max-width: 850px;
+    margin: 30px auto 40px;
+}
+
+.veerashaiva-teachings .teachings-intro-text {
+    font-size: 1.05rem;
+    line-height: 1.95;
+    color: #e0d4c3;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.veerashaiva-teachings .teachings-list {
+    list-style: none;
+    padding: 0 0 0 20px;
+    margin: 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.veerashaiva-teachings .teachings-list li {
+    position: relative;
+    padding-left: 24px;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #ddd0c0;
+}
+
+.veerashaiva-teachings .teachings-list li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: #a78bfa;
+    font-size: 0.7rem;
+    top: 5px;
+}
+
+.veerashaiva-teachings .teachings-note {
+    font-size: 1.05rem;
+    line-height: 1.95;
+    color: #e0d4c3;
+    text-align: justify;
+    font-style: italic;
+}
+
+/* Conclusion in Veerashaiva Section */
+.veerashaiva-section .heritage-conclusion {
+    border-top-color: rgba(139, 92, 246, 0.15);
+}
+
 @media (max-width: 768px) {
     .divine-heritage-section {
         padding: 60px 0;
@@ -2443,10 +2590,15 @@ img {
         font-size: 0.9rem;
         line-height: 1.7;
     }
+
+    .veerashaiva-section {
+        padding: 60px 0;
+    }
+
+    .veerashaiva-section .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
 }
-
-
-
-
 
 
