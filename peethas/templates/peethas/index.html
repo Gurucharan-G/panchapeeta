@@ -14,17 +14,12 @@
 <body>
     <header class="site-header">
         <div class="container header-container">
-            <a href="{% url 'peethas:home' %}" class="logo">
-                <span class="logo-icon">🕉️</span>
-                <span class="logo-text">Pancha Peethas</span>
-            </a>
             <nav class="nav-links">
                 <a href="{% url 'peethas:home' %}" class="nav-link">Home</a>
+                <a href="{% url 'peethas:home' %}#divine-heritage" class="nav-link">{{ labels.divine_heritage_title }}</a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'peethas:dashboard_home' %}" class="nav-link nav-btn-dashboard">Dashboard</a>
                     <a href="{% url 'peethas:logout' %}" class="nav-link nav-btn-logout">Logout</a>
-                {% else %}
-                    <a href="{% url 'peethas:login' %}" class="nav-link nav-btn-login">Handler Login</a>
                 {% endif %}
             </nav>
         </div>

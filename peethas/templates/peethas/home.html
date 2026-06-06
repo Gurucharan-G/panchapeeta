@@ -71,6 +71,62 @@
     </div>
 </section>
 
+<!-- Divine Heritage Section -->
+<section class="divine-heritage-section" id="divine-heritage">
+    <div class="container">
+        <div class="section-decor">
+            <span class="decor-line"></span>
+            <span class="decor-symbol">🔱</span>
+            <span class="decor-line"></span>
+        </div>
+        
+        <h2 class="section-title">{{ labels.divine_heritage_title }}</h2>
+        
+        <div class="heritage-intro">
+            {% for para in heritage_content.intro_paragraphs %}
+                <p>{{ para }}</p>
+            {% endfor %}
+        </div>
+        
+        <div class="shloka-box">
+            <div class="shloka-symbol">🪷</div>
+            <p class="shloka-verse">{{ heritage_content.shloka.verse|linebreaksbr }}</p>
+            {% if heritage_content.shloka.translation %}
+                <p class="shloka-translation">{{ heritage_content.shloka.translation|linebreaksbr }}</p>
+            {% endif %}
+            <p class="shloka-ref">— {{ heritage_content.shloka.reference }}</p>
+        </div>
+        
+        <div class="heritage-tabs-container">
+            <div class="heritage-tabs-nav">
+                {% for p in peethas %}
+                <button class="heritage-tab-btn{% if forloop.first %} active{% endif %}" 
+                        data-target="{{ p.slug }}" 
+                        style="--tab-color: {{ p.color }};">
+                    {{ p.short_name }}
+                </button>
+                {% endfor %}
+            </div>
+            
+            <div class="heritage-tabs-content">
+                {% for hp in heritage_content.peethas %}
+                <div class="heritage-tab-pane{% if forloop.first %} active{% endif %}" id="heritage-{{ hp.slug }}" style="--peetha-color: var(--color-{{ hp.slug }});">
+                    <div class="pane-header">
+                        <div class="pane-badge" style="background-color: var(--peetha-color);"></div>
+                        <h3>{{ hp.name }}</h3>
+                    </div>
+                    <p class="pane-description">{{ hp.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="heritage-conclusion">
+            <p>{{ heritage_content.conclusion }}</p>
+        </div>
+    </div>
+</section>
+
 <section class="about-section">
     <div class="container">
         <h2>{{ labels.about_title|safe }}</h2>
@@ -114,6 +170,25 @@
         document.addEventListener('click', () => {
             document.querySelectorAll('.card-portrait-wrapper').forEach(w => {
                 w.classList.remove('active-zoom');
+            });
+        });
+
+        // Tab switching logic for Divine Heritage
+        const tabButtons = document.querySelectorAll('.heritage-tab-btn');
+        const tabPanes = document.querySelectorAll('.heritage-tab-pane');
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabButtons.forEach(b => b.classList.remove('active'));
+                tabPanes.forEach(p => p.classList.remove('active'));
+
+                btn.classList.add('active');
+
+                const targetId = `heritage-${btn.getAttribute('data-target')}`;
+                const targetPane = document.getElementById(targetId);
+                if (targetPane) {
+                    targetPane.classList.add('active');
+                }
             });
         });
     });

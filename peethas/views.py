@@ -7,6 +7,7 @@ import datetime
 
 from .models import Peetha, PeethaHandler, PeethaMedia, TravelPlan
 from .forms import PeethaMediaForm, TravelPlanForm
+from .heritage_content import HERITAGE_CONTENT
 
 # UI Static Labels Translations
 TRANSLATIONS = {
@@ -37,7 +38,8 @@ TRANSLATIONS = {
         'travel_plans_title': 'Swamiji Travel Plans',
         'media_gallery_title': 'Photos & Videos',
         'no_travel_plans': 'No travel plans scheduled for this month.',
-        'no_media': 'No photos or videos uploaded yet.'
+        'no_media': 'No photos or videos uploaded yet.',
+        'divine_heritage_title': 'The Divine Heritage'
     },
     'kn': {
         'site_title': 'ವೀರಶೈವ ಪಂಚಪೀಠಗಳು',
@@ -66,7 +68,8 @@ TRANSLATIONS = {
         'travel_plans_title': 'ಶ್ರೀಗಳ ಪ್ರವಾಸ ವಿವರಗಳು',
         'media_gallery_title': 'ಚಿತ್ರಗಳು ಮತ್ತು ವಿಡಿಯೋಗಳು',
         'no_travel_plans': 'ಈ ತಿಂಗಳಲ್ಲಿ ಯಾವುದೇ ಪ್ರವಾಸ ಯೋಜನೆಗಳಿಲ್ಲ.',
-        'no_media': 'ಇನ್ನೂ ಯಾವುದೇ ಚಿತ್ರಗಳು ಅಥವಾ ವಿಡಿಯೋಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ.'
+        'no_media': 'ಇನ್ನೂ ಯಾವುದೇ ಚಿತ್ರಗಳು ಅಥವಾ ವಿಡಿಯೋಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ.',
+        'divine_heritage_title': 'ದಿವ್ಯ ಪರಂಪರೆ'
     },
     'mr': {
         'site_title': 'वीरशैव पंचपीठ',
@@ -95,7 +98,8 @@ TRANSLATIONS = {
         'travel_plans_title': 'श्रींचे प्रवास वेळापत्रक',
         'media_gallery_title': 'छायाचित्रे आणि व्हिडिओ',
         'no_travel_plans': 'या महिन्यात कोणतेही प्रवास नियोजन नाही.',
-        'no_media': 'अद्याप कोणतेही फोटो किंवा व्हिडिओ अपलोड केलेले नाहीत.'
+        'no_media': 'अद्याप कोणतेही फोटो किंवा व्हिडिओ अपलोड केलेले नाहीत.',
+        'divine_heritage_title': 'दिव्य वारसा'
     },
     'hi': {
         'site_title': 'वीरशैव पंचपीठ',
@@ -124,7 +128,8 @@ TRANSLATIONS = {
         'travel_plans_title': 'पूज्य महाराज श्री की यात्रा योजनाएं',
         'media_gallery_title': 'चित्र और वीडियो',
         'no_travel_plans': 'इस माह में कोई यात्रा कार्यक्रम निर्धारित नहीं है।',
-        'no_media': 'अभी तक कोई फोटो या वीडियो अपलोड नहीं किया गया है.'
+        'no_media': 'अभी तक कोई फोटो या वीडियो अपलोड नहीं किया गया है.',
+        'divine_heritage_title': 'दिव्य धरोहर'
     }
 }
 
@@ -184,6 +189,7 @@ def home(request):
         'use_rectangular_portraits': True,
         'lang': lang,
         'labels': TRANSLATIONS[lang],
+        'heritage_content': HERITAGE_CONTENT[lang],
     })
 
 

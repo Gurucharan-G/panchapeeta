@@ -884,7 +884,7 @@ img {
 
 .header-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     height: 70px;
 }
@@ -1807,6 +1807,282 @@ img {
     opacity: 0.8;
     line-height: 1.5;
 }
+
+/* ===== Divine Heritage Section ===== */
+.divine-heritage-section {
+    background: linear-gradient(135deg, #160d07 0%, #0d0603 100%);
+    border-top: 1px solid rgba(184, 134, 11, 0.2);
+    border-bottom: 1px solid rgba(184, 134, 11, 0.2);
+    padding: 90px 0;
+    color: #f5ebe0;
+    position: relative;
+}
+
+.divine-heritage-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 50% 20%, rgba(184, 134, 11, 0.05) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.divine-heritage-section .section-decor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.divine-heritage-section .decor-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+.divine-heritage-section .decor-symbol {
+    font-size: 1.3rem;
+    color: var(--gold);
+    filter: drop-shadow(0 0 6px rgba(184, 134, 11, 0.5));
+}
+
+.divine-heritage-section .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.heritage-intro {
+    max-width: 850px;
+    margin: 0 auto 50px;
+    font-size: 1.05rem;
+    line-height: 1.95;
+    color: #e0d4c3;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: justify;
+}
+
+.shloka-box {
+    max-width: 750px;
+    margin: 0 auto 60px;
+    padding: 36px 30px;
+    background: radial-gradient(circle at center, rgba(184, 134, 11, 0.08) 0%, rgba(184, 134, 11, 0.02) 100%);
+    border: 1px solid rgba(184, 134, 11, 0.25);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), inset 0 0 20px rgba(184, 134, 11, 0.05);
+    position: relative;
+    text-align: center;
+}
+
+.shloka-symbol {
+    font-size: 1.6rem;
+    color: var(--gold-light);
+    margin-bottom: 12px;
+    opacity: 0.85;
+}
+
+.shloka-verse {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--gold-light);
+    line-height: 1.8;
+    margin-bottom: 16px;
+}
+
+.shloka-translation {
+    font-size: 0.95rem;
+    color: #dfd0be;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 14px;
+    opacity: 0.9;
+}
+
+.shloka-ref {
+    font-size: 0.85rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.heritage-tabs-container {
+    max-width: 950px;
+    margin: 0 auto 50px;
+}
+
+.heritage-tabs-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.heritage-tab-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 10px 20px;
+    background: rgba(26, 14, 8, 0.6);
+    border: 1px solid rgba(184, 134, 11, 0.2);
+    border-radius: 30px;
+    color: #dfd5c6;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.heritage-tab-btn:hover {
+    color: #ffffff;
+    border-color: var(--gold-light);
+    box-shadow: 0 0 12px rgba(184, 134, 11, 0.2);
+    transform: translateY(-2px);
+}
+
+.heritage-tab-btn.active {
+    background-color: var(--tab-color);
+    border-color: var(--tab-color);
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 15px color-mix(in srgb, var(--tab-color) 40%, transparent);
+    transform: translateY(-2px);
+}
+
+/* Override active state style specifically for Srisaila (since its database color is white) */
+.heritage-tab-btn[style*="--tab-color: #ffffff"].active,
+.heritage-tab-btn[style*="--tab-color: #FFFFFF"].active {
+    background-color: var(--gold-light) !important;
+    border-color: var(--gold-light) !important;
+    color: #1a0e08 !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(212, 168, 75, 0.4) !important;
+}
+
+.heritage-tabs-content {
+    background: rgba(18, 9, 5, 0.4);
+    border: 1px solid rgba(184, 134, 11, 0.15);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    min-height: 250px;
+}
+
+.heritage-tab-pane {
+    display: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.heritage-tab-pane.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* For Srisaila, we use gold accent badge instead of pure white */
+#heritage-srisaila {
+    --peetha-color: var(--gold-light) !important;
+}
+
+.pane-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.pane-badge {
+    width: 6px;
+    height: 24px;
+    border-radius: 3px;
+    box-shadow: 0 0 8px var(--peetha-color);
+}
+
+.pane-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    color: #ffffff;
+    font-weight: 600;
+    margin: 0;
+}
+
+.pane-description {
+    font-size: 0.98rem;
+    line-height: 1.9;
+    color: #dfd5c6;
+    text-align: justify;
+}
+
+.heritage-conclusion {
+    max-width: 850px;
+    margin: 60px auto 0;
+    padding-top: 40px;
+    border-top: 1px solid rgba(184, 134, 11, 0.15);
+    font-size: 1.05rem;
+    line-height: 1.95;
+    color: #e0d4c3;
+    text-align: justify;
+}
+
+@media (max-width: 768px) {
+    .divine-heritage-section {
+        padding: 60px 0;
+    }
+    
+    .divine-heritage-section .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+    
+    .heritage-intro,
+    .heritage-conclusion {
+        font-size: 0.95rem;
+        line-height: 1.8;
+    }
+    
+    .shloka-box {
+        padding: 24px 20px;
+        margin-bottom: 40px;
+    }
+    
+    .shloka-verse {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    .shloka-translation {
+        font-size: 0.85rem;
+    }
+    
+    .heritage-tab-btn {
+        padding: 8px 16px;
+        font-size: 0.75rem;
+    }
+    
+    .heritage-tabs-content {
+        padding: 24px;
+    }
+    
+    .pane-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .pane-description {
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+}
+
 
 
 
