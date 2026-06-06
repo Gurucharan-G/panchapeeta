@@ -1,0 +1,843 @@
+/* ===== Reset & Base ===== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-rambhapuri: #2e7d32;
+    --color-ujjaini: #c62828;
+    --color-kedara: #1565c0;
+    --color-srisaila: #ffffff;
+    --color-kashi: #f9a825;
+
+    --bg: #ffffff;
+    --bg-light: #fefcf9;
+    --bg-warm: #fef8f0;
+    --text: #1a1a1a;
+    --text-light: #555;
+    --text-muted: #888;
+    --border: #f5ebe0;
+    --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 12px 36px rgba(0, 0, 0, 0.12);
+    --shadow-card: 0 4px 20px rgba(120, 80, 30, 0.08);
+    --radius: 12px;
+    --radius-lg: 20px;
+
+    --gold: #b8860b;
+    --gold-light: #d4a84b;
+    --gold-glow: rgba(184, 134, 11, 0.15);
+    --saffron: #e67e22;
+    --maroon: #6b2020;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+}
+
+
+/* ===== Keyword Highlight ===== */
+.keyword {
+    color: var(--gold);
+    font-weight: 600;
+    position: relative;
+}
+
+.hero .keyword {
+    color: var(--gold);
+    text-shadow: none;
+}
+
+
+/* ===== Hero ===== */
+.hero {
+    background: linear-gradient(160deg, #fffdfa 0%, #faf1e6 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 0 70px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(184, 134, 11, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to top, var(--bg), transparent);
+    pointer-events: none;
+}
+
+.hero-om {
+    font-size: 3rem;
+    color: var(--gold);
+    opacity: 0.8;
+    margin-bottom: 16px;
+    font-family: 'Playfair Display', serif;
+    text-shadow: 0 0 20px rgba(184, 134, 11, 0.15);
+    animation: pulse-glow-light 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-light {
+    0%, 100% { opacity: 0.6; text-shadow: 0 0 20px rgba(184, 134, 11, 0.1); }
+    50% { opacity: 0.9; text-shadow: 0 0 40px rgba(184, 134, 11, 0.25); }
+}
+
+.hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    line-height: 1.3;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-subtitle {
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--text-light);
+    font-size: 1.05rem;
+    line-height: 1.9;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-subtitle .keyword {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+
+/* ===== Peethas Grid ===== */
+.peethas-section {
+    padding: 70px 0 80px;
+    background: var(--bg-light);
+}
+
+.peethas-section .container {
+    max-width: 1650px;
+}
+
+.peethas-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+}
+
+/* ===== Peetha Card ===== */
+.peetha-card {
+    display: flex;
+    flex-direction: column;
+    background: color-mix(in srgb, var(--peetha-color) 8%, #ffffff);
+    border: 1px solid color-mix(in srgb, var(--peetha-color) 20%, #ffffff);
+    border-radius: var(--radius-lg);
+    overflow: visible;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    padding-top: 90px; /* space for protruding portrait */
+    margin-top: 75px; /* offset for protruding portrait */
+}
+
+.peetha-card:hover {
+    transform: translateY(-8px);
+    background: color-mix(in srgb, var(--peetha-color) 14%, #ffffff);
+    border-color: color-mix(in srgb, var(--peetha-color) 35%, #ffffff);
+    box-shadow:
+        0 20px 50px rgba(120, 80, 30, 0.12),
+        0 0 0 1px color-mix(in srgb, var(--peetha-color) 30%, transparent);
+}
+
+/* --- White Card Overrides (Srisaila) --- */
+.peetha-card.is-white {
+    background: #ffffff !important;
+    border: 1px solid #e2d4c5 !important;
+}
+
+.peetha-card.is-white:hover {
+    background: #ffffff !important;
+    border-color: var(--gold) !important;
+}
+
+.peetha-card.is-white .card-simhasana {
+    color: var(--gold) !important;
+}
+
+.peetha-card.is-white .card-footer-action span {
+    color: var(--gold) !important;
+}
+
+.peetha-card.is-white .card-portrait {
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.12),
+        0 0 0 2px rgba(184, 134, 11, 0.4) !important;
+}
+
+/* --- Protruding Portrait --- */
+.card-portrait-wrapper {
+    position: absolute;
+    top: -75px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    transition: z-index 0.3s ease;
+}
+
+.card-portrait-wrapper:hover {
+    z-index: 20;
+}
+
+.card-portrait {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #ffffff;
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.12),
+        0 0 0 2px color-mix(in srgb, var(--peetha-color) 40%, transparent);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--peetha-color) 15%, white), var(--bg-warm));
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+
+.peetha-card:hover .card-portrait {
+    transform: scale(1.04);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.14),
+        0 0 0 3px color-mix(in srgb, var(--peetha-color) 50%, transparent);
+}
+
+.card-portrait:hover {
+    transform: scale(1.24) translateY(-10px) !important;
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.24),
+        0 0 0 4px color-mix(in srgb, var(--peetha-color) 70%, transparent) !important;
+}
+
+.card-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+.portrait-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--peetha-color);
+    opacity: 0.4;
+    font-family: 'Playfair Display', serif;
+}
+
+.card-portrait.no-image img {
+    display: none;
+}
+
+.card-portrait:not(.no-image) .portrait-fallback {
+    display: none;
+}
+
+
+/* --- Card Body --- */
+.card-body {
+    padding: 12px 18px 16px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.card-body h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 2px;
+}
+
+.card-simhasana {
+    font-size: 0.72rem;
+    color: var(--peetha-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+
+/* --- Mutt Photo --- */
+.card-mutt-photo {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--bg-warm), #f0e6d6);
+    border: 1px solid var(--border);
+    position: relative;
+    margin: 6px 0;
+    transition: box-shadow 0.3s ease;
+}
+
+.peetha-card:hover .card-mutt-photo {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.card-mutt-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+.peetha-card:hover .card-mutt-photo img {
+    transform: scale(1.05);
+}
+
+.mutt-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.mutt-fallback-icon {
+    font-size: 1.6rem;
+    opacity: 0.3;
+}
+
+.mutt-fallback-text {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.card-mutt-photo.no-image img {
+    display: none;
+}
+
+.card-mutt-photo:not(.no-image) .mutt-fallback {
+    display: none;
+}
+
+
+/* --- Card Info Text --- */
+.card-acharya {
+    font-size: 0.78rem;
+    color: var(--text-light);
+}
+
+.card-acharya strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.card-location {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: auto;
+}
+
+.card-linga {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+
+/* --- Card Footer Action --- */
+.card-footer-action {
+    padding: 12px 18px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+}
+
+.card-footer-action span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--peetha-color);
+    letter-spacing: 0.5px;
+    transition: letter-spacing 0.3s ease;
+}
+
+.peetha-card:hover .card-footer-action span {
+    letter-spacing: 1.5px;
+}
+
+
+/* ===== About Section ===== */
+.about-section {
+    background: linear-gradient(160deg, #faf1e6 0%, #fffdfa 100%);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 70px 0 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(184, 134, 11, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.about-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+    text-align: center;
+    color: var(--text);
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+}
+
+.about-section h2 .keyword {
+    color: var(--gold);
+}
+
+.about-content {
+    max-width: 750px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.about-content p {
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.9;
+}
+
+.about-content .keyword {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.about-link {
+    color: var(--gold) !important;
+    border-bottom: 1px dashed rgba(184, 134, 11, 0.4);
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+    font-weight: 500;
+}
+
+.about-link:hover {
+    color: var(--gold-light) !important;
+    border-bottom-color: rgba(184, 134, 11, 0.8);
+    border-bottom-style: solid;
+}
+
+
+/* ===== Detail Page ===== */
+.detail-hero {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--peetha-color) 8%, white), var(--bg-light));
+    padding: 40px 0 50px;
+    border-bottom: 3px solid var(--peetha-color);
+    position: relative;
+}
+
+.back-link {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    display: inline-block;
+    margin-bottom: 20px;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: var(--peetha-color);
+}
+
+.detail-hero-content {
+    text-align: center;
+}
+
+.detail-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.detail-hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.detail-simhasana {
+    font-size: 1rem;
+    color: var(--peetha-color);
+    font-weight: 500;
+}
+
+
+/* ===== Detail Body ===== */
+.detail-body {
+    padding: 50px 0 60px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.info-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--peetha-color);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+}
+
+.info-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: var(--text);
+}
+
+.info-card dl {
+    display: grid;
+    gap: 14px;
+}
+
+.info-card dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-light);
+}
+
+.info-card dd {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.detail-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--text);
+}
+
+.content-section {
+    margin-bottom: 36px;
+}
+
+.content-section p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+
+
+/* ===== Footer ===== */
+.site-footer {
+    background: #1a0e08;
+    border-top: 1px solid rgba(184, 134, 11, 0.15);
+    padding: 24px 0;
+    text-align: center;
+}
+
+.site-footer p {
+    font-size: 0.8rem;
+    color: rgba(245, 239, 230, 0.4);
+    font-weight: 400;
+}
+
+
+/* ===== Responsive ===== */
+@media (max-width: 1250px) {
+    .peethas-grid {
+        display: flex;
+        overflow-x: auto;
+        padding: 20px 4px;
+        gap: 20px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .peetha-card {
+        flex: 0 0 280px;
+        scroll-snap-align: start;
+        margin-top: 75px;
+        padding-top: 90px;
+    }
+    
+    .card-portrait-wrapper {
+        top: -75px;
+    }
+
+    .card-portrait {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h2 {
+        font-size: 1.6rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .detail-hero h2 {
+        font-size: 1.5rem;
+    }
+
+    .about-section h2 {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 50px 0 40px;
+    }
+
+    .hero h2 {
+        font-size: 1.3rem;
+    }
+    
+    .peetha-card {
+        flex: 0 0 260px;
+    }
+}
+
+/* ===== Rectangle Variant Override ===== */
+.use-rectangle .peetha-card {
+    padding-top: 160px;
+    margin-top: 130px;
+}
+
+.use-rectangle .card-portrait-wrapper {
+    top: -125px;
+}
+
+.use-rectangle .card-portrait {
+    width: 200px;
+    height: 250px;
+    border-radius: var(--radius);
+}
+
+.use-rectangle .card-portrait:hover {
+    transform: scale(1.08) translateY(-10px) !important;
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.24),
+        0 0 0 4px color-mix(in srgb, var(--peetha-color) 70%, transparent) !important;
+}
+
+@media (max-width: 1250px) {
+    .use-rectangle .peetha-card {
+        padding-top: 160px;
+        margin-top: 130px;
+    }
+    
+    .use-rectangle .card-portrait-wrapper {
+        top: -125px;
+    }
+
+    .use-rectangle .card-portrait {
+        width: 200px;
+        height: 250px;
+        border-radius: var(--radius);
+    }
+}
+
+/* ===== In-place Portrait Zoom ===== */
+.card-portrait {
+    cursor: pointer;
+}
+
+.card-portrait-wrapper {
+    transition: z-index 0.4s ease;
+}
+
+/* Elevate and enlarge on click */
+.card-portrait-wrapper.active-zoom {
+    z-index: 100 !important;
+}
+
+.card-portrait-wrapper.active-zoom .card-portrait {
+    transform: scale(1.5) translateY(-30px) !important;
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.35),
+        0 0 0 4px color-mix(in srgb, var(--peetha-color) 80%, transparent) !important;
+}
+
+/* ===== Language Dropdown Selector ===== */
+.lang-selector-container {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    z-index: 100;
+}
+
+.lang-dropdown {
+    background-color: var(--bg-warm);
+    color: var(--text-light);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.lang-dropdown:hover, .lang-dropdown:focus {
+    border-color: var(--gold-light);
+    color: var(--text);
+    box-shadow: 0 4px 12px rgba(184, 134, 11, 0.1);
+}
+
+@media (max-width: 768px) {
+    .lang-selector-container {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-bottom: 20px;
+        text-align: right;
+        padding-right: 24px;
+    }
+}
+
+/* ===== Associated Linga Link ===== */
+.linga-link {
+    color: var(--text-light);
+    cursor: pointer;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(184, 134, 11, 0.3);
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* On card hover, make the link more prominent */
+.peetha-card:hover .linga-link {
+    color: var(--text);
+    border-bottom-color: var(--peetha-color);
+}
+
+/* Revert/fix for white card (Srisaila) hover */
+.peetha-card.is-white:hover .linga-link {
+    border-bottom-color: var(--gold);
+}
+
+.linga-link:hover {
+    color: var(--gold-light) !important;
+    border-bottom-color: var(--gold-light) !important;
+    border-bottom-style: solid;
+    text-shadow: 0 0 8px rgba(184, 134, 11, 0.1);
+}
+
+/* In Key Details sidebar card */
+.info-card .linga-link {
+    color: var(--peetha-color);
+    font-weight: 500;
+}
+
+.info-card .linga-link:hover {
+    color: var(--gold) !important;
+}
+
+
+
+

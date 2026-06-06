@@ -1,0 +1,72 @@
+{% extends "peethas/index.html" %}
+
+{% block title %}{{ peetha.name }} — {{ labels.site_title }}{% endblock %}
+
+{% block content %}
+<section class="detail-hero" style="--peetha-color: {{ peetha.color }};">
+    <div class="lang-selector-container">
+        <select onchange="location = this.value;" class="lang-dropdown">
+            <option value="?lang=en" {% if lang == 'en' %}selected{% endif %}>English</option>
+            <option value="?lang=kn" {% if lang == 'kn' %}selected{% endif %}>ಕನ್ನಡ</option>
+            <option value="?lang=mr" {% if lang == 'mr' %}selected{% endif %}>मराठी</option>
+            <option value="?lang=hi" {% if lang == 'hi' %}selected{% endif %}>हिन्दी</option>
+        </select>
+    </div>
+    <div class="container">
+        <a href="{% url 'peethas:home' %}" class="back-link">{{ labels.back_link }}</a>
+        <div class="detail-hero-content">
+            <div class="detail-icon">🕉️</div>
+            <h2>{{ peetha.name }}</h2>
+            <p class="detail-simhasana">{{ peetha.simhasana }}</p>
+        </div>
+    </div>
+</section>
+
+<section class="detail-body">
+    <div class="container">
+        <div class="detail-grid">
+            <div class="detail-info">
+                <div class="info-card" style="--peetha-color: {{ peetha.color }};">
+                    <h3>{{ labels.key_details }}</h3>
+                    <dl>
+                        <dt>{{ labels.founding_acharya }}</dt>
+                        <dd>{{ peetha.acharya }}</dd>
+
+                        <dt>{{ labels.simhasana_label }}</dt>
+                        <dd>{{ peetha.simhasana }}</dd>
+
+                        <dt>{{ labels.associated_linga_label }}</dt>
+                        <dd>
+                            {% if peetha.associated_linga_map_url %}
+                                <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer" class="linga-link">🔱 {{ peetha.associated_linga }} ↗</a>
+                            {% else %}
+                                {{ peetha.associated_linga }}
+                            {% endif %}
+                        </dd>
+
+                        <dt>{{ labels.location_label }}</dt>
+                        <dd>{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</dd>
+
+                        {% if peetha.current_swamiji %}
+                        <dt>{{ labels.current_swamiji_label }}</dt>
+                        <dd>{{ peetha.current_swamiji }}</dd>
+                        {% endif %}
+                    </dl>
+                </div>
+            </div>
+
+            <div class="detail-content">
+                <div class="content-section">
+                    <h3>{{ labels.about_label }}</h3>
+                    <p>{{ peetha.description }}</p>
+                </div>
+
+                <div class="content-section">
+                    <h3>{{ labels.history_label }}</h3>
+                    {{ peetha.history|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

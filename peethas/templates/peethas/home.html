@@ -1,0 +1,121 @@
+{% extends "peethas/index.html" %}
+{% load static %}
+
+{% block title %}{{ labels.site_title }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="lang-selector-container">
+        <select onchange="location = this.value;" class="lang-dropdown">
+            <option value="?lang=en" {% if lang == 'en' %}selected{% endif %}>English</option>
+            <option value="?lang=kn" {% if lang == 'kn' %}selected{% endif %}>ಕನ್ನಡ</option>
+            <option value="?lang=mr" {% if lang == 'mr' %}selected{% endif %}>मराठी</option>
+            <option value="?lang=hi" {% if lang == 'hi' %}selected{% endif %}>हिन्दी</option>
+        </select>
+    </div>
+    <div class="container">
+        <div class="hero-om">ॐ</div>
+        <h2>{{ labels.hero_title|safe }}</h2>
+        <p class="hero-subtitle">
+            {{ labels.hero_subtitle|safe }}
+        </p>
+    </div>
+</section>
+
+<section class="peethas-section">
+    <div class="container">
+        <div class="peethas-grid{% if use_rectangular_portraits %} use-rectangle{% endif %}">
+            {% for peetha in peethas %}
+            <a href="{% url 'peethas:peetha_detail' peetha.slug %}" class="peetha-card{% if peetha.slug == 'srisaila' %} is-white{% endif %}"
+                style="--peetha-color: {{ peetha.color }};">
+                <!-- Protruding Acharya portrait at top center -->
+                <div class="card-portrait-wrapper">
+                    <div class="card-portrait">
+                        <img src="{% static 'images/acharyas/' %}{{ peetha.slug }}.jpg" alt="{{ peetha.acharya }}"
+                            onerror="this.parentElement.classList.add('no-image')">
+                        <div class="portrait-fallback">ॐ</div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <h3>{{ peetha.simhasana }} {{ labels.peeta_suffix }}</h3>
+                    <p class="card-simhasana">{{ peetha.short_name }}</p>
+
+                    <!-- Mutt photo in center -->
+                    <div class="card-mutt-photo">
+                        <img src="{% static 'images/mutts/' %}{{ peetha.slug }}.jpg" alt="{{ peetha.name }} Photo"
+                            onerror="this.parentElement.classList.add('no-image')">
+                        <div class="mutt-fallback">
+                            <span class="mutt-fallback-icon">🛕</span>
+                            <span class="mutt-fallback-text">Photo</span>
+                        </div>
+                    </div>
+
+                    <p class="card-acharya">{{ labels.founded_by }} <strong>{{ peetha.acharya }}</strong></p>
+                    <p class="card-linga">
+                        {% if peetha.associated_linga_map_url %}
+                            <span class="linga-link" onclick="window.open('{{ peetha.associated_linga_map_url }}', '_blank'); event.preventDefault(); event.stopPropagation();">🔱 {{ peetha.associated_linga }}</span>
+                        {% else %}
+                            {{ peetha.associated_linga }}
+                        {% endif %}
+                    </p>
+                    <p class="card-location">📍 {{ peetha.location }}</p>
+                </div>
+
+                <div class="card-footer-action">
+                    <span>{{ labels.explore_peetha }}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="about-section">
+    <div class="container">
+        <h2>{{ labels.about_title|safe }}</h2>
+        <div class="about-content">
+            <p>{{ labels.about_p1|safe }}</p>
+            <p>{{ labels.about_p2|safe }}</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.card-portrait-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const img = wrapper.querySelector('img');
+                if (wrapper.querySelector('.card-portrait').classList.contains('no-image') || !img) return;
+
+                const isActive = wrapper.classList.contains('active-zoom');
+
+                // Remove active zoom from all other cards
+                document.querySelectorAll('.card-portrait-wrapper').forEach(w => {
+                    w.classList.remove('active-zoom');
+                });
+
+                if (!isActive) {
+                    wrapper.classList.add('active-zoom');
+                }
+            });
+
+            wrapper.addEventListener('mouseleave', () => {
+                wrapper.classList.remove('active-zoom');
+            });
+        });
+
+        // Click outside to close the zoomed image
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.card-portrait-wrapper').forEach(w => {
+                w.classList.remove('active-zoom');
+            });
+        });
+    });
+</script>
+{% endblock %}
