@@ -130,6 +130,14 @@ img {
     transition: opacity 0.3s ease;
 }
 
+.scroll-indicator.block-indicator {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin: 50px auto 10px;
+}
+
 .scroll-indicator span {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -901,17 +909,13 @@ img {
         0 0 0 4px color-mix(in srgb, var(--peetha-color) 80%, transparent) !important;
 }
 
-/* ===== Language Dropdown Selector ===== */
-.lang-selector-container {
+/* ===== Custom Dropdown Selector ===== */
+.custom-dropdown {
     position: relative;
-    display: flex;
-    align-items: center;
+    display: inline-block;
 }
 
-.lang-dropdown {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+.dropdown-trigger {
     background-color: rgba(255, 255, 255, 0.85);
     color: var(--text);
     border: 1px solid rgba(184, 134, 11, 0.25);
@@ -924,24 +928,105 @@ img {
     outline: none;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(184, 134, 11, 0.04);
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8860b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 14px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    user-select: none;
 }
 
-.lang-dropdown:hover, .lang-dropdown:focus {
+.dropdown-trigger:hover, .dropdown-trigger:focus {
     border-color: var(--gold);
     background-color: #ffffff;
     box-shadow: 0 4px 12px rgba(184, 134, 11, 0.12);
 }
 
+.dropdown-arrow {
+    position: absolute;
+    right: 12px;
+    width: 12px;
+    height: 12px;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8860b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    transition: transform 0.3s ease;
+}
+
+.custom-dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Custom Dropdown Menu Options list */
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(184, 134, 11, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(184, 134, 11, 0.15);
+    padding: 6px 0;
+    min-width: 130px;
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: top right;
+}
+
+.custom-dropdown.open .dropdown-menu {
+    display: block;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Custom Dropdown option items */
+.dropdown-item {
+    display: block;
+    padding: 8px 18px;
+    color: var(--text-light);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-align: left;
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(184, 134, 11, 0.08);
+    color: var(--gold);
+    padding-left: 22px; /* slide on hover */
+}
+
+.dropdown-item.active {
+    background-color: var(--gold-glow);
+    color: var(--gold);
+    font-weight: 700;
+}
+
 @media (max-width: 768px) {
-    .lang-dropdown {
+    .dropdown-trigger {
         font-size: 0.75rem;
         padding: 6px 26px 6px 10px;
-        background-position: right 8px center;
-        background-size: 11px;
+    }
+    .dropdown-arrow {
+        right: 8px;
+        width: 10px;
+        height: 10px;
+    }
+    .dropdown-menu {
+        min-width: 110px;
+    }
+    .dropdown-item {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+    }
+    .dropdown-item:hover {
+        padding-left: 15px;
     }
 }
 
