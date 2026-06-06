@@ -344,7 +344,7 @@ img {
 }
 
 .peetha-card:hover .card-portrait {
-    transform: scale(1.06) rotate(3deg);
+    transform: scale(1.04);
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.14),
         0 0 0 3px color-mix(in srgb, var(--peetha-color) 50%, transparent);
