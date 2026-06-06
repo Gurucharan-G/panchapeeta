@@ -675,11 +675,19 @@ img {
         width: 100%;
         max-width: 320px;
         flex: none;
-        margin-top: 100px;
+        margin-top: 80px;
+    }
+
+    .peetha-card + .peetha-card {
+        margin-top: 135px;
     }
     
     .use-rectangle .peetha-card {
-        margin-top: 150px;
+        margin-top: 130px;
+    }
+
+    .use-rectangle .peetha-card + .peetha-card {
+        margin-top: 185px;
     }
 
     .detail-grid {
@@ -713,7 +721,7 @@ img {
     }
     
     .peetha-card {
-        flex: 0 0 260px;
+        flex: none;
     }
 }
 
