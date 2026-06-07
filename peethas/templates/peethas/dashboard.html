@@ -61,66 +61,6 @@
             <!-- TAB 1: Media Gallery Section -->
             <div id="media-section" class="tab-content active">
                 <div class="dashboard-grid">
-                    <!-- Media List -->
-                    <div class="dashboard-card list-card">
-                        <h3>Uploaded Media Items</h3>
-                        <div class="media-table-wrapper">
-                            <table class="dashboard-table">
-                                <thead>
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Title</th>
-                                        <th>Content</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for item in media_list %}
-                                    <tr>
-                                        <td>
-                                            {% if item.media_type == 'photo' %}
-                                            <span class="badge badge-photo">📸 Photo</span>
-                                            {% else %}
-                                            <span class="badge badge-video">🎥 Video</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <strong>{{ item.title }}</strong>
-                                            {% if item.title_kn %}<div class="lang-indicator">KN: {{ item.title_kn }}</div>{% endif %}
-                                            {% if item.title_mr %}<div class="lang-indicator">MR: {{ item.title_mr }}</div>{% endif %}
-                                            {% if item.title_hi %}<div class="lang-indicator">HI: {{ item.title_hi }}</div>{% endif %}
-                                        </td>
-                                        <td>
-                                            {% if item.media_type == 'photo' %}
-                                            {% if item.photo_file %}
-                                            <img src="{{ item.photo_file.url }}" alt="{{ item.title }}" class="table-thumbnail">
-                                            {% else %}
-                                            <span class="no-file">No file uploaded</span>
-                                            {% endif %}
-                                            {% else %}
-                                            <a href="{{ item.youtube_url }}" target="_blank" class="yt-link">YouTube Video</a>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <div class="table-actions">
-                                                <a href="{% url 'peethas:media_edit' peetha.slug item.pk %}" class="btn-edit">Edit</a>
-                                                <form action="{% url 'peethas:media_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this media item?');" style="display:inline;">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn-delete">Delete</button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {% empty %}
-                                    <tr>
-                                        <td colspan="4" class="no-records">No media items uploaded yet.</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
                     <!-- Add Media Form -->
                     <div class="dashboard-card form-card">
                         <h3>Add New Photo or Video</h3>
@@ -180,39 +120,29 @@
                             <button type="submit" class="btn-primary">Add Media</button>
                         </form>
                     </div>
-                </div>
-            </div>
 
-            <!-- TAB 2: Travel Plans Section -->
-            <div id="travel-section" class="tab-content">
-                <div class="dashboard-grid">
-                    <!-- Travel List -->
+                    <!-- Media List -->
                     <div class="dashboard-card list-card">
-                        <h3>Scheduled Travel Plans</h3>
+                        <h3>Uploaded Media Items</h3>
                         <div class="media-table-wrapper">
                             <table class="dashboard-table">
                                 <thead>
                                     <tr>
-                                        <th>Dates</th>
-                                        <th>Location</th>
+                                        <th>Type</th>
                                         <th>Title</th>
+                                        <th>Content</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for item in travel_list %}
+                                    {% for item in media_list %}
                                     <tr>
                                         <td>
-                                            <strong>{{ item.start_date }}</strong>
-                                            {% if item.end_date %}
-                                            <div class="end-date-label">to {{ item.end_date }}</div>
+                                            {% if item.media_type == 'photo' %}
+                                            <span class="badge badge-photo">📸 Photo</span>
+                                            {% else %}
+                                            <span class="badge badge-video">🎥 Video</span>
                                             {% endif %}
-                                        </td>
-                                        <td>
-                                            {{ item.location }}
-                                            {% if item.location_kn %}<div class="lang-indicator">KN: {{ item.location_kn }}</div>{% endif %}
-                                            {% if item.location_mr %}<div class="lang-indicator">MR: {{ item.location_mr }}</div>{% endif %}
-                                            {% if item.location_hi %}<div class="lang-indicator">HI: {{ item.location_hi }}</div>{% endif %}
                                         </td>
                                         <td>
                                             <strong>{{ item.title }}</strong>
@@ -221,9 +151,20 @@
                                             {% if item.title_hi %}<div class="lang-indicator">HI: {{ item.title_hi }}</div>{% endif %}
                                         </td>
                                         <td>
+                                            {% if item.media_type == 'photo' %}
+                                            {% if item.photo_file %}
+                                            <img src="{{ item.photo_file.url }}" alt="{{ item.title }}" class="table-thumbnail">
+                                            {% else %}
+                                            <span class="no-file">No file uploaded</span>
+                                            {% endif %}
+                                            {% else %}
+                                            <a href="{{ item.youtube_url }}" target="_blank" class="yt-link">YouTube Video</a>
+                                            {% endif %}
+                                        </td>
+                                        <td>
                                             <div class="table-actions">
-                                                <a href="{% url 'peethas:travel_edit' peetha.slug item.pk %}" class="btn-edit">Edit</a>
-                                                <form action="{% url 'peethas:travel_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this travel plan?');" style="display:inline;">
+                                                <a href="{% url 'peethas:media_edit' peetha.slug item.pk %}" class="btn-edit">Edit</a>
+                                                <form action="{% url 'peethas:media_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this media item?');" style="display:inline;">
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn-delete">Delete</button>
                                                 </form>
@@ -232,14 +173,19 @@
                                     </tr>
                                     {% empty %}
                                     <tr>
-                                        <td colspan="4" class="no-records">No travel plans scheduled yet.</td>
+                                        <td colspan="4" class="no-records">No media items uploaded yet.</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                </div>
+            </div>
 
+            <!-- TAB 2: Travel Plans Section -->
+            <div id="travel-section" class="tab-content">
+                <div class="dashboard-grid">
                     <!-- Add Travel Form -->
                     <div class="dashboard-card form-card">
                         <h3>Add Swamiji Travel Plan</h3>
@@ -294,6 +240,60 @@
 
                             <button type="submit" class="btn-primary">Add Event</button>
                         </form>
+                    </div>
+
+                    <!-- Travel List -->
+                    <div class="dashboard-card list-card">
+                        <h3>Scheduled Travel Plans</h3>
+                        <div class="media-table-wrapper">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Dates</th>
+                                        <th>Location</th>
+                                        <th>Title</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in travel_list %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ item.start_date }}</strong>
+                                            {% if item.end_date %}
+                                            <div class="end-date-label">to {{ item.end_date }}</div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ item.location }}
+                                            {% if item.location_kn %}<div class="lang-indicator">KN: {{ item.location_kn }}</div>{% endif %}
+                                            {% if item.location_mr %}<div class="lang-indicator">MR: {{ item.location_mr }}</div>{% endif %}
+                                            {% if item.location_hi %}<div class="lang-indicator">HI: {{ item.location_hi }}</div>{% endif %}
+                                        </td>
+                                        <td>
+                                            <strong>{{ item.title }}</strong>
+                                            {% if item.title_kn %}<div class="lang-indicator">KN: {{ item.title_kn }}</div>{% endif %}
+                                            {% if item.title_mr %}<div class="lang-indicator">MR: {{ item.title_mr }}</div>{% endif %}
+                                            {% if item.title_hi %}<div class="lang-indicator">HI: {{ item.title_hi }}</div>{% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <a href="{% url 'peethas:travel_edit' peetha.slug item.pk %}" class="btn-edit">Edit</a>
+                                                <form action="{% url 'peethas:travel_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this travel plan?');" style="display:inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn-delete">Delete</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="no-records">No travel plans scheduled yet.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
