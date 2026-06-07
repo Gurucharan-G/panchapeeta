@@ -2615,3 +2615,248 @@ img {
 }
 
 
+/* ===== Peetha Detail Page Tab Sections ===== */
+
+.peetha-tab-section {
+    display: none;
+}
+
+.peetha-tab-section.active {
+    display: block;
+}
+
+/* Jagathguru Section */
+.jagathguru-section,
+.pooja-section,
+.contact-section {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.jagathguru-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.jagathguru-header .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 16px;
+}
+
+.jagathguru-profile {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.jagathguru-photo-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--peetha-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.jagathguru-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.jagathguru-photo-placeholder {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(184, 134, 11, 0.05), rgba(139, 90, 0, 0.08));
+    color: var(--text-muted);
+    gap: 12px;
+}
+
+.jagathguru-photo-placeholder span {
+    font-size: 3rem;
+}
+
+.jagathguru-photo-placeholder p {
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.jagathguru-info-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--peetha-color);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+}
+
+.jagathguru-info-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.jagathguru-peetha-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.jagathguru-bio {
+    line-height: 1.8;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.jagathguru-bio p {
+    margin-bottom: 12px;
+}
+
+/* Pooja Booking - Coming Soon */
+.pooja-coming-soon {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.coming-soon-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--peetha-color);
+    border-radius: var(--radius);
+    padding: 48px 40px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    max-width: 500px;
+    width: 100%;
+}
+
+.coming-soon-icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.coming-soon-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.coming-soon-card p {
+    color: var(--text-light);
+    line-height: 1.7;
+    margin-bottom: 8px;
+}
+
+.coming-soon-subtitle {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--text-muted) !important;
+}
+
+.pooja-contact-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 28px;
+    color: white !important;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.pooja-contact-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* Contact Us Section */
+.contact-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.contact-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--peetha-color);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.contact-card-icon {
+    font-size: 2.2rem;
+    margin-bottom: 14px;
+}
+
+.contact-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.contact-card p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.contact-card a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.contact-card a:hover {
+    color: var(--text);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .jagathguru-profile {
+        grid-template-columns: 1fr;
+    }
+
+    .jagathguru-photo-card {
+        max-width: 280px;
+        margin: 0 auto;
+    }
+
+    .contact-cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .coming-soon-card {
+        padding: 32px 24px;
+    }
+}

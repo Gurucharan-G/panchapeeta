@@ -1,11 +1,24 @@
 {% extends "peethas/index.html" %}
+{% load static %}
 
 {% block title %}{{ peetha.name }} — {{ labels.site_title }}{% endblock %}
+
+{% block navbar %}
+<a href="{% url 'peethas:home' %}" class="nav-link">Home</a>
+<a href="#about" class="nav-link peetha-tab active" data-tab="about">{{ peetha.name }}</a>
+{% if peetha.current_swamiji %}
+<a href="#jagathguru" class="nav-link peetha-tab" data-tab="jagathguru">Jagathguru</a>
+{% endif %}
+<a href="#pooja-booking" class="nav-link peetha-tab" data-tab="pooja-booking">Pooja Booking</a>
+<a href="#contact-us" class="nav-link peetha-tab" data-tab="contact-us">Contact Us</a>
+{% if user.is_authenticated %}
+    <a href="{% url 'peethas:dashboard_home' %}" class="nav-link nav-btn-dashboard">Dashboard</a>
+{% endif %}
+{% endblock %}
 
 {% block content %}
 <section class="detail-hero" style="--peetha-color: {{ peetha.color }};">
     <div class="container">
-        <a href="{% url 'peethas:home' %}" class="back-link">{{ labels.back_link }}</a>
         <div class="detail-hero-content">
             <div class="detail-icon">🕉️</div>
             <h2>{{ peetha.name }}</h2>
@@ -14,7 +27,8 @@
     </div>
 </section>
 
-<section class="detail-body">
+<!-- ===== TAB: About / Peetha Info ===== -->
+<section class="detail-body peetha-tab-section active" id="tab-about">
     <div class="container">
         <div class="detail-grid">
             <div class="detail-info">
@@ -141,6 +155,138 @@
     </div>
 </section>
 
+<!-- ===== TAB: Jagathguru ===== -->
+{% if peetha.current_swamiji %}
+<section class="detail-body peetha-tab-section" id="tab-jagathguru">
+    <div class="container">
+        <div class="jagathguru-section">
+            <div class="jagathguru-header" style="--peetha-color: {{ peetha.color }};">
+                <div class="section-decor">
+                    <span class="decor-line"></span>
+                    <span class="decor-symbol">🙏</span>
+                    <span class="decor-line"></span>
+                </div>
+                <h2 class="section-title">{{ labels.current_swamiji_label }}</h2>
+            </div>
+
+            <div class="jagathguru-profile">
+                <div class="jagathguru-photo-card" style="--peetha-color: {{ peetha.color }};">
+                    {% if peetha.swamiji_photo %}
+                        <img src="{{ peetha.swamiji_photo.url }}" alt="{{ peetha.current_swamiji }}" class="jagathguru-img">
+                    {% else %}
+                        <div class="jagathguru-photo-placeholder">
+                            <span>🙏</span>
+                            <p>Photo coming soon</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="jagathguru-info-card" style="--peetha-color: {{ peetha.color }};">
+                    <h3>{{ peetha.current_swamiji }}</h3>
+                    <p class="jagathguru-peetha-name" style="color: {{ peetha.color }};">{{ peetha.name }}</p>
+
+                    {% if peetha.swamiji_bio %}
+                        <div class="jagathguru-bio">
+                            {{ peetha.swamiji_bio|linebreaks }}
+                        </div>
+                    {% else %}
+                        <div class="jagathguru-bio">
+                            <p class="no-data-msg">Biography details will be updated soon.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ===== TAB: Pooja Booking ===== -->
+<section class="detail-body peetha-tab-section" id="tab-pooja-booking">
+    <div class="container">
+        <div class="pooja-section">
+            <div class="jagathguru-header" style="--peetha-color: {{ peetha.color }};">
+                <div class="section-decor">
+                    <span class="decor-line"></span>
+                    <span class="decor-symbol">🪷</span>
+                    <span class="decor-line"></span>
+                </div>
+                <h2 class="section-title">Pooja Booking</h2>
+            </div>
+
+            <div class="pooja-coming-soon">
+                <div class="coming-soon-card" style="--peetha-color: {{ peetha.color }};">
+                    <div class="coming-soon-icon">🛕</div>
+                    <h3>Online Pooja Booking</h3>
+                    <p>Online pooja booking facility for <strong>{{ peetha.name }}</strong> will be available soon.</p>
+                    <p class="coming-soon-subtitle">Please contact the Peetha directly for pooja bookings in the meantime.</p>
+                    {% if peetha.contact_phone %}
+                        <a href="tel:{{ peetha.contact_phone }}" class="pooja-contact-btn" style="background-color: {{ peetha.color }};">📞 Call to Book: {{ peetha.contact_phone }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== TAB: Contact Us ===== -->
+<section class="detail-body peetha-tab-section" id="tab-contact-us">
+    <div class="container">
+        <div class="contact-section">
+            <div class="jagathguru-header" style="--peetha-color: {{ peetha.color }};">
+                <div class="section-decor">
+                    <span class="decor-line"></span>
+                    <span class="decor-symbol">📬</span>
+                    <span class="decor-line"></span>
+                </div>
+                <h2 class="section-title">Contact Us</h2>
+            </div>
+
+            <div class="contact-cards-grid">
+                {% if peetha.contact_address %}
+                <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
+                    <div class="contact-card-icon">📍</div>
+                    <h4>Address</h4>
+                    <p>{{ peetha.contact_address|linebreaks }}</p>
+                </div>
+                {% endif %}
+
+                {% if peetha.contact_phone %}
+                <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
+                    <div class="contact-card-icon">📞</div>
+                    <h4>Phone</h4>
+                    <p><a href="tel:{{ peetha.contact_phone }}">{{ peetha.contact_phone }}</a></p>
+                </div>
+                {% endif %}
+
+                {% if peetha.contact_email %}
+                <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
+                    <div class="contact-card-icon">✉️</div>
+                    <h4>Email</h4>
+                    <p><a href="mailto:{{ peetha.contact_email }}">{{ peetha.contact_email }}</a></p>
+                </div>
+                {% endif %}
+
+                <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
+                    <div class="contact-card-icon">🕉️</div>
+                    <h4>{{ peetha.name }}</h4>
+                    <p>{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</p>
+                </div>
+            </div>
+
+            {% if not peetha.contact_address and not peetha.contact_phone and not peetha.contact_email %}
+            <div class="pooja-coming-soon">
+                <div class="coming-soon-card" style="--peetha-color: {{ peetha.color }};">
+                    <div class="coming-soon-icon">📬</div>
+                    <h3>Contact Information</h3>
+                    <p>Contact details for <strong>{{ peetha.name }}</strong> will be updated soon.</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
 <!-- Lightbox Modal -->
 <div id="gallery-lightbox" class="lightbox-modal" onclick="closeLightbox()">
     <span class="lightbox-close">&times;</span>
@@ -167,5 +313,59 @@
         const modal = document.getElementById('gallery-lightbox');
         modal.classList.remove('active');
     }
+
+    // Peetha detail page tab switching
+    function handlePeethaTabs() {
+        const hash = window.location.hash || '#about';
+        const tabName = hash.replace('#', '');
+        
+        // Hide all tab sections
+        document.querySelectorAll('.peetha-tab-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        
+        // Deactivate all tab nav links
+        document.querySelectorAll('.peetha-tab').forEach(link => {
+            link.classList.remove('active');
+        });
+        
+        // Show the target tab section
+        const targetSection = document.getElementById('tab-' + tabName);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        } else {
+            // Default to 'about' tab
+            const aboutSection = document.getElementById('tab-about');
+            if (aboutSection) aboutSection.classList.add('active');
+        }
+        
+        // Activate the corresponding nav link
+        const targetLink = document.querySelector(`.peetha-tab[data-tab="${tabName}"]`);
+        if (targetLink) {
+            targetLink.classList.add('active');
+        } else {
+            const defaultLink = document.querySelector('.peetha-tab[data-tab="about"]');
+            if (defaultLink) defaultLink.classList.add('active');
+        }
+
+        // Scroll to top when switching tabs
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handlePeethaTabs);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        handlePeethaTabs();
+
+        // Add click listeners to peetha tab nav links
+        document.querySelectorAll('.peetha-tab').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tab = link.getAttribute('data-tab');
+                window.location.hash = '#' + tab;
+            });
+        });
+    });
 </script>
 {% endblock %}

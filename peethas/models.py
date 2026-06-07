@@ -17,6 +17,15 @@ class Peetha(models.Model):
     history = models.TextField(help_text="Detailed history and origin story")
     order = models.PositiveIntegerField(default=0)
 
+    # Jagathguru details
+    swamiji_photo = models.ImageField(upload_to='peetha_media/swamiji/', blank=True, null=True, help_text="Photo of the current Jagathguru")
+    swamiji_bio = models.TextField(blank=True, help_text="Biography of the current Jagathguru")
+
+    # Contact details
+    contact_phone = models.CharField(max_length=50, blank=True)
+    contact_email = models.EmailField(blank=True)
+    contact_address = models.TextField(blank=True)
+
     # Kannada translations
     name_kn = models.CharField(max_length=200, blank=True)
     acharya_kn = models.CharField(max_length=200, blank=True)

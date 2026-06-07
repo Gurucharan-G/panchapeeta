@@ -16,6 +16,7 @@
     <header class="site-header">
         <div class="container header-container">
             <nav class="nav-links">
+                {% block navbar %}
                 <a href="{% url 'peethas:home' %}" class="nav-link">Home</a>
                 <a href="{% url 'peethas:home' %}#divine-heritage" class="nav-link">{{ labels.divine_heritage_title }}</a>
                 <a href="{% url 'peethas:home' %}#veerashaiva-section" class="nav-link">{{ labels.veerashaiva_title }}</a>
@@ -23,6 +24,7 @@
                     <a href="{% url 'peethas:dashboard_home' %}" class="nav-link nav-btn-dashboard">Dashboard</a>
                     <a href="{% url 'peethas:logout' %}" class="nav-link nav-btn-logout">Logout</a>
                 {% endif %}
+                {% endblock %}
             </nav>
             <div class="lang-selector-container">
                 <div class="custom-dropdown" id="langDropdown">
