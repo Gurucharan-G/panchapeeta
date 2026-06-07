@@ -2,7 +2,50 @@ from django import forms
 from .models import PeethaMedia, TravelPlan
 
 
-class PeethaMediaForm(forms.ModelForm):
+class MultipleFileInput(forms.FileInput):
+    allow_multiple_selected = True
+
+
+class PeethaMediaAddForm(forms.ModelForm):
+    class Meta:
+        model = PeethaMedia
+        fields = [
+            'media_type', 'photo_file', 'youtube_url',
+            'title', 'description',
+            'title_kn', 'description_kn',
+            'title_mr', 'description_mr',
+            'title_hi', 'description_hi'
+        ]
+        widgets = {
+            'media_type': forms.Select(attrs={'class': 'form-input', 'id': 'media-type-select'}),
+            'photo_file': MultipleFileInput(attrs={'class': 'form-input', 'id': 'photo-file-input', 'multiple': True}),
+            'youtube_url': forms.Textarea(attrs={'class': 'form-input', 'id': 'youtube-url-input', 'rows': 4, 'placeholder': 'Paste YouTube URLs here (one URL per line)'}),
+            'title': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'English Title (optional, will default to filename)'}),
+            'description': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'English Description (optional)'}),
+            
+            'title_kn': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'ಕನ್ನಡ ಶೀರ್ಷಿಕೆ (ಐಚ್ಛಿಕ)'}),
+            'description_kn': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'ಕನ್ನಡ ವಿವರಣೆ'}),
+            
+            'title_mr': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'मराठी शीर्षक (पर्यायी)'}),
+            'description_mr': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'मराठी वर्णन'}),
+            
+            'title_hi': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'हिन्दी शीर्षक (वैकल्पिक)'}),
+            'description_hi': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'हिन्दी विवरण'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['title'].required = False
+        self.fields['photo_file'].required = False
+        self.fields['youtube_url'].required = False
+
+    def clean(self):
+        cleaned_data = super().clean()
+        # Custom list validations will be performed directly inside views.py's media_add to handle request.FILES.getlist() and multiline text.
+        return cleaned_data
+
+
+class PeethaMediaEditForm(forms.ModelForm):
     class Meta:
         model = PeethaMedia
         fields = [
@@ -36,13 +79,12 @@ class PeethaMediaForm(forms.ModelForm):
         youtube_url = cleaned_data.get('youtube_url')
 
         if media_type == 'photo':
-            if not photo_file:
+            if not photo_file and not self.instance.photo_file:
                 self.add_error('photo_file', 'Please upload an image file.')
         elif media_type == 'video':
             if not youtube_url:
                 self.add_error('youtube_url', 'Please provide a YouTube URL.')
             else:
-                # Basic validation for YouTube ID parsing
                 import re
                 pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})'
                 match = re.search(pattern, youtube_url)

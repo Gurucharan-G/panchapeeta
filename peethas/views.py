@@ -6,7 +6,7 @@ from django.contrib import messages
 import datetime
 
 from .models import Peetha, PeethaHandler, PeethaMedia, TravelPlan
-from .forms import PeethaMediaForm, TravelPlanForm
+from .forms import PeethaMediaAddForm, PeethaMediaEditForm, TravelPlanForm
 from .heritage_content import HERITAGE_CONTENT
 from .veerashaiva_content import VEERASHAIVA_CONTENT
 
@@ -330,7 +330,7 @@ def dashboard_peetha(request, slug):
     media_list = PeethaMedia.objects.filter(peetha=peetha)
     travel_list = TravelPlan.objects.filter(peetha=peetha).order_by('start_date')
 
-    media_form = PeethaMediaForm()
+    media_form = PeethaMediaAddForm()
     travel_form = TravelPlanForm()
 
     return render(request, 'peethas/dashboard.html', {
@@ -349,16 +349,113 @@ def dashboard_peetha(request, slug):
 
 @login_required(login_url='peethas:login')
 def media_add(request, slug):
+    import os
+    import re
     peetha = get_object_or_404(Peetha, slug=slug)
     check_peetha_authorization(request.user, peetha)
 
     if request.method == 'POST':
-        form = PeethaMediaForm(request.POST, request.FILES)
+        form = PeethaMediaAddForm(request.POST, request.FILES)
         if form.is_valid():
-            media = form.save(commit=False)
-            media.peetha = peetha
-            media.save()
-            messages.success(request, "Media item uploaded successfully.")
+            media_type = form.cleaned_data.get('media_type')
+            title = form.cleaned_data.get('title', '').strip()
+            description = form.cleaned_data.get('description', '').strip()
+            
+            # Retrieve translations
+            title_kn = form.cleaned_data.get('title_kn', '').strip()
+            description_kn = form.cleaned_data.get('description_kn', '').strip()
+            title_mr = form.cleaned_data.get('title_mr', '').strip()
+            description_mr = form.cleaned_data.get('description_mr', '').strip()
+            title_hi = form.cleaned_data.get('title_hi', '').strip()
+            description_hi = form.cleaned_data.get('description_hi', '').strip()
+
+            if media_type == 'photo':
+                # Handle multiple photos
+                files = request.FILES.getlist('photo_file')
+                if not files:
+                    messages.error(request, "Please select at least one photo file to upload.")
+                else:
+                    success_count = 0
+                    for i, file in enumerate(files):
+                        # Determine title fallback
+                        if not title:
+                            # Use filename without extension
+                            filename_only = os.path.splitext(file.name)[0]
+                            # Clean filename
+                            item_title = filename_only.replace('_', ' ').replace('-', ' ').title()
+                        else:
+                            if len(files) > 1:
+                                item_title = f"{title} (Part {i + 1})"
+                            else:
+                                item_title = title
+
+                        # Create and save PeethaMedia item
+                        media = PeethaMedia(
+                            peetha=peetha,
+                            media_type='photo',
+                            photo_file=file,
+                            title=item_title,
+                            description=description,
+                            title_kn=title_kn,
+                            description_kn=description_kn,
+                            title_mr=title_mr,
+                            description_mr=description_mr,
+                            title_hi=title_hi,
+                            description_hi=description_hi,
+                        )
+                        media.save()
+                        success_count += 1
+                    
+                    messages.success(request, f"Successfully uploaded {success_count} photo(s).")
+
+            elif media_type == 'video':
+                # Handle multiple YouTube video URLs
+                youtube_url_text = form.cleaned_data.get('youtube_url', '').strip()
+                if not youtube_url_text:
+                    messages.error(request, "Please enter at least one YouTube URL.")
+                else:
+                    # Split lines/commas and filter empty entries
+                    urls = [u.strip() for u in youtube_url_text.replace(',', '\n').split('\n') if u.strip()]
+                    if not urls:
+                        messages.error(request, "Please enter valid YouTube URLs.")
+                    else:
+                        success_count = 0
+                        yt_pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})'
+                        
+                        for i, url in enumerate(urls):
+                            match = re.search(yt_pattern, url)
+                            if not match:
+                                messages.error(request, f"Skipped invalid YouTube URL: {url}")
+                                continue
+                            
+                            if not title:
+                                item_title = f"Video - {match.group(1)}"
+                            else:
+                                if len(urls) > 1:
+                                    item_title = f"{title} (Part {i + 1})"
+                                else:
+                                    item_title = title
+                            
+                            media = PeethaMedia(
+                                peetha=peetha,
+                                media_type='video',
+                                youtube_url=url,
+                                title=item_title,
+                                description=description,
+                                title_kn=title_kn,
+                                description_kn=description_kn,
+                                title_mr=title_mr,
+                                description_mr=description_mr,
+                                title_hi=title_hi,
+                                description_hi=description_hi,
+                            )
+                            media.save()
+                            success_count += 1
+                        
+                        if success_count > 0:
+                            messages.success(request, f"Successfully added {success_count} video(s).")
+                        else:
+                            messages.error(request, "No valid videos were added.")
         else:
             for error in form.errors.values():
                 messages.error(request, error)
@@ -373,7 +470,7 @@ def media_edit(request, slug, pk):
     media_item = get_object_or_404(PeethaMedia, pk=pk, peetha=peetha)
 
     if request.method == 'POST':
-        form = PeethaMediaForm(request.POST, request.FILES, instance=media_item)
+        form = PeethaMediaEditForm(request.POST, request.FILES, instance=media_item)
         if form.is_valid():
             form.save()
             messages.success(request, "Media item updated successfully.")
@@ -382,7 +479,7 @@ def media_edit(request, slug, pk):
             for error in form.errors.values():
                 messages.error(request, error)
     else:
-        form = PeethaMediaForm(instance=media_item)
+        form = PeethaMediaEditForm(instance=media_item)
 
     lang = get_language(request)
     return render(request, 'peethas/dashboard_edit.html', {
