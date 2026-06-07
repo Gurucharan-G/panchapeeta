@@ -120,14 +120,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+FIREBASE_WEB_CONFIG = {
+    "apiKey": os.environ.get('FIREBASE_CLIENT_API_KEY', "AIzaSyDVfec-NiV67Olpk2a7LcL6w3D-lR7RVEM"),
+    "authDomain": "pancha-peethas.firebaseapp.com",
+    "projectId": "pancha-peethas",
+    "storageBucket": "pancha-peethas.firebasestorage.app",
+    "messagingSenderId": "471825198979",
+    "appId": "1:471825198979:web:6f2d5f69e54ba2a87dd0b6",
+    "measurementId": "G-S3K5N3YKKJ"
+}

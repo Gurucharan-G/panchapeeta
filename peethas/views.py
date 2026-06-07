@@ -281,6 +281,7 @@ def login_view(request):
             'lang': lang,
             'labels': TRANSLATIONS[lang],
             'next': next_url,
+            'firebase_config': json.dumps(settings.FIREBASE_WEB_CONFIG)
         })
     else:
         if request.method == 'POST':
