@@ -29,7 +29,7 @@ TRANSLATIONS = {
         'simhasana_label': 'Simhasana',
         'associated_linga_label': 'Associated Linga',
         'location_label': 'Location',
-        'current_swamiji_label': 'Current Swamiji',
+        'current_swamiji_label': 'Current Jagathguru',
         'history_label': 'History',
         'about_label': 'About',
         'copyright': '© Veerashaiva Pancha Peethas',

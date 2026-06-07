@@ -20,30 +20,40 @@
             <div class="detail-info">
                 <div class="info-card" style="--peetha-color: {{ peetha.color }};">
                     <h3>{{ labels.key_details }}</h3>
-                    <dl>
-                        <dt>{{ labels.founding_acharya }}</dt>
-                        <dd>{{ peetha.acharya }}</dd>
+                    <div class="key-details-list">
+                        <div class="detail-item">
+                            <span class="detail-label">{{ labels.founding_acharya }} :</span>
+                            <span class="detail-value">{{ peetha.acharya }}</span>
+                        </div>
 
-                        <dt>{{ labels.simhasana_label }}</dt>
-                        <dd>{{ peetha.simhasana }}</dd>
+                        <div class="detail-item">
+                            <span class="detail-label">{{ labels.simhasana_label }} :</span>
+                            <span class="detail-value">{{ peetha.simhasana }}</span>
+                        </div>
 
-                        <dt>{{ labels.associated_linga_label }}</dt>
-                        <dd>
-                            {% if peetha.associated_linga_map_url %}
-                                <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer" class="linga-link">🔱 {{ peetha.associated_linga }} ↗</a>
-                            {% else %}
-                                {{ peetha.associated_linga }}
-                            {% endif %}
-                        </dd>
-
-                        <dt>{{ labels.location_label }}</dt>
-                        <dd>{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</dd>
+                        <div class="detail-item">
+                            <span class="detail-label">{{ labels.associated_linga_label }} :</span>
+                            <span class="detail-value">
+                                {% if peetha.associated_linga_map_url %}
+                                    <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer" class="linga-link">🔱 {{ peetha.associated_linga }} ↗</a>
+                                {% else %}
+                                    {{ peetha.associated_linga }}
+                                {% endif %}
+                            </span>
+                        </div>
 
                         {% if peetha.current_swamiji %}
-                        <dt>{{ labels.current_swamiji_label }}</dt>
-                        <dd>{{ peetha.current_swamiji }}</dd>
+                        <div class="detail-item">
+                            <span class="detail-label">{{ labels.current_swamiji_label }} :</span>
+                            <span class="detail-value">{{ peetha.current_swamiji }}</span>
+                        </div>
                         {% endif %}
-                    </dl>
+
+                        <div class="detail-item">
+                            <span class="detail-label">{{ labels.location_label }} :</span>
+                            <span class="detail-value">{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Swamiji Travel Calendar / Timeline -->
