@@ -20,7 +20,6 @@
 <section class="detail-hero" style="--peetha-color: {{ peetha.color }};">
     <div class="container">
         <div class="detail-hero-content">
-            <div class="detail-icon">🕉️</div>
             <h2>{{ peetha.name }}</h2>
             <p class="detail-simhasana">{{ peetha.simhasana }}</p>
         </div>
@@ -49,7 +48,7 @@
                             <span class="detail-label">{{ labels.associated_linga_label }} :</span>
                             <span class="detail-value">
                                 {% if peetha.associated_linga_map_url %}
-                                    <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer" class="linga-link">🔱 {{ peetha.associated_linga }} ↗</a>
+                                    <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer" class="linga-link">{{ peetha.associated_linga }}</a>
                                 {% else %}
                                     {{ peetha.associated_linga }}
                                 {% endif %}
@@ -70,9 +69,8 @@
                     </div>
                 </div>
 
-                <!-- Swamiji Travel Calendar / Timeline -->
                 <div class="content-section" style="margin-top: 32px;">
-                    <h3>🗓️ {{ labels.travel_plans_title }}</h3>
+                    <h3>{{ labels.travel_plans_title }}</h3>
                     <div class="travel-timeline">
                         {% for group in travel_plans_grouped %}
                             <div class="timeline-month-header">
@@ -90,7 +88,7 @@
                                         </div>
                                         <div class="event-details">
                                             <h5>{{ event.title }}</h5>
-                                            <p class="event-location">📍 {{ event.location }}</p>
+                                            <p class="event-location">{{ event.location }}</p>
                                             {% if event.description %}
                                                 <p class="event-desc">{{ event.description }}</p>
                                             {% endif %}
@@ -106,7 +104,7 @@
 
                 <!-- Media Gallery Section -->
                 <div class="content-section" style="margin-top: 32px;">
-                    <h3>📸 {{ labels.media_gallery_title }}</h3>
+                    <h3>{{ labels.media_gallery_title }}</h3>
                     <div class="media-gallery-grid">
                         {% for item in media_gallery %}
                             <div class="gallery-item-card">
@@ -114,7 +112,7 @@
                                     {% if item.photo_file %}
                                         <div class="gallery-image-wrapper" onclick="openLightbox('{{ item.photo_file.url }}', '{{ item.title|escapejs }}', '{{ item.description|escapejs }}')">
                                             <img src="{{ item.photo_file.url }}" alt="{{ item.title }}">
-                                            <div class="gallery-zoom-overlay">🔍 View Photo</div>
+                                            <div class="gallery-zoom-overlay">View Photo</div>
                                         </div>
                                     {% endif %}
                                 {% else %}
@@ -163,7 +161,6 @@
             <div class="jagathguru-header" style="--peetha-color: {{ peetha.color }};">
                 <div class="section-decor">
                     <span class="decor-line"></span>
-                    <span class="decor-symbol">🙏</span>
                     <span class="decor-line"></span>
                 </div>
                 <h2 class="section-title">{{ labels.current_swamiji_label }}</h2>
@@ -175,7 +172,6 @@
                         <img src="{{ peetha.swamiji_photo.url }}" alt="{{ peetha.current_swamiji }}" class="jagathguru-img">
                     {% else %}
                         <div class="jagathguru-photo-placeholder">
-                            <span>🙏</span>
                             <p>Photo coming soon</p>
                         </div>
                     {% endif %}
@@ -208,23 +204,38 @@
             <div class="jagathguru-header" style="--peetha-color: {{ peetha.color }};">
                 <div class="section-decor">
                     <span class="decor-line"></span>
-                    <span class="decor-symbol">🪷</span>
                     <span class="decor-line"></span>
                 </div>
                 <h2 class="section-title">Pooja Booking</h2>
             </div>
 
-            <div class="pooja-coming-soon">
-                <div class="coming-soon-card" style="--peetha-color: {{ peetha.color }};">
-                    <div class="coming-soon-icon">🛕</div>
-                    <h3>Online Pooja Booking</h3>
-                    <p>Online pooja booking facility for <strong>{{ peetha.name }}</strong> will be available soon.</p>
-                    <p class="coming-soon-subtitle">Please contact the Peetha directly for pooja bookings in the meantime.</p>
-                    {% if peetha.contact_phone %}
-                        <a href="tel:{{ peetha.contact_phone }}" class="pooja-contact-btn" style="background-color: {{ peetha.color }};">📞 Call to Book: {{ peetha.contact_phone }}</a>
-                    {% endif %}
+            {% if poojas %}
+                <div class="pooja-list">
+                    {% for pooja in poojas %}
+                        <div class="contact-card" style="--peetha-color: {{ peetha.color }}; text-align: left;">
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 8px;">{{ pooja.name }}</h3>
+                            {% if pooja.description %}<p style="margin-bottom: 12px; font-size: 0.9rem;">{{ pooja.description }}</p>{% endif %}
+                            <p style="font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 16px;">₹{{ pooja.price }}</p>
+                            {% if request.user.is_authenticated %}
+                                <button class="pooja-contact-btn" style="background-color: {{ peetha.color }}; width: 100%; border: none; cursor: pointer;" onclick="openBookingModal('{{ pooja.id }}', '{{ pooja.name|escapejs }}', '{{ pooja.price }}')">Book Now</button>
+                            {% else %}
+                                <a href="{% url 'peethas:login' %}?next={{ request.path }}" class="pooja-contact-btn" style="background-color: {{ peetha.color }}; width: 100%; border: none; cursor: pointer; text-align: center; text-decoration: none; display: inline-block; box-sizing: border-box;">Login to Book</a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                 </div>
-            </div>
+            {% else %}
+                <div class="pooja-coming-soon">
+                    <div class="coming-soon-card" style="--peetha-color: {{ peetha.color }};">
+                        <h3>Online Pooja Booking</h3>
+                        <p>Online pooja booking facility for <strong>{{ peetha.name }}</strong> will be available soon.</p>
+                        <p class="coming-soon-subtitle">Please contact the Peetha directly for pooja bookings in the meantime.</p>
+                        {% if peetha.contact_phone %}
+                            <a href="tel:{{ peetha.contact_phone }}" class="pooja-contact-btn" style="background-color: {{ peetha.color }};">Call to Book: {{ peetha.contact_phone }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -236,7 +247,6 @@
             <div class="jagathguru-header" style="--peetha-color: {{ peetha.color }};">
                 <div class="section-decor">
                     <span class="decor-line"></span>
-                    <span class="decor-symbol">📬</span>
                     <span class="decor-line"></span>
                 </div>
                 <h2 class="section-title">Contact Us</h2>
@@ -245,7 +255,6 @@
             <div class="contact-cards-grid">
                 {% if peetha.contact_address %}
                 <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
-                    <div class="contact-card-icon">📍</div>
                     <h4>Address</h4>
                     <p>{{ peetha.contact_address|linebreaks }}</p>
                 </div>
@@ -253,7 +262,6 @@
 
                 {% if peetha.contact_phone %}
                 <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
-                    <div class="contact-card-icon">📞</div>
                     <h4>Phone</h4>
                     <p><a href="tel:{{ peetha.contact_phone }}">{{ peetha.contact_phone }}</a></p>
                 </div>
@@ -261,14 +269,12 @@
 
                 {% if peetha.contact_email %}
                 <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
-                    <div class="contact-card-icon">✉️</div>
                     <h4>Email</h4>
                     <p><a href="mailto:{{ peetha.contact_email }}">{{ peetha.contact_email }}</a></p>
                 </div>
                 {% endif %}
 
                 <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
-                    <div class="contact-card-icon">🕉️</div>
                     <h4>{{ peetha.name }}</h4>
                     <p>{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</p>
                 </div>
@@ -277,7 +283,6 @@
             {% if not peetha.contact_address and not peetha.contact_phone and not peetha.contact_email %}
             <div class="pooja-coming-soon">
                 <div class="coming-soon-card" style="--peetha-color: {{ peetha.color }};">
-                    <div class="coming-soon-icon">📬</div>
                     <h3>Contact Information</h3>
                     <p>Contact details for <strong>{{ peetha.name }}</strong> will be updated soon.</p>
                 </div>
@@ -293,6 +298,40 @@
     <div class="lightbox-content-wrapper" onclick="event.stopPropagation()">
         <img id="lightbox-img" class="lightbox-img" src="" alt="">
         <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+</div>
+
+<!-- Pooja Booking Modal -->
+<div id="booking-modal" class="lightbox-modal" onclick="closeBookingModal()">
+    <span class="lightbox-close">&times;</span>
+    <div class="lightbox-content-wrapper" style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; color: var(--dark);" onclick="event.stopPropagation()">
+        <h3 id="booking-pooja-name" style="color: {{ peetha.color }}; margin-bottom: 20px;">Book Pooja</h3>
+        <form action="{% url 'peethas:initiate_pooja_booking' peetha.slug %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="pooja_id" id="booking-pooja-id">
+            
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Devotee Name *</label>
+                <input type="text" name="devotee_name" value="{% if request.user.is_authenticated %}{{ request.user.get_full_name|default:request.user.username }}{% endif %}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+            </div>
+            
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Phone Number *</label>
+                <input type="tel" name="devotee_phone" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+            </div>
+
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Email Address</label>
+                <input type="email" name="devotee_email" value="{% if request.user.is_authenticated %}{{ request.user.email }}{% endif %}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+            </div>
+
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Date of Pooja *</label>
+                <input type="date" name="date_of_pooja" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+            </div>
+
+            <button type="submit" class="pooja-contact-btn" style="background-color: {{ peetha.color }}; width: 100%; border: none; cursor: pointer; margin-top: 10px;">Proceed to Pay ₹<span id="booking-pooja-price"></span></button>
+        </form>
     </div>
 </div>
 {% endblock %}
@@ -312,6 +351,17 @@
     function closeLightbox() {
         const modal = document.getElementById('gallery-lightbox');
         modal.classList.remove('active');
+    }
+
+    function openBookingModal(id, name, price) {
+        document.getElementById('booking-pooja-id').value = id;
+        document.getElementById('booking-pooja-name').innerText = 'Book ' + name;
+        document.getElementById('booking-pooja-price').innerText = price;
+        document.getElementById('booking-modal').classList.add('active');
+    }
+
+    function closeBookingModal() {
+        document.getElementById('booking-modal').classList.remove('active');
     }
 
     // Peetha detail page tab switching

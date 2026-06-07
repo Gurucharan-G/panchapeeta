@@ -21,8 +21,13 @@
                 <a href="{% url 'peethas:home' %}#divine-heritage" class="nav-link">{{ labels.divine_heritage_title }}</a>
                 <a href="{% url 'peethas:home' %}#veerashaiva-section" class="nav-link">{{ labels.veerashaiva_title }}</a>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'peethas:dashboard_home' %}" class="nav-link nav-btn-dashboard">Dashboard</a>
+                    {% if user.is_superuser or user.handler_profile %}
+                        <a href="{% url 'peethas:dashboard_home' %}" class="nav-link nav-btn-dashboard">Dashboard</a>
+                    {% endif %}
+                    <a href="{% url 'peethas:my_bookings' %}" class="nav-link nav-btn-dashboard" style="background-color: var(--gold); border-color: var(--gold);">My Bookings</a>
                     <a href="{% url 'peethas:logout' %}" class="nav-link nav-btn-logout">Logout</a>
+                {% else %}
+                    <a href="{% url 'peethas:login' %}" class="nav-link nav-btn-dashboard">Sign In / Sign Up</a>
                 {% endif %}
                 {% endblock %}
             </nav>

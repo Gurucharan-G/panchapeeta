@@ -1,0 +1,29 @@
+{% extends "peethas/index.html" %}
+{% load static %}
+
+{% block title %}Booking Successful - {{ peetha.name }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 120px; padding-bottom: 80px; min-height: 70vh; display: flex; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 50px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 600px; width: 100%; text-align: center;">
+        <div style="font-size: 60px; color: #4CAF50; margin-bottom: 20px;">✓</div>
+        <h2 style="color: {{ peetha.color }}; margin-bottom: 20px;">Booking Successful!</h2>
+        
+        <p style="font-size: 1.1rem; margin-bottom: 30px; color: #555;">
+            Thank you, <strong>{{ booking.devotee_name }}</strong>. Your booking for <strong>{{ booking.pooja.name }}</strong> at {{ peetha.name }} has been confirmed.
+        </p>
+
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 30px; text-align: left;">
+            <p style="margin-bottom: 10px;"><strong>Date of Pooja:</strong> {{ booking.date_of_pooja|date:"d M Y" }}</p>
+            <p style="margin-bottom: 10px;"><strong>Amount Paid:</strong> ₹{{ booking.amount }}</p>
+            <p style="margin-bottom: 0;"><strong>Transaction ID:</strong> {{ booking.razorpay_payment_id }}</p>
+        </div>
+
+        <p style="font-size: 0.95rem; color: #777; margin-bottom: 30px;">
+            A confirmation email/SMS will be sent to you shortly (if provided). Please keep this Transaction ID for your records.
+        </p>
+
+        <a href="{% url 'peethas:peetha_detail' peetha.slug %}" class="pooja-contact-btn" style="background-color: {{ peetha.color }}; text-decoration: none; display: inline-block;">Return to Peetha Page</a>
+    </div>
+</div>
+{% endblock %}

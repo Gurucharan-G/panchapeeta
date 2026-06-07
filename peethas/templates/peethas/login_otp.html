@@ -1,0 +1,204 @@
+{% extends "peethas/index.html" %}
+
+{% block title %}Sign In / Sign Up — {{ labels.site_title }}{% endblock %}
+
+{% block content %}
+<section class="auth-section" style="padding-top: 120px; padding-bottom: 80px; min-height: 80vh; display: flex; align-items: center; justify-content: center; background-color: var(--light);">
+    <div class="container" style="display: flex; justify-content: center;">
+        
+        <div class="auth-container" style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 450px;">
+            <div class="auth-header" style="text-align: center; margin-bottom: 30px;">
+                <div class="auth-icon" style="font-size: 2.5rem; margin-bottom: 10px;">🕉️</div>
+                <h2 style="color: var(--dark); font-family: 'Playfair Display', serif;">Sign In / Sign Up</h2>
+                <p style="color: #666; font-size: 0.95rem;">Enter your mobile number to get an OTP.</p>
+            </div>
+
+            <div id="alert-container" style="display: none; margin-bottom: 20px;" class="alert alert-error"></div>
+
+            <!-- Step 1: Phone Number -->
+            <div id="phone-auth-step">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="phone_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: var(--dark);">Mobile Number</label>
+                    <div style="display: flex;">
+                        <span style="padding: 12px; background: #f0f0f0; border: 1px solid #ddd; border-right: none; border-radius: 8px 0 0 8px; font-size: 1rem; color: #555;">+91</span>
+                        <input type="tel" id="phone_number" placeholder="Enter 10-digit number" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 0 8px 8px 0; font-size: 1rem; box-sizing: border-box;">
+                    </div>
+                </div>
+
+                <!-- reCAPTCHA widget -->
+                <div id="recaptcha-container" style="margin-bottom: 20px; display: flex; justify-content: center;"></div>
+
+                <button id="send-otp-btn" class="auth-btn" disabled style="width: 100%; padding: 14px; background-color: var(--saffron); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: not-allowed; opacity: 0.6; transition: all 0.3s ease;">Send OTP</button>
+            </div>
+
+            <!-- Step 2: OTP Verification -->
+            <div id="otp-auth-step" style="display: none;">
+                <p style="text-align: center; margin-bottom: 20px; font-size: 0.95rem; color: #555;">An OTP has been sent to <strong id="display-phone"></strong></p>
+                
+                <div class="form-group" style="margin-bottom: 25px;">
+                    <label for="verification_code" style="display: block; margin-bottom: 8px; font-weight: bold; color: var(--dark);">Enter OTP</label>
+                    <input type="text" id="verification_code" placeholder="6-digit code" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box; text-align: center; letter-spacing: 5px;">
+                </div>
+
+                <button id="verify-otp-btn" class="auth-btn" style="width: 100%; padding: 14px; background-color: var(--saffron); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">Verify & Login</button>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="#" id="change-number-btn" style="color: var(--saffron); font-size: 0.9rem; text-decoration: none;">Change Mobile Number</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Firebase SDKs -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDVfec-NiV67Olpk2a7LcL6w3D-lR7RVEM",
+      authDomain: "pancha-peethas.firebaseapp.com",
+      projectId: "pancha-peethas",
+      storageBucket: "pancha-peethas.firebasestorage.app",
+      messagingSenderId: "471825198979",
+      appId: "1:471825198979:web:6f2d5f69e54ba2a87dd0b6",
+      measurementId: "G-S3K5N3YKKJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    auth.useDeviceLanguage();
+
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      'size': 'normal',
+      'callback': (response) => {
+        // reCAPTCHA solved
+        const btn = document.getElementById('send-otp-btn');
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+      },
+      'expired-callback': () => {
+        // Response expired
+        const btn = document.getElementById('send-otp-btn');
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+        btn.style.cursor = 'not-allowed';
+      }
+    });
+    
+    // Explicitly render the reCAPTCHA widget immediately
+    window.recaptchaVerifier.render().then(function(widgetId) {
+      window.recaptchaWidgetId = widgetId;
+    });
+
+    // Elements
+    const step1 = document.getElementById('phone-auth-step');
+    const step2 = document.getElementById('otp-auth-step');
+    const phoneInput = document.getElementById('phone_number');
+    const sendOtpBtn = document.getElementById('send-otp-btn');
+    const otpInput = document.getElementById('verification_code');
+    const verifyOtpBtn = document.getElementById('verify-otp-btn');
+    const displayPhone = document.getElementById('display-phone');
+    const changeNumberBtn = document.getElementById('change-number-btn');
+    const alertBox = document.getElementById('alert-container');
+    const nextUrl = "{{ next }}";
+
+    function showError(msg) {
+        alertBox.style.display = 'block';
+        alertBox.style.padding = '12px';
+        alertBox.style.borderRadius = '8px';
+        alertBox.style.backgroundColor = '#f8d7da';
+        alertBox.style.color = '#721c24';
+        alertBox.textContent = msg;
+    }
+
+    sendOtpBtn.addEventListener('click', () => {
+        const phoneVal = phoneInput.value.trim();
+        if(phoneVal.length !== 10 || isNaN(phoneVal)){
+            showError("Please enter a valid 10-digit mobile number.");
+            return;
+        }
+        
+        const phoneNumber = "+91" + phoneVal;
+        alertBox.style.display = 'none';
+        sendOtpBtn.textContent = "Sending...";
+        sendOtpBtn.disabled = true;
+
+        const appVerifier = window.recaptchaVerifier;
+
+        signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+            .then((confirmationResult) => {
+                window.confirmationResult = confirmationResult;
+                displayPhone.textContent = phoneNumber;
+                step1.style.display = 'none';
+                step2.style.display = 'block';
+                sendOtpBtn.textContent = "Send OTP";
+                sendOtpBtn.disabled = false;
+            }).catch((error) => {
+                console.error("SMS not sent", error);
+                window.recaptchaVerifier.render().then(function(widgetId) {
+                  grecaptcha.reset(widgetId);
+                });
+                showError("Failed to send OTP. " + error.message);
+                sendOtpBtn.textContent = "Send OTP";
+                sendOtpBtn.disabled = false;
+            });
+    });
+
+    verifyOtpBtn.addEventListener('click', () => {
+        const code = otpInput.value.trim();
+        if(code.length !== 6){
+            showError("Please enter the 6-digit OTP.");
+            return;
+        }
+
+        verifyOtpBtn.textContent = "Verifying...";
+        verifyOtpBtn.disabled = true;
+        alertBox.style.display = 'none';
+
+        window.confirmationResult.confirm(code).then((result) => {
+            const user = result.user;
+            // Get ID Token and send to backend
+            return user.getIdToken(true);
+        }).then((idToken) => {
+            verifyOtpBtn.textContent = "Logging in...";
+            
+            // Send to Django Backend
+            return fetch("{% url 'peethas:verify_firebase_token' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    idToken: idToken,
+                    nextUrl: nextUrl
+                })
+            });
+        }).then(res => res.json()).then(data => {
+            if(data.success){
+                window.location.href = data.redirectUrl;
+            } else {
+                showError("Backend Error: " + data.error);
+                verifyOtpBtn.textContent = "Verify & Login";
+                verifyOtpBtn.disabled = false;
+            }
+        }).catch((error) => {
+            console.error(error);
+            showError("Invalid OTP or Verification Failed.");
+            verifyOtpBtn.textContent = "Verify & Login";
+            verifyOtpBtn.disabled = false;
+        });
+    });
+
+    changeNumberBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        step2.style.display = 'none';
+        step1.style.display = 'block';
+        otpInput.value = '';
+        alertBox.style.display = 'none';
+    });
+
+</script>
+{% endblock %}

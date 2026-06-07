@@ -1,14 +1,22 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
+from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-import datetime
+from django.contrib.auth.models import User
+from .models import Peetha, TravelPlan, PeethaHandler, PeethaMedia, Pooja, PoojaBooking, PeethaPaymentConfig
+from .forms import TravelPlanForm, PeethaMediaAddForm, PeethaMediaEditForm
 
-from .models import Peetha, PeethaHandler, PeethaMedia, TravelPlan
-from .forms import PeethaMediaAddForm, PeethaMediaEditForm, TravelPlanForm
+import datetime
+import json
+import razorpay
+from firebase_admin import auth as firebase_auth
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 from .heritage_content import HERITAGE_CONTENT
 from .veerashaiva_content import VEERASHAIVA_CONTENT
+from .feature_flags import USE_OTP_LOGIN, USE_RECTANGULAR_PORTRAITS
 
 # UI Static Labels Translations
 TRANSLATIONS = {
@@ -191,7 +199,7 @@ def home(request):
     peethas = [translate_object(p, lang) for p in Peetha.objects.all()]
     return render(request, 'peethas/home.html', {
         'peethas': peethas,
-        'use_rectangular_portraits': True,
+        'use_rectangular_portraits': USE_RECTANGULAR_PORTRAITS,
         'lang': lang,
         'labels': TRANSLATIONS[lang],
         'heritage_content': HERITAGE_CONTENT[lang],
@@ -239,6 +247,9 @@ def peetha_detail(request, slug):
     # 2. Fetch Media Gallery (Photos and videos)
     media_list = [translate_object(m, lang) for m in PeethaMedia.objects.filter(peetha=peetha)]
 
+    # 3. Fetch Active Poojas
+    poojas = [translate_object(p, lang) for p in Pooja.objects.filter(peetha=peetha, is_active=True)]
+
     # Dynamic styling variable
     show_admin_button = request.user.is_authenticated
 
@@ -248,6 +259,7 @@ def peetha_detail(request, slug):
         'labels': TRANSLATIONS[lang],
         'travel_plans_grouped': grouped_plans,
         'media_gallery': media_list,
+        'poojas': poojas,
         'show_admin_button': show_admin_button,
     })
 
@@ -256,23 +268,125 @@ def peetha_detail(request, slug):
 
 def login_view(request):
     lang = get_language(request)
+    next_url = request.GET.get('next', 'peethas:home')
+    
     if request.user.is_authenticated:
-        return redirect('peethas:dashboard_home')
-        
-    if request.method == 'POST':
-        user_in = request.POST.get('username')
-        pass_in = request.POST.get('password')
-        user = authenticate(request, username=user_in, password=pass_in)
-        if user is not None:
-            login(request, user)
+        if request.user.is_superuser or hasattr(request.user, 'handler_profile'):
             return redirect('peethas:dashboard_home')
-        else:
-            messages.error(request, 'Invalid username or password.')
+        return redirect(next_url)
+        
+    if USE_OTP_LOGIN:
+        return render(request, 'peethas/login_otp.html', {
+            'lang': lang,
+            'labels': TRANSLATIONS[lang],
+            'next': next_url,
+        })
+    else:
+        if request.method == 'POST':
+            user_in = request.POST.get('username')
+            pass_in = request.POST.get('password')
+            user = authenticate(request, username=user_in, password=pass_in)
+            if user is not None:
+                login(request, user)
+                next_url = request.POST.get('next', 'peethas:home')
+                if user.is_superuser or hasattr(user, 'handler_profile'):
+                    return redirect('peethas:dashboard_home')
+                
+                # For safe redirect
+                from django.utils.http import url_has_allowed_host_and_scheme
+                if url_has_allowed_host_and_scheme(url=next_url, allowed_hosts={request.get_host()}):
+                    return redirect(next_url)
+                return redirect('peethas:home')
+            else:
+                messages.error(request, 'Invalid username or password.')
+                
+        return render(request, 'peethas/login_password.html', {
+            'lang': lang,
+            'labels': TRANSLATIONS[lang],
+            'next': next_url,
+        })
+
+@csrf_exempt
+def verify_firebase_token(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            id_token = data.get('idToken')
+            next_url = data.get('nextUrl', 'peethas:home')
             
-    return render(request, 'peethas/login.html', {
-        'lang': lang,
-        'labels': TRANSLATIONS[lang],
-    })
+            if not id_token:
+                return JsonResponse({'success': False, 'error': 'No ID token provided'}, status=400)
+                
+            # Verify the token with Firebase Admin
+            decoded_token = firebase_auth.verify_id_token(id_token)
+            phone_number = decoded_token.get('phone_number')
+            
+            if not phone_number:
+                return JsonResponse({'success': False, 'error': 'No phone number found in token'}, status=400)
+                
+            # Login or Register User
+            # We use phone number as the username
+            user, created = User.objects.get_or_create(username=phone_number)
+            
+            # Log the user in
+            login(request, user)
+            
+            # Determine redirect URL
+            redirect_url = next_url
+            if user.is_superuser or hasattr(user, 'handler_profile'):
+                from django.urls import reverse
+                redirect_url = reverse('peethas:dashboard_home')
+            elif redirect_url == 'peethas:home' or redirect_url.startswith('peethas:'):
+                from django.urls import reverse
+                try:
+                    redirect_url = reverse(redirect_url)
+                except:
+                    redirect_url = '/'
+            
+            return JsonResponse({'success': True, 'redirectUrl': redirect_url})
+            
+        except Exception as e:
+            print(f"Firebase verification error: {str(e)}")
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+            
+    return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
+
+def register_view(request):
+    lang = get_language(request)
+    next_url = request.GET.get('next', 'peethas:home')
+    
+    if USE_OTP_LOGIN:
+        if next_url:
+            return redirect(f"/login/?next={next_url}")
+        return redirect('peethas:login')
+    else:
+        if request.user.is_authenticated:
+            return redirect('peethas:home')
+            
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            first_name = request.POST.get('first_name', '')
+            
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'Username already exists. Please choose another one.')
+            else:
+                user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name)
+                login(request, user)
+                messages.success(request, 'Registration successful! Welcome.')
+                
+                next_url = request.POST.get('next', 'peethas:home')
+                from django.utils.http import url_has_allowed_host_and_scheme
+                if url_has_allowed_host_and_scheme(url=next_url, allowed_hosts={request.get_host()}):
+                    return redirect(next_url)
+                return redirect('peethas:home')
+                
+        return render(request, 'peethas/register_password.html', {
+            'lang': lang,
+            'labels': TRANSLATIONS[lang],
+            'next': next_url,
+        })
 
 
 def logout_view(request):
@@ -566,3 +680,115 @@ def travel_delete(request, slug, pk):
         messages.success(request, "Travel event deleted.")
         
     return redirect('peethas:dashboard_peetha', slug=peetha.slug)
+
+
+# ===== POOJA BOOKING VIEWS =====
+
+@login_required(login_url='peethas:login')
+def initiate_pooja_booking(request, peetha_slug):
+    peetha = get_object_or_404(Peetha, slug=peetha_slug)
+    
+    if request.method == 'POST':
+        pooja_id = request.POST.get('pooja_id')
+        pooja = get_object_or_404(Pooja, pk=pooja_id, peetha=peetha)
+        
+        devotee_name = request.POST.get('devotee_name')
+        devotee_phone = request.POST.get('devotee_phone')
+        devotee_email = request.POST.get('devotee_email', '')
+        date_of_pooja = request.POST.get('date_of_pooja')
+        
+        # Payment config
+        try:
+            payment_config = peetha.payment_config
+        except PeethaPaymentConfig.DoesNotExist:
+            messages.error(request, "Online payments are currently unavailable for this Peetha.")
+            return redirect('peethas:peetha_detail', slug=peetha.slug)
+            
+        if not payment_config.is_active:
+            messages.error(request, "Online payments are temporarily disabled for this Peetha.")
+            return redirect('peethas:peetha_detail', slug=peetha.slug)
+            
+        # Create Razorpay Order
+        client = razorpay.Client(auth=(payment_config.razorpay_key_id, payment_config.razorpay_key_secret))
+        
+        amount_paise = int(pooja.price * 100) # Razorpay works in paise
+        
+        data = {
+            "amount": amount_paise,
+            "currency": "INR",
+            "receipt": f"pooja_receipt_{datetime.datetime.now().timestamp()}"
+        }
+        
+        payment_order = client.order.create(data=data)
+        
+        # Save pending booking
+        booking = PoojaBooking.objects.create(
+            pooja=pooja,
+            user=request.user,
+            devotee_name=devotee_name,
+            devotee_phone=devotee_phone,
+            devotee_email=devotee_email,
+            date_of_pooja=date_of_pooja,
+            amount=pooja.price,
+            razorpay_order_id=payment_order['id'],
+            payment_status='pending'
+        )
+        
+        return render(request, 'peethas/pooja_payment.html', {
+            'booking': booking,
+            'razorpay_order_id': payment_order['id'],
+            'razorpay_merchant_key': payment_config.razorpay_key_id,
+            'amount': amount_paise,
+            'currency': 'INR',
+            'peetha': peetha,
+        })
+        
+    return redirect('peethas:peetha_detail', slug=peetha.slug)
+
+
+@csrf_exempt
+def verify_pooja_payment(request):
+    if request.method == "POST":
+        razorpay_payment_id = request.POST.get('razorpay_payment_id')
+        razorpay_order_id = request.POST.get('razorpay_order_id')
+        razorpay_signature = request.POST.get('razorpay_signature')
+        
+        booking = get_object_or_404(PoojaBooking, razorpay_order_id=razorpay_order_id)
+        peetha = booking.pooja.peetha
+        payment_config = peetha.payment_config
+        
+        client = razorpay.Client(auth=(payment_config.razorpay_key_id, payment_config.razorpay_key_secret))
+        
+        try:
+            client.utility.verify_payment_signature({
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': razorpay_payment_id,
+                'razorpay_signature': razorpay_signature
+            })
+            
+            # Payment successful
+            booking.razorpay_payment_id = razorpay_payment_id
+            booking.razorpay_signature = razorpay_signature
+            booking.payment_status = 'success'
+            booking.save()
+            
+            return render(request, 'peethas/pooja_success.html', {'booking': booking, 'peetha': peetha})
+            
+        except razorpay.errors.SignatureVerificationError:
+            booking.payment_status = 'failed'
+            booking.save()
+            messages.error(request, "Payment verification failed. If money was deducted, it will be refunded.")
+            return redirect('peethas:peetha_detail', slug=peetha.slug)
+            
+    return redirect('peethas:home')
+
+@login_required(login_url='peethas:login')
+def my_bookings(request):
+    lang = get_language(request)
+    bookings = PoojaBooking.objects.filter(user=request.user).order_by('-created_at')
+    
+    return render(request, 'peethas/my_bookings.html', {
+        'lang': lang,
+        'labels': TRANSLATIONS[lang],
+        'bookings': bookings,
+    })
