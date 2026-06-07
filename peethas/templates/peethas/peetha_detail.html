@@ -4,14 +4,6 @@
 
 {% block content %}
 <section class="detail-hero" style="--peetha-color: {{ peetha.color }};">
-    <div class="lang-selector-container">
-        <select onchange="location = this.value;" class="lang-dropdown">
-            <option value="?lang=en" {% if lang == 'en' %}selected{% endif %}>English</option>
-            <option value="?lang=kn" {% if lang == 'kn' %}selected{% endif %}>ಕನ್ನಡ</option>
-            <option value="?lang=mr" {% if lang == 'mr' %}selected{% endif %}>मराठी</option>
-            <option value="?lang=hi" {% if lang == 'hi' %}selected{% endif %}>हिन्दी</option>
-        </select>
-    </div>
     <div class="container">
         <a href="{% url 'peethas:home' %}" class="back-link">{{ labels.back_link }}</a>
         <div class="detail-hero-content">
