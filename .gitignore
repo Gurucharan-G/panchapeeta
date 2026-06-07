@@ -6,5 +6,5 @@ db.sqlite3
 .vscode/
 .idea/
 *.log
-pancha-peethas-firebase-adminsdk-fbsvc-eb635ddb1f.json
-peethas/templates/peethas/login_otp.html
+pancha-peethas-firebase-adminsdk-fbsvc-eb635ddb1f.json  
+ 

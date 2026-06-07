@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block content %}
-<section class="detail-hero" style="--peetha-color: {{ peetha.color }};">
+<section class="detail-hero" style="--peetha-color: var(--peetha-color);">
     <div class="container">
         <div class="detail-hero-content">
             <h2>{{ peetha.name }}</h2>
@@ -31,7 +31,7 @@
     <div class="container">
         <div class="detail-grid">
             <div class="detail-info">
-                <div class="info-card" style="--peetha-color: {{ peetha.color }};">
+                <div class="info-card" style="--peetha-color: var(--peetha-color);">
                     <h3>{{ labels.key_details }}</h3>
                     <div class="key-details-list">
                         <div class="detail-item">
@@ -78,7 +78,7 @@
                             </div>
                             <div class="timeline-events">
                                 {% for event in group.plans %}
-                                    <div class="timeline-event-card" style="--peetha-color: {{ peetha.color }};">
+                                    <div class="timeline-event-card" style="--peetha-color: var(--peetha-color);">
                                         <div class="event-date">
                                             <span class="event-day">{{ event.start_date|date:"d" }}</span>
                                             {% if event.end_date %}
@@ -158,7 +158,7 @@
 <section class="detail-body peetha-tab-section" id="tab-jagathguru">
     <div class="container">
         <div class="jagathguru-section">
-            <div class="jagathguru-header" style="--peetha-color: {{ peetha.color }};">
+            <div class="jagathguru-header" style="--peetha-color: var(--peetha-color);">
                 <div class="section-decor">
                     <span class="decor-line"></span>
                     <span class="decor-line"></span>
@@ -167,7 +167,7 @@
             </div>
 
             <div class="jagathguru-profile">
-                <div class="jagathguru-photo-card" style="--peetha-color: {{ peetha.color }};">
+                <div class="jagathguru-photo-card" style="--peetha-color: var(--peetha-color);">
                     {% if peetha.swamiji_photo %}
                         <img src="{{ peetha.swamiji_photo.url }}" alt="{{ peetha.current_swamiji }}" class="jagathguru-img">
                     {% else %}
@@ -177,9 +177,9 @@
                     {% endif %}
                 </div>
 
-                <div class="jagathguru-info-card" style="--peetha-color: {{ peetha.color }};">
+                <div class="jagathguru-info-card" style="--peetha-color: var(--peetha-color);">
                     <h3>{{ peetha.current_swamiji }}</h3>
-                    <p class="jagathguru-peetha-name" style="color: {{ peetha.color }};">{{ peetha.name }}</p>
+                    <p class="jagathguru-peetha-name" style="color: var(--peetha-color);">{{ peetha.name }}</p>
 
                     {% if peetha.swamiji_bio %}
                         <div class="jagathguru-bio">
@@ -201,7 +201,7 @@
 <section class="detail-body peetha-tab-section" id="tab-pooja-booking">
     <div class="container">
         <div class="pooja-section">
-            <div class="jagathguru-header" style="--peetha-color: {{ peetha.color }};">
+            <div class="jagathguru-header" style="--peetha-color: var(--peetha-color);">
                 <div class="section-decor">
                     <span class="decor-line"></span>
                     <span class="decor-line"></span>
@@ -212,26 +212,26 @@
             {% if poojas %}
                 <div class="pooja-list">
                     {% for pooja in poojas %}
-                        <div class="contact-card" style="--peetha-color: {{ peetha.color }}; text-align: left;">
+                        <div class="contact-card" style="--peetha-color: var(--peetha-color); text-align: left;">
                             <h3 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 8px;">{{ pooja.name }}</h3>
                             {% if pooja.description %}<p style="margin-bottom: 12px; font-size: 0.9rem;">{{ pooja.description }}</p>{% endif %}
                             <p style="font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 16px;">₹{{ pooja.price }}</p>
                             {% if request.user.is_authenticated %}
-                                <button class="pooja-contact-btn" style="background-color: {{ peetha.color }}; width: 100%; border: none; cursor: pointer;" onclick="openBookingModal('{{ pooja.id }}', '{{ pooja.name|escapejs }}', '{{ pooja.price }}')">Book Now</button>
+                                <button class="pooja-contact-btn" style="background-color: var(--peetha-color); width: 100%; border: none; cursor: pointer;" onclick="openBookingModal('{{ pooja.id }}', '{{ pooja.name|escapejs }}', '{{ pooja.price }}')">Book Now</button>
                             {% else %}
-                                <a href="{% url 'peethas:login' %}?next={{ request.path }}" class="pooja-contact-btn" style="background-color: {{ peetha.color }}; width: 100%; border: none; cursor: pointer; text-align: center; text-decoration: none; display: inline-block; box-sizing: border-box;">Login to Book</a>
+                                <a href="{% url 'peethas:login' %}?next={{ request.path }}" class="pooja-contact-btn" style="background-color: var(--peetha-color); width: 100%; border: none; cursor: pointer; text-align: center; text-decoration: none; display: inline-block; box-sizing: border-box;">Login to Book</a>
                             {% endif %}
                         </div>
                     {% endfor %}
                 </div>
             {% else %}
                 <div class="pooja-coming-soon">
-                    <div class="coming-soon-card" style="--peetha-color: {{ peetha.color }};">
+                    <div class="coming-soon-card" style="--peetha-color: var(--peetha-color);">
                         <h3>Online Pooja Booking</h3>
                         <p>Online pooja booking facility for <strong>{{ peetha.name }}</strong> will be available soon.</p>
                         <p class="coming-soon-subtitle">Please contact the Peetha directly for pooja bookings in the meantime.</p>
                         {% if peetha.contact_phone %}
-                            <a href="tel:{{ peetha.contact_phone }}" class="pooja-contact-btn" style="background-color: {{ peetha.color }};">Call to Book: {{ peetha.contact_phone }}</a>
+                            <a href="tel:{{ peetha.contact_phone }}" class="pooja-contact-btn" style="background-color: var(--peetha-color);">Call to Book: {{ peetha.contact_phone }}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -244,7 +244,7 @@
 <section class="detail-body peetha-tab-section" id="tab-contact-us">
     <div class="container">
         <div class="contact-section">
-            <div class="jagathguru-header" style="--peetha-color: {{ peetha.color }};">
+            <div class="jagathguru-header" style="--peetha-color: var(--peetha-color);">
                 <div class="section-decor">
                     <span class="decor-line"></span>
                     <span class="decor-line"></span>
@@ -254,27 +254,27 @@
 
             <div class="contact-cards-grid">
                 {% if peetha.contact_address %}
-                <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
+                <div class="contact-card" style="--peetha-color: var(--peetha-color);">
                     <h4>Address</h4>
                     <p>{{ peetha.contact_address|linebreaks }}</p>
                 </div>
                 {% endif %}
 
                 {% if peetha.contact_phone %}
-                <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
+                <div class="contact-card" style="--peetha-color: var(--peetha-color);">
                     <h4>Phone</h4>
                     <p><a href="tel:{{ peetha.contact_phone }}">{{ peetha.contact_phone }}</a></p>
                 </div>
                 {% endif %}
 
                 {% if peetha.contact_email %}
-                <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
+                <div class="contact-card" style="--peetha-color: var(--peetha-color);">
                     <h4>Email</h4>
                     <p><a href="mailto:{{ peetha.contact_email }}">{{ peetha.contact_email }}</a></p>
                 </div>
                 {% endif %}
 
-                <div class="contact-card" style="--peetha-color: {{ peetha.color }};">
+                <div class="contact-card" style="--peetha-color: var(--peetha-color);">
                     <h4>{{ peetha.name }}</h4>
                     <p>{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</p>
                 </div>
@@ -282,7 +282,7 @@
 
             {% if not peetha.contact_address and not peetha.contact_phone and not peetha.contact_email %}
             <div class="pooja-coming-soon">
-                <div class="coming-soon-card" style="--peetha-color: {{ peetha.color }};">
+                <div class="coming-soon-card" style="--peetha-color: var(--peetha-color);">
                     <h3>Contact Information</h3>
                     <p>Contact details for <strong>{{ peetha.name }}</strong> will be updated soon.</p>
                 </div>
@@ -304,8 +304,8 @@
 <!-- Pooja Booking Modal -->
 <div id="booking-modal" class="lightbox-modal" onclick="closeBookingModal()">
     <span class="lightbox-close">&times;</span>
-    <div class="lightbox-content-wrapper" style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; color: var(--dark);" onclick="event.stopPropagation()">
-        <h3 id="booking-pooja-name" style="color: {{ peetha.color }}; margin-bottom: 20px;">Book Pooja</h3>
+    <div class="lightbox-content-wrapper" style="--peetha-color: {{ peetha.color }}; background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; color: var(--dark);" onclick="event.stopPropagation()">
+        <h3 id="booking-pooja-name" style="color: var(--peetha-color); margin-bottom: 20px;">Book Pooja</h3>
         <form action="{% url 'peethas:initiate_pooja_booking' peetha.slug %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="pooja_id" id="booking-pooja-id">
@@ -330,7 +330,7 @@
                 <input type="date" name="date_of_pooja" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
             </div>
 
-            <button type="submit" class="pooja-contact-btn" style="background-color: {{ peetha.color }}; width: 100%; border: none; cursor: pointer; margin-top: 10px;">Proceed to Pay ₹<span id="booking-pooja-price"></span></button>
+            <button type="submit" class="pooja-contact-btn" style="background-color: var(--peetha-color); width: 100%; border: none; cursor: pointer; margin-top: 10px;">Proceed to Pay ₹<span id="booking-pooja-price"></span></button>
         </form>
     </div>
 </div>
