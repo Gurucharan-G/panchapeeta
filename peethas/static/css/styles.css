@@ -1248,6 +1248,11 @@ img {
     background: rgba(184, 134, 11, 0.06);
 }
 
+.nav-link.active {
+    color: var(--gold);
+    background: rgba(184, 134, 11, 0.12);
+}
+
 .nav-btn-login,
 .nav-btn-dashboard,
 .nav-btn-logout {

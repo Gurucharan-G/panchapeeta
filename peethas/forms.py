@@ -10,7 +10,7 @@ class PeethaMediaAddForm(forms.ModelForm):
     class Meta:
         model = PeethaMedia
         fields = [
-            'media_type', 'photo_file', 'youtube_url',
+            'media_type',
             'title', 'description',
             'title_kn', 'description_kn',
             'title_mr', 'description_mr',
@@ -18,8 +18,6 @@ class PeethaMediaAddForm(forms.ModelForm):
         ]
         widgets = {
             'media_type': forms.Select(attrs={'class': 'form-input', 'id': 'media-type-select'}),
-            'photo_file': MultipleFileInput(attrs={'class': 'form-input', 'id': 'photo-file-input', 'multiple': True}),
-            'youtube_url': forms.Textarea(attrs={'class': 'form-input', 'id': 'youtube-url-input', 'rows': 4, 'placeholder': 'Paste YouTube URLs here (one URL per line)'}),
             'title': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'English Title (optional, will default to filename)'}),
             'description': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'English Description (optional)'}),
             
@@ -36,12 +34,9 @@ class PeethaMediaAddForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['title'].required = False
-        self.fields['photo_file'].required = False
-        self.fields['youtube_url'].required = False
 
     def clean(self):
         cleaned_data = super().clean()
-        # Custom list validations will be performed directly inside views.py's media_add to handle request.FILES.getlist() and multiline text.
         return cleaned_data
 
 

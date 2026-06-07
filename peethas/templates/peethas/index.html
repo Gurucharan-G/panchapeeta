@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Veerashaiva Pancha Peethas — The five sacred seats of the Veerashaiva tradition founded by the Panchacharyas.">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>{% block title %}Veerashaiva Pancha Peethas{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +54,83 @@
         </div>
     </footer>
     <script>
+        // Tab switching logic for main homepage tabs
+        function handleHomeTabs() {
+            const peethasSection = document.getElementById('peethas-section');
+            if (!peethasSection) return; // Not on the homepage
+
+            const heroSection = document.querySelector('.hero');
+            const heritageSection = document.getElementById('divine-heritage');
+            const veerashaivaSection = document.getElementById('veerashaiva-section');
+            const aboutSection = document.getElementById('about-section');
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // Map hashes to visible sections
+            const hash = window.location.hash || '#home';
+            
+            // Hide all sections first
+            if (heroSection) heroSection.style.display = 'none';
+            if (peethasSection) peethasSection.style.display = 'none';
+            if (heritageSection) heritageSection.style.display = 'none';
+            if (veerashaivaSection) veerashaivaSection.style.display = 'none';
+            if (aboutSection) aboutSection.style.display = 'none';
+            
+            // Deactivate all nav links
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && (href.endsWith('/') || href.includes('#'))) {
+                    link.classList.remove('active');
+                }
+            });
+
+            if (hash === '#divine-heritage') {
+                if (heritageSection) {
+                    heritageSection.style.display = 'block';
+                    heritageSection.querySelectorAll('.reveal').forEach(el => el.classList.add('revealed'));
+                }
+                const link = Array.from(navLinks).find(l => l.getAttribute('href').endsWith('#divine-heritage'));
+                if (link) link.classList.add('active');
+            } else if (hash === '#veerashaiva-section') {
+                if (veerashaivaSection) {
+                    veerashaivaSection.style.display = 'block';
+                    veerashaivaSection.querySelectorAll('.reveal').forEach(el => el.classList.add('revealed'));
+                }
+                const link = Array.from(navLinks).find(l => l.getAttribute('href').endsWith('#veerashaiva-section'));
+                if (link) link.classList.add('active');
+            } else {
+                // Default to Home tab
+                if (heroSection) heroSection.style.display = 'flex';
+                if (peethasSection) peethasSection.style.display = 'block';
+                if (aboutSection) aboutSection.style.display = 'block';
+                
+                const link = Array.from(navLinks).find(l => {
+                    const href = l.getAttribute('href');
+                    return href && !l.classList.contains('nav-btn-dashboard') && !l.classList.contains('nav-btn-logout') && !href.includes('#') && (href.endsWith('/') || href === '');
+                });
+                if (link) link.classList.add('active');
+            }
+        }
+
+        // Update language dropdown links to preserve hash
+        function updateLanguageLinks() {
+            const currentHash = window.location.hash;
+            document.querySelectorAll('.dropdown-menu a').forEach(a => {
+                const href = a.getAttribute('href');
+                if (href && href.includes('lang=')) {
+                    a.setAttribute('href', href.split('#')[0] + currentHash);
+                }
+            });
+        }
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', () => {
+            handleHomeTabs();
+            updateLanguageLinks();
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
+            // Language selector dropdown
             const dropdown = document.getElementById('langDropdown');
             if (dropdown) {
                 const trigger = dropdown.querySelector('.dropdown-trigger');
@@ -66,6 +143,28 @@
                 document.addEventListener('click', (e) => {
                     if (!dropdown.contains(e.target)) {
                         dropdown.classList.remove('open');
+                    }
+                });
+            }
+
+            // Run tab logic
+            handleHomeTabs();
+            updateLanguageLinks();
+            
+            // Add click listeners to nav links on the homepage to prevent reload and handle tabs smoothly
+            const peethasSection = document.getElementById('peethas-section');
+            if (peethasSection) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && !link.classList.contains('nav-btn-dashboard') && !link.classList.contains('nav-btn-logout')) {
+                        // Resolve the URL to compare pathnames
+                        const url = new URL(link.href, window.location.origin);
+                        if (url.pathname === window.location.pathname) {
+                            link.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                window.location.hash = url.hash || '#home';
+                            });
+                        }
                     }
                 });
             }

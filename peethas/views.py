@@ -410,7 +410,7 @@ def media_add(request, slug):
 
             elif media_type == 'video':
                 # Handle multiple YouTube video URLs
-                youtube_url_text = form.cleaned_data.get('youtube_url', '').strip()
+                youtube_url_text = request.POST.get('youtube_url', '').strip()
                 if not youtube_url_text:
                     messages.error(request, "Please enter at least one YouTube URL.")
                 else:

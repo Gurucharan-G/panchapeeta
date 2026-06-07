@@ -75,13 +75,13 @@
                             <!-- File input (only for photos) -->
                             <div class="form-group" id="photo-field-wrapper">
                                 <label for="photo-file-input">Photo Upload</label>
-                                {{ media_form.photo_file }}
+                                <input type="file" name="photo_file" class="form-input" id="photo-file-input" multiple>
                             </div>
 
                             <!-- YouTube URL (only for videos) -->
                             <div class="form-group" id="video-field-wrapper" style="display: none;">
                                 <label for="youtube-url-input">YouTube Video URL</label>
-                                {{ media_form.youtube_url }}
+                                <textarea name="youtube_url" class="form-input" id="youtube-url-input" rows="4" placeholder="Paste YouTube URLs here (one URL per line)"></textarea>
                             </div>
 
                             <hr class="form-divider">

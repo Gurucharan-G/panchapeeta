@@ -97,7 +97,7 @@
                                     {% if item.get_youtube_id %}
                                         <div class="gallery-video-wrapper">
                                             <div class="video-ratio-container">
-                                                <iframe src="https://www.youtube.com/embed/{{ item.get_youtube_id }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                <iframe src="https://www.youtube-nocookie.com/embed/{{ item.get_youtube_id }}" referrerpolicy="strict-origin-when-cross-origin" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                             </div>
                                         </div>
                                     {% endif %}
