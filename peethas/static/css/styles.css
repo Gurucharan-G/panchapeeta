@@ -747,7 +747,7 @@ img {
 
 .detail-hero {
     background: linear-gradient(135deg, color-mix(in srgb, var(--peetha-color) 8%, white), var(--bg-light));
-    padding: 40px 0 50px;
+    padding: 100px 0 50px;
     border-bottom: 3px solid var(--peetha-color);
     position: relative;
 }
@@ -1333,7 +1333,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 24px;
+    padding: 110px 24px 40px;
 }
 
 .login-container {
@@ -1434,7 +1434,7 @@ img {
 
 /* ===== Dashboard ===== */
 .dashboard-section {
-    padding: 40px 0 65px;
+    padding: 110px 0 65px;
     background: var(--bg-light);
     min-height: calc(100vh - 140px);
 }
@@ -1835,7 +1835,7 @@ img {
 
 /* ===== Edit Section Page ===== */
 .edit-section {
-    padding: 50px 24px;
+    padding: 110px 24px 50px;
     background: var(--bg-light);
     min-height: calc(100vh - 140px);
     display: flex;

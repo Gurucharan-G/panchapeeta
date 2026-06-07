@@ -300,6 +300,7 @@ def check_peetha_authorization(user, peetha):
 
 @login_required(login_url='peethas:login')
 def dashboard_home(request):
+    lang = get_language(request)
     # If superuser: show the portal where they can manage any Peetha
     if request.user.is_superuser:
         peethas = Peetha.objects.all()
@@ -307,6 +308,7 @@ def dashboard_home(request):
             'is_admin': True,
             'peethas': peethas,
             'labels': TRANSLATIONS['en'],  # Admin panel uses English
+            'lang': lang,
         })
     
     # If normal user: check if handler profile exists
@@ -321,6 +323,7 @@ def dashboard_home(request):
 
 @login_required(login_url='peethas:login')
 def dashboard_peetha(request, slug):
+    lang = get_language(request)
     peetha = get_object_or_404(Peetha, slug=slug)
     check_peetha_authorization(request.user, peetha)
 
@@ -338,6 +341,7 @@ def dashboard_peetha(request, slug):
         'media_form': media_form,
         'travel_form': travel_form,
         'labels': TRANSLATIONS['en'],
+        'lang': lang,
     })
 
 
@@ -380,12 +384,14 @@ def media_edit(request, slug, pk):
     else:
         form = PeethaMediaForm(instance=media_item)
 
+    lang = get_language(request)
     return render(request, 'peethas/dashboard_edit.html', {
         'peetha': peetha,
         'edit_type': 'media',
         'media_item': media_item,
         'form': form,
         'labels': TRANSLATIONS['en'],
+        'lang': lang,
     })
 
 
@@ -441,12 +447,14 @@ def travel_edit(request, slug, pk):
     else:
         form = TravelPlanForm(instance=travel_item)
 
+    lang = get_language(request)
     return render(request, 'peethas/dashboard_edit.html', {
         'peetha': peetha,
         'edit_type': 'travel',
         'travel_item': travel_item,
         'form': form,
         'labels': TRANSLATIONS['en'],
+        'lang': lang,
     })
 
 
