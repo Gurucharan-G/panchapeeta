@@ -15,6 +15,10 @@
 <body>
     <header class="site-header">
         <div class="container header-container">
+
+            <div class="mobile-top-bar">
+                <button class="hamburger-btn" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰ Menu</button>
+            </div>
             <nav class="nav-links">
                 {% block navbar %}
                 <a href="{% url 'peethas:home' %}" class="nav-link">{{ labels.nav_home|default:"Home" }}</a>
@@ -212,7 +216,17 @@
                 preloader.src = originalSrc;
             });
         });
-    </script>
+    
+        // Auto-collapse mobile menu on link click
+        document.querySelectorAll('.nav-links .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const nav = document.querySelector('.nav-links');
+                if (nav && nav.classList.contains('open')) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+</script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
