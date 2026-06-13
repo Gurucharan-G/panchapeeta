@@ -9,8 +9,8 @@
         <div class="auth-container" style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 450px;">
             <div class="auth-header" style="text-align: center; margin-bottom: 30px;">
                 <div class="auth-icon" style="font-size: 2.5rem; margin-bottom: 10px;">🕉️</div>
-                <h2 style="color: var(--dark); font-family: 'Playfair Display', serif;">Sign In / Sign Up</h2>
-                <p style="color: #666; font-size: 0.95rem;">Enter your mobile number to get an OTP.</p>
+                <h2 style="color: var(--dark); font-family: 'Playfair Display', serif;">{{ labels.nav_sign_in|default:"Sign In / Sign Up" }}</h2>
+                <p style="color: #666; font-size: 0.95rem;">{{ labels.login_prompt|default:"Enter your mobile number to get an OTP." }}</p>
             </div>
 
             <div id="alert-container" style="display: none; margin-bottom: 20px;" class="alert alert-error"></div>
@@ -18,7 +18,7 @@
             <!-- Step 1: Phone Number -->
             <div id="phone-auth-step">
                 <div class="form-group" style="margin-bottom: 20px;">
-                    <label for="phone_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: var(--dark);">Mobile Number</label>
+                    <label for="phone_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: var(--dark);">{{ labels.mobile_number_label|default:"Mobile Number" }}</label>
                     <div style="display: flex;">
                         <span style="padding: 12px; background: #f0f0f0; border: 1px solid #ddd; border-right: none; border-radius: 8px 0 0 8px; font-size: 1rem; color: #555;">+91</span>
                         <input type="tel" id="phone_number" placeholder="Enter 10-digit number" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 0 8px 8px 0; font-size: 1rem; box-sizing: border-box;">
@@ -28,7 +28,7 @@
                 <!-- reCAPTCHA widget -->
                 <div id="recaptcha-container" style="margin-bottom: 20px; display: flex; justify-content: center;"></div>
 
-                <button id="send-otp-btn" class="auth-btn" disabled style="width: 100%; padding: 14px; background-color: var(--saffron); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: not-allowed; opacity: 0.6; transition: all 0.3s ease;">Send OTP</button>
+                <button id="send-otp-btn" class="auth-btn" disabled style="width: 100%; padding: 14px; background-color: var(--saffron); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: not-allowed; opacity: 0.6; transition: all 0.3s ease;">{{ labels.send_otp_btn|default:"Send OTP" }}</button>
             </div>
 
             <!-- Step 2: OTP Verification -->
@@ -36,11 +36,11 @@
                 <p style="text-align: center; margin-bottom: 20px; font-size: 0.95rem; color: #555;">An OTP has been sent to <strong id="display-phone"></strong></p>
                 
                 <div class="form-group" style="margin-bottom: 25px;">
-                    <label for="verification_code" style="display: block; margin-bottom: 8px; font-weight: bold; color: var(--dark);">Enter OTP</label>
+                    <label for="verification_code" style="display: block; margin-bottom: 8px; font-weight: bold; color: var(--dark);">{{ labels.enter_otp_label|default:"Enter OTP" }}</label>
                     <input type="text" id="verification_code" placeholder="6-digit code" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box; text-align: center; letter-spacing: 5px;">
                 </div>
 
-                <button id="verify-otp-btn" class="auth-btn" style="width: 100%; padding: 14px; background-color: var(--saffron); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">Verify & Login</button>
+                <button id="verify-otp-btn" class="auth-btn" style="width: 100%; padding: 14px; background-color: var(--saffron); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">{{ labels.verify_login_btn|default:"Verify & Login" }}</button>
                 
                 <div style="text-align: center; margin-top: 15px;">
                     <a href="#" id="change-number-btn" style="color: var(--saffron); font-size: 0.9rem; text-decoration: none;">Change Mobile Number</a>

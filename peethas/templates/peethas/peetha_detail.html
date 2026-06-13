@@ -4,13 +4,13 @@
 {% block title %}{{ peetha.name }} — {{ labels.site_title }}{% endblock %}
 
 {% block navbar %}
-<a href="{% url 'peethas:home' %}" class="nav-link">Home</a>
+<a href="{% url 'peethas:home' %}" class="nav-link">{{ labels.nav_home|default:"Home" }}</a>
 <a href="#about" class="nav-link peetha-tab active" data-tab="about">{{ peetha.name }}</a>
 {% if peetha.current_swamiji %}
-<a href="#jagathguru" class="nav-link peetha-tab" data-tab="jagathguru">Jagathguru</a>
+<a href="#jagathguru" class="nav-link peetha-tab" data-tab="jagathguru">{{ labels.nav_jagathguru|default:"Jagathguru" }}</a>
 {% endif %}
-<a href="#pooja-booking" class="nav-link peetha-tab" data-tab="pooja-booking">Pooja Booking</a>
-<a href="#contact-us" class="nav-link peetha-tab" data-tab="contact-us">Contact Us</a>
+<a href="#pooja-booking" class="nav-link peetha-tab" data-tab="pooja-booking">{{ labels.nav_pooja_booking|default:"Pooja Booking" }}</a>
+<a href="#contact-us" class="nav-link peetha-tab" data-tab="contact-us">{{ labels.nav_contact_us|default:"Contact Us" }}</a>
 {% if user.is_authenticated %}
     <a href="{% url 'peethas:dashboard_home' %}" class="nav-link nav-btn-dashboard">Dashboard</a>
 {% endif %}

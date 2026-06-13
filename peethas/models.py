@@ -56,6 +56,37 @@ class Peetha(models.Model):
     description_hi = models.TextField(blank=True)
     history_hi = models.TextField(blank=True)
 
+    # Telugu translations
+    name_te = models.CharField(max_length=200, blank=True)
+    acharya_te = models.CharField(max_length=200, blank=True)
+    simhasana_te = models.CharField(max_length=200, blank=True)
+    location_te = models.CharField(max_length=300, blank=True)
+    current_swamiji_te = models.CharField(max_length=400, blank=True)
+    associated_linga_te = models.CharField(max_length=200, blank=True)
+    description_te = models.TextField(blank=True)
+    history_te = models.TextField(blank=True)
+
+    # Tamil translations
+    name_ta = models.CharField(max_length=200, blank=True)
+    acharya_ta = models.CharField(max_length=200, blank=True)
+    simhasana_ta = models.CharField(max_length=200, blank=True)
+    location_ta = models.CharField(max_length=300, blank=True)
+    current_swamiji_ta = models.CharField(max_length=400, blank=True)
+    associated_linga_ta = models.CharField(max_length=200, blank=True)
+    description_ta = models.TextField(blank=True)
+    history_ta = models.TextField(blank=True)
+
+    # Malayalam translations
+    name_ml = models.CharField(max_length=200, blank=True)
+    acharya_ml = models.CharField(max_length=200, blank=True)
+    simhasana_ml = models.CharField(max_length=200, blank=True)
+    location_ml = models.CharField(max_length=300, blank=True)
+    current_swamiji_ml = models.CharField(max_length=400, blank=True)
+    associated_linga_ml = models.CharField(max_length=200, blank=True)
+    description_ml = models.TextField(blank=True)
+    history_ml = models.TextField(blank=True)
+
+
     class Meta:
         ordering = ['order']
 
@@ -97,6 +128,19 @@ class PeethaMedia(models.Model):
     title_hi = models.CharField(max_length=200, blank=True)
     description_hi = models.TextField(blank=True)
 
+    # Telugu translations
+    title_te = models.CharField(max_length=200, blank=True)
+    description_te = models.TextField(blank=True)
+
+    # Tamil translations
+    title_ta = models.CharField(max_length=200, blank=True)
+    description_ta = models.TextField(blank=True)
+
+    # Malayalam translations
+    title_ml = models.CharField(max_length=200, blank=True)
+    description_ml = models.TextField(blank=True)
+
+
     class Meta:
         ordering = ['-uploaded_at']
 
@@ -136,6 +180,22 @@ class TravelPlan(models.Model):
     location_hi = models.CharField(max_length=300, blank=True)
     description_hi = models.TextField(blank=True)
 
+    # Telugu translations
+    title_te = models.CharField(max_length=200, blank=True)
+    location_te = models.CharField(max_length=300, blank=True)
+    description_te = models.TextField(blank=True)
+
+    # Tamil translations
+    title_ta = models.CharField(max_length=200, blank=True)
+    location_ta = models.CharField(max_length=300, blank=True)
+    description_ta = models.TextField(blank=True)
+
+    # Malayalam translations
+    title_ml = models.CharField(max_length=200, blank=True)
+    location_ml = models.CharField(max_length=300, blank=True)
+    description_ml = models.TextField(blank=True)
+
+
     class Meta:
         ordering = ['start_date']
 
@@ -170,6 +230,12 @@ class Pooja(models.Model):
     description_mr = models.TextField(blank=True)
     name_hi = models.CharField(max_length=200, blank=True)
     description_hi = models.TextField(blank=True)
+    name_te = models.CharField(max_length=200, blank=True)
+    description_te = models.TextField(blank=True)
+    name_ta = models.CharField(max_length=200, blank=True)
+    description_ta = models.TextField(blank=True)
+    name_ml = models.CharField(max_length=200, blank=True)
+    description_ml = models.TextField(blank=True)
 
     class Meta:
         ordering = ['order', 'name']

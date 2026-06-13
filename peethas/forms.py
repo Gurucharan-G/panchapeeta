@@ -14,7 +14,10 @@ class PeethaMediaAddForm(forms.ModelForm):
             'title', 'description',
             'title_kn', 'description_kn',
             'title_mr', 'description_mr',
-            'title_hi', 'description_hi'
+            'title_hi', 'description_hi',
+            'title_te', 'description_te',
+            'title_ta', 'description_ta',
+            'title_ml', 'description_ml'
         ]
         widgets = {
             'media_type': forms.Select(attrs={'class': 'form-input', 'id': 'media-type-select'}),
@@ -29,6 +32,15 @@ class PeethaMediaAddForm(forms.ModelForm):
             
             'title_hi': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'हिन्दी शीर्षक (वैकल्पिक)'}),
             'description_hi': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'हिन्दी विवरण'}),
+            
+            'title_te': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'తెలుగు శీర్షిక (ఐచ్ఛికం)'}),
+            'description_te': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'తెలుగు వివరణ'}),
+            
+            'title_ta': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'தமிழ் தலைப்பு (விரும்பினால்)'}),
+            'description_ta': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'தமிழ் விளக்கம்'}),
+            
+            'title_ml': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'മലയാളം ശീർഷകം (ഓപ്ഷണൽ)'}),
+            'description_ml': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'മലയാളം വിവരണം'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -48,7 +60,10 @@ class PeethaMediaEditForm(forms.ModelForm):
             'title', 'description',
             'title_kn', 'description_kn',
             'title_mr', 'description_mr',
-            'title_hi', 'description_hi'
+            'title_hi', 'description_hi',
+            'title_te', 'description_te',
+            'title_ta', 'description_ta',
+            'title_ml', 'description_ml'
         ]
         widgets = {
             'media_type': forms.Select(attrs={'class': 'form-input', 'id': 'media-type-select'}),
@@ -65,6 +80,15 @@ class PeethaMediaEditForm(forms.ModelForm):
             
             'title_hi': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'हिन्दी शीर्षक'}),
             'description_hi': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'हिन्दी विवरण'}),
+            
+            'title_te': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'తెలుగు శీర్షిక'}),
+            'description_te': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'తెలుగు వివరణ'}),
+            
+            'title_ta': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'தமிழ் தலைப்பு'}),
+            'description_ta': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'தமிழ் விளக்கம்'}),
+            
+            'title_ml': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'മലയാളം ശീർഷകം'}),
+            'description_ml': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'മലയാളം വിവരണം'}),
         }
 
     def clean(self):
@@ -96,7 +120,10 @@ class TravelPlanForm(forms.ModelForm):
             'title', 'start_date', 'end_date', 'location', 'description',
             'title_kn', 'location_kn', 'description_kn',
             'title_mr', 'location_mr', 'description_mr',
-            'title_hi', 'location_hi', 'description_hi'
+            'title_hi', 'location_hi', 'description_hi',
+            'title_te', 'location_te', 'description_te',
+            'title_ta', 'location_ta', 'description_ta',
+            'title_ml', 'location_ml', 'description_ml'
         ]
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'English Title'}),
@@ -116,6 +143,18 @@ class TravelPlanForm(forms.ModelForm):
             'title_hi': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'हिन्दी शीर्षक'}),
             'location_hi': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'हिन्दी स्थान'}),
             'description_hi': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'हिन्दी विवरण'}),
+
+            'title_te': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'తెలుగు శీర్షిక'}),
+            'location_te': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'తెలుగు స్థానం'}),
+            'description_te': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'తెలుగు వివరణ'}),
+
+            'title_ta': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'தமிழ் தலைப்பு'}),
+            'location_ta': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'தமிழ் இடம்'}),
+            'description_ta': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'தமிழ் விளக்கம்'}),
+
+            'title_ml': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'മലയാളം ശീർഷകം'}),
+            'location_ml': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'മലയാളം സ്ഥാനം'}),
+            'description_ml': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'മലയാളം വിവരണം'}),
         }
 
     def clean(self):

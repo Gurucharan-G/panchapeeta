@@ -2861,3 +2861,35 @@ img {
         padding: 32px 24px;
     }
 }
+/* Progressive Image Loading */
+img.progressive-loading {
+    background-color: #e0e0e0;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite linear;
+    filter: blur(5px);
+    transition: filter 0.5s ease-out, opacity 0.5s ease-out;
+    color: transparent;
+    min-height: 200px; /* Prevent collapsing */
+    display: block; /* Ensure min-height works */
+    width: 100%;
+    object-fit: cover;
+}
+
+img.progressive-loaded {
+    background: none;
+    animation: none;
+    filter: blur(0);
+    color: inherit;
+    transition: filter 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+

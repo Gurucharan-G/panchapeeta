@@ -50,7 +50,25 @@ TRANSLATIONS = {
         'no_travel_plans': 'No travel plans scheduled for this month.',
         'no_media': 'No photos or videos uploaded yet.',
         'divine_heritage_title': 'Panchapeetas',
-        'veerashaiva_title': 'Veerashaiva-Lingayat'
+        'veerashaiva_title': 'Veerashaiva-Lingayat',
+        'nav_home': 'Home',
+        'nav_jagathguru': 'Jagathguru',
+        'nav_pooja_booking': 'Pooja Booking',
+        'nav_contact_us': 'Contact Us',
+        'nav_sign_in': 'Sign In / Sign Up',
+        'nav_my_bookings': 'My Bookings',
+        'login_prompt': 'Enter your mobile number to get an OTP.',
+        'mobile_number_label': 'Mobile Number',
+        'send_otp_btn': 'Send OTP',
+        'enter_otp_label': 'Enter OTP',
+        'verify_login_btn': 'Verify & Login',
+    
+        'login_welcome': 'Welcome back to Pancha Peethas',
+        'username_label': 'Username',
+        'password_label': 'Password',
+        'sign_in_only': 'Sign In',
+        'no_account_prompt': "Don't have an account?",
+        'sign_up_btn': 'Sign Up',
     },
     'kn': {
         'site_title': 'ವೀರಶೈವ ಪಂಚಪೀಠಗಳು',
@@ -81,7 +99,25 @@ TRANSLATIONS = {
         'no_travel_plans': 'ಈ ತಿಂಗಳಲ್ಲಿ ಯಾವುದೇ ಪ್ರವಾಸ ಯೋಜನೆಗಳಿಲ್ಲ.',
         'no_media': 'ಇನ್ನೂ ಯಾವುದೇ ಚಿತ್ರಗಳು ಅಥವಾ ವಿಡಿಯೋಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ.',
         'divine_heritage_title': 'ಪಂಚಪೀಠಗಳು',
-        'veerashaiva_title': 'ವೀರಶೈವ-ಲಿಂಗಾಯತ'
+        'veerashaiva_title': 'ವೀರಶೈವ-ಲಿಂಗಾಯತ',
+        'nav_home': 'ಮುಖಪುಟ',
+        'nav_jagathguru': 'ಜಗದ್ಗುರು',
+        'nav_pooja_booking': 'ಪೂಜೆ ಬುಕಿಂಗ್',
+        'nav_contact_us': 'ಸಂಪರ್ಕಿಸಿ',
+        'nav_sign_in': 'ಸೈನ್ ಇನ್ / ಸೈನ್ ಅಪ್',
+        'nav_my_bookings': 'ನನ್ನ ಬುಕಿಂಗ್‌ಗಳು',
+        'login_prompt': 'OTP ಪಡೆಯಲು ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ.',
+        'mobile_number_label': 'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ',
+        'send_otp_btn': 'OTP ಕಳುಹಿಸಿ',
+        'enter_otp_label': 'OTP ನಮೂದಿಸಿ',
+        'verify_login_btn': 'ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಲಾಗಿನ್ ಮಾಡಿ',
+    
+        'login_welcome': 'ಪಂಚ ಪೀಠಗಳಿಗೆ ಮರಳಿ ಸ್ವಾಗತ',
+        'username_label': 'ಬಳಕೆದಾರರ ಹೆಸರು',
+        'password_label': 'ಗುಪ್ತಪದ',
+        'sign_in_only': 'ಸೈನ್ ಇನ್',
+        'no_account_prompt': 'ಖಾತೆ ಇಲ್ಲವೇ?',
+        'sign_up_btn': 'ಸೈನ್ ಅಪ್ ಮಾಡಿ',
     },
     'mr': {
         'site_title': 'वीरशैव पंचपीठ',
@@ -112,7 +148,25 @@ TRANSLATIONS = {
         'no_travel_plans': 'या महिन्यात कोणतेही प्रवास नियोजन नाही.',
         'no_media': 'अद्याप कोणतेही फोटो किंवा व्हिडिओ अपलोड केलेले नाहीत.',
         'divine_heritage_title': 'पंचपीठे',
-        'veerashaiva_title': 'वीरशैव-लिंगायत'
+        'veerashaiva_title': 'वीरशैव-लिंगायत',
+        'nav_home': 'मुख्यपृष्ठ',
+        'nav_jagathguru': 'जगद्गुरु',
+        'nav_pooja_booking': 'पूजा बुकिंग',
+        'nav_contact_us': 'संपर्क करा',
+        'nav_sign_in': 'साइन इन / साइन अप',
+        'nav_my_bookings': 'माझे बुकिंग्स',
+        'login_prompt': 'OTP मिळवण्यासाठी तुमचा मोबाईल नंबर टाका.',
+        'mobile_number_label': 'मोबाईल नंबर',
+        'send_otp_btn': 'OTP पाठवा',
+        'enter_otp_label': 'OTP टाका',
+        'verify_login_btn': 'पडताळणी करा आणि लॉगिन करा',
+    
+        'login_welcome': 'पंचपीठात पुन्हा स्वागत आहे',
+        'username_label': 'वापरकर्ता नाव',
+        'password_label': 'पासवर्ड',
+        'sign_in_only': 'लॉगिन करा',
+        'no_account_prompt': 'खाते नाही का?',
+        'sign_up_btn': 'साइन अप करा',
     },
     'hi': {
         'site_title': 'वीरशैव पंचपीठ',
@@ -143,7 +197,172 @@ TRANSLATIONS = {
         'no_travel_plans': 'इस माह में कोई यात्रा कार्यक्रम निर्धारित नहीं है।',
         'no_media': 'अभी तक कोई फोटो या वीडियो अपलोड नहीं किया गया है.',
         'divine_heritage_title': 'पंचपीठ',
-        'veerashaiva_title': 'वीरशैव-लिंगायत'
+        'veerashaiva_title': 'वीरशैव-लिंगायत',
+        'nav_home': 'होम',
+        'nav_jagathguru': 'जगद्गुरु',
+        'nav_pooja_booking': 'पूजा बुकिंग',
+        'nav_contact_us': 'संपर्क करें',
+        'nav_sign_in': 'साइन इन / साइन अप',
+        'nav_my_bookings': 'मेरी बुकिंग्स',
+        'login_prompt': 'OTP प्राप्त करने के लिए अपना मोबाइल नंबर दर्ज करें।',
+        'mobile_number_label': 'मोबाइल नंबर',
+        'send_otp_btn': 'OTP भेजें',
+        'enter_otp_label': 'OTP दर्ज करें',
+        'verify_login_btn': 'सत्यापित करें और लॉगिन करें',
+    
+        'login_welcome': 'पंच पीठों में आपका फिर से स्वागत है',
+        'username_label': 'उपयोगकर्ता नाम',
+        'password_label': 'पासवर्ड',
+        'sign_in_only': 'साइन इन करें',
+        'no_account_prompt': 'क्या आपका खाता नहीं है?',
+        'sign_up_btn': 'साइन अप करें',
+    },
+    'te': {
+        'site_title': 'వీరశైవ పంచ పీఠాలు',
+        'site_subtitle': 'వీరశైవ పంచ పీఠాలు',
+        'hero_title': 'వీరశైవ ధర్మంలోని <span class="keyword">ఐదు పవిత్ర పీఠాలు</span>',
+        'hero_subtitle': '<span class="keyword">పంచ పీఠాలు</span> అనగా వీరశైవ ధర్మ ప్రచారం కోసం పరమశివుని <span class="keyword">ఐదు ముఖాల</span> నుండి ఉద్భవించిన <span class="keyword">పంచాచార్యులు</span> స్థాపించిన ఐదు పురాతన మఠాలు.',
+        'explore_peetha': 'పీఠం వివరాలు →',
+        'founded_by': 'స్థాపకులు:',
+        'peeta_suffix': 'పీఠం',
+        'about_title': '<span class="keyword">వీరశైవం</span> గురించి',
+        'about_p1': '<span class="keyword">వీరశైవం</span> ఒక ప్రాచీన శైవ సంప్రదాయం. ఇది పరమశివుని పట్ల భక్తి, శరీరముపై <span class="keyword">ఇష్టలింగ ధారణ</span> మరియు <span class="keyword">పంచాచారాల</span> (లింగాచారం, సదాచారం, శివాచారం, భృత్యచారం మరియు గణాచారం) ఆచరణను ఉద్ఘాటిస్తుంది.',
+        'about_p2': '<strong>సిద్ధాంత శిఖామణి</strong> వీరశైవ ధర్మంలో ప్రధాన పవిత్ర గ్రంథం. పరమశివుని ఐదు ముఖాలైన <span class="keyword">సద్యోజాత</span>, <span class="keyword">వామదేవ</span>, <span class="keyword">అఘోర</span>, <span class="keyword">తత్పురుష</span> మరియు <span class="keyword">ఈశాన</span> ముఖాల నుండి పంచాచార్యులు అవతరించి భారతదేశమంతటా ఈ ఐదు పీఠాలను స్థాపించారని నమ్ముతారు.',
+        'back_link': '← అన్ని పీఠాల పేజీకి వెళ్లండి',
+        'key_details': 'ముఖ్య వివరాలు',
+        'founding_acharya': 'స్థాపక జగద్గురువులు',
+        'simhasana_label': 'సింహాసనం',
+        'associated_linga_label': 'సంబంధిత లింగం',
+        'location_label': 'స్థానం',
+        'current_swamiji_label': 'ప్రస్తుత జగద్గురువులు',
+        'history_label': 'చరిత్ర',
+        'about_label': 'పీఠం గురించి',
+        'copyright': '© వీరశైవ పంచ పీఠాలు',
+        'login_btn': 'లాగిన్',
+        'logout_btn': 'లాగ్ అవుట్',
+        'dashboard_btn': 'డాష్‌బోర్డ్',
+        'travel_plans_title': 'శ్రీలవారి ప్రయాణ ప్రణాళికలు',
+        'media_gallery_title': 'ఫోటోలు & వీడియోలు',
+        'no_travel_plans': 'ఈ నెలకు ప్రయాణ ప్రణాళికలు లేవు.',
+        'no_media': 'ఇంకా ఎలాంటి ఫోటోలు లేదా వీడియోలు అప్‌లోడ్ చేయబడలేదు.',
+        'divine_heritage_title': 'పంచపీఠాలు',
+        'veerashaiva_title': 'వీరశైవ-లింగాయత్',
+        'nav_home': 'హోమ్',
+        'nav_jagathguru': 'జగద్గురు',
+        'nav_pooja_booking': 'పూజా బుకింగ్',
+        'nav_contact_us': 'మమ్మల్ని సంప్రదించండి',
+        'nav_sign_in': 'సైన్ ఇన్ / సైన్ అప్',
+        'nav_my_bookings': 'నా బుకింగ్‌లు',
+        'login_prompt': 'OTP పొందడానికి మీ మొబైల్ నంబర్‌ను నమోదు చేయండి.',
+        'mobile_number_label': 'మొబైల్ నంబర్',
+        'send_otp_btn': 'OTP పంపండి',
+        'enter_otp_label': 'OTP నమోదు చేయండి',
+        'verify_login_btn': 'ధృవీకరించి లాగిన్ అవ్వండి',
+    
+        'login_welcome': 'పంచ పీఠాలకు తిరిగి స్వాగతం',
+        'username_label': 'వాడుకరి పేరు',
+        'password_label': 'పాస్వర్డ్',
+        'sign_in_only': 'సైన్ ఇన్',
+        'no_account_prompt': 'ఖాతా లేదా?',
+        'sign_up_btn': 'సైన్ అప్ చేయండి',
+    },
+    'ta': {
+        'site_title': 'வீரசைவ பஞ்ச பீடங்கள்',
+        'site_subtitle': 'வீரசைவ பஞ்ச பீடங்கள்',
+        'hero_title': 'வீரசைவ மரபின் <span class="keyword">ஐந்து புனித பீடங்கள்</span>',
+        'hero_subtitle': '<span class="keyword">பஞ்ச பீடங்கள்</span> என்பது வீரசைவத்தை பரப்ப சிவபெருமானின் <span class="keyword">ஐந்து முகங்களில்</span> இருந்து தோன்றிய <span class="keyword">பஞ்சாச்சார்யர்களால்</span> நிறுவப்பட்ட ஐந்து பழமையான மடங்களாகும்.',
+        'explore_peetha': 'பீடத்தின் விவரங்கள் →',
+        'founded_by': 'நிறுவியவர்:',
+        'peeta_suffix': 'பீடம்',
+        'about_title': '<span class="keyword">வீரசைவம்</span> பற்றி',
+        'about_p1': '<span class="keyword">வீரசைவம்</span> ஒரு பழமையான சைவ மரபு. சிவபெருமான் மீதான பக்தி, <span class="keyword">இஷ்டலிங்க தாரணை</span> மற்றும் <span class="keyword">பஞ்சாச்சாரம்</span> (லிங்காச்சாரம், சதாச்சாரம், சிவாச்சாரம், பிருத்யாச்சாரம், கணாச்சாரம்) ஆகியவற்றை இது வலியுறுத்துகிறது.',
+        'about_p2': '<strong>சித்தாந்த சிகாமணி</strong> வீரசைவத்தின் முக்கிய புனித நூலாகும். சிவபெருமானின் ஐந்து முகங்களான <span class="keyword">சத்யோஜாதம்</span>, <span class="keyword">வாமதேவம்</span>, <span class="keyword">அகோரம்</span>, <span class="keyword">தத்புருஷம்</span>, <span class="keyword">ஈசானம்</span> ஆகியவற்றிலிருந்து அவதரித்த பஞ்சாச்சார்யர்கள் இந்தியா முழுவதும் இந்த ஐந்து பீடங்களை நிறுவினர்.',
+        'back_link': '← அனைத்து பீடங்களுக்கும் திரும்புக',
+        'key_details': 'முக்கிய விவரங்கள்',
+        'founding_acharya': 'நிறுவிய ஜகத்குரு',
+        'simhasana_label': 'சிம்மாசனம்',
+        'associated_linga_label': 'தொடர்புடைய லிங்கம்',
+        'location_label': 'இடம்',
+        'current_swamiji_label': 'தற்போதைய ஜகத்குரு',
+        'history_label': 'வரலாறு',
+        'about_label': 'பீடத்தைப் பற்றி',
+        'copyright': '© வீரசைவ பஞ்ச பீடங்கள்',
+        'login_btn': 'உள்நுழைக',
+        'logout_btn': 'வெளியேறு',
+        'dashboard_btn': 'கட்டுப்பாட்டு அறை',
+        'travel_plans_title': 'சுவாமிகளின் பயணத் திட்டங்கள்',
+        'media_gallery_title': 'புகைப்படங்கள் & காணொளிகள்',
+        'no_travel_plans': 'இந்த மாதத்தில் பயணத் திட்டங்கள் எதுவும் இல்லை.',
+        'no_media': 'இதுவரை புகைப்படங்களோ காணொளிகளோ பதிவேற்றப்படவில்லை.',
+        'divine_heritage_title': 'பஞ்சபீடங்கள்',
+        'veerashaiva_title': 'வீரசைவ-லிங்காயத்',
+        'nav_home': 'முகப்பு',
+        'nav_jagathguru': 'ஜகத்குரு',
+        'nav_pooja_booking': 'பூஜை முன்பதிவு',
+        'nav_contact_us': 'தொடர்பு கொள்ள',
+        'nav_sign_in': 'உள்நுழைய / பதிவு செய்ய',
+        'nav_my_bookings': 'எனது முன்பதிவுகள்',
+        'login_prompt': 'OTP ஐ பெற உங்கள் மொபைல் எண்ணை உள்ளிடவும்.',
+        'mobile_number_label': 'மொபைல் எண்',
+        'send_otp_btn': 'OTP அனுப்பு',
+        'enter_otp_label': 'OTP ஐ உள்ளிடவும்',
+        'verify_login_btn': 'சரிபார்த்து உள்நுழையவும்',
+    
+        'login_welcome': 'பஞ்ச பீடங்களுக்கு மீண்டும் வரவேற்கிறோம்',
+        'username_label': 'பயனர் பெயர்',
+        'password_label': 'கடவுச்சொல்',
+        'sign_in_only': 'உள்நுழைக',
+        'no_account_prompt': 'கணக்கு இல்லையா?',
+        'sign_up_btn': 'பதிவு செய்யவும்',
+    },
+    'ml': {
+        'site_title': 'വീരശൈവ പഞ്ചപീഠങ്ങൾ',
+        'site_subtitle': 'വീരശൈവ പഞ്ചപീഠങ്ങൾ',
+        'hero_title': 'വീരശൈവ പാരമ്പര്യത്തിലെ <span class="keyword">അഞ്ച് പുണ്യപീഠങ്ങൾ</span>',
+        'hero_subtitle': 'വീരശൈവ ധർമ്മം പ്രചരിപ്പിക്കുന്നതിനായി പരമശിവൻ്റെ <span class="keyword">അഞ്ച് മുഖങ്ങളിൽ</span> നിന്ന് അവതരിച്ച <span class="keyword">പഞ്ചാചാര്യന്മാർ</span> സ്ഥാപിച്ച അഞ്ച് പ്രാചീന മഠങ്ങളാണ് <span class="keyword">പഞ്ചപീഠങ്ങൾ</span>.',
+        'explore_peetha': 'പീഠത്തെക്കുറിച്ച് അറിയുക →',
+        'founded_by': 'സ്ഥാപകൻ:',
+        'peeta_suffix': 'പീഠം',
+        'about_title': '<span class="keyword">വീരശൈവ ധർമ്മത്തെക്കുറിച്ച്</span>',
+        'about_p1': 'പരമശിവനോടുള്ള ഭക്തി, ശരീരത്തിൽ <span class="keyword">ഇഷ്ടലിംഗധാരണം</span>, <span class="keyword">പഞ്ചാചാരങ്ങൾ</span> (ലിംഗാചാരം, സദാചാരം, ശിവാചാരം, ഭൃത്യാചാരം, ഗണാചാരം) എന്നിവയ്ക്ക് പ്രാധാന്യം നൽകുന്ന ഒരു പ്രാചീന ശൈവ പാരമ്പര്യമാണ് <span class="keyword">വീരശൈവം</span>.',
+        'about_p2': '<strong>സിദ്ധാന്ത ശിഖാമണി</strong> ആണ് ഈ പാരമ്പര്യത്തിലെ മുഖ്യ ഗ്രന്ഥം. പരമശിവൻ്റെ അഞ്ച് മുഖങ്ങളായ <span class="keyword">സദ്യോജാതം</span>, <span class="keyword">വാമദേവം</span>, <span class="keyword">അഘോരം</span>, <span class="keyword">തത്പുരുഷം</span>, <span class="keyword">ഈശാനം</span> എന്നിവയിൽ നിന്നും അവതരിച്ച പഞ്ചാചാര്യന്മാർ ഭാരതത്തിലുടനീളം ഈ അഞ്ച് പീഠങ്ങൾ സ്ഥാപിച്ചുവെന്ന് വിശ്വസിക്കപ്പെടുന്നു.',
+        'back_link': '← പ്രധാന പേജിലേക്ക് മടങ്ങുക',
+        'key_details': 'പ്രധാന വിവരങ്ങൾ',
+        'founding_acharya': 'സ്ഥാപക ജഗദ്ഗുരു',
+        'simhasana_label': 'സിംഹാസനം',
+        'associated_linga_label': 'ബന്ധപ്പെട്ട ലിംഗം',
+        'location_label': 'സ്ഥലം',
+        'current_swamiji_label': 'നിലവിലെ ജഗദ്ഗുരു',
+        'history_label': 'ചരിത്രം',
+        'about_label': 'പീഠത്തെക്കുറിച്ച്',
+        'copyright': '© വീരശൈവ പഞ്ചപീഠങ്ങൾ',
+        'login_btn': 'ലോഗിൻ',
+        'logout_btn': 'ലോഗൗട്ട്',
+        'dashboard_btn': 'ഡാഷ്‌ബോർഡ്',
+        'travel_plans_title': 'സ്വാമിജിയുടെ യാത്രാ വിവരങ്ങൾ',
+        'media_gallery_title': 'ചിത്രങ്ങളും വീഡിയോകളും',
+        'no_travel_plans': 'ഈ മാസത്തിൽ യാത്രാ പരിപാടികളില്ല.',
+        'no_media': 'ചിത്രങ്ങളോ വീഡിയോകളോ ഇതുവരെ അപ്‌ലോഡ് ചെയ്തിട്ടില്ല.',
+        'divine_heritage_title': 'പഞ്ചപീഠങ്ങൾ',
+        'veerashaiva_title': 'വീരശൈവ-ലിംഗായത്ത്',
+        'nav_home': 'ഹോം',
+        'nav_jagathguru': 'ജഗദ്ഗുരു',
+        'nav_pooja_booking': 'പൂജ ബുക്കിംഗ്',
+        'nav_contact_us': 'ബന്ധപ്പെടുക',
+        'nav_sign_in': 'സൈൻ ഇൻ / സൈൻ അപ്പ്',
+        'nav_my_bookings': 'എൻ്റെ ബുക്കിംഗുകൾ',
+        'login_prompt': 'OTP ലഭിക്കുന്നതിന് നിങ്ങളുടെ മൊബൈൽ നമ്പർ നൽകുക.',
+        'mobile_number_label': 'മൊബൈൽ നമ്പർ',
+        'send_otp_btn': 'OTP അയയ്ക്കുക',
+        'enter_otp_label': 'OTP നൽകുക',
+        'verify_login_btn': 'സ്ഥിരീകരിച്ച് ലോഗിൻ ചെയ്യുക',
+    
+        'login_welcome': 'പഞ്ച പീഠങ്ങളിലേക്ക് വീണ്ടും സ്വാഗതം',
+        'username_label': 'ഉപയോക്തൃനാമം',
+        'password_label': 'പാസ്‌വേഡ്',
+        'sign_in_only': 'സൈൻ ഇൻ ചെയ്യുക',
+        'no_account_prompt': 'അക്കൗണ്ട് ഇല്ലേ?',
+        'sign_up_btn': 'സൈൻ അപ്പ് ചെയ്യുക',
     }
 }
 
@@ -152,12 +371,15 @@ MONTH_NAMES = {
     'kn': ['ಜನವರಿ', 'ಫೆಬ್ರವರಿ', 'ಮಾರ್ಚ್', 'ಏಪ್ರಿಲ್', 'ಮೇ', 'ಜೂನ್', 'ಜುಲೈ', 'ಆಗಸ್ಟ್', 'ಸೆಪ್ಟೆಂಬರ್', 'ಅಕ್ಟೋಬರ್', 'ನವೆಂಬರ್', 'ಡಿಸೆಂಬರ್'],
     'mr': ['जानेवारी', 'फेब्रुवारी', 'मार्च', 'एप्रिल', 'मे', 'जून', 'जुलै', 'ऑगस्ट', 'सप्टेंबर', 'ऑक्टोबर', 'नोव्हेंबर', 'डिसेंबर'],
     'hi': ['जनवरी', 'फरवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'],
+    'te': ['జనవరి', 'ఫిబ్రవరి', 'మార్చి', 'ఏప్రిల్', 'మే', 'జూన్', 'జూలై', 'ఆగస్టు', 'సెప్టెంబర్', 'అక్టోబర్', 'నవంబర్', 'డిసెంబర్'],
+    'ta': ['ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்', 'மே', 'ஜூன்', 'ஜூலை', 'ஆகஸ்ட்', 'செப்டம்பர்', 'அக்டோபர்', 'நவம்பர்', 'டிசம்பர்'],
+    'ml': ['ജനുവരി', 'ഫെബ്രുവരി', 'മാർച്ച്', 'ഏപ്രിൽ', 'മെയ്', 'ജൂൺ', 'ജൂലൈ', 'ആഗസ്റ്റ്', 'സെപ്റ്റംബർ', 'ഒക്ടോബർ', 'നവംബർ', 'ഡിസംബർ'],
 }
 
 
 def get_language(request):
     lang = request.GET.get('lang')
-    if lang in ['en', 'kn', 'mr', 'hi']:
+    if lang in ['en', 'kn', 'mr', 'hi', 'te', 'ta', 'ml']:
         request.session['lang'] = lang
     return request.session.get('lang', 'en')
 
@@ -187,6 +409,12 @@ def translate_object(obj, lang):
             obj.short_name = obj.name.replace(" ಪೀಠ", "")
         elif lang == 'mr' or lang == 'hi':
             obj.short_name = obj.name.replace(" पीठ", "")
+        elif lang == 'te':
+            obj.short_name = obj.name.replace(" పీఠం", "")
+        elif lang == 'ta':
+            obj.short_name = obj.name.replace(" பீடம்", "")
+        elif lang == 'ml':
+            obj.short_name = obj.name.replace(" പീഠം", "")
         else:
             obj.short_name = obj.name.replace(" Peetha", "")
 
@@ -484,6 +712,12 @@ def media_add(request, slug):
             description_mr = form.cleaned_data.get('description_mr', '').strip()
             title_hi = form.cleaned_data.get('title_hi', '').strip()
             description_hi = form.cleaned_data.get('description_hi', '').strip()
+            title_te = form.cleaned_data.get('title_te', '').strip()
+            description_te = form.cleaned_data.get('description_te', '').strip()
+            title_ta = form.cleaned_data.get('title_ta', '').strip()
+            description_ta = form.cleaned_data.get('description_ta', '').strip()
+            title_ml = form.cleaned_data.get('title_ml', '').strip()
+            description_ml = form.cleaned_data.get('description_ml', '').strip()
 
             if media_type == 'photo':
                 # Handle multiple photos
@@ -518,6 +752,12 @@ def media_add(request, slug):
                             description_mr=description_mr,
                             title_hi=title_hi,
                             description_hi=description_hi,
+                            title_te=title_te,
+                            description_te=description_te,
+                            title_ta=title_ta,
+                            description_ta=description_ta,
+                            title_ml=title_ml,
+                            description_ml=description_ml,
                         )
                         media.save()
                         success_count += 1
@@ -564,6 +804,12 @@ def media_add(request, slug):
                                 description_mr=description_mr,
                                 title_hi=title_hi,
                                 description_hi=description_hi,
+                                title_te=title_te,
+                                description_te=description_te,
+                                title_ta=title_ta,
+                                description_ta=description_ta,
+                                title_ml=title_ml,
+                                description_ml=description_ml,
                             )
                             media.save()
                             success_count += 1
