@@ -111,7 +111,7 @@
                                 {% if item.media_type == 'photo' %}
                                     {% if item.photo_file %}
                                         <div class="gallery-image-wrapper" onclick="openLightbox('{{ item.photo_file.url }}', '{{ item.title|escapejs }}', '{{ item.description|escapejs }}')">
-                                            <img src="{{ item.photo_file.url }}" alt="{{ item.title }}">
+                                            <img loading="lazy" src="{{ item.photo_file.url }}" alt="{{ item.title }}">
                                             <div class="gallery-zoom-overlay">View Photo</div>
                                         </div>
                                     {% endif %}
@@ -169,7 +169,7 @@
             <div class="jagathguru-profile">
                 <div class="jagathguru-photo-card" style="--peetha-color: var(--peetha-color);">
                     {% if peetha.swamiji_photo %}
-                        <img src="{{ peetha.swamiji_photo.url }}" alt="{{ peetha.current_swamiji }}" class="jagathguru-img">
+                        <img loading="lazy" src="{{ peetha.swamiji_photo.url }}" alt="{{ peetha.current_swamiji }}" class="jagathguru-img">
                     {% else %}
                         <div class="jagathguru-photo-placeholder">
                             <p>Photo coming soon</p>
@@ -296,7 +296,7 @@
 <div id="gallery-lightbox" class="lightbox-modal" onclick="closeLightbox()">
     <span class="lightbox-close">&times;</span>
     <div class="lightbox-content-wrapper" onclick="event.stopPropagation()">
-        <img id="lightbox-img" class="lightbox-img" src="" alt="">
+        <img loading="lazy" id="lightbox-img" class="lightbox-img" src="" alt="">
         <div id="lightbox-caption" class="lightbox-caption"></div>
     </div>
 </div>

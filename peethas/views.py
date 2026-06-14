@@ -1033,7 +1033,7 @@ def verify_pooja_payment(request):
 @login_required(login_url='peethas:login')
 def my_bookings(request):
     lang = get_language(request)
-    bookings = PoojaBooking.objects.filter(user=request.user).order_by('-created_at')
+    bookings = PoojaBooking.objects.filter(user=request.user).select_related('pooja', 'pooja__peetha').order_by('-created_at')
     
     return render(request, 'peethas/my_bookings.html', {
         'lang': lang,

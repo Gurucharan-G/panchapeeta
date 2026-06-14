@@ -8,10 +8,10 @@
     <!-- Flanking Decorative Murals -->
     <div class="murals-mobile-container">
         <div class="hero-mural mural-left reveal">
-        <img src="{% static 'images/hero_left.jpg' %}" alt="Panchamukha Shiva and Family">
+        <img loading="lazy" src="{% static 'images/hero_left.jpg' %}" alt="Panchamukha Shiva and Family">
     </div>
     <div class="hero-mural mural-right reveal">
-        <img src="{% static 'images/hero_right.jpg' %}" alt="Veerabhadra Swami">
+        <img loading="lazy" src="{% static 'images/hero_right.jpg' %}" alt="Veerabhadra Swami">
     </div>
     </div>
 
@@ -39,7 +39,7 @@
                 <!-- Protruding Acharya portrait at top center -->
                 <div class="card-portrait-wrapper">
                     <div class="card-portrait">
-                        <img src="{% static 'images/acharyas/' %}{{ peetha.slug }}.jpg" alt="{{ peetha.acharya }}"
+                        <img loading="lazy" src="{% static 'images/acharyas/' %}{{ peetha.slug }}.jpg" alt="{{ peetha.acharya }}"
                             onerror="this.parentElement.classList.add('no-image')">
                         <div class="portrait-fallback">ॐ</div>
                     </div>
@@ -51,7 +51,7 @@
 
                     <!-- Mutt photo in center -->
                     <div class="card-mutt-photo">
-                        <img src="{% static 'images/mutts/' %}{{ peetha.slug }}.jpg" alt="{{ peetha.name }} Photo"
+                        <img loading="lazy" src="{% static 'images/mutts/' %}{{ peetha.slug }}.jpg" alt="{{ peetha.name }} Photo"
                             onerror="this.parentElement.classList.add('no-image')">
                         <div class="mutt-fallback">
                             <span class="mutt-fallback-icon">🛕</span>
