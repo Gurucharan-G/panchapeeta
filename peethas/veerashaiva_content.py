@@ -17,7 +17,7 @@ Structure per language:
 VEERASHAIVA_CONTENT = {
     # ─────────────────────── ENGLISH ───────────────────────
     'en': {
-        'title': 'Veerashaiva-Lingayat',
+        'title': 'Srimad Veerashiva',
 
         'opening_shloka': {
             'verse': (
@@ -129,7 +129,7 @@ VEERASHAIVA_CONTENT = {
 
     # ─────────────────────── KANNADA ───────────────────────
     'kn': {
-        'title': 'ವೀರಶೈವ-ಲಿಂಗಾಯತ',
+        'title': 'ಶ್ರೀಮದ್ ವೀರಶೈವ',
 
         'opening_shloka': {
             'verse': (
@@ -207,7 +207,7 @@ VEERASHAIVA_CONTENT = {
 
     # ─────────────────────── HINDI ───────────────────────
     'hi': {
-        'title': 'वीरशैव-लिंगायत',
+        'title': 'श्रीमद् वीरशैव',
 
         'opening_shloka': {
             'verse': (
@@ -302,7 +302,7 @@ VEERASHAIVA_CONTENT = {
 
     # ─────────────────────── MARATHI ───────────────────────
     'mr': {
-        'title': 'वीरशैव-लिंगायत',
+        'title': 'श्रीमद् वीरशैव',
 
         'opening_shloka': {
             'verse': (
@@ -398,7 +398,7 @@ VEERASHAIVA_CONTENT = {
         ),
     },
     'te': {
-        'title': 'వీరశైవ-లింగాయత్',
+        'title': 'శ్రీమద్ వీరశైవ',
 
         'opening_shloka': {
             'verse': (
@@ -492,7 +492,7 @@ VEERASHAIVA_CONTENT = {
         ),
     },
     'ta': {
-        'title': 'வீரசைவ-லிங்காயத்',
+        'title': 'ஸ்ரீமத் வீரசைவ',
 
         'opening_shloka': {
             'verse': (
@@ -583,7 +583,7 @@ VEERASHAIVA_CONTENT = {
         ),
     },
     'ml': {
-        'title': 'വീരശൈവ-ലിംഗായത്ത്',
+        'title': 'ശ്രീമദ് വീരശൈവ',
 
         'opening_shloka': {
             'verse': (
