@@ -25,6 +25,8 @@ class Peetha(models.Model):
     contact_phone = models.CharField(max_length=50, blank=True)
     contact_email = models.EmailField(blank=True)
     contact_address = models.TextField(blank=True)
+    live_youtube_url = models.URLField(blank=True, null=True, help_text="YouTube Live stream URL (leave blank if not active)")
+    live_youtube_title = models.CharField(max_length=200, blank=True, null=True, help_text="Custom title for the live stream (defaults to 'Swamiji Divine Live Stream' if blank)")
 
     # Kannada translations
     name_kn = models.CharField(max_length=200, blank=True)
@@ -92,6 +94,14 @@ class Peetha(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_live_youtube_id(self):
+        if not self.live_youtube_url:
+            return None
+        import re
+        pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})'
+        match = re.search(pattern, self.live_youtube_url)
+        return match.group(1) if match else None
 
 
 class PeethaHandler(models.Model):
@@ -220,8 +230,20 @@ class Pooja(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, help_text="Price in Rupees")
+    category = models.CharField(
+        max_length=50,
+        default='special',
+        choices=(
+            ('daily', 'Daily Seva'),
+            ('special', 'Special Pooja'),
+            ('homa', 'Homa & Havan'),
+            ('utsava', 'Utsava / Festival Seva'),
+        )
+    )
     is_active = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=0)
+    total_slots = models.PositiveIntegerField(default=10, help_text="Total available slots per day")
+    available_days = models.CharField(max_length=200, default='all', help_text="Comma-separated weekdays or 'all'")
 
     # Translations
     name_kn = models.CharField(max_length=200, blank=True)
@@ -258,6 +280,8 @@ class PoojaBooking(models.Model):
     devotee_email = models.EmailField(blank=True)
     gotra = models.CharField(max_length=100, blank=True)
     nakshatra = models.CharField(max_length=100, blank=True)
+    rashi = models.CharField(max_length=100, blank=True)
+    family_members = models.TextField(blank=True, help_text="Names of family members to include in sankalpa")
     date_of_pooja = models.DateField()
     
     amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -274,3 +298,75 @@ class PoojaBooking(models.Model):
 
     def __str__(self):
         return f"{self.devotee_name} - {self.pooja.name} ({self.get_payment_status_display()})"
+
+    @property
+    def formatted_family_members(self):
+        if not self.family_members:
+            return ""
+        import json
+        try:
+            members = json.loads(self.family_members)
+            if isinstance(members, list):
+                parts = []
+                for m in members:
+                    details = []
+                    if m.get('gotra'): details.append(f"G: {m['gotra']}")
+                    if m.get('nakshatra'): details.append(f"N: {m['nakshatra']}")
+                    if m.get('rashi'): details.append(f"R: {m['rashi']}")
+                    detail_str = f" ({', '.join(details)})" if details else ""
+                    parts.append(f"{m['name']}{detail_str}")
+                return ", ".join(parts)
+        except Exception:
+            pass
+        return self.family_members
+
+
+class FeatureFlag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    is_enabled = models.BooleanField(default=False)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.name}: {'Enabled' if self.is_enabled else 'Disabled'}"
+
+
+class UserProfile(models.Model):
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other'),
+    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile_profile')
+    phone_number = models.CharField(max_length=20, blank=True)
+    address = models.TextField(blank=True)
+    profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='male')
+    gotra = models.CharField(max_length=100, blank=True)
+    nakshatra = models.CharField(max_length=100, blank=True)
+    rashi = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return f"Profile - {self.user.username}"
+
+    def completion_percentage(self):
+        fields = [
+            self.user.first_name,
+            self.user.email,
+            self.phone_number,
+            self.address,
+            self.profile_pic,
+            self.gender,
+            self.gotra,
+            self.nakshatra,
+            self.rashi
+        ]
+        filled = sum(1 for f in fields if f)
+        return int((filled / len(fields)) * 100)
+
+
+def get_user_profile(self):
+    profile, created = UserProfile.objects.get_or_create(user=self)
+    return profile
+
+User.profile = property(get_user_profile)
+

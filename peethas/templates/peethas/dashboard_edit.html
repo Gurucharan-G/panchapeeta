@@ -7,7 +7,7 @@
     <div class="container">
         <div class="edit-card">
             <div class="edit-header">
-                <h2>Edit {% if edit_type == 'media' %}Media Item{% else %}Travel Event{% endif %}</h2>
+                <h2>Edit {% if edit_type == 'media' %}Media Item{% elif edit_type == 'travel' %}Travel Event{% else %}Pooja/Seva{% endif %}</h2>
                 <p>For: <span class="peetha-name" style="color: {{ peetha.color }};">{{ peetha.name }}</span></p>
             </div>
 
@@ -74,7 +74,7 @@
                             </div>
                         </div>
                     </details>
-                {% else %}
+                {% elif edit_type == 'travel' %}
                     <div class="form-group">
                         <label>Start Date</label>
                         {{ form.start_date }}
@@ -116,6 +116,115 @@
                                 {{ form.title_hi }}
                                 {{ form.location_hi }}
                                 {{ form.description_hi }}
+                            </div>
+                        </div>
+                    </details>
+                {% else %}
+                    <style>
+                        .weekdays-checkbox-grid ul {
+                            list-style: none;
+                            padding: 0;
+                            margin: 0;
+                            display: grid;
+                            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                            gap: 10px;
+                            width: 100%;
+                        }
+                        .weekdays-checkbox-grid li {
+                            display: flex;
+                            align-items: center;
+                        }
+                        .weekdays-checkbox-grid label {
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                            margin-bottom: 0;
+                            cursor: pointer;
+                            font-weight: normal;
+                            font-size: 0.9rem;
+                        }
+                        .weekdays-checkbox-grid input[type="checkbox"] {
+                            cursor: pointer;
+                        }
+                    </style>
+                    <div class="form-group">
+                        <label>Pooja/Seva Name (English) *</label>
+                        {{ form.name }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Description (English)</label>
+                        {{ form.description }}
+                    </div>
+
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Price (INR) *</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="form-group">
+                            <label>Category *</label>
+                            {{ form.category }}
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Total Daily Slots *</label>
+                            {{ form.total_slots }}
+                        </div>
+                        <div class="form-group">
+                            <label>Display Order</label>
+                            {{ form.order }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="margin-bottom: 8px; display: block; font-weight: bold;">Available Days</label>
+                        <div class="weekdays-checkbox-grid" style="background: #fdfdfd; padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px;">
+                            {{ form.available_days_list }}
+                        </div>
+                        <span class="help-text" style="font-size: 0.8rem; color: #64748b; margin-top: 4px; display: block;">Select weekdays when this Pooja/Seva is available. If none are selected, it defaults to all.</span>
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-top: 15px; margin-bottom: 15px;">
+                        {{ form.is_active }}
+                        <label for="id_is_active" style="margin-bottom: 0; font-weight: bold; cursor: pointer;">Is Active</label>
+                    </div>
+
+                    <!-- Multilingual collapse -->
+                    <details class="multilingual-details" open style="margin-bottom: 15px;">
+                        <summary>Translations (Kannada, Marathi, Hindi, Telugu, Tamil, Malayalam)</summary>
+                        <div class="translation-fields">
+                            <div class="lang-section-block">
+                                <h5>ಕನ್ನಡ (Kannada)</h5>
+                                {{ form.name_kn }}
+                                {{ form.description_kn }}
+                            </div>
+                            <div class="lang-section-block">
+                                <h5>मराठी (Marathi)</h5>
+                                {{ form.name_mr }}
+                                {{ form.description_mr }}
+                            </div>
+                            <div class="lang-section-block">
+                                <h5>हिन्दी (Hindi)</h5>
+                                {{ form.name_hi }}
+                                {{ form.description_hi }}
+                            </div>
+                            <div class="lang-section-block">
+                                <h5>తెలుగు (Telugu)</h5>
+                                {{ form.name_te }}
+                                {{ form.description_te }}
+                            </div>
+                            <div class="lang-section-block">
+                                <h5>தமிழ் (Tamil)</h5>
+                                {{ form.name_ta }}
+                                {{ form.description_ta }}
+                            </div>
+                            <div class="lang-section-block">
+                                <h5>മലയാളം (Malayalam)</h5>
+                                {{ form.name_ml }}
+                                {{ form.description_ml }}
                             </div>
                         </div>
                     </details>

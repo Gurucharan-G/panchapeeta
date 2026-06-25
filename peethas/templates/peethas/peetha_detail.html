@@ -3,7 +3,7 @@
 
 {% block title %}{{ peetha.name }} — {{ labels.site_title }}{% endblock %}
 
-{% block navbar %}
+{% block nav_items %}
 <a href="{% url 'peethas:home' %}" class="nav-link">{{ labels.nav_home|default:"Home" }}</a>
 <a href="#about" class="nav-link peetha-tab active" data-tab="about">{{ peetha.name }}</a>
 {% if peetha.current_swamiji %}
@@ -11,9 +11,6 @@
 {% endif %}
 <a href="#pooja-booking" class="nav-link peetha-tab" data-tab="pooja-booking">{{ labels.nav_pooja_booking|default:"Pooja Booking" }}</a>
 <a href="#contact-us" class="nav-link peetha-tab" data-tab="contact-us">{{ labels.nav_contact_us|default:"Contact Us" }}</a>
-{% if user.is_authenticated %}
-    <a href="{% url 'peethas:dashboard_home' %}" class="nav-link nav-btn-dashboard">Dashboard</a>
-{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -139,6 +136,23 @@
             </div>
 
             <div class="detail-content">
+                {% if peetha.live_youtube_url %}
+                <div id="live-stream-container" class="live-stream-card" style="margin-bottom: 30px; border-radius: 12px; background: white; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 20px; overflow: hidden; --peetha-color: var(--peetha-color);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                        <h3 style="margin: 0; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 10px; color: var(--text);">
+                            <span style="font-size: 1.5rem;">📺</span> {{ peetha.live_youtube_title|default:"Swamiji Divine Live Stream" }}
+                        </h3>
+                        <span class="live-badge" style="background-color: #ffeef0; color: #d32f2f; border: 1px solid #ffcdd2; font-weight: bold; font-size: 0.85rem; padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
+                            <span class="live-dot" style="display: inline-block; width: 8px; height: 8px; background-color: #d32f2f; border-radius: 50%; animation: pulse-live 1.5s infinite;"></span>
+                            LIVE NOW
+                        </span>
+                    </div>
+                    <div class="video-ratio-container" style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%; border-radius: 8px; overflow: hidden; background: #000;">
+                        <iframe src="https://www.youtube-nocookie.com/embed/{{ peetha.get_live_youtube_id }}" referrerpolicy="strict-origin-when-cross-origin" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+                    </div>
+                </div>
+                {% endif %}
+
                 <div class="content-section">
                     <h3>{{ labels.about_label }}</h3>
                     <p>{{ peetha.description }}</p>
@@ -206,21 +220,45 @@
                     <span class="decor-line"></span>
                     <span class="decor-line"></span>
                 </div>
-                <h2 class="section-title">Pooja Booking</h2>
+                <h2 class="section-title">Seva & Pooja Booking</h2>
             </div>
 
             {% if poojas %}
-                <div class="pooja-list">
+                <!-- Category Filter Pills -->
+                <div class="seva-filter-bar" id="sevaFilterBar">
+                    <button class="seva-filter-pill active" data-filter="all" onclick="filterSevas('all', this)">🕉️ All Sevas</button>
+                    <button class="seva-filter-pill" data-filter="daily" onclick="filterSevas('daily', this)">Daily Seva</button>
+                    <button class="seva-filter-pill" data-filter="special" onclick="filterSevas('special', this)">Special Pooja</button>
+                    <button class="seva-filter-pill" data-filter="homa" onclick="filterSevas('homa', this)">Homa & Havan</button>
+                    <button class="seva-filter-pill" data-filter="utsava" onclick="filterSevas('utsava', this)">Festival Seva</button>
+                </div>
+
+                <!-- Premium Seva Cards Grid -->
+                <div class="seva-cards-grid" id="sevaCardsGrid">
                     {% for pooja in poojas %}
-                        <div class="contact-card" style="--peetha-color: var(--peetha-color); text-align: left;">
-                            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 8px;">{{ pooja.name }}</h3>
-                            {% if pooja.description %}<p style="margin-bottom: 12px; font-size: 0.9rem;">{{ pooja.description }}</p>{% endif %}
-                            <p style="font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 16px;">₹{{ pooja.price }}</p>
-                            {% if request.user.is_authenticated %}
-                                <button class="pooja-contact-btn" style="background-color: var(--peetha-color); width: 100%; border: none; cursor: pointer;" onclick="openBookingModal('{{ pooja.id }}', '{{ pooja.name|escapejs }}', '{{ pooja.price }}')">Book Now</button>
-                            {% else %}
-                                <a href="{% url 'peethas:login' %}?next={{ request.path }}" class="pooja-contact-btn" style="background-color: var(--peetha-color); width: 100%; border: none; cursor: pointer; text-align: center; text-decoration: none; display: inline-block; box-sizing: border-box;">Login to Book</a>
-                            {% endif %}
+                        <div class="seva-card" data-category="{{ pooja.category }}">
+                            <div class="seva-card-header">
+                                <h3>{{ pooja.name }}</h3>
+                                <span class="seva-card-category-badge" data-cat="{{ pooja.category }}">{{ pooja.get_category_display }}</span>
+                            </div>
+                            <div class="seva-card-body">
+                                {% if pooja.description %}
+                                    <p class="seva-card-desc">{{ pooja.description }}</p>
+                                {% else %}
+                                    <p class="seva-card-desc" style="color: var(--text-muted); font-style: italic;">Sacred offering at {{ peetha.name }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="seva-card-footer">
+                                <div class="seva-card-price">
+                                    ₹{{ pooja.price }}
+                                    <small>per seva</small>
+                                </div>
+                                {% if request.user.is_authenticated %}
+                                    <button class="seva-book-btn" style="background-color: var(--peetha-color);" onclick="openBookingModal('{{ pooja.id }}', '{{ pooja.name|escapejs }}', '{{ pooja.price }}')">Book Now</button>
+                                {% else %}
+                                    <a href="{% url 'peethas:login' %}?next={{ request.path }}" class="seva-book-btn" style="background-color: var(--peetha-color);">Login to Book</a>
+                                {% endif %}
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
@@ -301,36 +339,237 @@
     </div>
 </div>
 
+<style>
+    :root {
+        --peetha-color: {{ peetha.color }};
+    }
+    .custom-calendar-container {
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 5px;
+        font-family: inherit;
+        color: #1e293b;
+    }
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    .calendar-title {
+        font-weight: bold;
+        color: #0f172a;
+        font-size: 1rem;
+    }
+    .calendar-nav-btn {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 4px;
+        padding: 4px 10px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: all 0.2s;
+        font-weight: bold;
+    }
+    .calendar-nav-btn:hover:not(:disabled) {
+        background: #f1f5f9;
+        border-color: #94a3b8;
+    }
+    .calendar-nav-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+        text-align: center;
+    }
+    .calendar-weekday {
+        font-weight: bold;
+        font-size: 0.75rem;
+        color: #64748b;
+        padding-bottom: 4px;
+        text-transform: uppercase;
+    }
+    .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 2px solid transparent;
+        user-select: none;
+    }
+    .calendar-day.empty {
+        cursor: default;
+        background: transparent !important;
+    }
+    
+    /* Status colors */
+    .calendar-day.status-not-open {
+        background: #f1f5f9;
+        color: #cbd5e1;
+        cursor: not-allowed;
+    }
+    .calendar-day.status-available {
+        background: #dcfce7;
+        color: #15803d;
+    }
+    .calendar-day.status-available:hover {
+        background: #bbf7d0;
+    }
+    .calendar-day.status-fast {
+        background: #ffedd5;
+        color: #c2410c;
+    }
+    .calendar-day.status-fast:hover {
+        background: #fed7aa;
+    }
+    .calendar-day.status-booked {
+        background: #fee2e2;
+        color: #b91c1c;
+        cursor: not-allowed;
+    }
+    
+    /* Selected state */
+    .calendar-day.selected {
+        border-color: var(--peetha-color, #0f172a) !important;
+        box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.15);
+        transform: scale(1.05);
+    }
+    
+    /* Legend */
+    .calendar-legend {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+        font-size: 0.75rem;
+        color: #475569;
+        border-top: 1px dashed #cbd5e1;
+        padding-top: 10px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+    }
+    .legend-color.color-avail { background: #dcfce7; border: 1px solid #bbf7d0; }
+    .legend-color.color-fast { background: #ffedd5; border: 1px solid #fed7aa; }
+    .legend-color.color-booked { background: #fee2e2; border: 1px solid #fecaca; }
+    .legend-color.color-not-open { background: #f1f5f9; border: 1px solid #cbd5e1; }
+    
+    /* Responsive Columns for Booking Modal */
+    .lightbox-modal {
+        overflow-y: auto;
+        padding: 20px 10px;
+    }
+    .booking-modal-content {
+        max-width: 900px !important;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    @media (min-width: 768px) {
+        .booking-columns-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+        .booking-modal-form {
+            padding: 24px 35px 30px;
+        }
+    }
+</style>
+
 <!-- Pooja Booking Modal -->
 <div id="booking-modal" class="lightbox-modal" onclick="closeBookingModal()">
     <span class="lightbox-close">&times;</span>
-    <div class="lightbox-content-wrapper" style="--peetha-color: {{ peetha.color }}; background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; color: var(--dark);" onclick="event.stopPropagation()">
-        <h3 id="booking-pooja-name" style="color: var(--peetha-color); margin-bottom: 20px;">Book Pooja</h3>
-        <form action="{% url 'peethas:initiate_pooja_booking' peetha.slug %}" method="POST">
+    <div class="booking-modal-content" onclick="event.stopPropagation()" style="--peetha-color: {{ peetha.color }};">
+        <div class="booking-modal-header">
+            <div class="modal-icon">🙏</div>
+            <h3 id="booking-pooja-name">Book Seva</h3>
+            <p class="modal-subtitle">{{ peetha.name }}</p>
+        </div>
+        <form action="{% url 'peethas:initiate_pooja_booking' peetha.slug %}" method="POST" class="booking-modal-form">
             {% csrf_token %}
             <input type="hidden" name="pooja_id" id="booking-pooja-id">
-            
-            <div style="margin-bottom: 15px; text-align: left;">
-                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Devotee Name *</label>
-                <input type="text" name="devotee_name" value="{% if request.user.is_authenticated %}{{ request.user.get_full_name|default:request.user.username }}{% endif %}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-            </div>
-            
-            <div style="margin-bottom: 15px; text-align: left;">
-                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Phone Number *</label>
-                <input type="tel" name="devotee_phone" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-            </div>
 
-            <div style="margin-bottom: 15px; text-align: left;">
-                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Email Address</label>
-                <input type="email" name="devotee_email" value="{% if request.user.is_authenticated %}{{ request.user.email }}{% endif %}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-            </div>
+            <div class="booking-columns-layout">
+                <!-- LEFT COLUMN: Devotee & Sankalpa Details -->
+                <div class="booking-layout-column">
+                    <div class="booking-form-group">
+                        <label>Devotee Name *</label>
+                        <input type="text" name="devotee_name" class="booking-form-input" value="{% if request.user.is_authenticated %}{{ request.user.first_name|default:request.user.username }}{% endif %}" required>
+                    </div>
 
-            <div style="margin-bottom: 20px; text-align: left;">
-                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Date of Pooja *</label>
-                <input type="date" name="date_of_pooja" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-            </div>
+                    <div class="booking-form-row">
+                        <div class="booking-form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" name="devotee_phone" class="booking-form-input" value="{% if request.user.is_authenticated %}{{ request.user.profile.phone_number }}{% endif %}" required>
+                        </div>
+                        <div class="booking-form-group">
+                            <label>Email <span class="optional-tag">(Optional)</span></label>
+                            <input type="email" name="devotee_email" class="booking-form-input" value="{% if request.user.is_authenticated %}{{ request.user.email }}{% endif %}">
+                        </div>
+                    </div>
 
-            <button type="submit" class="pooja-contact-btn" style="background-color: var(--peetha-color); width: 100%; border: none; cursor: pointer; margin-top: 10px;">Proceed to Pay ₹<span id="booking-pooja-price"></span></button>
+                    <div class="booking-section-divider" style="margin-top: 15px;">🔱 Sankalpa Details</div>
+
+                    <div class="booking-form-row">
+                        <div class="booking-form-group">
+                            <label>Gotra <span class="optional-tag">(Optional)</span></label>
+                            <input type="text" name="gotra" class="booking-form-input" value="{% if request.user.is_authenticated %}{{ request.user.profile.gotra }}{% endif %}" placeholder="e.g. Bharadwaja">
+                        </div>
+                        <div class="booking-form-group">
+                            <label>Nakshatra <span class="optional-tag">(Optional)</span></label>
+                            <input type="text" name="nakshatra" class="booking-form-input" value="{% if request.user.is_authenticated %}{{ request.user.profile.nakshatra }}{% endif %}" placeholder="e.g. Pushya">
+                        </div>
+                    </div>
+
+                    <div class="booking-form-row">
+                        <div class="booking-form-group">
+                            <label>Rashi <span class="optional-tag">(Optional)</span></label>
+                            <input type="text" name="rashi" class="booking-form-input" value="{% if request.user.is_authenticated %}{{ request.user.profile.rashi }}{% endif %}" placeholder="e.g. Karka (Cancer)">
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Family Members Section -->
+                    <div style="margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 15px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <label style="font-weight: 600; font-size: 0.82rem; color: var(--text); text-transform: uppercase; letter-spacing: 0.4px; margin: 0;">Family Members (Optional)</label>
+                            <button type="button" class="btn-add-member" onclick="addFamilyMemberRow()" style="background-color: var(--peetha-color); color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; transition: all 0.2s;">+ Add Member</button>
+                        </div>
+                        <div id="family-members-container">
+                            <!-- Dynamically added forms will go here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: Calendar & Proceed Button -->
+                <div class="booking-layout-column">
+                    <div class="booking-form-group" style="margin-bottom: 0;">
+                        <label style="font-weight: bold; margin-bottom: 8px; display: block;">Select Date of Pooja *</label>
+                        <input type="hidden" name="date_of_pooja" id="booking-date-input" required>
+                        <div id="booking-calendar-container" class="custom-calendar-container"></div>
+                    </div>
+
+                    <button type="submit" id="booking-submit-btn" class="booking-submit-btn" style="background-color: var(--peetha-color); margin-top: 20px;">Proceed to Pay ₹<span id="booking-pooja-price"></span></button>
+                </div>
+            </div>
         </form>
     </div>
 </div>
@@ -353,15 +592,258 @@
         modal.classList.remove('active');
     }
 
+    let calendarYear, calendarMonth;
+    let selectedDateStr = null;
+    let currentPoojaId = null;
+
+    const MONTH_LABELS = {
+        'en': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        'kn': ['ಜನವರಿ', 'ಫೆಬ್ರವರಿ', 'ಮಾರ್ಚ್', 'ಏಪ್ರಿಲ್', 'ಮೇ', 'ಜೂನ್', 'ಜುಲೈ', 'ಆಗಸ್ಟ್', 'ಸೆಪ್ಟೆಂಬರ್', 'ಅಕ್ಟೋಬರ್', 'ನವಂಬರ್', 'ಡಿಸೆಂಬರ್'],
+        'mr': ['जानेवारी', 'फेब्रुवारी', 'मार्च', 'एप्रिल', 'मे', 'जून', 'जुलै', 'ऑगस्ट', 'सप्टेंबर', 'ऑक्टोबर', 'नोव्हेंबर', 'डिसेंबर'],
+        'hi': ['जनवरी', 'फरवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'],
+        'te': ['జనవరి', 'ఫిబ్రవరి', 'మార్చి', 'ఏప్రిల్', 'మే', 'జూన్', 'జూలై', 'ఆగస్టు', 'సెప్టेंबर', 'అక్టోబర్', 'నవంబర్', 'డిసెంబర్'],
+        'ta': ['ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்', 'மே', 'ஜூன்', 'ஜூலை', 'ஆகஸ்ட்', 'செப்டம்பர்', 'அக்டோபர்', 'நவம்பர்', 'டிசம்பர்'],
+        'ml': ['ജനുവരി', 'ഫെബ്രുവരി', 'മാർച്ച്', 'ഏപ്രിൽ', 'മെയ്', 'ജൂൺ', 'ജൂലൈ', 'ആഗസ്റ്റ്', 'സെപ്റ്റംബർ', 'ഒക്ടോബർ', 'നവംബർ', 'ഡിസംബർ'],
+    };
+
+    let familyMemberCount = 0;
+
+    function addFamilyMemberRow() {
+        const container = document.getElementById('family-members-container');
+        if (!container) return;
+
+        familyMemberCount++;
+        const rowId = `family-member-row-${familyMemberCount}`;
+        const div = document.createElement('div');
+        div.id = rowId;
+        div.className = 'family-member-row-card';
+        div.style = 'border: 1.5px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 12px; position: relative; background: #fafaf9;';
+        
+        div.innerHTML = `
+            <button type="button" onclick="removeFamilyMemberRow('${rowId}')" style="position: absolute; top: 6px; right: 10px; border: none; background: transparent; font-size: 1.15rem; color: #ef4444; cursor: pointer; font-weight: bold; padding: 0; line-height: 1;">&times;</button>
+            <div style="font-weight: bold; font-size: 0.8rem; margin-bottom: 8px; color: var(--peetha-color);">Family Member #${familyMemberCount}</div>
+            
+            <div class="booking-form-group" style="margin-bottom: 8px;">
+                <label style="font-size: 0.75rem; margin-bottom: 3px; display: block; font-weight: bold;">Name *</label>
+                <input type="text" name="family_member_name" class="booking-form-input" style="padding: 6px 10px; font-size: 0.85rem;" placeholder="Full Name" required>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                <div class="booking-form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.75rem; margin-bottom: 3px; display: block; font-weight: bold;">Gotra</label>
+                    <input type="text" name="family_member_gotra" class="booking-form-input" style="padding: 6px 10px; font-size: 0.85rem;" placeholder="Gotra">
+                </div>
+                <div class="booking-form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.75rem; margin-bottom: 3px; display: block; font-weight: bold;">Nakshatra</label>
+                    <input type="text" name="family_member_nakshatra" class="booking-form-input" style="padding: 6px 10px; font-size: 0.85rem;" placeholder="Nakshatra">
+                </div>
+                <div class="booking-form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.75rem; margin-bottom: 3px; display: block; font-weight: bold;">Rashi</label>
+                    <input type="text" name="family_member_rashi" class="booking-form-input" style="padding: 6px 10px; font-size: 0.85rem;" placeholder="Rashi">
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    }
+
+    function removeFamilyMemberRow(rowId) {
+        const row = document.getElementById(rowId);
+        if (row) {
+            row.remove();
+        }
+    }
+
     function openBookingModal(id, name, price) {
         document.getElementById('booking-pooja-id').value = id;
         document.getElementById('booking-pooja-name').innerText = 'Book ' + name;
         document.getElementById('booking-pooja-price').innerText = price;
+        
+        currentPoojaId = id;
+        selectedDateStr = null;
+        document.getElementById('booking-date-input').value = '';
+        
+        // Reset dynamic family members list
+        const famContainer = document.getElementById('family-members-container');
+        if (famContainer) famContainer.innerHTML = '';
+        familyMemberCount = 0;
+        
+        // Disable submit button initially
+        const submitBtn = document.getElementById('booking-submit-btn');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = 0.5;
+            submitBtn.style.cursor = 'not-allowed';
+        }
+
+        // Set calendar to current date
+        const today = new Date();
+        calendarYear = today.getFullYear();
+        calendarMonth = today.getMonth();
+
         document.getElementById('booking-modal').classList.add('active');
+        
+        // Render the calendar
+        fetchAndRenderCalendar(calendarYear, calendarMonth);
     }
 
     function closeBookingModal() {
         document.getElementById('booking-modal').classList.remove('active');
+    }
+
+    function fetchAndRenderCalendar(year, month) {
+        const container = document.getElementById('booking-calendar-container');
+        if (!container) return;
+
+        container.innerHTML = `<div style="text-align: center; padding: 20px; color: #64748b;">Loading calendar...</div>`;
+
+        const peethaSlug = '{{ peetha.slug }}';
+        const url = `/peetha/${peethaSlug}/pooja/${currentPoojaId}/availability/?year=${year}&month=${month + 1}`;
+
+        fetch(url)
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to fetch availability");
+                return res.json();
+            })
+            .then(data => {
+                renderCalendarGrid(year, month, data.availability);
+            })
+            .catch(err => {
+                console.error(err);
+                container.innerHTML = `<div style="text-align: center; padding: 20px; color: #ef4444;">Error loading availability. Please try again.</div>`;
+            });
+    }
+
+    function renderCalendarGrid(year, month, availability) {
+        const container = document.getElementById('booking-calendar-container');
+        if (!container) return;
+
+        const lang = '{{ lang }}' || 'en';
+        const monthName = MONTH_LABELS[lang] ? MONTH_LABELS[lang][month] : MONTH_LABELS['en'][month];
+        
+        // Calculate days
+        const firstDayIndex = new Date(year, month, 1).getDay(); // 0 (Sun) to 6 (Sat)
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        let html = `
+            <div class="calendar-header">
+                <button type="button" class="calendar-nav-btn" id="cal-prev-btn">&lt;</button>
+                <div class="calendar-title">${monthName} ${year}</div>
+                <button type="button" class="calendar-nav-btn" id="cal-next-btn">&gt;</button>
+            </div>
+            <div class="calendar-grid">
+                <div class="calendar-weekday">Su</div>
+                <div class="calendar-weekday">Mo</div>
+                <div class="calendar-weekday">Tu</div>
+                <div class="calendar-weekday">We</div>
+                <div class="calendar-weekday">Th</div>
+                <div class="calendar-weekday">Fr</div>
+                <div class="calendar-weekday">Sa</div>
+        `;
+
+        // Render empty/previous month padding cells
+        for (let i = firstDayIndex; i > 0; i--) {
+            html += `<div class="calendar-day empty"></div>`;
+        }
+
+        // Render month days
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(year, month, day);
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            const dateStr = `${yyyy}-${mm}-${dd}`;
+
+            const status = availability[dateStr] || 'not_open';
+            const isSelected = selectedDateStr === dateStr ? 'selected' : '';
+            
+            let statusClass = 'status-not-open';
+            let clickAttr = '';
+            
+            if (status === 'available') {
+                statusClass = 'status-available';
+                clickAttr = `onclick="selectCalendarDate('${dateStr}')"`;
+            } else if (status === 'fast') {
+                statusClass = 'status-fast';
+                clickAttr = `onclick="selectCalendarDate('${dateStr}')"`;
+            } else if (status === 'booked') {
+                statusClass = 'status-booked';
+            }
+
+            html += `
+                <div class="calendar-day ${statusClass} ${isSelected}" ${clickAttr} data-date="${dateStr}">
+                    ${day}
+                </div>
+            `;
+        }
+
+        html += `
+            </div>
+            <div class="calendar-legend">
+                <div class="legend-item"><span class="legend-color color-avail"></span> Available</div>
+                <div class="legend-item"><span class="legend-color color-fast"></span> Booking Fast</div>
+                <div class="legend-item"><span class="legend-color color-booked"></span> Fully Booked</div>
+                <div class="legend-item"><span class="legend-color color-not-open"></span> Closed</div>
+            </div>
+        `;
+
+        container.innerHTML = html;
+
+        // Hook navigation buttons
+        const today = new Date();
+        const currentYearMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const activeYearMonth = new Date(year, month, 1);
+
+        const prevBtn = document.getElementById('cal-prev-btn');
+        const nextBtn = document.getElementById('cal-next-btn');
+
+        if (prevBtn) {
+            if (activeYearMonth <= currentYearMonth) {
+                prevBtn.disabled = true;
+            }
+            prevBtn.addEventListener('click', () => {
+                if (calendarMonth === 0) {
+                    calendarMonth = 11;
+                    calendarYear--;
+                } else {
+                    calendarMonth--;
+                }
+                fetchAndRenderCalendar(calendarYear, calendarMonth);
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                if (calendarMonth === 11) {
+                    calendarMonth = 0;
+                    calendarYear++;
+                } else {
+                    calendarMonth++;
+                }
+                fetchAndRenderCalendar(calendarYear, calendarMonth);
+            });
+        }
+    }
+
+    function selectCalendarDate(dateStr) {
+        selectedDateStr = dateStr;
+        document.getElementById('booking-date-input').value = dateStr;
+
+        // Update selected class in DOM
+        document.querySelectorAll('.calendar-day').forEach(el => {
+            el.classList.remove('selected');
+        });
+        const selectedCell = document.querySelector(`.calendar-day[data-date="${dateStr}"]`);
+        if (selectedCell) {
+            selectedCell.classList.add('selected');
+        }
+
+        // Enable submit button
+        const submitBtn = document.getElementById('booking-submit-btn');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = 1.0;
+            submitBtn.style.cursor = 'pointer';
+        }
     }
 
     // Peetha detail page tab switching
@@ -398,8 +880,17 @@
             if (defaultLink) defaultLink.classList.add('active');
         }
 
-        // Scroll to top when switching tabs
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Scroll to top when switching tabs, unless target is live stream card
+        if (hash === '#live-stream-container') {
+            const liveCard = document.getElementById('live-stream-container');
+            if (liveCard) {
+                setTimeout(() => {
+                    liveCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            }
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     }
 
     // Listen for hash changes
@@ -417,5 +908,30 @@
             });
         });
     });
+
+    // Seva category filtering
+    function filterSevas(category, btn) {
+        // Update active pill
+        document.querySelectorAll('.seva-filter-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Filter cards with animation
+        const cards = document.querySelectorAll('.seva-card');
+        cards.forEach(card => {
+            const cat = card.getAttribute('data-category');
+            if (category === 'all' || cat === category) {
+                card.style.display = '';
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(10px)';
+                requestAnimationFrame(() => {
+                    card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                });
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
 </script>
 {% endblock %}

@@ -6,18 +6,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Peetha, TravelPlan, PeethaHandler, PeethaMedia, Pooja, PoojaBooking, PeethaPaymentConfig
-from .forms import TravelPlanForm, PeethaMediaAddForm, PeethaMediaEditForm
+from .models import Peetha, TravelPlan, PeethaHandler, PeethaMedia, Pooja, PoojaBooking, PeethaPaymentConfig, FeatureFlag
+from .forms import TravelPlanForm, PeethaMediaAddForm, PeethaMediaEditForm, PeethaHandlerForm, PeethaPaymentConfigForm, PoojaForm
+from django.db import models
 
 import datetime
 import json
 import razorpay
-from firebase_admin import auth as firebase_auth
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from .heritage_content import HERITAGE_CONTENT
 from .veerashaiva_content import VEERASHAIVA_CONTENT
-from .feature_flags import USE_OTP_LOGIN, USE_RECTANGULAR_PORTRAITS
+from .feature_flags import USE_RECTANGULAR_PORTRAITS
 
 # UI Static Labels Translations
 TRANSLATIONS = {
@@ -396,6 +396,8 @@ def translate_object(obj, lang):
         fields = ['title', 'description']
     elif isinstance(obj, TravelPlan):
         fields = ['title', 'location', 'description']
+    elif isinstance(obj, Pooja):
+        fields = ['name', 'description']
     else:
         fields = []
 
@@ -504,119 +506,62 @@ def login_view(request):
             return redirect('peethas:dashboard_home')
         return redirect(next_url)
         
-    if USE_OTP_LOGIN:
-        return render(request, 'peethas/login_otp.html', {
-            'lang': lang,
-            'labels': TRANSLATIONS[lang],
-            'next': next_url,
-            'firebase_config': json.dumps(settings.FIREBASE_WEB_CONFIG)
-        })
-    else:
-        if request.method == 'POST':
-            user_in = request.POST.get('username')
-            pass_in = request.POST.get('password')
-            user = authenticate(request, username=user_in, password=pass_in)
-            if user is not None:
-                login(request, user)
-                next_url = request.POST.get('next', 'peethas:home')
-                if user.is_superuser or hasattr(user, 'handler_profile'):
-                    return redirect('peethas:dashboard_home')
-                
-                # For safe redirect
-                from django.utils.http import url_has_allowed_host_and_scheme
-                if url_has_allowed_host_and_scheme(url=next_url, allowed_hosts={request.get_host()}):
-                    return redirect(next_url)
-                return redirect('peethas:home')
-            else:
-                messages.error(request, 'Invalid username or password.')
-                
-        return render(request, 'peethas/login_password.html', {
-            'lang': lang,
-            'labels': TRANSLATIONS[lang],
-            'next': next_url,
-        })
-
-@csrf_exempt
-def verify_firebase_token(request):
     if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            id_token = data.get('idToken')
-            next_url = data.get('nextUrl', 'peethas:home')
-            
-            if not id_token:
-                return JsonResponse({'success': False, 'error': 'No ID token provided'}, status=400)
-                
-            # Verify the token with Firebase Admin
-            decoded_token = firebase_auth.verify_id_token(id_token)
-            phone_number = decoded_token.get('phone_number')
-            
-            if not phone_number:
-                return JsonResponse({'success': False, 'error': 'No phone number found in token'}, status=400)
-                
-            # Login or Register User
-            # We use phone number as the username
-            user, created = User.objects.get_or_create(username=phone_number)
-            
-            # Log the user in
+        user_in = request.POST.get('username')
+        pass_in = request.POST.get('password')
+        user = authenticate(request, username=user_in, password=pass_in)
+        if user is not None:
             login(request, user)
-            
-            # Determine redirect URL
-            redirect_url = next_url
+            next_url = request.POST.get('next', 'peethas:home')
             if user.is_superuser or hasattr(user, 'handler_profile'):
-                from django.urls import reverse
-                redirect_url = reverse('peethas:dashboard_home')
-            elif redirect_url == 'peethas:home' or redirect_url.startswith('peethas:'):
-                from django.urls import reverse
-                try:
-                    redirect_url = reverse(redirect_url)
-                except:
-                    redirect_url = '/'
+                return redirect('peethas:dashboard_home')
             
-            return JsonResponse({'success': True, 'redirectUrl': redirect_url})
+            # For safe redirect
+            from django.utils.http import url_has_allowed_host_and_scheme
+            if url_has_allowed_host_and_scheme(url=next_url, allowed_hosts={request.get_host()}):
+                return redirect(next_url)
+            return redirect('peethas:home')
+        else:
+            messages.error(request, 'Invalid username or password.')
             
-        except Exception as e:
-            print(f"Firebase verification error: {str(e)}")
-            return JsonResponse({'success': False, 'error': str(e)}, status=400)
-            
-    return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
+    return render(request, 'peethas/login_password.html', {
+        'lang': lang,
+        'labels': TRANSLATIONS[lang],
+        'next': next_url,
+    })
+
 
 def register_view(request):
     lang = get_language(request)
     next_url = request.GET.get('next', 'peethas:home')
     
-    if USE_OTP_LOGIN:
-        if next_url:
-            return redirect(f"/login/?next={next_url}")
-        return redirect('peethas:login')
-    else:
-        if request.user.is_authenticated:
+    if request.user.is_authenticated:
+        return redirect('peethas:home')
+        
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        first_name = request.POST.get('first_name', '')
+        
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists. Please choose another one.')
+        else:
+            user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name)
+            login(request, user)
+            messages.success(request, 'Registration successful! Welcome.')
+            
+            next_url = request.POST.get('next', 'peethas:home')
+            from django.utils.http import url_has_allowed_host_and_scheme
+            if url_has_allowed_host_and_scheme(url=next_url, allowed_hosts={request.get_host()}):
+                return redirect(next_url)
             return redirect('peethas:home')
             
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-            first_name = request.POST.get('first_name', '')
-            
-            if User.objects.filter(username=username).exists():
-                messages.error(request, 'Username already exists. Please choose another one.')
-            else:
-                user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name)
-                login(request, user)
-                messages.success(request, 'Registration successful! Welcome.')
-                
-                next_url = request.POST.get('next', 'peethas:home')
-                from django.utils.http import url_has_allowed_host_and_scheme
-                if url_has_allowed_host_and_scheme(url=next_url, allowed_hosts={request.get_host()}):
-                    return redirect(next_url)
-                return redirect('peethas:home')
-                
-        return render(request, 'peethas/register_password.html', {
-            'lang': lang,
-            'labels': TRANSLATIONS[lang],
-            'next': next_url,
-        })
+    return render(request, 'peethas/register_password.html', {
+        'lang': lang,
+        'labels': TRANSLATIONS[lang],
+        'next': next_url,
+    })
 
 
 def logout_view(request):
@@ -645,24 +590,226 @@ def check_peetha_authorization(user, peetha):
 @login_required(login_url='peethas:login')
 def dashboard_home(request):
     lang = get_language(request)
-    # If superuser: show the portal where they can manage any Peetha
-    if request.user.is_superuser:
-        peethas = Peetha.objects.all()
-        return render(request, 'peethas/dashboard.html', {
-            'is_admin': True,
-            'peethas': peethas,
-            'labels': TRANSLATIONS['en'],  # Admin panel uses English
-            'lang': lang,
-        })
     
-    # If normal user: check if handler profile exists
+    # Check if user is a Peetha Handler first
     try:
         handler = request.user.handler_profile
         return redirect('peethas:dashboard_peetha', slug=handler.peetha.slug)
     except PeethaHandler.DoesNotExist:
-        logout(request)
-        messages.error(request, "This account is not associated with any Peetha. Logging out.")
-        return redirect('peethas:login')
+        pass
+
+    # If superuser or staff: show the portal where they can manage any Peetha or view reports
+    if request.user.is_superuser or request.user.is_staff:
+        peethas = Peetha.objects.all()
+        
+        # Tech and non-tech stats/reports
+        total_users = User.objects.count()
+        total_bookings = PoojaBooking.objects.filter(payment_status='success').count()
+        
+        # Total revenue
+        total_revenue_val = PoojaBooking.objects.filter(payment_status='success').aggregate(total=models.Sum('amount'))['total']
+        total_revenue = total_revenue_val if total_revenue_val is not None else 0.00
+        
+        active_payments = PeethaPaymentConfig.objects.filter(is_active=True).count()
+        
+        # Recent Bookings
+        recent_bookings = PoojaBooking.objects.select_related('pooja', 'pooja__peetha').order_by('-created_at')[:10]
+        
+        # Handlers list
+        handlers = PeethaHandler.objects.select_related('user', 'peetha').all()
+        
+        # Users list for dropdown (exclude staff/superusers)
+        users = User.objects.filter(is_superuser=False, is_staff=False).order_by('username')
+        
+        # Payment Configs
+        payment_configs = PeethaPaymentConfig.objects.select_related('peetha').all()
+        
+        # Feature Flags
+        feature_flags = FeatureFlag.objects.all().order_by('name')
+        
+        # Forms for action panels
+        handler_form = PeethaHandlerForm()
+        payment_form = PeethaPaymentConfigForm()
+        
+        return render(request, 'peethas/dashboard.html', {
+            'is_admin': True,
+            'is_superuser': request.user.is_superuser,
+            'is_staff': request.user.is_staff and not request.user.is_superuser,
+            'peethas': peethas,
+            'total_users': total_users,
+            'total_bookings': total_bookings,
+            'total_revenue': total_revenue,
+            'active_payments': active_payments,
+            'recent_bookings': recent_bookings,
+            'handlers': handlers,
+            'users': users,
+            'payment_configs': payment_configs,
+            'feature_flags': feature_flags,
+            'handler_form': handler_form,
+            'payment_form': payment_form,
+            'labels': TRANSLATIONS['en'],  # Admin panel uses English
+            'lang': lang,
+        })
+    
+    logout(request)
+    messages.error(request, "This account is not associated with any Peetha. Logging out.")
+    return redirect('peethas:login')
+
+
+@login_required(login_url='peethas:login')
+def assign_handler(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied()
+        
+    if request.method == 'POST':
+        user_id = request.POST.get('user')
+        peetha_id = request.POST.get('peetha')
+        action = request.POST.get('action', 'assign')
+        
+        if action == 'delete':
+            handler_id = request.POST.get('handler_id')
+            if handler_id:
+                handler = get_object_or_404(PeethaHandler, pk=handler_id)
+                username = handler.user.username
+                peetha_name = handler.peetha.name
+                handler.delete()
+                messages.success(request, f"Removed {username} as handler for {peetha_name}.")
+        else:
+            user = get_object_or_404(User, pk=user_id)
+            peetha = get_object_or_404(Peetha, pk=peetha_id)
+            
+            # Since user is OneToOne, check if they are already a handler elsewhere and delete that
+            PeethaHandler.objects.filter(user=user).delete()
+            
+            PeethaHandler.objects.create(user=user, peetha=peetha)
+            messages.success(request, f"Assigned {user.username} as handler for {peetha.name}.")
+            
+    from django.urls import reverse
+    return redirect(reverse('peethas:dashboard_home') + '#roles-section:active-handlers-view')
+
+
+@login_required(login_url='peethas:login')
+def create_user_account(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied()
+        
+    redirect_hash = '#roles-section:create-account-view'
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        full_name = request.POST.get('full_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '').strip()
+        role = request.POST.get('role', 'devotee')
+        peetha_id = request.POST.get('peetha', '')
+        
+        from django.urls import reverse
+        
+        if not username:
+            messages.error(request, "Username is required.")
+        elif not email:
+            messages.error(request, "Email is required.")
+        elif not password:
+            messages.error(request, "Password is required.")
+        elif User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists. Please choose a different username.")
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, "A user with this email address already exists.")
+        else:
+            try:
+                if role == 'superuser':
+                    user = User.objects.create_superuser(
+                        username=username,
+                        email=email,
+                        password=password,
+                        first_name=full_name
+                    )
+                    messages.success(request, f"Super Admin account '{username}' successfully created.")
+                elif role == 'staff':
+                    user = User.objects.create_user(
+                        username=username,
+                        email=email,
+                        password=password,
+                        first_name=full_name
+                    )
+                    user.is_staff = True
+                    user.save()
+                    messages.success(request, f"Staff account '{username}' successfully created.")
+                elif role == 'handler':
+                    if not peetha_id:
+                        messages.error(request, "Please select a Peetha for the handler.")
+                        return redirect(reverse('peethas:dashboard_home') + '#roles-section:create-account-view')
+                    
+                    peetha = get_object_or_404(Peetha, pk=peetha_id)
+                    user = User.objects.create_user(
+                        username=username,
+                        email=email,
+                        password=password,
+                        first_name=full_name
+                    )
+                    # Create handler mapping
+                    PeethaHandler.objects.create(user=user, peetha=peetha)
+                    messages.success(request, f"Peetha Handler account '{username}' successfully created and assigned to {peetha.name}.")
+                    redirect_hash = '#roles-section:active-handlers-view'
+                else: # devotee
+                    user = User.objects.create_user(
+                        username=username,
+                        email=email,
+                        password=password,
+                        first_name=full_name
+                    )
+                    messages.success(request, f"Devotee account '{username}' successfully created.")
+            except Exception as e:
+                messages.error(request, f"An error occurred while creating the account: {str(e)}")
+                
+    from django.urls import reverse
+    return redirect(reverse('peethas:dashboard_home') + redirect_hash)
+
+
+@login_required(login_url='peethas:login')
+def manage_payment_config(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied()
+        
+    if request.method == 'POST':
+        peetha_id = request.POST.get('peetha')
+        peetha = get_object_or_404(Peetha, pk=peetha_id)
+        
+        # Get or create payment config
+        config, created = PeethaPaymentConfig.objects.get_or_create(peetha=peetha)
+        
+        form = PeethaPaymentConfigForm(request.POST, instance=config)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Successfully updated payment configuration for {peetha.name}.")
+        else:
+            messages.error(request, "Failed to update payment configuration. Please check your inputs.")
+            
+    return redirect('peethas:dashboard_home')
+
+
+@login_required(login_url='peethas:login')
+def delete_payment_config(request, pk):
+    if not request.user.is_superuser:
+        raise PermissionDenied()
+        
+    config = get_object_or_404(PeethaPaymentConfig, pk=pk)
+    peetha_name = config.peetha.name
+    config.delete()
+    messages.success(request, f"Deleted payment configuration for {peetha_name}.")
+    return redirect('peethas:dashboard_home')
+
+
+@login_required(login_url='peethas:login')
+def toggle_feature(request, pk):
+    if not request.user.is_superuser:
+        raise PermissionDenied()
+        
+    flag = get_object_or_404(FeatureFlag, pk=pk)
+    flag.is_enabled = not flag.is_enabled
+    flag.save()
+    messages.success(request, f"Feature flag '{flag.name}' set to {'Enabled' if flag.is_enabled else 'Disabled'}.")
+    return redirect('peethas:dashboard_home')
+
 
 
 @login_required(login_url='peethas:login')
@@ -673,20 +820,55 @@ def dashboard_peetha(request, slug):
 
     media_list = PeethaMedia.objects.filter(peetha=peetha)
     travel_list = TravelPlan.objects.filter(peetha=peetha).order_by('start_date')
+    pooja_list = Pooja.objects.filter(peetha=peetha).order_by('order', 'name')
 
     media_form = PeethaMediaAddForm()
     travel_form = TravelPlanForm()
+    pooja_form = PoojaForm()
 
     return render(request, 'peethas/dashboard.html', {
         'is_admin': request.user.is_superuser,
         'peetha': peetha,
         'media_list': media_list,
         'travel_list': travel_list,
+        'pooja_list': pooja_list,
         'media_form': media_form,
         'travel_form': travel_form,
+        'pooja_form': pooja_form,
         'labels': TRANSLATIONS['en'],
         'lang': lang,
     })
+
+
+@login_required(login_url='peethas:login')
+def update_peetha_live(request, slug):
+    peetha = get_object_or_404(Peetha, slug=slug)
+    check_peetha_authorization(request.user, peetha)
+    
+    if request.method == 'POST':
+        live_url = request.POST.get('live_youtube_url', '').strip()
+        live_title = request.POST.get('live_youtube_title', '').strip()
+        
+        if live_url:
+            # Validate youtube url format
+            import re
+            pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})'
+            match = re.search(pattern, live_url)
+            if not match:
+                messages.error(request, "Invalid YouTube URL format. Please provide a valid watch, share, or embed link.")
+                from django.urls import reverse
+                return redirect(reverse('peethas:dashboard_peetha', kwargs={'slug': peetha.slug}) + '#live-section')
+                
+        peetha.live_youtube_url = live_url
+        peetha.live_youtube_title = live_title if live_title else None
+        peetha.save()
+        if live_url:
+            messages.success(request, f"YouTube Live Stream URL successfully updated for {peetha.name}.")
+        else:
+            messages.success(request, f"Live stream deactivated for {peetha.name}.")
+            
+    from django.urls import reverse
+    return redirect(reverse('peethas:dashboard_peetha', kwargs={'slug': peetha.slug}) + '#live-section')
 
 
 # --- Media CRUD Views ---
@@ -930,6 +1112,72 @@ def travel_delete(request, slug, pk):
     return redirect('peethas:dashboard_peetha', slug=peetha.slug)
 
 
+# --- Pooja CRUD Views ---
+
+@login_required(login_url='peethas:login')
+def pooja_add(request, slug):
+    peetha = get_object_or_404(Peetha, slug=slug)
+    check_peetha_authorization(request.user, peetha)
+
+    if request.method == 'POST':
+        form = PoojaForm(request.POST)
+        if form.is_valid():
+            pooja = form.save(commit=False)
+            pooja.peetha = peetha
+            pooja.save()
+            messages.success(request, "Pooja/Seva added successfully.")
+        else:
+            for error in form.errors.values():
+                messages.error(request, error)
+                
+    from django.urls import reverse
+    return redirect(reverse('peethas:dashboard_peetha', kwargs={'slug': peetha.slug}) + '#pooja-section')
+
+
+@login_required(login_url='peethas:login')
+def pooja_edit(request, slug, pk):
+    peetha = get_object_or_404(Peetha, slug=slug)
+    check_peetha_authorization(request.user, peetha)
+    pooja_item = get_object_or_404(Pooja, pk=pk, peetha=peetha)
+
+    if request.method == 'POST':
+        form = PoojaForm(request.POST, instance=pooja_item)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Pooja/Seva updated successfully.")
+            from django.urls import reverse
+            return redirect(reverse('peethas:dashboard_peetha', kwargs={'slug': peetha.slug}) + '#pooja-section')
+        else:
+            for error in form.errors.values():
+                messages.error(request, error)
+    else:
+        form = PoojaForm(instance=pooja_item)
+
+    lang = get_language(request)
+    return render(request, 'peethas/dashboard_edit.html', {
+        'peetha': peetha,
+        'edit_type': 'pooja',
+        'pooja_item': pooja_item,
+        'form': form,
+        'labels': TRANSLATIONS['en'],
+        'lang': lang,
+    })
+
+
+@login_required(login_url='peethas:login')
+def pooja_delete(request, slug, pk):
+    peetha = get_object_or_404(Peetha, slug=slug)
+    check_peetha_authorization(request.user, peetha)
+    pooja_item = get_object_or_404(Pooja, pk=pk, peetha=peetha)
+    
+    if request.method == 'POST':
+        pooja_item.delete()
+        messages.success(request, "Pooja/Seva deleted.")
+        
+    from django.urls import reverse
+    return redirect(reverse('peethas:dashboard_peetha', kwargs={'slug': peetha.slug}) + '#pooja-section')
+
+
 # ===== POOJA BOOKING VIEWS =====
 
 @login_required(login_url='peethas:login')
@@ -943,8 +1191,56 @@ def initiate_pooja_booking(request, peetha_slug):
         devotee_name = request.POST.get('devotee_name')
         devotee_phone = request.POST.get('devotee_phone')
         devotee_email = request.POST.get('devotee_email', '')
+        gotra = request.POST.get('gotra', '')
+        nakshatra = request.POST.get('nakshatra', '')
+        rashi = request.POST.get('rashi', '')
+        # Read dynamic family member arrays
+        family_names = request.POST.getlist('family_member_name')
+        family_gotras = request.POST.getlist('family_member_gotra')
+        family_nakshatras = request.POST.getlist('family_member_nakshatra')
+        family_rashis = request.POST.getlist('family_member_rashi')
+        
+        family_list = []
+        for i in range(len(family_names)):
+            if family_names[i].strip():
+                family_list.append({
+                    'name': family_names[i].strip(),
+                    'gotra': family_gotras[i].strip() if i < len(family_gotras) else '',
+                    'nakshatra': family_nakshatras[i].strip() if i < len(family_nakshatras) else '',
+                    'rashi': family_rashis[i].strip() if i < len(family_rashis) else ''
+                })
+        family_members = json.dumps(family_list) if family_list else ''
         date_of_pooja = request.POST.get('date_of_pooja')
         
+        # Validate date is not in the past
+        try:
+            booking_date = datetime.datetime.strptime(date_of_pooja, '%Y-%m-%d').date()
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid date format selected.")
+            return redirect('peethas:peetha_detail', slug=peetha.slug)
+
+        if booking_date < datetime.date.today():
+            messages.error(request, "Pooja/Seva booking cannot be made for a past date.")
+            return redirect('peethas:peetha_detail', slug=peetha.slug)
+
+        # Validate weekday availability
+        weekday_name = booking_date.strftime('%A')
+        if pooja.available_days and pooja.available_days != 'all':
+            available_list = [d.strip() for d in pooja.available_days.split(',') if d.strip()]
+            if weekday_name not in available_list:
+                messages.error(request, f"This Pooja/Seva ({pooja.name}) is not available on {weekday_name}s.")
+                return redirect('peethas:peetha_detail', slug=peetha.slug)
+
+        # Validate slot availability
+        booked_count = PoojaBooking.objects.filter(
+            pooja=pooja,
+            date_of_pooja=booking_date,
+            payment_status__in=['pending', 'success']
+        ).count()
+        if booked_count >= pooja.total_slots:
+            messages.error(request, f"Sorry, all slots are fully booked for {pooja.name} on {booking_date}. Please choose another date.")
+            return redirect('peethas:peetha_detail', slug=peetha.slug)
+
         # Payment config
         try:
             payment_config = peetha.payment_config
@@ -976,6 +1272,10 @@ def initiate_pooja_booking(request, peetha_slug):
             devotee_name=devotee_name,
             devotee_phone=devotee_phone,
             devotee_email=devotee_email,
+            gotra=gotra,
+            nakshatra=nakshatra,
+            rashi=rashi,
+            family_members=family_members,
             date_of_pooja=date_of_pooja,
             amount=pooja.price,
             razorpay_order_id=payment_order['id'],
@@ -992,6 +1292,72 @@ def initiate_pooja_booking(request, peetha_slug):
         })
         
     return redirect('peethas:peetha_detail', slug=peetha.slug)
+
+
+def pooja_availability(request, peetha_slug, pooja_id):
+    peetha = get_object_or_404(Peetha, slug=peetha_slug)
+    pooja = get_object_or_404(Pooja, pk=pooja_id, peetha=peetha)
+    
+    today = datetime.date.today()
+    try:
+        year = int(request.GET.get('year', today.year))
+        month = int(request.GET.get('month', today.month))
+    except (ValueError, TypeError):
+        year = today.year
+        month = today.month
+
+    import calendar
+    try:
+        num_days = calendar.monthrange(year, month)[1]
+    except Exception:
+        return JsonResponse({'error': 'Invalid month or year'}, status=400)
+        
+    availability = {}
+    
+    # Pre-fetch all bookings in this month for this pooja
+    start_date = datetime.date(year, month, 1)
+    end_date = datetime.date(year, month, num_days)
+    bookings = PoojaBooking.objects.filter(
+        pooja=pooja,
+        date_of_pooja__range=(start_date, end_date),
+        payment_status__in=['pending', 'success']
+    ).values('date_of_pooja').annotate(count=models.Count('id'))
+    
+    booking_counts = {b['date_of_pooja']: b['count'] for b in bookings}
+    
+    for day in range(1, num_days + 1):
+        day_date = datetime.date(year, month, day)
+        date_str = day_date.strftime('%Y-%m-%d')
+        
+        # Check if in past
+        if day_date < today:
+            availability[date_str] = 'not_open'
+            continue
+            
+        # Check if weekday is available
+        weekday_name = day_date.strftime('%A')
+        if pooja.available_days and pooja.available_days != 'all':
+            available_list = [d.strip() for d in pooja.available_days.split(',') if d.strip()]
+            if weekday_name not in available_list:
+                availability[date_str] = 'not_open'
+                continue
+                
+        # Check slots
+        booked_count = booking_counts.get(day_date, 0)
+        if booked_count >= pooja.total_slots:
+            availability[date_str] = 'booked'
+        elif pooja.total_slots - booked_count <= 2:
+            availability[date_str] = 'fast'
+        else:
+            availability[date_str] = 'available'
+            
+    return JsonResponse({
+        'pooja_id': pooja.id,
+        'total_slots': pooja.total_slots,
+        'year': year,
+        'month': month,
+        'availability': availability
+    })
 
 
 @csrf_exempt
@@ -1039,4 +1405,47 @@ def my_bookings(request):
         'lang': lang,
         'labels': TRANSLATIONS[lang],
         'bookings': bookings,
+    })
+
+
+@login_required(login_url='peethas:login')
+def profile_view(request):
+    lang = get_language(request)
+    profile = request.user.profile
+    
+    if request.method == 'POST':
+        # Update user fields
+        request.user.first_name = request.POST.get('first_name', '').strip()
+        request.user.email = request.POST.get('email', '').strip()
+        request.user.save()
+        
+        # Update profile fields
+        profile.phone_number = request.POST.get('phone_number', '').strip()
+        profile.address = request.POST.get('address', '').strip()
+        profile.gender = request.POST.get('gender', 'male')
+        profile.gotra = request.POST.get('gotra', '').strip()
+        profile.nakshatra = request.POST.get('nakshatra', '').strip()
+        profile.rashi = request.POST.get('rashi', '').strip()
+        
+        # Handle profile pic removal
+        if request.POST.get('remove_profile_pic') == 'true':
+            if profile.profile_pic:
+                profile.profile_pic.delete(save=False)
+            profile.profile_pic = None
+        # Handle profile pic upload
+        elif 'profile_pic' in request.FILES:
+            profile.profile_pic = request.FILES['profile_pic']
+            
+        profile.save()
+        messages.success(request, "Profile updated successfully.")
+        return redirect('peethas:profile_view')
+        
+    completion = profile.completion_percentage()
+    
+    return render(request, 'peethas/profile.html', {
+        'lang': lang,
+        'labels': TRANSLATIONS[lang],
+        'profile': profile,
+        'completion': completion,
+        'lang': lang,
     })

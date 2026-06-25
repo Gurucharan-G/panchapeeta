@@ -20,6 +20,16 @@
                             <p style="margin-bottom: 5px;"><strong>Devotee:</strong> {{ booking.devotee_name }}</p>
                         </div>
                         
+                        {% if booking.gotra or booking.nakshatra or booking.rashi or booking.family_members %}
+                        <div style="margin-bottom: 15px; padding: 12px; background: rgba(184,134,11,0.04); border-radius: 8px; border-left: 3px solid var(--gold, #b8860b);">
+                            <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gold, #b8860b); margin-bottom: 8px;">🔱 Sankalpa Details</p>
+                            {% if booking.gotra %}<p style="margin-bottom: 4px; font-size: 0.88rem;"><strong>Gotra:</strong> {{ booking.gotra }}</p>{% endif %}
+                            {% if booking.nakshatra %}<p style="margin-bottom: 4px; font-size: 0.88rem;"><strong>Nakshatra:</strong> {{ booking.nakshatra }}</p>{% endif %}
+                            {% if booking.rashi %}<p style="margin-bottom: 4px; font-size: 0.88rem;"><strong>Rashi:</strong> {{ booking.rashi }}</p>{% endif %}
+                            {% if booking.family_members %}<p style="margin-bottom: 0; font-size: 0.88rem;"><strong>Family:</strong> {{ booking.formatted_family_members }}</p>{% endif %}
+                        </div>
+                        {% endif %}
+                        
                         <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 15px;">
                             <span style="font-size: 0.9rem; font-weight: bold; 
                                 {% if booking.payment_status == 'success' %}color: #28a745;

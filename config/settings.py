@@ -48,6 +48,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Required by django-allauth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    
     'peethas',
 ]
 
@@ -60,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -75,6 +84,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'peethas.context_processors.live_peethas_processor',
             ],
         },
     },
@@ -142,12 +152,44 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-FIREBASE_WEB_CONFIG = {
-    "apiKey": os.environ.get('FIREBASE_CLIENT_API_KEY', "AIzaSyDVfec-NiV67Olpk2a7LcL6w3D-lR7RVEM"),
-    "authDomain": "pancha-peethas.firebaseapp.com",
-    "projectId": "pancha-peethas",
-    "storageBucket": "pancha-peethas.firebasestorage.app",
-    "messagingSenderId": "471825198979",
-    "appId": "1:471825198979:web:6f2d5f69e54ba2a87dd0b6",
-    "measurementId": "G-S3K5N3YKKJ"
+# --- Google OAuth Settings (django-allauth) ---
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID', ''),
+            'secret': os.environ.get('GOOGLE_CLIENT_SECRET', ''),
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+    }
 }
+
+# Direct login without confirmation page
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+# Account redirection configurations
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+# Allauth account configurations to auto-connect OAuth users by email
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+ACCOUNT_ADAPTER = 'peethas.adapters.CustomAccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'peethas.adapters.CustomSocialAccountAdapter'
+

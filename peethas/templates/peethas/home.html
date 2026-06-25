@@ -4,6 +4,7 @@
 {% block title %}{{ labels.site_title }}{% endblock %}
 
 {% block content %}
+
 <section class="hero">
     <!-- Flanking Decorative Murals -->
     <div class="murals-mobile-container">
@@ -22,15 +23,26 @@
             {{ labels.hero_subtitle|safe }}
         </p>
     </div>
-    <div class="scroll-indicator" onclick="document.getElementById('peethas-section').scrollIntoView({behavior: 'smooth'});">
-        <div class="scroll-mouse">
-            <div class="scroll-wheel"></div>
-        </div>
-    </div>
 </section>
 
 <section class="peethas-section" id="peethas-section">
     <div class="container">
+        {% for p in peethas %}
+            {% if p.live_youtube_url %}
+            <a href="{% url 'peethas:peetha_detail' p.slug %}#live-stream-container" class="live-stream-inline-bar reveal">
+                <div class="live-info-wrapper">
+                    <span class="live-inline-badge">
+                        <span class="live-dot" style="display: inline-block; width: 8px; height: 8px; background-color: #d32f2f; border-radius: 50%; animation: pulse-live 1.5s infinite;"></span>
+                        Live Now
+                    </span>
+                    <span class="live-title">
+                        <strong>{{ p.name }}</strong>: {{ p.live_youtube_title|default:"Swamiji Divine Live Stream" }}
+                    </span>
+                </div>
+            </a>
+            {% endif %}
+        {% endfor %}
+
         <div class="peethas-grid{% if use_rectangular_portraits %} use-rectangle{% endif %}">
             {% for peetha in peethas %}
             <a href="{% url 'peethas:peetha_detail' peetha.slug %}" 
