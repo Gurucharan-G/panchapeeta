@@ -3,6 +3,15 @@
 {% block title %}Dashboard — {{ labels.site_title }}{% endblock %}
 
 {% block content %}
+<style>
+    /* Expand dashboard container to utilize widescreen resolutions better */
+    .dashboard-section .container {
+        max-width: 1600px !important;
+        width: 95% !important;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+</style>
 <section class="dashboard-section">
     <div class="container">
         
