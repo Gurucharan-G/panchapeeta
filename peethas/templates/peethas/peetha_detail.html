@@ -10,6 +10,7 @@
 <a href="#jagathguru" class="nav-link peetha-tab" data-tab="jagathguru">{{ labels.nav_jagathguru|default:"Jagathguru" }}</a>
 {% endif %}
 <a href="#pooja-booking" class="nav-link peetha-tab" data-tab="pooja-booking">{{ labels.nav_pooja_booking|default:"Pooja Booking" }}</a>
+<a href="#accommodation" class="nav-link peetha-tab" data-tab="accommodation">Accommodation</a>
 <a href="#contact-us" class="nav-link peetha-tab" data-tab="contact-us">{{ labels.nav_contact_us|default:"Contact Us" }}</a>
 {% endblock %}
 
@@ -223,7 +224,7 @@
                 <h2 class="section-title">Seva & Pooja Booking</h2>
             </div>
 
-            {% if poojas %}
+            {% if poojas and pooja_booking_enabled %}
                 <!-- Category Filter Pills -->
                 <div class="seva-filter-bar" id="sevaFilterBar">
                     <button class="seva-filter-pill active" data-filter="all" onclick="filterSevas('all', this)">🕉️ All Sevas</button>
@@ -266,10 +267,53 @@
                 <div class="pooja-coming-soon">
                     <div class="coming-soon-card" style="--peetha-color: var(--peetha-color);">
                         <h3>Online Pooja Booking</h3>
-                        <p>Online pooja booking facility for <strong>{{ peetha.name }}</strong> will be available soon.</p>
+                        {% if not pooja_booking_enabled %}
+                            <p>Online pooja booking facility for <strong>{{ peetha.name }}</strong> is currently unavailable or under maintenance.</p>
+                        {% else %}
+                            <p>Online pooja booking facility for <strong>{{ peetha.name }}</strong> will be available soon.</p>
+                        {% endif %}
                         <p class="coming-soon-subtitle">Please contact the Peetha directly for pooja bookings in the meantime.</p>
                         {% if peetha.contact_phone %}
                             <a href="tel:{{ peetha.contact_phone }}" class="pooja-contact-btn" style="background-color: var(--peetha-color);">Call to Book: {{ peetha.contact_phone }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- ===== TAB: Accommodation ===== -->
+<section class="detail-body peetha-tab-section" id="tab-accommodation">
+    <div class="container">
+        <div class="pooja-section">
+            <div class="jagathguru-header" style="--peetha-color: var(--peetha-color);">
+                <div class="section-decor">
+                    <span class="decor-line"></span>
+                    <span class="decor-line"></span>
+                </div>
+                <h2 class="section-title">Accommodation & Stay</h2>
+            </div>
+            
+            {% if accommodation_enabled %}
+                <div class="pooja-coming-soon">
+                    <div class="coming-soon-card" style="--peetha-color: var(--peetha-color); background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,248,240,0.95)); border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+                        <h3 style="color: var(--text);">Stay at {{ peetha.name }}</h3>
+                        <p style="color: #4a5568; max-width: 600px; margin: 0 auto 15px;">We offer neat and comfortable guest rooms and cottages (Yatri Nivas) for devotees and families visiting <strong>{{ peetha.name }}</strong>.</p>
+                        <p class="coming-soon-subtitle" style="margin-top: 15px; font-weight: 600; color: var(--text);">To book accommodation, please contact the Peetha administration office directly:</p>
+                        {% if peetha.contact_phone %}
+                            <a href="tel:{{ peetha.contact_phone }}" class="pooja-contact-btn" style="background-color: var(--peetha-color); margin-top: 12px; font-weight: 600; letter-spacing: 0.02em;">Call Office: {{ peetha.contact_phone }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="pooja-coming-soon">
+                    <div class="coming-soon-card" style="--peetha-color: var(--peetha-color);">
+                        <h3>Accommodation Facility</h3>
+                        <p>Devotee accommodation bookings for <strong>{{ peetha.name }}</strong> are currently unavailable or undergoing maintenance.</p>
+                        <p class="coming-soon-subtitle">Please contact the Peetha directly for stay options and availability inquiries.</p>
+                        {% if peetha.contact_phone %}
+                            <a href="tel:{{ peetha.contact_phone }}" class="pooja-contact-btn" style="background-color: var(--peetha-color);">Call Office: {{ peetha.contact_phone }}</a>
                         {% endif %}
                     </div>
                 </div>

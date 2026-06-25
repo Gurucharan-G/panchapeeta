@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.urls import reverse
-from peethas.models import Peetha, Pooja, PoojaBooking, PeethaPaymentConfig
+from peethas.models import Peetha, Pooja, PoojaBooking, PeethaPaymentConfig, FeatureFlag
 import datetime
 
 class PoojaBookingTestCase(TestCase):
@@ -199,6 +199,60 @@ class PoojaBookingTestCase(TestCase):
         self.assertEqual(profile.nakshatra, 'Aswini')
         self.assertEqual(profile.rashi, 'Mesha')
         self.assertEqual(profile.completion_percentage(), 88)
+
+    def test_pooja_booking_disabled_flag(self):
+        # Create and disable kashi_pooja_booking
+        flag, _ = FeatureFlag.objects.get_or_create(name='kashi_pooja_booking')
+        flag.is_enabled = False
+        flag.save()
+        
+        # 1. Attempt to fetch availability - should return 403
+        response = self.client.get(
+            reverse('peethas:pooja_availability', kwargs={
+                'peetha_slug': self.peetha.slug,
+                'pooja_id': self.pooja.id
+            })
+        )
+        self.assertEqual(response.status_code, 403)
+        
+        # 2. Attempt to initiate pooja booking - should redirect (302)
+        response = self.client.post(
+            reverse('peethas:initiate_pooja_booking', kwargs={'peetha_slug': self.peetha.slug}),
+            {
+                'pooja_id': self.pooja.id,
+                'devotee_name': 'Test Devotee',
+                'devotee_phone': '1234567890',
+                'date_of_pooja': '2026-07-01'
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+
+    def test_overall_disabled_flag_disables_pooja_booking(self):
+        # Disable kashi_overall
+        flag, _ = FeatureFlag.objects.get_or_create(name='kashi_overall')
+        flag.is_enabled = False
+        flag.save()
+        
+        # 1. Attempt to fetch availability - should return 403
+        response = self.client.get(
+            reverse('peethas:pooja_availability', kwargs={
+                'peetha_slug': self.peetha.slug,
+                'pooja_id': self.pooja.id
+            })
+        )
+        self.assertEqual(response.status_code, 403)
+        
+        # 2. Attempt to initiate pooja booking - should redirect (302)
+        response = self.client.post(
+            reverse('peethas:initiate_pooja_booking', kwargs={'peetha_slug': self.peetha.slug}),
+            {
+                'pooja_id': self.pooja.id,
+                'devotee_name': 'Test Devotee',
+                'devotee_phone': '1234567890',
+                'date_of_pooja': '2026-07-01'
+            }
+        )
+        self.assertEqual(response.status_code, 302)
 
 
 

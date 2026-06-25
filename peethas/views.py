@@ -484,6 +484,24 @@ def peetha_detail(request, slug):
     # Dynamic styling variable
     show_admin_button = request.user.is_authenticated
 
+    # Feature Flags check
+    overall_flag, _ = FeatureFlag.objects.get_or_create(
+        name=f"{slug}_overall",
+        defaults={'is_enabled': True, 'description': f"Overall Master toggle ({peetha.name})"}
+    )
+    pooja_flag, _ = FeatureFlag.objects.get_or_create(
+        name=f"{slug}_pooja_booking",
+        defaults={'is_enabled': True, 'description': f"Pooja Booking flag ({peetha.name})"}
+    )
+    accommodation_flag, _ = FeatureFlag.objects.get_or_create(
+        name=f"{slug}_accommodation",
+        defaults={'is_enabled': True, 'description': f"Accommodation flag ({peetha.name})"}
+    )
+    
+    overall_enabled = overall_flag.is_enabled
+    pooja_booking_enabled = overall_enabled and pooja_flag.is_enabled
+    accommodation_enabled = overall_enabled and accommodation_flag.is_enabled
+
     return render(request, 'peethas/peetha_detail.html', {
         'peetha': peetha,
         'lang': lang,
@@ -492,6 +510,8 @@ def peetha_detail(request, slug):
         'media_gallery': media_list,
         'poojas': poojas,
         'show_admin_button': show_admin_button,
+        'pooja_booking_enabled': pooja_booking_enabled,
+        'accommodation_enabled': accommodation_enabled,
     })
 
 
@@ -625,7 +645,42 @@ def dashboard_home(request):
         payment_configs = PeethaPaymentConfig.objects.select_related('peetha').all()
         
         # Feature Flags
-        feature_flags = FeatureFlag.objects.all().order_by('name')
+        peethas_list = Peetha.objects.all().order_by('id')
+        features_meta = [
+            {'key': 'overall', 'name': 'Overall Status', 'desc': 'Master toggle for all features of this Peetha'},
+            {'key': 'pooja_booking', 'name': 'Pooja Booking', 'desc': 'Enable or disable Pooja Booking for this Peetha'},
+            {'key': 'accommodation', 'name': 'Accommodation', 'desc': 'Enable or disable Accommodation for this Peetha'},
+        ]
+        
+        feature_board = []
+        for feat in features_meta:
+            row_cells = []
+            for p in peethas_list:
+                flag_name = f"{p.slug}_{feat['key']}"
+                flag_obj, created = FeatureFlag.objects.get_or_create(
+                    name=flag_name,
+                    defaults={
+                        'is_enabled': True,
+                        'description': f"{feat['desc']} ({p.name})"
+                    }
+                )
+                row_cells.append({
+                    'peetha': p,
+                    'flag': flag_obj
+                })
+            feature_board.append({
+                'key': feat['key'],
+                'name': feat['name'],
+                'desc': feat['desc'],
+                'cells': row_cells
+            })
+
+        # Exclude peetha-specific flags from general list
+        feature_flags = FeatureFlag.objects.exclude(
+            models.Q(name__contains='_overall') |
+            models.Q(name__contains='_pooja_booking') |
+            models.Q(name__contains='_accommodation')
+        ).order_by('name')
         
         # Forms for action panels
         handler_form = PeethaHandlerForm()
@@ -645,6 +700,7 @@ def dashboard_home(request):
             'users': users,
             'payment_configs': payment_configs,
             'feature_flags': feature_flags,
+            'feature_board': feature_board,
             'handler_form': handler_form,
             'payment_form': payment_form,
             'labels': TRANSLATIONS['en'],  # Admin panel uses English
@@ -807,6 +863,14 @@ def toggle_feature(request, pk):
     flag = get_object_or_404(FeatureFlag, pk=pk)
     flag.is_enabled = not flag.is_enabled
     flag.save()
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('accept', ''):
+        return JsonResponse({
+            'success': True,
+            'is_enabled': flag.is_enabled,
+            'name': flag.name
+        })
+        
     messages.success(request, f"Feature flag '{flag.name}' set to {'Enabled' if flag.is_enabled else 'Disabled'}.")
     return redirect('peethas:dashboard_home')
 
@@ -1184,6 +1248,19 @@ def pooja_delete(request, slug, pk):
 def initiate_pooja_booking(request, peetha_slug):
     peetha = get_object_or_404(Peetha, slug=peetha_slug)
     
+    # Feature flag check
+    overall_flag, _ = FeatureFlag.objects.get_or_create(
+        name=f"{peetha_slug}_overall",
+        defaults={'is_enabled': True, 'description': f"Overall Master toggle ({peetha.name})"}
+    )
+    pooja_flag, _ = FeatureFlag.objects.get_or_create(
+        name=f"{peetha_slug}_pooja_booking",
+        defaults={'is_enabled': True, 'description': f"Pooja Booking flag ({peetha.name})"}
+    )
+    if not (overall_flag.is_enabled and pooja_flag.is_enabled):
+        messages.error(request, "Online Pooja Booking is currently unavailable for this Peetha.")
+        return redirect('peethas:peetha_detail', slug=peetha.slug)
+        
     if request.method == 'POST':
         pooja_id = request.POST.get('pooja_id')
         pooja = get_object_or_404(Pooja, pk=pooja_id, peetha=peetha)
@@ -1296,6 +1373,19 @@ def initiate_pooja_booking(request, peetha_slug):
 
 def pooja_availability(request, peetha_slug, pooja_id):
     peetha = get_object_or_404(Peetha, slug=peetha_slug)
+    
+    # Feature flag check
+    overall_flag, _ = FeatureFlag.objects.get_or_create(
+        name=f"{peetha_slug}_overall",
+        defaults={'is_enabled': True, 'description': f"Overall Master toggle ({peetha.name})"}
+    )
+    pooja_flag, _ = FeatureFlag.objects.get_or_create(
+        name=f"{peetha_slug}_pooja_booking",
+        defaults={'is_enabled': True, 'description': f"Pooja Booking flag ({peetha.name})"}
+    )
+    if not (overall_flag.is_enabled and pooja_flag.is_enabled):
+        return JsonResponse({'error': 'Online Pooja Booking is currently disabled'}, status=403)
+        
     pooja = get_object_or_404(Pooja, pk=pooja_id, peetha=peetha)
     
     today = datetime.date.today()
