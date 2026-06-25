@@ -559,6 +559,58 @@ class PoojaBookingTestCase(TestCase):
         self.assertEqual(data['date'], '2026-06-25')
         self.assertIn('peethas', data)
 
+    def test_dashboard_seva_bookings_api(self):
+        # Create a second Peetha and Pooja
+        other_peetha = Peetha.objects.create(
+            name='Balehonnur Peetha',
+            slug='balehonnur',
+            acharya='Soma Acharya',
+            simhasana='Vajra Simhasana',
+            location='Balehonnur',
+            color='#FF0000'
+        )
+        other_pooja = Pooja.objects.create(
+            peetha=other_peetha,
+            name='Balehonnur Pooja',
+            price=200.00,
+            is_active=True
+        )
+
+        # Create a Handler assigned to self.peetha
+        handler_user = User.objects.create_user(username='report_handler', password='password123')
+        PeethaHandler.objects.create(user=handler_user, peetha=self.peetha)
+        handler_client = Client()
+        handler_client.login(username='report_handler', password='password123')
+
+        # Create a Superuser
+        admin_user = User.objects.create_superuser(username='report_admin', password='password123', email='report_admin@example.com')
+        admin_client = Client()
+        admin_client.login(username='report_admin', password='password123')
+
+        # Create a devotee
+        devotee_user = User.objects.create_user(username='report_devotee', password='password123')
+        devotee_client = Client()
+        devotee_client.login(username='report_devotee', password='password123')
+
+        # 1. Devotee querying the API -> should return 403
+        response = devotee_client.get(reverse('peethas:dashboard_seva_bookings'), {'pooja_id': self.pooja.id})
+        self.assertEqual(response.status_code, 403)
+
+        # 2. Handler querying bookings for their own Pooja -> should return 200
+        response = handler_client.get(reverse('peethas:dashboard_seva_bookings'), {'pooja_id': self.pooja.id})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['pooja_name'], self.pooja.name)
+        self.assertIn('bookings', data)
+
+        # 3. Handler querying bookings for another Peetha's Pooja -> should return 403
+        response = handler_client.get(reverse('peethas:dashboard_seva_bookings'), {'pooja_id': other_pooja.id})
+        self.assertEqual(response.status_code, 403)
+
+        # 4. Super Admin querying any Pooja bookings -> should return 200
+        response = admin_client.get(reverse('peethas:dashboard_seva_bookings'), {'pooja_id': other_pooja.id})
+        self.assertEqual(response.status_code, 200)
+
 
 
 

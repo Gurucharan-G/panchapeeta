@@ -48,5 +48,6 @@ urlpatterns = [
     # Dashboard AJAX APIs
     path('dashboard/api/date-bookings/', views.dashboard_date_bookings, name='dashboard_date_bookings'),
     path('dashboard/api/search-devotees/', views.dashboard_search_devotees, name='dashboard_search_devotees'),
+    path('dashboard/api/seva-bookings/', views.dashboard_seva_bookings, name='dashboard_seva_bookings'),
 ]
 

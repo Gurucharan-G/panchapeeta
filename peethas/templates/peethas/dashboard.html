@@ -47,6 +47,7 @@
         <!-- Super Admin Tabs -->
         <div class="dashboard-tabs" style="margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 10px;">
             <button class="tab-btn active" onclick="switchTab('overview-section', this)">📊 Overview & Analytics</button>
+            <button class="tab-btn" onclick="switchTab('booking-reports-section', this)">📋 Booking Reports</button>
             {% if is_superuser %}
             <button class="tab-btn" onclick="switchTab('content-section', this)">🏯 Peetha Content</button>
             <button class="tab-btn" onclick="switchTab('roles-section', this)">🔑 Roles & Permissions</button>
@@ -611,6 +612,76 @@
                 <div id="devotee-search-pagination" style="display: flex; justify-content: center; gap: 8px; margin-top: 24px; flex-wrap: wrap;"></div>
             </div>
         </div>
+
+        <!-- TAB 6: Booking Reports (Super Admin View) -->
+        <div id="booking-reports-section" class="tab-content">
+            <div class="dashboard-card" style="padding: 24px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: white;">
+                <h3 style="margin-top: 0; margin-bottom: 20px; font-family: 'Playfair Display', serif;">📋 Seva Booking Reports</h3>
+                <p style="font-size: 0.9rem; color: #888; margin-bottom: 20px;">Select a specific Pooja/Seva to view all corresponding bookings, summary analytics, and download the report.</p>
+
+                <!-- Report Controls -->
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; align-items: flex-end;">
+                    <div style="flex: 1; min-width: 280px;">
+                        <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #555; margin-bottom: 6px;">Select Pooja / Seva</label>
+                        <select id="report-seva-select" onchange="onSevaSelectChange()" style="width: 100%; padding: 10px 14px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; font-family: inherit; outline: none; cursor: pointer; background: white; transition: border-color 0.3s; box-sizing: border-box;">
+                            <option value="">-- Choose Pooja/Seva --</option>
+                            {% regroup all_poojas by peetha as peetha_poojas %}
+                            {% for group in peetha_poojas %}
+                                <optgroup label="🏯 {{ group.grouper.name }}">
+                                    {% for p in group.list %}
+                                        <option value="{{ p.id }}">{{ p.name }} (₹{{ p.price }})</option>
+                                    {% endfor %}
+                                </optgroup>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <button type="button" id="report-download-btn" onclick="downloadSevaBookingsCSV()" disabled style="padding: 10px 24px; background: #64748b; color: white; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: not-allowed; transition: all 0.2s ease; font-family: inherit;">📥 Download CSV Report</button>
+                    </div>
+                </div>
+
+                <!-- Report Summary Stats -->
+                <div id="report-stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 30px; display: none;">
+                    <!-- Filled dynamically in JS -->
+                </div>
+
+                <!-- Loading Spinner -->
+                <div id="report-loading" style="display: none; text-align: center; padding: 40px;">
+                    <div style="display: inline-block; width: 36px; height: 36px; border: 4px solid #e0e0e0; border-top-color: var(--saffron); border-radius: 50%; animation: spin 0.7s linear infinite;"></div>
+                    <p style="color: #888; margin-top: 12px; font-size: 0.9rem;">Fetching report data...</p>
+                </div>
+
+                <!-- Report Results Table -->
+                <div id="report-results-wrapper" style="display: none;">
+                    <div class="media-table-wrapper">
+                        <table class="dashboard-table" id="report-bookings-table">
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>Devotee Name</th>
+                                    <th>Phone / Email</th>
+                                    <th>Pooja Date</th>
+                                    <th>Sankalpa (Gotra/Nakshatra/Rashi)</th>
+                                    <th>Family Members</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Filled dynamically in JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="report-empty-state" style="text-align: center; padding: 40px; color: #888;">
+                    <div style="font-size: 3rem; margin-bottom: 12px;">📊</div>
+                    <p style="font-size: 1.05rem; font-weight: 500; margin: 0;">No Seva Selected</p>
+                    <p style="font-size: 0.88rem; color: #aaa; margin: 4px 0 0;">Please choose a Pooja/Seva from the dropdown above to run the report.</p>
+                </div>
+            </div>
+        </div>
         {% endif %}
         
         {% else %}
@@ -631,6 +702,7 @@
                 <button class="tab-btn" onclick="switchTab('pooja-section', this)">🕉️ Pooja & Seva Management</button>
                 <button class="tab-btn" onclick="switchTab('live-section', this)">📺 YouTube Live Stream</button>
                 <button class="tab-btn" onclick="switchTab('handler-bookings-section', this)">📅 Bookings</button>
+                <button class="tab-btn" onclick="switchTab('booking-reports-section', this)">📋 Booking Reports</button>
             </div>
 
             <!-- TAB 1: Media Gallery Section -->
@@ -1101,6 +1173,71 @@
                     <div id="handler-date-booking-loading" style="display: none; text-align: center; padding: 40px;">
                         <div style="display: inline-block; width: 36px; height: 36px; border: 4px solid #e0e0e0; border-top-color: {{ peetha.color }}; border-radius: 50%; animation: spin 0.7s linear infinite;"></div>
                         <p style="color: #888; margin-top: 12px; font-size: 0.9rem;">Loading bookings...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: Booking Reports (Handler/Staff View) -->
+            <div id="booking-reports-section" class="tab-content">
+                <div class="dashboard-card" style="padding: 24px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: white;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; font-family: 'Playfair Display', serif;">📋 Seva Booking Reports</h3>
+                    <p style="font-size: 0.9rem; color: #888; margin-bottom: 20px;">Select a specific Pooja/Seva to view all corresponding bookings, summary analytics, and download the report.</p>
+
+                    <!-- Report Controls -->
+                    <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; align-items: flex-end;">
+                        <div style="flex: 1; min-width: 280px;">
+                            <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #555; margin-bottom: 6px;">Select Pooja / Seva</label>
+                            <select id="report-seva-select" onchange="onSevaSelectChange()" style="width: 100%; padding: 10px 14px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; font-family: inherit; outline: none; cursor: pointer; background: white; transition: border-color 0.3s; box-sizing: border-box;">
+                                <option value="">-- Choose Pooja/Seva --</option>
+                                {% for p in pooja_list %}
+                                    <option value="{{ p.id }}">{{ p.name }} (₹{{ p.price }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <button type="button" id="report-download-btn" onclick="downloadSevaBookingsCSV()" disabled style="padding: 10px 24px; background: #64748b; color: white; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: not-allowed; transition: all 0.2s ease; font-family: inherit;">📥 Download CSV Report</button>
+                        </div>
+                    </div>
+
+                    <!-- Report Summary Stats -->
+                    <div id="report-stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 30px; display: none;">
+                        <!-- Filled dynamically in JS -->
+                    </div>
+
+                    <!-- Loading Spinner -->
+                    <div id="report-loading" style="display: none; text-align: center; padding: 40px;">
+                        <div style="display: inline-block; width: 36px; height: 36px; border: 4px solid #e0e0e0; border-top-color: {{ peetha.color|default:'var(--saffron)' }}; border-radius: 50%; animation: spin 0.7s linear infinite;"></div>
+                        <p style="color: #888; margin-top: 12px; font-size: 0.9rem;">Fetching report data...</p>
+                    </div>
+
+                    <!-- Report Results Table -->
+                    <div id="report-results-wrapper" style="display: none;">
+                        <div class="media-table-wrapper">
+                            <table class="dashboard-table" id="report-bookings-table">
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>Devotee Name</th>
+                                        <th>Phone / Email</th>
+                                        <th>Pooja Date</th>
+                                        <th>Sankalpa (Gotra/Nakshatra/Rashi)</th>
+                                        <th>Family Members</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Filled dynamically in JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="report-empty-state" style="text-align: center; padding: 40px; color: #888;">
+                        <div style="font-size: 3rem; margin-bottom: 12px;">📊</div>
+                        <p style="font-size: 1.05rem; font-weight: 500; margin: 0;">No Seva Selected</p>
+                        <p style="font-size: 0.88rem; color: #aaa; margin: 4px 0 0;">Please choose a Pooja/Seva from the dropdown above to run the report.</p>
                     </div>
                 </div>
             </div>
@@ -1970,5 +2107,201 @@
             </div>
         </div>`;
     }
+
+    // Seva Booking Reports JS
+    let currentReportBookings = [];
+    let currentReportPoojaName = "";
+
+    window.onSevaSelectChange = function() {
+        const select = document.getElementById('report-seva-select');
+        if (!select) return;
+        const poojaId = select.value;
+        const emptyState = document.getElementById('report-empty-state');
+        const loading = document.getElementById('report-loading');
+        const statsGrid = document.getElementById('report-stats-grid');
+        const resultsWrapper = document.getElementById('report-results-wrapper');
+        const downloadBtn = document.getElementById('report-download-btn');
+
+        if (!poojaId) {
+            if (emptyState) emptyState.style.display = 'block';
+            if (loading) loading.style.display = 'none';
+            if (statsGrid) statsGrid.style.display = 'none';
+            if (resultsWrapper) resultsWrapper.style.display = 'none';
+            if (downloadBtn) {
+                downloadBtn.disabled = true;
+                downloadBtn.style.cursor = 'not-allowed';
+                downloadBtn.style.background = '#64748b';
+            }
+            currentReportBookings = [];
+            currentReportPoojaName = "";
+            return;
+        }
+
+        if (emptyState) emptyState.style.display = 'none';
+        if (loading) loading.style.display = 'block';
+        if (statsGrid) statsGrid.style.display = 'none';
+        if (resultsWrapper) resultsWrapper.style.display = 'none';
+        if (downloadBtn) {
+            downloadBtn.disabled = true;
+            downloadBtn.style.cursor = 'not-allowed';
+            downloadBtn.style.background = '#64748b';
+        }
+
+        fetch(`/dashboard/api/seva-bookings/?pooja_id=${poojaId}`)
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to fetch reports");
+                return res.json();
+            })
+            .then(data => {
+                if (loading) loading.style.display = 'none';
+                currentReportBookings = data.bookings;
+                currentReportPoojaName = data.pooja_name;
+
+                // Render stats
+                renderReportStats(data.bookings);
+                
+                // Render table
+                renderReportTable(data.bookings);
+
+                if (data.bookings.length > 0 && downloadBtn) {
+                    downloadBtn.disabled = false;
+                    downloadBtn.style.cursor = 'pointer';
+                    downloadBtn.style.background = 'var(--saffron)';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                if (loading) loading.style.display = 'none';
+                if (emptyState) emptyState.style.display = 'block';
+                alert('Error loading booking reports. Please try again.');
+            });
+    };
+
+    function renderReportStats(bookings) {
+        const statsGrid = document.getElementById('report-stats-grid');
+        if (!statsGrid) return;
+        statsGrid.style.display = 'grid';
+
+        const totalCount = bookings.length;
+        const successCountLen = bookings.filter(b => b.payment_status === 'success').length;
+        const pendingCountLen = bookings.filter(b => b.payment_status === 'pending').length;
+        const totalRevenue = bookings.filter(b => b.payment_status === 'success').reduce((acc, b) => acc + b.amount, 0);
+
+        statsGrid.innerHTML = `
+            <div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 8px; padding: 16px; text-align: center;">
+                <div style="font-size: 1.5rem;">🙏</div>
+                <div style="font-size: 0.78rem; font-weight: 600; color: #555; text-transform: uppercase; margin-top: 4px;">Total Bookings</div>
+                <div style="font-size: 1.6rem; font-weight: 700; color: #1b5e20; margin-top: 4px;">${totalCount}</div>
+            </div>
+            <div style="background: #e3f2fd; border: 1px solid #bbdefb; border-radius: 8px; padding: 16px; text-align: center;">
+                <div style="font-size: 1.5rem;">₹</div>
+                <div style="font-size: 0.78rem; font-weight: 600; color: #555; text-transform: uppercase; margin-top: 4px;">Total Revenue</div>
+                <div style="font-size: 1.6rem; font-weight: 700; color: #0d47a1; margin-top: 4px;">₹${totalRevenue.toLocaleString('en-IN')}</div>
+            </div>
+            <div style="background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 8px; padding: 16px; text-align: center;">
+                <div style="font-size: 1.5rem;">⏳</div>
+                <div style="font-size: 0.78rem; font-weight: 600; color: #555; text-transform: uppercase; margin-top: 4px;">Pending</div>
+                <div style="font-size: 1.6rem; font-weight: 700; color: #e65100; margin-top: 4px;">${pendingCountLen}</div>
+            </div>
+        `;
+    }
+
+    function renderReportTable(bookings) {
+        const resultsWrapper = document.getElementById('report-results-wrapper');
+        const tbody = document.querySelector('#report-bookings-table tbody');
+        if (!resultsWrapper || !tbody) return;
+        resultsWrapper.style.display = 'block';
+
+        if (bookings.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="no-records">No bookings found for this Seva.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = bookings.map(b => {
+            let statusBadge = '';
+            if (b.payment_status === 'success') {
+                statusBadge = `<span class="badge" style="background-color: #d1fae5; color: #065f46; font-weight: bold; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">Success</span>`;
+            } else if (b.payment_status === 'pending') {
+                statusBadge = `<span class="badge" style="background-color: #fef3c7; color: #92400e; font-weight: bold; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">Pending</span>`;
+            } else {
+                statusBadge = `<span class="badge" style="background-color: #fee2e2; color: #991b1b; font-weight: bold; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">Failed</span>`;
+            }
+
+            const gotraStr = b.gotra ? `G: ${b.gotra}` : '';
+            const nakshatraStr = b.nakshatra ? `N: ${b.nakshatra}` : '';
+            const rashiStr = b.rashi ? `R: ${b.rashi}` : '';
+            const sankalpaArr = [gotraStr, nakshatraStr, rashiStr].filter(x => x !== '');
+            const sankalpaDisplay = sankalpaArr.length > 0 ? sankalpaArr.join(' / ') : '<span style="color:#aaa; font-style:italic;">None</span>';
+
+            const familyDisplay = b.family_members ? `<div style="font-size: 0.78rem; max-width: 250px; color:#555; max-height: 80px; overflow-y:auto; white-space: pre-line;">${b.family_members}</div>` : '<span style="color:#aaa; font-style:italic;">None</span>';
+
+            return `
+                <tr>
+                    <td><code>${b.id}</code></td>
+                    <td><strong>${b.devotee_name}</strong></td>
+                    <td style="font-size: 0.85rem;">
+                        <div>📞 ${b.devotee_phone}</div>
+                        ${b.devotee_email ? `<div>✉️ ${b.devotee_email}</div>` : ''}
+                    </td>
+                    <td><strong style="color:var(--saffron);">${b.date_of_pooja}</strong></td>
+                    <td style="font-size: 0.85rem;">${sankalpaDisplay}</td>
+                    <td>${familyDisplay}</td>
+                    <td><strong>₹${b.amount}</strong></td>
+                    <td>${statusBadge}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    window.downloadSevaBookingsCSV = function() {
+        if (!currentReportBookings || currentReportBookings.length === 0) {
+            alert("No bookings to download.");
+            return;
+        }
+
+        const headers = [
+            "Booking ID", "Devotee Name", "Phone", "Email", "Date of Pooja",
+            "Gotra", "Nakshatra", "Rashi", "Family Members", "Amount (Rs.)",
+            "Payment Status", "Transaction ID", "Booking Date"
+        ];
+
+        const rows = currentReportBookings.map(b => [
+            b.id,
+            b.devotee_name,
+            b.devotee_phone,
+            b.devotee_email,
+            b.date_of_pooja,
+            b.gotra,
+            b.nakshatra,
+            b.rashi,
+            b.family_members.replace(/\n/g, ' | '),
+            b.amount,
+            b.payment_status,
+            b.transaction_id,
+            b.created_at
+        ]);
+
+        let csvContent = "\ufeff";
+        csvContent += headers.map(h => `"${h.replace(/"/g, '""')}"`).join(",") + "\r\n";
+
+        rows.forEach(row => {
+            csvContent += row.map(val => {
+                const str = String(val === null || val === undefined ? '' : val);
+                return `"${str.replace(/"/g, '""')}"`;
+            }).join(",") + "\r\n";
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        const filename = `bookings_${currentReportPoojaName.toLowerCase().replace(/[^a-z0-9]/g, '_')}.csv`;
+        
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
 </script>
 {% endblock %}

@@ -697,6 +697,8 @@ def dashboard_home(request):
         
         payment_form = PeethaPaymentConfigForm()
         
+        all_poojas = Pooja.objects.select_related('peetha').filter(is_active=True).order_by('peetha__name', 'name')
+        
         return render(request, 'peethas/dashboard.html', {
             'is_admin': True,
             'is_superuser': request.user.is_superuser,
@@ -715,6 +717,7 @@ def dashboard_home(request):
             'feature_board': feature_board,
             'handler_form': handler_form,
             'payment_form': payment_form,
+            'all_poojas': all_poojas,
             'labels': TRANSLATIONS['en'],  # Admin panel uses English
             'lang': lang,
         })
@@ -1763,6 +1766,59 @@ def dashboard_date_bookings(request):
     result['total_revenue'] = round(result['total_revenue'], 2)
 
     return JsonResponse(result)
+
+
+@login_required(login_url='peethas:login')
+def dashboard_seva_bookings(request):
+    """
+    AJAX API: Return all bookings for a specific Pooja/Seva.
+    Superusers can query any Pooja; Handlers and Staff can only query Poojas belonging to their assigned Peetha.
+    """
+    if not (request.user.is_superuser or request.user.is_staff or hasattr(request.user, 'handler_profile')):
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    pooja_id = request.GET.get('pooja_id', '')
+    
+    if not pooja_id:
+        return JsonResponse({'error': 'Pooja ID is required.'}, status=400)
+        
+    pooja = get_object_or_404(Pooja, pk=pooja_id)
+    
+    # Permission check for handlers/staff
+    if not request.user.is_superuser:
+        try:
+            handler = request.user.handler_profile
+            if pooja.peetha != handler.peetha:
+                return JsonResponse({'error': 'Unauthorized'}, status=403)
+        except PeethaHandler.DoesNotExist:
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
+            
+    bookings = PoojaBooking.objects.filter(pooja=pooja).select_related('user').order_by('-date_of_pooja', '-created_at')
+    
+    bookings_list = []
+    for b in bookings:
+        family_str = b.formatted_family_members or ''
+        bookings_list.append({
+            'id': b.id,
+            'devotee_name': b.devotee_name,
+            'devotee_phone': b.devotee_phone,
+            'devotee_email': b.devotee_email or '',
+            'date_of_pooja': b.date_of_pooja.strftime('%Y-%m-%d'),
+            'gotra': b.gotra or '',
+            'nakshatra': b.nakshatra or '',
+            'rashi': b.rashi or '',
+            'family_members': family_str,
+            'amount': float(b.amount),
+            'payment_status': b.payment_status,
+            'created_at': b.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'transaction_id': b.transaction_id or '',
+        })
+        
+    return JsonResponse({
+        'pooja_name': pooja.name,
+        'peetha_name': pooja.peetha.name,
+        'bookings': bookings_list
+    })
 
 
 @login_required(login_url='peethas:login')
