@@ -103,7 +103,7 @@ img {
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
     border-bottom: 1px solid var(--border);
-    padding: 100px 0 110px;
+    padding: 100px 0 50px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -379,7 +379,7 @@ img {
 
 /* ===== Peethas Grid ===== */
 .peethas-section {
-    padding: 70px 0 80px;
+    padding: 30px 0 80px;
     background: var(--bg-light);
 }
 
