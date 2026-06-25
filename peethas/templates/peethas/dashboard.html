@@ -258,6 +258,7 @@
                                     <select name="role" id="assign-role-select" class="form-input" required>
                                         <option value="handler">Peetha Handler</option>
                                         <option value="staff">Staff (Read-Only Admin)</option>
+                                        <option value="superuser">Super Admin (Platform Owner)</option>
                                     </select>
                                 </div>
                                 <div class="form-group" id="assign-peetha-group">
@@ -325,14 +326,24 @@
                                         <tr>
                                             <td><strong>{{ s.username }}</strong></td>
                                             <td>{{ s.email }}</td>
-                                            <td><span class="badge" style="background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">Staff (Read-Only)</span></td>
                                             <td>
-                                                <form action="{% url 'peethas:assign_handler' %}" method="post" onsubmit="return confirm('Are you sure you want to revoke staff access for this user?');" style="display:inline;">
+                                                {% if s.is_superuser %}
+                                                <span class="badge" style="background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">Super Admin</span>
+                                                {% else %}
+                                                <span class="badge" style="background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">Staff (Read-Only)</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if s.is_superuser and s.pk == request.user.pk %}
+                                                <span style="font-size: 0.85rem; color: #aaa; font-style: italic;">Cannot revoke self</span>
+                                                {% else %}
+                                                <form action="{% url 'peethas:assign_handler' %}" method="post" onsubmit="return confirm('Are you sure you want to revoke access for this user?');" style="display:inline;">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="action" value="revoke_staff">
                                                     <input type="hidden" name="user_id" value="{{ s.pk }}">
                                                     <button type="submit" class="btn-delete" style="padding: 6px 12px; font-size: 0.85rem;">Revoke Access</button>
                                                 </form>
+                                                {% endif %}
                                             </td>
                                         </tr>
                                         {% empty %}
@@ -1929,10 +1940,11 @@
                     <div style="font-size: 0.8rem; font-weight: bold; color: #555;">Upgrade ${d.full_name}</div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                         <select id="role-select-${d.id}" onchange="handleRoleSelectChange(${d.id})" style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.82rem; flex: 1; outline: none; background: white;">
-                            <option value="devotee" ${d.role === 'devotee' ? 'selected' : ''}>Devotee (Regular User)</option>
-                            <option value="staff" ${d.role === 'staff' ? 'selected' : ''}>Staff (Read-Only Admin)</option>
-                            <option value="handler" ${d.role === 'handler' ? 'selected' : ''}>Peetha Handler</option>
-                        </select>
+                                                            <option value="devotee" ${d.role === 'devotee' ? 'selected' : ''}>Devotee (Regular User)</option>
+                                                            <option value="staff" ${d.role === 'staff' ? 'selected' : ''}>Staff (Read-Only Admin)</option>
+                                                            <option value="handler" ${d.role === 'handler' ? 'selected' : ''}>Peetha Handler</option>
+                                                            <option value="superuser" ${d.role === 'superuser' ? 'selected' : ''}>Super Admin (Platform Owner)</option>
+                                                        </select>
                         
                         <select id="peetha-select-${d.id}" style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.82rem; flex: 1; outline: none; background: white; display: ${d.role === 'handler' ? 'block' : 'none'};">
                             <option value="">-- Select Peetha --</option>

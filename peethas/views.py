@@ -641,8 +641,8 @@ def dashboard_home(request):
         # Users list for dropdown (exclude staff/superusers)
         users = User.objects.filter(is_superuser=False, is_staff=False).order_by('username')
 
-        # Staff users list
-        staff_users = User.objects.filter(is_staff=True, is_superuser=False).order_by('username')
+        # Staff and Super Admin users list
+        staff_users = User.objects.filter(models.Q(is_staff=True) | models.Q(is_superuser=True)).distinct().order_by('username')
         
         # Payment Configs
         payment_configs = PeethaPaymentConfig.objects.select_related('peetha').all()
@@ -688,8 +688,8 @@ def dashboard_home(request):
         # Forms for action panels
         handler_form = PeethaHandlerForm()
         handler_form.fields['user'].queryset = User.objects.filter(
-            models.Q(is_staff=True) | models.Q(handler_profile__isnull=False)
-        ).filter(is_superuser=False).distinct().order_by('username')
+            models.Q(is_staff=True) | models.Q(is_superuser=True) | models.Q(handler_profile__isnull=False)
+        ).distinct().order_by('username')
         
         payment_form = PeethaPaymentConfigForm()
         
@@ -748,18 +748,28 @@ def assign_handler(request):
             if user_id:
                 user = get_object_or_404(User, pk=user_id)
                 user.is_staff = False
+                user.is_superuser = False
                 user.save()
-                msg = f"Revoked staff access for {user.username}."
+                msg = f"Revoked staff/admin access for {user.username}."
                 messages.success(request, msg)
         else:
             user_id = request.POST.get('user')
             role = request.POST.get('role', 'handler')
             user = get_object_or_404(User, pk=user_id)
             
-            if role == 'staff':
+            if role == 'superuser':
+                # Since they are becoming Super Admin, remove handler mapping if any
+                PeethaHandler.objects.filter(user=user).delete()
+                user.is_staff = True
+                user.is_superuser = True
+                user.save()
+                msg = f"Assigned {user.username} as Super Admin."
+                messages.success(request, msg)
+            elif role == 'staff':
                 # Since they are becoming Staff, remove handler mapping if any
                 PeethaHandler.objects.filter(user=user).delete()
                 user.is_staff = True
+                user.is_superuser = False
                 user.save()
                 msg = f"Assigned {user.username} as Staff (Read-Only admin)."
                 messages.success(request, msg)
@@ -774,6 +784,7 @@ def assign_handler(request):
                     # Since user is OneToOne, check if they are already a handler elsewhere and delete that
                     PeethaHandler.objects.filter(user=user).delete()
                     user.is_staff = False
+                    user.is_superuser = False
                     user.save()
                     PeethaHandler.objects.create(user=user, peetha=peetha)
                     msg = f"Assigned {user.username} as handler for {peetha.name}."
@@ -781,6 +792,7 @@ def assign_handler(request):
             else:  # devotee
                 PeethaHandler.objects.filter(user=user).delete()
                 user.is_staff = False
+                user.is_superuser = False
                 user.save()
                 msg = f"Changed {user.username}'s role to regular Devotee."
                 messages.success(request, msg)
@@ -1815,7 +1827,10 @@ def dashboard_search_devotees(request):
             role_display = f"Handler ({handler.peetha.name})"
             assigned_peetha_id = handler.peetha.id
         except Exception:
-            if u.is_staff:
+            if u.is_superuser:
+                user_role = 'superuser'
+                role_display = 'Super Admin'
+            elif u.is_staff:
                 user_role = 'staff'
                 role_display = 'Staff (Read-Only)'
 

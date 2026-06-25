@@ -376,6 +376,59 @@ class PoojaBookingTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         test_user.refresh_from_db()
         self.assertFalse(test_user.is_staff)
+        self.assertFalse(test_user.is_superuser)
+
+        # 5. Assign Super Admin Role
+        response = admin_client.post(
+            reverse('peethas:assign_handler'),
+            {
+                'action': 'assign',
+                'user': test_user.id,
+                'role': 'superuser'
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        test_user.refresh_from_db()
+        self.assertTrue(test_user.is_staff)
+        self.assertTrue(test_user.is_superuser)
+
+        # 6. Revoke Super Admin Access (revoke_staff should demote superuser)
+        response = admin_client.post(
+            reverse('peethas:assign_handler'),
+            {
+                'action': 'revoke_staff',
+                'user_id': test_user.id
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        test_user.refresh_from_db()
+        self.assertFalse(test_user.is_staff)
+        self.assertFalse(test_user.is_superuser)
+
+        # 7. Assign Super Admin and then change to Devotee role
+        admin_client.post(
+            reverse('peethas:assign_handler'),
+            {
+                'action': 'assign',
+                'user': test_user.id,
+                'role': 'superuser'
+            }
+        )
+        test_user.refresh_from_db()
+        self.assertTrue(test_user.is_superuser)
+
+        response = admin_client.post(
+            reverse('peethas:assign_handler'),
+            {
+                'action': 'assign',
+                'user': test_user.id,
+                'role': 'devotee'
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        test_user.refresh_from_db()
+        self.assertFalse(test_user.is_staff)
+        self.assertFalse(test_user.is_superuser)
 
     def test_devotee_search_excludes_non_devotees(self):
         admin_user = User.objects.create_superuser(username='searchadmin', password='password123', email='searchadmin@example.com')
@@ -392,6 +445,9 @@ class PoojaBookingTestCase(TestCase):
         handler_user = User.objects.create_user(username='handler_user_role', password='password123')
         PeethaHandler.objects.create(user=handler_user, peetha=self.peetha)
         
+        # 4. Superuser (should be excluded)
+        superuser_user = User.objects.create_superuser(username='super_user_role', password='password123', email='super_user_role@example.com')
+        
         response = admin_client.get(reverse('peethas:dashboard_search_devotees'))
         self.assertEqual(response.status_code, 200)
         data = response.json()
@@ -400,6 +456,7 @@ class PoojaBookingTestCase(TestCase):
         self.assertIn('true_devotee', usernames)
         self.assertNotIn('staff_user_role', usernames)
         self.assertNotIn('handler_user_role', usernames)
+        self.assertNotIn('super_user_role', usernames)
 
 
 
