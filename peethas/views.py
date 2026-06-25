@@ -1425,31 +1425,7 @@ def initiate_pooja_booking(request, peetha_slug):
             messages.error(request, f"Sorry, all slots are fully booked for {pooja.name} on {booking_date}. Please choose another date.")
             return redirect('peethas:peetha_detail', slug=peetha.slug)
 
-        # Payment config
-        try:
-            payment_config = peetha.payment_config
-        except PeethaPaymentConfig.DoesNotExist:
-            messages.error(request, "Online payments are currently unavailable for this Peetha.")
-            return redirect('peethas:peetha_detail', slug=peetha.slug)
-            
-        if not payment_config.is_active:
-            messages.error(request, "Online payments are temporarily disabled for this Peetha.")
-            return redirect('peethas:peetha_detail', slug=peetha.slug)
-            
-        # Create Razorpay Order
-        client = razorpay.Client(auth=(payment_config.razorpay_key_id, payment_config.razorpay_key_secret))
-        
-        amount_paise = int(pooja.price * 100) # Razorpay works in paise
-        
-        data = {
-            "amount": amount_paise,
-            "currency": "INR",
-            "receipt": f"pooja_receipt_{datetime.datetime.now().timestamp()}"
-        }
-        
-        payment_order = client.order.create(data=data)
-        
-        # Save pending booking
+        # Bypassing online payments: Save successful booking directly
         booking = PoojaBooking.objects.create(
             pooja=pooja,
             user=request.user,
@@ -1462,18 +1438,12 @@ def initiate_pooja_booking(request, peetha_slug):
             family_members=family_members,
             date_of_pooja=date_of_pooja,
             amount=pooja.price,
-            razorpay_order_id=payment_order['id'],
-            payment_status='pending'
+            razorpay_order_id=f"ORD-DUMMY-{int(datetime.datetime.now().timestamp())}",
+            razorpay_payment_id=f"PAY-DUMMY-{int(datetime.datetime.now().timestamp())}",
+            payment_status='success'
         )
         
-        return render(request, 'peethas/pooja_payment.html', {
-            'booking': booking,
-            'razorpay_order_id': payment_order['id'],
-            'razorpay_merchant_key': payment_config.razorpay_key_id,
-            'amount': amount_paise,
-            'currency': 'INR',
-            'peetha': peetha,
-        })
+        return redirect('peethas:booking_success', booking_id=booking.id)
         
     return redirect('peethas:peetha_detail', slug=peetha.slug)
 
@@ -1592,6 +1562,19 @@ def verify_pooja_payment(request):
             return redirect('peethas:peetha_detail', slug=peetha.slug)
             
     return redirect('peethas:home')
+            
+@login_required(login_url='peethas:login')
+def booking_success(request, booking_id):
+    booking = get_object_or_404(PoojaBooking, pk=booking_id)
+    # Ensure they can only see their own booking, unless they are staff/superuser/handler
+    if booking.user != request.user and not (request.user.is_superuser or request.user.is_staff or hasattr(request.user, 'handler_profile')):
+        raise PermissionDenied("You do not have permission to view this receipt.")
+        
+    peetha = booking.pooja.peetha
+    return render(request, 'peethas/pooja_success.html', {
+        'booking': booking,
+        'peetha': peetha,
+    })
 
 @login_required(login_url='peethas:login')
 def my_bookings(request):

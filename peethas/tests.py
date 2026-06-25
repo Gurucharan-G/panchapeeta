@@ -84,50 +84,44 @@ class PoojaBookingTestCase(TestCase):
         next_monday = today + datetime.timedelta(days=days_ahead)
         next_monday_str = next_monday.strftime('%Y-%m-%d')
         
-        from unittest.mock import patch
+        # First booking
+        response = self.client.post(
+            reverse('peethas:initiate_pooja_booking', kwargs={'peetha_slug': self.peetha.slug}),
+            {
+                'pooja_id': self.pooja.id,
+                'devotee_name': 'Devotee 1',
+                'devotee_phone': '1234567890',
+                'date_of_pooja': next_monday_str
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(PoojaBooking.objects.count(), 1)
         
-        with patch('razorpay.Client') as mock_razorpay:
-            mock_client = mock_razorpay.return_value
-            mock_client.order.create.return_value = {'id': 'order_dummy_id'}
-            
-            # First booking
-            response = self.client.post(
-                reverse('peethas:initiate_pooja_booking', kwargs={'peetha_slug': self.peetha.slug}),
-                {
-                    'pooja_id': self.pooja.id,
-                    'devotee_name': 'Devotee 1',
-                    'devotee_phone': '1234567890',
-                    'date_of_pooja': next_monday_str
-                }
-            )
-            self.assertEqual(response.status_code, 200)
-            self.assertEqual(PoojaBooking.objects.count(), 1)
-            
-            # Second booking
-            response = self.client.post(
-                reverse('peethas:initiate_pooja_booking', kwargs={'peetha_slug': self.peetha.slug}),
-                {
-                    'pooja_id': self.pooja.id,
-                    'devotee_name': 'Devotee 2',
-                    'devotee_phone': '1234567890',
-                    'date_of_pooja': next_monday_str
-                }
-            )
-            self.assertEqual(response.status_code, 200)
-            self.assertEqual(PoojaBooking.objects.count(), 2)
-            
-            # Third booking - slots full, should redirect with error
-            response = self.client.post(
-                reverse('peethas:initiate_pooja_booking', kwargs={'peetha_slug': self.peetha.slug}),
-                {
-                    'pooja_id': self.pooja.id,
-                    'devotee_name': 'Devotee 3',
-                    'devotee_phone': '1234567890',
-                    'date_of_pooja': next_monday_str
-                }
-            )
-            self.assertEqual(response.status_code, 302)
-            self.assertEqual(PoojaBooking.objects.count(), 2)
+        # Second booking
+        response = self.client.post(
+            reverse('peethas:initiate_pooja_booking', kwargs={'peetha_slug': self.peetha.slug}),
+            {
+                'pooja_id': self.pooja.id,
+                'devotee_name': 'Devotee 2',
+                'devotee_phone': '1234567890',
+                'date_of_pooja': next_monday_str
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(PoojaBooking.objects.count(), 2)
+        
+        # Third booking - slots full, should redirect with error
+        response = self.client.post(
+            reverse('peethas:initiate_pooja_booking', kwargs={'peetha_slug': self.peetha.slug}),
+            {
+                'pooja_id': self.pooja.id,
+                'devotee_name': 'Devotee 3',
+                'devotee_phone': '1234567890',
+                'date_of_pooja': next_monday_str
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(PoojaBooking.objects.count(), 2)
 
     def test_pooja_availability_api(self):
         # Create one booking for next Monday

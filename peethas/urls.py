@@ -43,6 +43,7 @@ urlpatterns = [
     path('peetha/<slug:peetha_slug>/book-pooja/', views.initiate_pooja_booking, name='initiate_pooja_booking'),
     path('peetha/<slug:peetha_slug>/pooja/<int:pooja_id>/availability/', views.pooja_availability, name='pooja_availability'),
     path('verify-pooja-payment/', views.verify_pooja_payment, name='verify_pooja_payment'),
+    path('booking-success/<int:booking_id>/', views.booking_success, name='booking_success'),
     
     # Dashboard AJAX APIs
     path('dashboard/api/date-bookings/', views.dashboard_date_bookings, name='dashboard_date_bookings'),
