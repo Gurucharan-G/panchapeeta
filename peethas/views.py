@@ -640,6 +640,9 @@ def dashboard_home(request):
         
         # Users list for dropdown (exclude staff/superusers)
         users = User.objects.filter(is_superuser=False, is_staff=False).order_by('username')
+
+        # Staff users list
+        staff_users = User.objects.filter(is_staff=True, is_superuser=False).order_by('username')
         
         # Payment Configs
         payment_configs = PeethaPaymentConfig.objects.select_related('peetha').all()
@@ -684,6 +687,10 @@ def dashboard_home(request):
         
         # Forms for action panels
         handler_form = PeethaHandlerForm()
+        handler_form.fields['user'].queryset = User.objects.filter(
+            models.Q(is_staff=True) | models.Q(handler_profile__isnull=False)
+        ).filter(is_superuser=False).distinct().order_by('username')
+        
         payment_form = PeethaPaymentConfigForm()
         
         return render(request, 'peethas/dashboard.html', {
@@ -698,6 +705,7 @@ def dashboard_home(request):
             'recent_bookings': recent_bookings,
             'handlers': handlers,
             'users': users,
+            'staff_users': staff_users,
             'payment_configs': payment_configs,
             'feature_flags': feature_flags,
             'feature_board': feature_board,
@@ -718,9 +726,10 @@ def assign_handler(request):
         raise PermissionDenied()
         
     if request.method == 'POST':
-        user_id = request.POST.get('user')
-        peetha_id = request.POST.get('peetha')
         action = request.POST.get('action', 'assign')
+        
+        msg = ""
+        success = True
         
         if action == 'delete':
             handler_id = request.POST.get('handler_id')
@@ -728,17 +737,60 @@ def assign_handler(request):
                 handler = get_object_or_404(PeethaHandler, pk=handler_id)
                 username = handler.user.username
                 peetha_name = handler.peetha.name
+                user = handler.user
+                user.is_staff = False
+                user.save()
                 handler.delete()
-                messages.success(request, f"Removed {username} as handler for {peetha_name}.")
+                msg = f"Removed {username} as handler for {peetha_name}."
+                messages.success(request, msg)
+        elif action == 'revoke_staff':
+            user_id = request.POST.get('user_id')
+            if user_id:
+                user = get_object_or_404(User, pk=user_id)
+                user.is_staff = False
+                user.save()
+                msg = f"Revoked staff access for {user.username}."
+                messages.success(request, msg)
         else:
+            user_id = request.POST.get('user')
+            role = request.POST.get('role', 'handler')
             user = get_object_or_404(User, pk=user_id)
-            peetha = get_object_or_404(Peetha, pk=peetha_id)
             
-            # Since user is OneToOne, check if they are already a handler elsewhere and delete that
-            PeethaHandler.objects.filter(user=user).delete()
-            
-            PeethaHandler.objects.create(user=user, peetha=peetha)
-            messages.success(request, f"Assigned {user.username} as handler for {peetha.name}.")
+            if role == 'staff':
+                # Since they are becoming Staff, remove handler mapping if any
+                PeethaHandler.objects.filter(user=user).delete()
+                user.is_staff = True
+                user.save()
+                msg = f"Assigned {user.username} as Staff (Read-Only admin)."
+                messages.success(request, msg)
+            elif role == 'handler':
+                peetha_id = request.POST.get('peetha')
+                if not peetha_id:
+                    msg = "Please select a Peetha for the handler."
+                    success = False
+                    messages.error(request, msg)
+                else:
+                    peetha = get_object_or_404(Peetha, pk=peetha_id)
+                    # Since user is OneToOne, check if they are already a handler elsewhere and delete that
+                    PeethaHandler.objects.filter(user=user).delete()
+                    user.is_staff = False
+                    user.save()
+                    PeethaHandler.objects.create(user=user, peetha=peetha)
+                    msg = f"Assigned {user.username} as handler for {peetha.name}."
+                    messages.success(request, msg)
+            else:  # devotee
+                PeethaHandler.objects.filter(user=user).delete()
+                user.is_staff = False
+                user.save()
+                msg = f"Changed {user.username}'s role to regular Devotee."
+                messages.success(request, msg)
+                
+        # AJAX response
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.content_type == 'application/json':
+            return JsonResponse({
+                'success': success,
+                'message': msg
+            })
             
     from django.urls import reverse
     return redirect(reverse('peethas:dashboard_home') + '#roles-section:active-handlers-view')
@@ -1581,4 +1633,223 @@ def profile_view(request):
         'profile': profile,
         'completion': completion,
         'lang': lang,
+    })
+
+
+@login_required(login_url='peethas:login')
+def dashboard_date_bookings(request):
+    """AJAX API: Return bookings for a specific date, grouped by peetha.
+    Superusers see all peethas; handlers see only their assigned peetha.
+    """
+    if not (request.user.is_superuser or request.user.is_staff or hasattr(request.user, 'handler_profile')):
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    date_str = request.GET.get('date', '')
+    peetha_slug = request.GET.get('peetha', '')  # Optional filter for specific peetha
+
+    if not date_str:
+        date_str = datetime.date.today().isoformat()
+
+    try:
+        target_date = datetime.date.fromisoformat(date_str)
+    except ValueError:
+        return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD.'}, status=400)
+
+    # Determine which peethas to show
+    if peetha_slug:
+        # Specific peetha requested (handler or admin drilling into one)
+        peethas_qs = Peetha.objects.filter(slug=peetha_slug)
+    elif hasattr(request.user, 'handler_profile'):
+        # Handler: only their peetha
+        peethas_qs = Peetha.objects.filter(pk=request.user.handler_profile.peetha.pk)
+    else:
+        # Superuser/staff: all peethas
+        peethas_qs = Peetha.objects.all().order_by('id')
+
+    result = {
+        'date': target_date.isoformat(),
+        'date_display': target_date.strftime('%A, %d %B %Y'),
+        'peethas': [],
+        'total_bookings': 0,
+        'total_revenue': 0,
+        'total_pending': 0,
+    }
+
+    for peetha in peethas_qs:
+        bookings = PoojaBooking.objects.filter(
+            pooja__peetha=peetha,
+            date_of_pooja=target_date
+        ).select_related('pooja', 'user').order_by('-created_at')
+
+        success_bookings = bookings.filter(payment_status='success')
+        pending_bookings = bookings.filter(payment_status='pending')
+        failed_bookings = bookings.filter(payment_status='failed')
+
+        peetha_revenue = success_bookings.aggregate(total=models.Sum('amount'))['total'] or 0
+        peetha_revenue = float(peetha_revenue)
+
+        bookings_data = []
+        for b in bookings:
+            bookings_data.append({
+                'id': b.id,
+                'devotee_name': b.devotee_name,
+                'devotee_phone': b.devotee_phone,
+                'devotee_email': b.devotee_email or '',
+                'pooja_name': b.pooja.name,
+                'pooja_category': b.pooja.get_category_display(),
+                'gotra': b.gotra or '',
+                'nakshatra': b.nakshatra or '',
+                'rashi': b.rashi or '',
+                'family_members': b.formatted_family_members or '',
+                'amount': float(b.amount),
+                'payment_status': b.payment_status,
+                'payment_status_display': b.get_payment_status_display(),
+                'created_at': b.created_at.strftime('%d %b %Y, %I:%M %p') if b.created_at else '',
+                'razorpay_payment_id': b.razorpay_payment_id or '',
+            })
+
+        # Slot utilization per pooja
+        poojas = Pooja.objects.filter(peetha=peetha, is_active=True).order_by('order', 'name')
+        slot_info = []
+        for pooja in poojas:
+            booked_count = PoojaBooking.objects.filter(
+                pooja=pooja,
+                date_of_pooja=target_date,
+                payment_status='success'
+            ).count()
+            slot_info.append({
+                'pooja_name': pooja.name,
+                'category': pooja.get_category_display(),
+                'total_slots': pooja.total_slots,
+                'booked_slots': booked_count,
+                'available_slots': max(0, pooja.total_slots - booked_count),
+                'utilization_pct': round((booked_count / pooja.total_slots) * 100, 1) if pooja.total_slots > 0 else 0,
+            })
+
+        peetha_data = {
+            'name': peetha.name,
+            'slug': peetha.slug,
+            'color': peetha.color,
+            'total_bookings': success_bookings.count(),
+            'pending_bookings': pending_bookings.count(),
+            'failed_bookings': failed_bookings.count(),
+            'revenue': peetha_revenue,
+            'bookings': bookings_data,
+            'slot_info': slot_info,
+        }
+
+        result['peethas'].append(peetha_data)
+        result['total_bookings'] += success_bookings.count()
+        result['total_revenue'] += peetha_revenue
+        result['total_pending'] += pending_bookings.count()
+
+    result['total_revenue'] = round(result['total_revenue'], 2)
+
+    return JsonResponse(result)
+
+
+@login_required(login_url='peethas:login')
+def dashboard_search_devotees(request):
+    """AJAX API: Search devotees by name, phone, gender, gotra, etc. Superuser only."""
+    if not request.user.is_superuser:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    from .models import UserProfile
+
+    query = request.GET.get('q', '').strip()
+    gender_filter = request.GET.get('gender', '').strip()
+    page = int(request.GET.get('page', 1))
+    per_page = 20
+
+    users = User.objects.all().order_by('-date_joined')
+
+    # Exclude superusers, staff, and handlers from devotee listing (show only pure devotees)
+    users = users.filter(is_superuser=False, is_staff=False, handler_profile__isnull=True)
+
+    # Text search across multiple fields
+    if query:
+        users = users.filter(
+            models.Q(first_name__icontains=query) |
+            models.Q(last_name__icontains=query) |
+            models.Q(username__icontains=query) |
+            models.Q(email__icontains=query) |
+            models.Q(profile_profile__phone_number__icontains=query) |
+            models.Q(profile_profile__gotra__icontains=query) |
+            models.Q(profile_profile__nakshatra__icontains=query) |
+            models.Q(profile_profile__rashi__icontains=query)
+        ).distinct()
+
+    # Gender filter
+    if gender_filter and gender_filter in ('male', 'female', 'other'):
+        users = users.filter(profile_profile__gender=gender_filter)
+
+    total_count = users.count()
+    total_pages = max(1, (total_count + per_page - 1) // per_page)
+    page = max(1, min(page, total_pages))
+    offset = (page - 1) * per_page
+    users_page = users[offset:offset + per_page]
+
+    devotees = []
+    for u in users_page:
+        try:
+            profile = u.profile
+        except Exception:
+            profile = None
+
+        # Booking summary for this devotee
+        booking_count = PoojaBooking.objects.filter(user=u, payment_status='success').count()
+        total_spent_val = PoojaBooking.objects.filter(user=u, payment_status='success').aggregate(
+            total=models.Sum('amount')
+        )['total']
+        total_spent = float(total_spent_val) if total_spent_val else 0.0
+
+        last_booking = PoojaBooking.objects.filter(user=u, payment_status='success').order_by('-created_at').first()
+
+        # Determine current role metadata
+        user_role = 'devotee'
+        role_display = 'Devotee'
+        assigned_peetha_id = None
+        try:
+            handler = u.handler_profile
+            user_role = 'handler'
+            role_display = f"Handler ({handler.peetha.name})"
+            assigned_peetha_id = handler.peetha.id
+        except Exception:
+            if u.is_staff:
+                user_role = 'staff'
+                role_display = 'Staff (Read-Only)'
+
+        devotees.append({
+            'id': u.id,
+            'username': u.username,
+            'full_name': u.get_full_name() or u.username,
+            'email': u.email or '',
+            'phone': profile.phone_number if profile else '',
+            'gender': profile.get_gender_display() if profile and profile.gender else '',
+            'gender_raw': profile.gender if profile else '',
+            'gotra': profile.gotra if profile else '',
+            'nakshatra': profile.nakshatra if profile else '',
+            'rashi': profile.rashi if profile else '',
+            'address': profile.address if profile else '',
+            'has_pic': bool(profile.profile_pic) if profile else False,
+            'date_joined': u.date_joined.strftime('%d %b %Y') if u.date_joined else '',
+            'last_login': u.last_login.strftime('%d %b %Y, %I:%M %p') if u.last_login else 'Never',
+            'booking_count': booking_count,
+            'total_spent': total_spent,
+            'last_booking_date': last_booking.date_of_pooja.strftime('%d %b %Y') if last_booking else '',
+            'last_booking_pooja': last_booking.pooja.name if last_booking else '',
+            'completion': profile.completion_percentage() if profile else 0,
+            'role': user_role,
+            'role_display': role_display,
+            'assigned_peetha_id': assigned_peetha_id,
+        })
+
+    return JsonResponse({
+        'devotees': devotees,
+        'total_count': total_count,
+        'page': page,
+        'total_pages': total_pages,
+        'per_page': per_page,
+        'query': query,
+        'gender': gender_filter,
     })

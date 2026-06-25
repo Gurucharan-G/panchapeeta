@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.urls import reverse
-from peethas.models import Peetha, Pooja, PoojaBooking, PeethaPaymentConfig, FeatureFlag
+from peethas.models import Peetha, Pooja, PoojaBooking, PeethaPaymentConfig, FeatureFlag, PeethaHandler
 import datetime
 
 class PoojaBookingTestCase(TestCase):
@@ -302,6 +302,104 @@ class PoojaBookingTestCase(TestCase):
         self.assertTrue(overall_flag.is_enabled)
         self.assertTrue(pooja_flag.is_enabled)
         self.assertFalse(acc_flag.is_enabled)
+
+    def test_assign_user_roles(self):
+        admin_user = User.objects.create_superuser(username='roleadmin', password='password123', email='roleadmin@example.com')
+        admin_client = Client()
+        admin_client.login(username='roleadmin', password='password123')
+        
+        # Create a standard user to manipulate
+        test_user = User.objects.create_user(username='test_devotee_role', password='password123', email='test_devotee_role@example.com')
+        
+        # 1. Assign Staff Role
+        response = admin_client.post(
+            reverse('peethas:assign_handler'),
+            {
+                'action': 'assign',
+                'user': test_user.id,
+                'role': 'staff'
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        test_user.refresh_from_db()
+        self.assertTrue(test_user.is_staff)
+        self.assertFalse(PeethaHandler.objects.filter(user=test_user).exists())
+        
+        # 2. Assign Handler Role (should revoke staff, map handler)
+        response = admin_client.post(
+            reverse('peethas:assign_handler'),
+            {
+                'action': 'assign',
+                'user': test_user.id,
+                'role': 'handler',
+                'peetha': self.peetha.id
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        test_user.refresh_from_db()
+        self.assertFalse(test_user.is_staff)
+        self.assertTrue(PeethaHandler.objects.filter(user=test_user, peetha=self.peetha).exists())
+        
+        # 3. Revoke Handler Role
+        handler = PeethaHandler.objects.get(user=test_user)
+        response = admin_client.post(
+            reverse('peethas:assign_handler'),
+            {
+                'action': 'delete',
+                'handler_id': handler.id
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        test_user.refresh_from_db()
+        self.assertFalse(test_user.is_staff)
+        self.assertFalse(PeethaHandler.objects.filter(user=test_user).exists())
+        
+        # 4. Assign Staff Role again, then revoke staff
+        admin_client.post(
+            reverse('peethas:assign_handler'),
+            {
+                'action': 'assign',
+                'user': test_user.id,
+                'role': 'staff'
+            }
+        )
+        test_user.refresh_from_db()
+        self.assertTrue(test_user.is_staff)
+        
+        response = admin_client.post(
+            reverse('peethas:assign_handler'),
+            {
+                'action': 'revoke_staff',
+                'user_id': test_user.id
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        test_user.refresh_from_db()
+        self.assertFalse(test_user.is_staff)
+
+    def test_devotee_search_excludes_non_devotees(self):
+        admin_user = User.objects.create_superuser(username='searchadmin', password='password123', email='searchadmin@example.com')
+        admin_client = Client()
+        admin_client.login(username='searchadmin', password='password123')
+        
+        # 1. Devotee user (should be included in devotee search results)
+        devotee_user = User.objects.create_user(username='true_devotee', password='password123')
+        
+        # 2. Staff user (should be excluded)
+        staff_user = User.objects.create_user(username='staff_user_role', password='password123', is_staff=True)
+        
+        # 3. Handler user (should be excluded)
+        handler_user = User.objects.create_user(username='handler_user_role', password='password123')
+        PeethaHandler.objects.create(user=handler_user, peetha=self.peetha)
+        
+        response = admin_client.get(reverse('peethas:dashboard_search_devotees'))
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        usernames = [d['username'] for d in data['devotees']]
+        
+        self.assertIn('true_devotee', usernames)
+        self.assertNotIn('staff_user_role', usernames)
+        self.assertNotIn('handler_user_role', usernames)
 
 
 
