@@ -1675,6 +1675,14 @@ def dashboard_date_bookings(request):
 
     date_str = request.GET.get('date', '')
 
+    if not date_str:
+        date_str = datetime.date.today().isoformat()
+
+    try:
+        target_date = datetime.date.fromisoformat(date_str)
+    except ValueError:
+        return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD.'}, status=400)
+
     result = {
         'date': target_date.isoformat(),
         'date_display': target_date.strftime('%A, %d %B %Y'),

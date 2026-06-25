@@ -546,6 +546,19 @@ class PoojaBookingTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 403)
 
+    def test_dashboard_date_bookings_api(self):
+        # Create a superuser
+        admin_user = User.objects.create_superuser(username='dateadmin', password='password123', email='dateadmin@example.com')
+        admin_client = Client()
+        admin_client.login(username='dateadmin', password='password123')
+        
+        # Call the date bookings API
+        response = admin_client.get(reverse('peethas:dashboard_date_bookings'), {'date': '2026-06-25'})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['date'], '2026-06-25')
+        self.assertIn('peethas', data)
+
 
 
 
