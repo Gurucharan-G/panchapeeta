@@ -311,13 +311,14 @@ class PoojaBookingTestCase(TestCase):
             {
                 'action': 'assign',
                 'user': test_user.id,
-                'role': 'staff'
+                'role': 'staff',
+                'peetha': self.peetha.id
             }
         )
         self.assertEqual(response.status_code, 302)
         test_user.refresh_from_db()
         self.assertTrue(test_user.is_staff)
-        self.assertFalse(PeethaHandler.objects.filter(user=test_user).exists())
+        self.assertTrue(PeethaHandler.objects.filter(user=test_user, peetha=self.peetha).exists())
         
         # 2. Assign Handler Role (should revoke staff, map handler)
         response = admin_client.post(
@@ -354,11 +355,13 @@ class PoojaBookingTestCase(TestCase):
             {
                 'action': 'assign',
                 'user': test_user.id,
-                'role': 'staff'
+                'role': 'staff',
+                'peetha': self.peetha.id
             }
         )
         test_user.refresh_from_db()
         self.assertTrue(test_user.is_staff)
+        self.assertTrue(PeethaHandler.objects.filter(user=test_user, peetha=self.peetha).exists())
         
         response = admin_client.post(
             reverse('peethas:assign_handler'),
@@ -371,6 +374,7 @@ class PoojaBookingTestCase(TestCase):
         test_user.refresh_from_db()
         self.assertFalse(test_user.is_staff)
         self.assertFalse(test_user.is_superuser)
+        self.assertFalse(PeethaHandler.objects.filter(user=test_user).exists())
 
         # 5. Assign Super Admin Role
         response = admin_client.post(
@@ -451,6 +455,97 @@ class PoojaBookingTestCase(TestCase):
         self.assertNotIn('staff_user_role', usernames)
         self.assertNotIn('handler_user_role', usernames)
         self.assertNotIn('super_user_role', usernames)
+
+    def test_staff_peetha_lock_and_readonly(self):
+        # Create another Peetha
+        other_peetha = Peetha.objects.create(
+            name='Balehonnur Peetha',
+            slug='balehonnur',
+            acharya='Soma Acharya',
+            simhasana='Vajra Simhasana',
+            location='Balehonnur',
+            color='#FF0000'
+        )
+        
+        # Create a Staff user assigned to self.peetha
+        staff_user = User.objects.create_user(username='peethastaff', password='password123', is_staff=True)
+        PeethaHandler.objects.create(user=staff_user, peetha=self.peetha)
+        
+        staff_client = Client()
+        staff_client.login(username='peethastaff', password='password123')
+        
+        # 1. Staff accessing their own Peetha dashboard -> should succeed (200)
+        response = staff_client.get(reverse('peethas:dashboard_peetha', kwargs={'slug': self.peetha.slug}))
+        self.assertEqual(response.status_code, 200)
+        
+        # 2. Staff accessing other Peetha dashboard -> should return 403 Forbidden
+        response = staff_client.get(reverse('peethas:dashboard_peetha', kwargs={'slug': other_peetha.slug}))
+        self.assertEqual(response.status_code, 403)
+        
+        # 3. Staff trying to do write operation (e.g., updating live stream URL) on their own Peetha -> should return 403 Forbidden
+        response = staff_client.post(
+            reverse('peethas:update_peetha_live', kwargs={'slug': self.peetha.slug}),
+            {'live_youtube_url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}
+        )
+        self.assertEqual(response.status_code, 403)
+        
+    def test_bookings_blocked_for_staff_handlers_superadmins(self):
+        # Find next Monday to make sure booking weekday validation passes
+        today = datetime.date.today()
+        days_ahead = (0 - today.weekday()) % 7
+        next_monday = today + datetime.timedelta(days=days_ahead)
+        next_monday_str = next_monday.strftime('%Y-%m-%d')
+        
+        # 1. Staff user booking attempt -> should return 403
+        staff_user = User.objects.create_user(username='staff_booker', password='password123', is_staff=True)
+        PeethaHandler.objects.create(user=staff_user, peetha=self.peetha)
+        staff_client = Client()
+        staff_client.login(username='staff_booker', password='password123')
+        
+        response = staff_client.post(
+            reverse('peethas:initiate_pooja_booking', kwargs={'peetha_slug': self.peetha.slug}),
+            {
+                'pooja_id': self.pooja.id,
+                'devotee_name': 'Staff Booker',
+                'devotee_phone': '1234567890',
+                'date_of_pooja': next_monday_str
+            }
+        )
+        self.assertEqual(response.status_code, 403)
+        
+        # 2. Handler user booking attempt -> should return 403
+        handler_user = User.objects.create_user(username='handler_booker', password='password123')
+        PeethaHandler.objects.create(user=handler_user, peetha=self.peetha)
+        handler_client = Client()
+        handler_client.login(username='handler_booker', password='password123')
+        
+        response = handler_client.post(
+            reverse('peethas:initiate_pooja_booking', kwargs={'peetha_slug': self.peetha.slug}),
+            {
+                'pooja_id': self.pooja.id,
+                'devotee_name': 'Handler Booker',
+                'devotee_phone': '1234567890',
+                'date_of_pooja': next_monday_str
+            }
+        )
+        self.assertEqual(response.status_code, 403)
+        
+        # 3. Superuser/Super Admin booking attempt -> should return 403
+        super_user = User.objects.create_superuser(username='super_booker', password='password123', email='super_booker@example.com')
+        super_client = Client()
+        super_client.login(username='super_booker', password='password123')
+        
+        response = super_client.post(
+            reverse('peethas:initiate_pooja_booking', kwargs={'peetha_slug': self.peetha.slug}),
+            {
+                'pooja_id': self.pooja.id,
+                'devotee_name': 'Super Booker',
+                'devotee_phone': '1234567890',
+                'date_of_pooja': next_monday_str
+            }
+        )
+        self.assertEqual(response.status_code, 403)
+
 
 
 

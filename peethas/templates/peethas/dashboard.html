@@ -324,7 +324,12 @@
                                     <tbody>
                                         {% for s in staff_users %}
                                         <tr>
-                                            <td><strong>{{ s.username }}</strong></td>
+                                            <td>
+                                                <strong>{{ s.username }}</strong>
+                                                {% if s.handler_profile %}
+                                                <br><small style="color: #666; font-weight: normal;">Assigned Peetha: {{ s.handler_profile.peetha.name }}</small>
+                                                {% endif %}
+                                            </td>
                                             <td>{{ s.email }}</td>
                                             <td>
                                                 {% if s.is_superuser %}
@@ -1221,7 +1226,7 @@
         
         if (roleSelect && peethaGroup) {
             function togglePeethaField() {
-                if (roleSelect.value === 'handler') {
+                if (roleSelect.value === 'handler' || roleSelect.value === 'staff') {
                     peethaGroup.style.display = 'block';
                     if (peethaSelect) peethaSelect.required = true;
                 } else {
@@ -1243,7 +1248,7 @@
         
         if (assignRoleSelect && assignPeethaGroup) {
             function toggleAssignPeethaField() {
-                if (assignRoleSelect.value === 'handler') {
+                if (assignRoleSelect.value === 'handler' || assignRoleSelect.value === 'staff') {
                     assignPeethaGroup.style.display = 'block';
                     if (assignPeethaSelect) assignPeethaSelect.required = true;
                 } else {
@@ -1817,7 +1822,7 @@
         const roleSel = document.getElementById(`role-select-${userId}`);
         const peethaSel = document.getElementById(`peetha-select-${userId}`);
         if (roleSel && peethaSel) {
-            if (roleSel.value === 'handler') {
+            if (roleSel.value === 'handler' || roleSel.value === 'staff') {
                 peethaSel.style.display = 'block';
             } else {
                 peethaSel.style.display = 'none';
@@ -1833,8 +1838,8 @@
         const role = roleSel.value;
         const peetha = peethaSel ? peethaSel.value : '';
         
-        if (role === 'handler' && !peetha) {
-            alert('Please select a Peetha for the handler role.');
+        if ((role === 'handler' || role === 'staff') && !peetha) {
+            alert('Please select a Peetha.');
             return;
         }
         
@@ -1946,7 +1951,7 @@
                                                             <option value="superuser" ${d.role === 'superuser' ? 'selected' : ''}>Super Admin (Platform Owner)</option>
                                                         </select>
                         
-                        <select id="peetha-select-${d.id}" style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.82rem; flex: 1; outline: none; background: white; display: ${d.role === 'handler' ? 'block' : 'none'};">
+                        <select id="peetha-select-${d.id}" style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.82rem; flex: 1; outline: none; background: white; display: ${(d.role === 'handler' || d.role === 'staff') ? 'block' : 'none'};">
                             <option value="">-- Select Peetha --</option>
                             ${window.allPeethas.map(p => `<option value="${p.id}" ${Number(d.assigned_peetha_id) === Number(p.id) ? 'selected' : ''}>${p.name}</option>`).join('')}
                         </select>

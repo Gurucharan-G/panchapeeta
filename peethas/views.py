@@ -591,16 +591,20 @@ def logout_view(request):
 
 # ===== Dashboard & CRUD Views =====
 
-def check_peetha_authorization(user, peetha):
+def check_peetha_authorization(user, peetha, readonly=False):
     """
-    Checks if the logged-in user is a superuser or the assigned handler for the Peetha.
-    Raises PermissionDenied if not authorized.
+    Checks if the logged-in user is a superuser or the assigned handler/staff for the Peetha.
+    For staff users (is_staff=True and not is_superuser), their access is strictly read-only.
+    Raises PermissionDenied if not authorized or if staff tries to perform a write action.
     """
     if user.is_superuser:
         return True
     try:
         handler = user.handler_profile
         if handler.peetha == peetha:
+            # Locked to this Peetha. If it's a write action (readonly=False) and they are staff, deny access
+            if not readonly and user.is_staff:
+                raise PermissionDenied("Staff accounts have read-only access to this Peetha.")
             return True
     except PeethaHandler.DoesNotExist:
         pass
@@ -618,8 +622,8 @@ def dashboard_home(request):
     except PeethaHandler.DoesNotExist:
         pass
 
-    # If superuser or staff: show the portal where they can manage any Peetha or view reports
-    if request.user.is_superuser or request.user.is_staff:
+    # If superuser: show the portal where they can manage any Peetha or view reports
+    if request.user.is_superuser:
         peethas = Peetha.objects.all()
         
         # Tech and non-tech stats/reports
@@ -636,7 +640,7 @@ def dashboard_home(request):
         recent_bookings = PoojaBooking.objects.select_related('pooja', 'pooja__peetha').order_by('-created_at')[:10]
         
         # Handlers list
-        handlers = PeethaHandler.objects.select_related('user', 'peetha').all()
+        handlers = PeethaHandler.objects.select_related('user', 'peetha').filter(user__is_staff=False, user__is_superuser=False)
         
         # Users list for dropdown (exclude staff/superusers)
         users = User.objects.filter(is_superuser=False, is_staff=False).order_by('username')
@@ -747,6 +751,7 @@ def assign_handler(request):
             user_id = request.POST.get('user_id')
             if user_id:
                 user = get_object_or_404(User, pk=user_id)
+                PeethaHandler.objects.filter(user=user).delete()
                 user.is_staff = False
                 user.is_superuser = False
                 user.save()
@@ -766,13 +771,20 @@ def assign_handler(request):
                 msg = f"Assigned {user.username} as Super Admin."
                 messages.success(request, msg)
             elif role == 'staff':
-                # Since they are becoming Staff, remove handler mapping if any
-                PeethaHandler.objects.filter(user=user).delete()
-                user.is_staff = True
-                user.is_superuser = False
-                user.save()
-                msg = f"Assigned {user.username} as Staff (Read-Only admin)."
-                messages.success(request, msg)
+                peetha_id = request.POST.get('peetha')
+                if not peetha_id:
+                    msg = "Please select a Peetha for the staff."
+                    success = False
+                    messages.error(request, msg)
+                else:
+                    peetha = get_object_or_404(Peetha, pk=peetha_id)
+                    PeethaHandler.objects.filter(user=user).delete()
+                    user.is_staff = True
+                    user.is_superuser = False
+                    user.save()
+                    PeethaHandler.objects.create(user=user, peetha=peetha)
+                    msg = f"Assigned {user.username} as Staff (Read-Only admin) for {peetha.name}."
+                    messages.success(request, msg)
             elif role == 'handler':
                 peetha_id = request.POST.get('peetha')
                 if not peetha_id:
@@ -845,6 +857,11 @@ def create_user_account(request):
                     )
                     messages.success(request, f"Super Admin account '{username}' successfully created.")
                 elif role == 'staff':
+                    if not peetha_id:
+                        messages.error(request, "Please select a Peetha for the staff.")
+                        return redirect(reverse('peethas:dashboard_home') + '#roles-section:create-account-view')
+                    
+                    peetha = get_object_or_404(Peetha, pk=peetha_id)
                     user = User.objects.create_user(
                         username=username,
                         email=email,
@@ -853,7 +870,9 @@ def create_user_account(request):
                     )
                     user.is_staff = True
                     user.save()
-                    messages.success(request, f"Staff account '{username}' successfully created.")
+                    PeethaHandler.objects.create(user=user, peetha=peetha)
+                    messages.success(request, f"Staff account '{username}' successfully created and assigned to {peetha.name}.")
+                    redirect_hash = '#roles-section:active-handlers-view'
                 elif role == 'handler':
                     if not peetha_id:
                         messages.error(request, "Please select a Peetha for the handler.")
@@ -987,7 +1006,7 @@ def toggle_feature(request, pk):
 def dashboard_peetha(request, slug):
     lang = get_language(request)
     peetha = get_object_or_404(Peetha, slug=slug)
-    check_peetha_authorization(request.user, peetha)
+    check_peetha_authorization(request.user, peetha, readonly=True)
 
     media_list = PeethaMedia.objects.filter(peetha=peetha)
     travel_list = TravelPlan.objects.filter(peetha=peetha).order_by('start_date')
@@ -1353,6 +1372,10 @@ def pooja_delete(request, slug, pk):
 
 @login_required(login_url='peethas:login')
 def initiate_pooja_booking(request, peetha_slug):
+    if request.user.is_authenticated:
+        if request.user.is_staff or request.user.is_superuser or hasattr(request.user, 'handler_profile'):
+            raise PermissionDenied("Booking is not allowed for administrators, staff, or handlers.")
+            
     peetha = get_object_or_404(Peetha, slug=peetha_slug)
     
     # Feature flag check
@@ -1634,32 +1657,23 @@ def profile_view(request):
 @login_required(login_url='peethas:login')
 def dashboard_date_bookings(request):
     """AJAX API: Return bookings for a specific date, grouped by peetha.
-    Superusers see all peethas; handlers see only their assigned peetha.
+    Superusers see all peethas; handlers and staff see only their assigned peetha.
     """
-    if not (request.user.is_superuser or request.user.is_staff or hasattr(request.user, 'handler_profile')):
-        return JsonResponse({'error': 'Unauthorized'}, status=403)
+    if not request.user.is_superuser:
+        if not hasattr(request.user, 'handler_profile'):
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
+        # Force only their assigned peetha
+        handler = request.user.handler_profile
+        peethas_qs = Peetha.objects.filter(pk=handler.peetha.pk)
+    else:
+        # Superuser: all peethas or filtered by slug
+        peetha_slug = request.GET.get('peetha', '')
+        if peetha_slug:
+            peethas_qs = Peetha.objects.filter(slug=peetha_slug)
+        else:
+            peethas_qs = Peetha.objects.all().order_by('id')
 
     date_str = request.GET.get('date', '')
-    peetha_slug = request.GET.get('peetha', '')  # Optional filter for specific peetha
-
-    if not date_str:
-        date_str = datetime.date.today().isoformat()
-
-    try:
-        target_date = datetime.date.fromisoformat(date_str)
-    except ValueError:
-        return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD.'}, status=400)
-
-    # Determine which peethas to show
-    if peetha_slug:
-        # Specific peetha requested (handler or admin drilling into one)
-        peethas_qs = Peetha.objects.filter(slug=peetha_slug)
-    elif hasattr(request.user, 'handler_profile'):
-        # Handler: only their peetha
-        peethas_qs = Peetha.objects.filter(pk=request.user.handler_profile.peetha.pk)
-    else:
-        # Superuser/staff: all peethas
-        peethas_qs = Peetha.objects.all().order_by('id')
 
     result = {
         'date': target_date.isoformat(),

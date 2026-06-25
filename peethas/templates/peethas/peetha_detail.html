@@ -255,7 +255,11 @@
                                     <small>per seva</small>
                                 </div>
                                 {% if request.user.is_authenticated %}
-                                    <button class="seva-book-btn" style="background-color: var(--peetha-color);" onclick="openBookingModal('{{ pooja.id }}', '{{ pooja.name|escapejs }}', '{{ pooja.price }}')">Book Now</button>
+                                    {% if request.user.is_staff or request.user.is_superuser or request.user.handler_profile %}
+                                        <span style="font-size: 0.85rem; color: #888; font-style: italic;">Booking disabled for Admins/Staff</span>
+                                    {% else %}
+                                        <button class="seva-book-btn" style="background-color: var(--peetha-color);" onclick="openBookingModal('{{ pooja.id }}', '{{ pooja.name|escapejs }}', '{{ pooja.price }}')">Book Now</button>
+                                    {% endif %}
                                 {% else %}
                                     <a href="{% url 'peethas:login' %}?next={{ request.path }}" class="seva-book-btn" style="background-color: var(--peetha-color);">Login to Book</a>
                                 {% endif %}
