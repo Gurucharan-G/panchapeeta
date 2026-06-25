@@ -254,5 +254,54 @@ class PoojaBookingTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 302)
 
+    def test_feature_flag_cascading_logic(self):
+        admin_user = User.objects.create_superuser(username='adminuser', password='password123', email='admin@example.com')
+        admin_client = Client()
+        admin_client.login(username='adminuser', password='password123')
+        
+        overall_flag, _ = FeatureFlag.objects.get_or_create(name='kashi_overall', defaults={'is_enabled': True})
+        pooja_flag, _ = FeatureFlag.objects.get_or_create(name='kashi_pooja_booking', defaults={'is_enabled': True})
+        acc_flag, _ = FeatureFlag.objects.get_or_create(name='kashi_accommodation', defaults={'is_enabled': True})
+        
+        overall_flag.is_enabled = True
+        overall_flag.save()
+        pooja_flag.is_enabled = True
+        pooja_flag.save()
+        acc_flag.is_enabled = True
+        acc_flag.save()
+        
+        response = admin_client.post(
+            reverse('peethas:toggle_feature', kwargs={'pk': overall_flag.pk}),
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(response.status_code, 200)
+        
+        overall_flag.refresh_from_db()
+        pooja_flag.refresh_from_db()
+        acc_flag.refresh_from_db()
+        self.assertFalse(overall_flag.is_enabled)
+        self.assertFalse(pooja_flag.is_enabled)
+        self.assertFalse(acc_flag.is_enabled)
+        
+        overall_flag.is_enabled = False
+        overall_flag.save()
+        pooja_flag.is_enabled = False
+        pooja_flag.save()
+        acc_flag.is_enabled = False
+        acc_flag.save()
+        
+        response = admin_client.post(
+            reverse('peethas:toggle_feature', kwargs={'pk': pooja_flag.pk}),
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(response.status_code, 200)
+        
+        overall_flag.refresh_from_db()
+        pooja_flag.refresh_from_db()
+        acc_flag.refresh_from_db()
+        self.assertTrue(overall_flag.is_enabled)
+        self.assertTrue(pooja_flag.is_enabled)
+        self.assertFalse(acc_flag.is_enabled)
+
 
 

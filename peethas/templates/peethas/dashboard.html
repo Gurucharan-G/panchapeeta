@@ -1157,7 +1157,22 @@
                 })
                 .then(data => {
                     if (data.success) {
-                        showToast(`Feature flag '${flagName}' is now ${data.is_enabled ? 'Enabled' : 'Disabled'}.`, 'success');
+                        if (data.updated && data.updated.length > 0) {
+                            data.updated.forEach(uf => {
+                                const cb = document.querySelector(`.feature-board-checkbox[data-flag-pk="${uf.pk}"]`);
+                                if (cb) {
+                                    cb.checked = uf.is_enabled;
+                                }
+                            });
+                            if (data.updated.length > 1) {
+                                showToast(`Feature flags updated successfully.`, 'success');
+                            } else {
+                                const isEn = data.updated[0].is_enabled ? 'Enabled' : 'Disabled';
+                                showToast(`Feature flag '${data.updated[0].name}' set to ${isEn}.`, 'success');
+                            }
+                        } else {
+                            showToast(`Feature flag '${flagName}' is now updated.`, 'success');
+                        }
                     } else {
                         throw new Error('Toggle failed');
                     }

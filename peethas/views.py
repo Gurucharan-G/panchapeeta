@@ -864,11 +864,54 @@ def toggle_feature(request, pk):
     flag.is_enabled = not flag.is_enabled
     flag.save()
     
+    updated_flags = [flag]
+    
+    peetha_slug, feature_key = None, None
+    if flag.name.endswith('_overall'):
+        peetha_slug = flag.name[:-8]
+        feature_key = 'overall'
+    elif flag.name.endswith('_pooja_booking'):
+        peetha_slug = flag.name[:-14]
+        feature_key = 'pooja_booking'
+    elif flag.name.endswith('_accommodation'):
+        peetha_slug = flag.name[:-14]
+        feature_key = 'accommodation'
+        
+    if peetha_slug and feature_key:
+        # If overall is turned off, disable all other feature flags for this peetha
+        if feature_key == 'overall' and not flag.is_enabled:
+            for key in ['pooja_booking', 'accommodation']:
+                f_name = f"{peetha_slug}_{key}"
+                try:
+                    f_obj = FeatureFlag.objects.get(name=f_name)
+                    if f_obj.is_enabled:
+                        f_obj.is_enabled = False
+                        f_obj.save()
+                        updated_flags.append(f_obj)
+                except FeatureFlag.DoesNotExist:
+                    pass
+        # If any feature is turned on, enable overall for this peetha
+        elif feature_key in ['pooja_booking', 'accommodation'] and flag.is_enabled:
+            overall_name = f"{peetha_slug}_overall"
+            try:
+                overall_obj = FeatureFlag.objects.get(name=overall_name)
+                if not overall_obj.is_enabled:
+                    overall_obj.is_enabled = True
+                    overall_obj.save()
+                    updated_flags.append(overall_obj)
+            except FeatureFlag.DoesNotExist:
+                pass
+
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('accept', ''):
         return JsonResponse({
             'success': True,
-            'is_enabled': flag.is_enabled,
-            'name': flag.name
+            'updated': [
+                {
+                    'pk': uf.pk,
+                    'name': uf.name,
+                    'is_enabled': uf.is_enabled
+                } for uf in updated_flags
+            ]
         })
         
     messages.success(request, f"Feature flag '{flag.name}' set to {'Enabled' if flag.is_enabled else 'Disabled'}.")
