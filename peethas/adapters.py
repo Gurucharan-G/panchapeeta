@@ -34,26 +34,52 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             return
         super().add_message(request, level, message_template, message_context, extra_tags)
 
+    def is_open_for_signup(self, request):
+        from .feature_flags import DEVOTEE_REGISTRATION
+        return bool(DEVOTEE_REGISTRATION)
+
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def pre_social_login(self, request, sociallogin):
+        # Enforce devotee registration block for new users
+        from .feature_flags import DEVOTEE_REGISTRATION
+        from django.contrib import messages
+        
         # Determine if the returning social user matches a superuser or handler by email in the DB
         email = None
         if sociallogin.account and sociallogin.account.extra_data:
             email = sociallogin.account.extra_data.get('email')
         
         is_privileged = False
+        user_exists = False
+        User = get_user_model()
+        
         if email:
-            User = get_user_model()
             try:
                 db_user = User.objects.get(email=email)
+                user_exists = True
                 if db_user.is_superuser or hasattr(db_user, 'handler_profile'):
                     is_privileged = True
             except User.DoesNotExist:
                 pass
+                
+        if not user_exists and sociallogin.user.username:
+            user_exists = User.objects.filter(username=sociallogin.user.username).exists()
+
+        # If user does not exist (new signup) and devotee registration is disabled, block it
+        if not user_exists and not bool(DEVOTEE_REGISTRATION):
+            from allauth.exceptions import ImmediateHttpResponse
+            from django.shortcuts import redirect
+            messages.error(request, 'Devotee registration is currently disabled.')
+            raise ImmediateHttpResponse(redirect('peethas:login'))
 
         # Force the redirect state to the dashboard for privileged users
         if is_privileged:
             sociallogin.state['next'] = reverse('peethas:dashboard_home')
+
+    def is_open_for_signup(self, request, sociallogin):
+        from .feature_flags import DEVOTEE_REGISTRATION
+        return bool(DEVOTEE_REGISTRATION)
+
 
 

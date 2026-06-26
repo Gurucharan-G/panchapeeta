@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import PeethaMedia, TravelPlan, Peetha, PeethaHandler, PeethaPaymentConfig, Pooja
+from .models import PeethaMedia, TravelPlan, Peetha, PeethaHandler, PeethaPaymentConfig, Pooja, Building
 
 
 class MultipleFileInput(forms.FileInput):
@@ -294,5 +294,38 @@ class PoojaForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+
+class BuildingForm(forms.ModelForm):
+    class Meta:
+        model = Building
+        fields = [
+            'name', 'description', 'total_floors', 'rooms_per_floor',
+            'ac_floors_count', 'ac_room_numbers', 'ac_room_price', 'ordinary_room_price',
+            'has_hot_water', 'hot_water_timings', 'is_active'
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Building Name (e.g. Building A)'}),
+            'description': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'Description'}),
+            'total_floors': forms.NumberInput(attrs={'class': 'form-input', 'min': 1}),
+            'rooms_per_floor': forms.NumberInput(attrs={'class': 'form-input', 'min': 1}),
+            'ac_floors_count': forms.NumberInput(attrs={'class': 'form-input', 'min': 0}),
+            'ac_room_numbers': forms.Textarea(attrs={'class': 'form-input', 'rows': 2, 'placeholder': 'Comma-separated specific AC rooms (e.g. G1, G2, 101). Overrides AC Floors.'}),
+            'ac_room_price': forms.NumberInput(attrs={'class': 'form-input', 'step': '0.01'}),
+            'ordinary_room_price': forms.NumberInput(attrs={'class': 'form-input', 'step': '0.01'}),
+            'has_hot_water': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+            'hot_water_timings': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'e.g. 6:00 AM - 9:00 AM'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        total_floors = cleaned_data.get('total_floors')
+        ac_floors_count = cleaned_data.get('ac_floors_count')
+        
+        if total_floors is not None and ac_floors_count is not None:
+            if ac_floors_count > total_floors:
+                self.add_error('ac_floors_count', 'AC floors count cannot exceed total floors.')
+        return cleaned_data
 
 

@@ -7,7 +7,7 @@
     <div class="container">
         <div class="edit-card">
             <div class="edit-header">
-                <h2>Edit {% if edit_type == 'media' %}Media Item{% elif edit_type == 'travel' %}Travel Event{% else %}Pooja/Seva{% endif %}</h2>
+                <h2>Edit {% if edit_type == 'media' %}Media Item{% elif edit_type == 'travel' %}Travel Event{% elif edit_type == 'building' %}Building{% else %}Pooja/Seva{% endif %}</h2>
                 <p>For: <span class="peetha-name" style="color: {{ peetha.color }};">{{ peetha.name }}</span></p>
             </div>
 
@@ -119,6 +119,63 @@
                             </div>
                         </div>
                     </details>
+                {% elif edit_type == 'building' %}
+                    <div class="form-group">
+                        <label>Building Name *</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        {{ form.description }}
+                    </div>
+                    
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Total Floors *</label>
+                            {{ form.total_floors }}
+                        </div>
+                        <div class="form-group">
+                            <label>Rooms Per Floor *</label>
+                            {{ form.rooms_per_floor }}
+                        </div>
+                        <div class="form-group">
+                            <label>AC Floors Count *</label>
+                            {{ form.ac_floors_count }}
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Specific AC Room Numbers (Optional)</label>
+                        {{ form.ac_room_numbers }}
+                        <span class="help-text" style="font-size: 0.85rem; color: #64748b; margin-top: 4px; display: block;">Specify comma-separated specific rooms (e.g. G1, G2, 101). If set, this overrides the AC Floors Count above.</span>
+                    </div>
+
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>AC Room Price (INR) *</label>
+                            {{ form.ac_room_price }}
+                        </div>
+                        <div class="form-group">
+                            <label>Ordinary Room Price (INR) *</label>
+                            {{ form.ordinary_room_price }}
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 2fr; gap: 15px; align-items: center; margin-top: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
+                            {{ form.has_hot_water }}
+                            <label for="id_has_hot_water" style="margin-bottom: 0; font-weight: bold; cursor: pointer;">Has Hot Water</label>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Hot Water Timings</label>
+                            {{ form.hot_water_timings }}
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-top: 15px; margin-bottom: 15px;">
+                        {{ form.is_active }}
+                        <label for="id_is_active" style="margin-bottom: 0; font-weight: bold; cursor: pointer;">Is Active</label>
+                    </div>
                 {% else %}
                     <style>
                         .weekdays-checkbox-grid ul {

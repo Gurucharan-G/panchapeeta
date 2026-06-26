@@ -9,9 +9,9 @@
 {% if peetha.current_swamiji %}
 <a href="#jagathguru" class="nav-link peetha-tab" data-tab="jagathguru">{{ labels.nav_jagathguru|default:"Jagathguru" }}</a>
 {% endif %}
-<a href="#pooja-booking" class="nav-link peetha-tab" data-tab="pooja-booking">{{ labels.nav_pooja_booking|default:"Pooja Booking" }}</a>
-<a href="#accommodation" class="nav-link peetha-tab" data-tab="accommodation">Accommodation</a>
-<a href="#contact-us" class="nav-link peetha-tab" data-tab="contact-us">{{ labels.nav_contact_us|default:"Contact Us" }}</a>
+{% if pooja_booking_enabled %}<a href="#pooja-booking" class="nav-link peetha-tab" data-tab="pooja-booking">{{ labels.nav_pooja_booking|default:"Pooja Booking" }}</a>{% endif %}
+{% if accommodation_enabled %}<a href="#accommodation" class="nav-link peetha-tab" data-tab="accommodation">Accommodation</a>{% endif %}
+{% if contact_section_enabled %}<a href="#contact-us" class="nav-link peetha-tab" data-tab="contact-us">{{ labels.nav_contact_us|default:"Contact Us" }}</a>{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -67,6 +67,7 @@
                     </div>
                 </div>
 
+                {% if travel_plans_enabled %}
                 <div class="content-section" style="margin-top: 32px;">
                     <h3>{{ labels.travel_plans_title }}</h3>
                     <div class="travel-timeline">
@@ -99,7 +100,9 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% endif %}
 
+                {% if media_gallery_enabled %}
                 <!-- Media Gallery Section -->
                 <div class="content-section" style="margin-top: 32px;">
                     <h3>{{ labels.media_gallery_title }}</h3>
@@ -134,10 +137,11 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% endif %}
             </div>
 
             <div class="detail-content">
-                {% if peetha.live_youtube_url %}
+                {% if live_stream_enabled and peetha.live_youtube_url %}
                 <div id="live-stream-container" class="live-stream-card" style="margin-bottom: 30px; border-radius: 12px; background: white; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 20px; overflow: hidden; --peetha-color: var(--peetha-color);">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                         <h3 style="margin: 0; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 10px; color: var(--text);">
@@ -300,14 +304,93 @@
             </div>
             
             {% if accommodation_enabled %}
-                <div class="pooja-coming-soon">
-                    <div class="coming-soon-card" style="--peetha-color: var(--peetha-color); background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,248,240,0.95)); border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
-                        <h3 style="color: var(--text);">Stay at {{ peetha.name }}</h3>
-                        <p style="color: #4a5568; max-width: 600px; margin: 0 auto 15px;">We offer neat and comfortable guest rooms and cottages (Yatri Nivas) for devotees and families visiting <strong>{{ peetha.name }}</strong>.</p>
-                        <p class="coming-soon-subtitle" style="margin-top: 15px; font-weight: 600; color: var(--text);">To book accommodation, please contact the Peetha administration office directly:</p>
-                        {% if peetha.contact_phone %}
-                            <a href="tel:{{ peetha.contact_phone }}" class="pooja-contact-btn" style="background-color: var(--peetha-color); margin-top: 12px; font-weight: 600; letter-spacing: 0.02em;">Call Office: {{ peetha.contact_phone }}</a>
-                        {% endif %}
+                <div class="accommodation-booking-container" style="max-width: 800px; margin: 0 auto; background: white; border-radius: var(--radius-lg); padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid rgba(212, 175, 55, 0.2);">
+                    <div style="text-align: center; margin-bottom: 25px;">
+                        <p style="color: #4a5568; font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+                            Select check-in and check-out dates to search available room types and book stays at the divine premises of <strong>{{ peetha.name }}</strong>.
+                        </p>
+                    </div>
+
+                    <!-- Date Selection Form -->
+                    <div class="stay-search-bar" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 15px; align-items: end; background: #fffcf4; border: 1px solid var(--gold); border-radius: var(--radius-md); padding: 20px; margin-bottom: 25px;">
+                        <div class="booking-form-group" style="margin: 0;">
+                            <label style="font-weight: 600; color: var(--text); display: block; margin-bottom: 8px; font-size: 0.9rem;">Check-in Date *</label>
+                            <input type="date" id="stay-checkin-date" class="booking-form-input" style="width: 100%; border: 1px solid #cbd5e1; padding: 10px; border-radius: var(--radius-md);" required>
+                        </div>
+                        <div class="booking-form-group" style="margin: 0;">
+                            <label style="font-weight: 600; color: var(--text); display: block; margin-bottom: 8px; font-size: 0.9rem;">Check-out Date *</label>
+                            <input type="date" id="stay-checkout-date" class="booking-form-input" style="width: 100%; border: 1px solid #cbd5e1; padding: 10px; border-radius: var(--radius-md);" required>
+                        </div>
+                        <button id="stay-search-btn" class="btn-primary" style="background-color: var(--peetha-color); color: white; border: none; padding: 12px 25px; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; height: fit-content; transition: background-color 0.2s; white-space: nowrap;" onclick="checkStayAvailability()">
+                            Check Stay Availability
+                        </button>
+                    </div>
+
+                    <!-- AJAX Results Placeholder -->
+                    <div id="stay-availability-results" style="display: none; margin-top: 20px;">
+                        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text); margin-bottom: 15px; border-bottom: 2px solid var(--gold); padding-bottom: 8px;">Available Room Types</h4>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;" id="stay-types-grid">
+                            <!-- AC Room Card -->
+                            <div class="stay-type-card" id="stay-card-AC" style="background: #fafafa; border: 1px solid #e2e8f0; border-radius: var(--radius-md); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                        <h4 style="margin: 0; font-size: 1.2rem; color: var(--saffron);">AC Room</h4>
+                                        <span class="badge badge-ac" style="background: #feebc8; color: #c05621; padding: 4px 8px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: bold;">Air Conditioned</span>
+                                    </div>
+                                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 10px;">Neat and clean AC room with attached bathroom, geyser, and double bed.</p>
+                                    <div id="stay-hotwater-AC" style="font-size: 0.85rem; color: #475569; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                                        🚿 Hot Water: <strong id="stay-hotwater-text-AC">Checking...</strong>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="margin-bottom: 15px;">
+                                        <span style="font-size: 1.5rem; font-weight: bold; color: var(--text);" id="stay-price-AC">₹1000</span>
+                                        <span style="color: #64748b; font-size: 0.85rem;">/ night</span>
+                                        <div style="color: #2b6cb0; font-size: 0.85rem; font-weight: bold; margin-top: 5px;" id="stay-pending-AC">Rooms pending: 0</div>
+                                    </div>
+                                    {% if request.user.is_authenticated %}
+                                        {% if request.user.is_staff or request.user.is_superuser or request.user.handler_profile %}
+                                            <span style="font-size: 0.85rem; color: #888; font-style: italic; display: block; text-align: center; padding: 10px; background: #e2e8f0; border-radius: var(--radius-sm);">Booking disabled for Staff</span>
+                                        {% else %}
+                                            <button class="btn-book-stay" onclick="openStayBookingModal('AC')" style="width: 100%; padding: 10px; background: var(--peetha-color); color: white; border: none; border-radius: var(--radius-sm); font-weight: bold; cursor: pointer; transition: transform 0.2s;">Book AC Room</button>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{% url 'peethas:login' %}?next={{ request.path }}#accommodation" class="btn-book-stay" style="width: 100%; padding: 10px; background: var(--peetha-color); color: white; border: none; border-radius: var(--radius-sm); font-weight: bold; cursor: pointer; text-decoration: none; display: block; text-align: center;">Login to Book</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- Ordinary Room Card -->
+                            <div class="stay-type-card" id="stay-card-Ordinary" style="background: #fafafa; border: 1px solid #e2e8f0; border-radius: var(--radius-md); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s;">
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                        <h4 style="margin: 0; font-size: 1.2rem; color: #4a5568;">Ordinary Room</h4>
+                                        <span class="badge badge-ordinary" style="background: #edf2f7; color: #4a5568; padding: 4px 8px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: bold;">Non-AC / Ordinary</span>
+                                    </div>
+                                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 10px;">Clean non-AC room with fan, double bed, and attached bathroom.</p>
+                                    <div id="stay-hotwater-Ordinary" style="font-size: 0.85rem; color: #475569; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                                        🚿 Hot Water: <strong id="stay-hotwater-text-Ordinary">Checking...</strong>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="margin-bottom: 15px;">
+                                        <span style="font-size: 1.5rem; font-weight: bold; color: var(--text);" id="stay-price-Ordinary">₹500</span>
+                                        <span style="color: #64748b; font-size: 0.85rem;">/ night</span>
+                                        <div style="color: #2b6cb0; font-size: 0.85rem; font-weight: bold; margin-top: 5px;" id="stay-pending-Ordinary">Rooms pending: 0</div>
+                                    </div>
+                                    {% if request.user.is_authenticated %}
+                                        {% if request.user.is_staff or request.user.is_superuser or request.user.handler_profile %}
+                                            <span style="font-size: 0.85rem; color: #888; font-style: italic; display: block; text-align: center; padding: 10px; background: #e2e8f0; border-radius: var(--radius-sm);">Booking disabled for Staff</span>
+                                        {% else %}
+                                            <button class="btn-book-stay" onclick="openStayBookingModal('Ordinary')" style="width: 100%; padding: 10px; background: var(--peetha-color); color: white; border: none; border-radius: var(--radius-sm); font-weight: bold; cursor: pointer; transition: transform 0.2s;">Book Ordinary Room</button>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{% url 'peethas:login' %}?next={{ request.path }}#accommodation" class="btn-book-stay" style="width: 100%; padding: 10px; background: var(--peetha-color); color: white; border: none; border-radius: var(--radius-sm); font-weight: bold; cursor: pointer; text-decoration: none; display: block; text-align: center;">Login to Book</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             {% else %}
@@ -326,6 +409,7 @@
     </div>
 </section>
 
+{% if contact_section_enabled %}
 <!-- ===== TAB: Contact Us ===== -->
 <section class="detail-body peetha-tab-section" id="tab-contact-us">
     <div class="container">
@@ -377,6 +461,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- Lightbox Modal -->
 <div id="gallery-lightbox" class="lightbox-modal" onclick="closeLightbox()">
@@ -616,6 +701,71 @@
                     </div>
 
                     <button type="submit" id="booking-submit-btn" class="booking-submit-btn" style="background-color: var(--peetha-color); margin-top: 20px;">Proceed to Pay ₹<span id="booking-pooja-price"></span></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Stay Booking Modal -->
+<div id="stay-booking-modal" class="lightbox-modal" onclick="closeStayBookingModal()">
+    <span class="lightbox-close">&times;</span>
+    <div class="booking-modal-content" onclick="event.stopPropagation()" style="--peetha-color: {{ peetha.color }};">
+        <div class="booking-modal-header">
+            <div class="modal-icon">🏨</div>
+            <h3>Book Stay - <span id="stay-modal-type-title">AC Room</span></h3>
+            <p class="modal-subtitle">{{ peetha.name }}</p>
+        </div>
+        <form action="{% url 'peethas:initiate_accommodation_booking' peetha.slug %}" method="POST" class="booking-modal-form">
+            {% csrf_token %}
+            <input type="hidden" name="room_type" id="stay-modal-room-type">
+            <input type="hidden" name="check_in_date" id="stay-modal-check-in">
+            <input type="hidden" name="check_out_date" id="stay-modal-check-out">
+
+            <div class="booking-columns-layout" style="display: block;">
+                <!-- Devotee Details -->
+                <div class="booking-layout-column">
+                    <div class="booking-form-group">
+                        <label>Devotee Name *</label>
+                        <input type="text" name="devotee_name" class="booking-form-input" value="{% if request.user.is_authenticated %}{{ request.user.first_name|default:request.user.username }}{% endif %}" required>
+                    </div>
+
+                    <div class="booking-form-row">
+                        <div class="booking-form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" name="devotee_phone" class="booking-form-input" value="{% if request.user.is_authenticated %}{{ request.user.profile.phone_number }}{% endif %}" required>
+                        </div>
+                        <div class="booking-form-group">
+                            <label>Email <span class="optional-tag">(Optional)</span></label>
+                            <input type="email" name="devotee_email" class="booking-form-input" value="{% if request.user.is_authenticated %}{{ request.user.email }}{% endif %}">
+                        </div>
+                    </div>
+                    
+                    <div class="booking-summary-box" style="margin-top: 20px; padding: 15px; background: #fffcf4; border: 1px solid var(--gold); border-radius: var(--radius-md);">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: var(--peetha-color);">Booking Summary</div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 5px;">
+                            <span>Check-in:</span>
+                            <span id="stay-summary-checkin" style="font-weight: 500;">-</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 5px;">
+                            <span>Check-out:</span>
+                            <span id="stay-summary-checkout" style="font-weight: 500;">-</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 5px;">
+                            <span>Nights:</span>
+                            <span id="stay-summary-nights" style="font-weight: 500;">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 5px;">
+                            <span>Rate per Night:</span>
+                            <span style="font-weight: 500;">₹<span id="stay-summary-rate">0.00</span></span>
+                        </div>
+                        <div style="border-top: 1px dashed var(--gold); margin-top: 10px; padding-top: 8px; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; color: var(--text);">
+                            <span>Total Amount:</span>
+                            <span>₹<span id="stay-summary-total">0.00</span></span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="booking-submit-btn" style="background-color: var(--peetha-color); margin-top: 20px; width: 100%;">Confirm Stay Booking</button>
                 </div>
             </div>
         </form>
@@ -981,5 +1131,169 @@
             }
         });
     }
+
+    // Accommodation Stay Booking Logic
+    let currentStayPrices = { AC: 0.00, Ordinary: 0.00 };
+
+    function checkStayAvailability() {
+        const checkin = document.getElementById('stay-checkin-date').value;
+        const checkout = document.getElementById('stay-checkout-date').value;
+        const searchBtn = document.getElementById('stay-search-btn');
+        const resultsContainer = document.getElementById('stay-availability-results');
+
+        if (!checkin || !checkout) {
+            alert('Please select both check-in and check-out dates.');
+            return;
+        }
+
+        const checkinDate = new Date(checkin);
+        const checkoutDate = new Date(checkout);
+        if (checkinDate >= checkoutDate) {
+            alert('Check-out date must be after check-in date.');
+            return;
+        }
+
+        searchBtn.disabled = true;
+        searchBtn.innerText = 'Checking...';
+
+        const peethaSlug = '{{ peetha.slug }}';
+        const url = `/peetha/${peethaSlug}/accommodation/availability/?check_in=${checkin}&check_out=${checkout}`;
+
+        fetch(url)
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to fetch stay availability");
+                return res.json();
+            })
+            .then(data => {
+                searchBtn.disabled = false;
+                searchBtn.innerText = 'Check Stay Availability';
+                resultsContainer.style.display = 'block';
+
+                const availability = data.availability;
+                for (const rtype in availability) {
+                    const info = availability[rtype];
+                    currentStayPrices[rtype] = info.price_per_night;
+
+                    // Update price display
+                    const priceEl = document.getElementById(`stay-price-${rtype}`);
+                    if (priceEl) priceEl.innerText = '₹' + info.price_per_night;
+                    
+                    // Update remaining rooms display
+                    const pendingEl = document.getElementById(`stay-pending-${rtype}`);
+                    if (pendingEl) pendingEl.innerText = `Rooms pending: ${info.available_count}`;
+
+                    // Update hot water display
+                    const hotwaterTextEl = document.getElementById(`stay-hotwater-text-${rtype}`);
+                    if (hotwaterTextEl) {
+                        if (info.hot_water_available) {
+                            hotwaterTextEl.innerText = info.hot_water_timings;
+                            hotwaterTextEl.style.color = '#16a34a'; // green
+                        } else {
+                            hotwaterTextEl.innerText = 'Not Available';
+                            hotwaterTextEl.style.color = '#dc2626'; // red
+                        }
+                    }
+
+                    const card = document.getElementById(`stay-card-${rtype}`);
+                    if (card) {
+                        const bookBtn = card.querySelector('.btn-book-stay');
+
+                        if (info.available_count > 0) {
+                            card.style.opacity = '1';
+                            if (pendingEl) pendingEl.style.color = '#2b6cb0';
+                            if (bookBtn) {
+                                bookBtn.disabled = false;
+                                if (bookBtn.tagName === 'BUTTON') {
+                                    bookBtn.innerText = `Book ${rtype} Room`;
+                                    bookBtn.style.backgroundColor = 'var(--peetha-color)';
+                                    bookBtn.style.cursor = 'pointer';
+                                }
+                            }
+                        } else {
+                            card.style.opacity = '0.65';
+                            if (pendingEl) {
+                                pendingEl.innerText = 'Rooms pending: 0 (Sold Out)';
+                                pendingEl.style.color = '#e53e3e';
+                            }
+                            if (bookBtn) {
+                                bookBtn.disabled = true;
+                                if (bookBtn.tagName === 'BUTTON') {
+                                    bookBtn.innerText = 'Sold Out';
+                                    bookBtn.style.backgroundColor = '#a0aec0';
+                                    bookBtn.style.cursor = 'not-allowed';
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                searchBtn.disabled = false;
+                searchBtn.innerText = 'Check Stay Availability';
+                alert('Error querying room availability. Please try again.');
+            });
+    }
+
+    function openStayBookingModal(roomType) {
+        const checkin = document.getElementById('stay-checkin-date').value;
+        const checkout = document.getElementById('stay-checkout-date').value;
+
+        if (!checkin || !checkout) {
+            alert('Please select check-in and check-out dates first.');
+            return;
+        }
+
+        const checkinDate = new Date(checkin);
+        const checkoutDate = new Date(checkout);
+        const nights = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+        const rate = currentStayPrices[roomType];
+        const total = rate * nights;
+
+        // Set form fields
+        document.getElementById('stay-modal-room-type').value = roomType;
+        document.getElementById('stay-modal-check-in').value = checkin;
+        document.getElementById('stay-modal-check-out').value = checkout;
+
+        // Update modal texts
+        document.getElementById('stay-modal-type-title').innerText = roomType === 'AC' ? 'AC Room' : 'Ordinary Room';
+        document.getElementById('stay-summary-checkin').innerText = checkin;
+        document.getElementById('stay-summary-checkout').innerText = checkout;
+        document.getElementById('stay-summary-nights').innerText = nights;
+        document.getElementById('stay-summary-rate').innerText = rate.toFixed(2);
+        document.getElementById('stay-summary-total').innerText = total.toFixed(2);
+
+        document.getElementById('stay-booking-modal').classList.add('active');
+    }
+
+    function closeStayBookingModal() {
+        document.getElementById('stay-booking-modal').classList.remove('active');
+    }
+
+    // Set checkin and checkout date constraints
+    document.addEventListener('DOMContentLoaded', () => {
+        const checkinInput = document.getElementById('stay-checkin-date');
+        const checkoutInput = document.getElementById('stay-checkout-date');
+        
+        if (checkinInput && checkoutInput) {
+            const todayStr = new Date().toISOString().split('T')[0];
+            checkinInput.min = todayStr;
+            checkoutInput.min = todayStr;
+            
+            checkinInput.addEventListener('change', () => {
+                const checkinVal = checkinInput.value;
+                if (checkinVal) {
+                    const checkinDate = new Date(checkinVal);
+                    checkinDate.setDate(checkinDate.getDate() + 1);
+                    const minCheckoutStr = checkinDate.toISOString().split('T')[0];
+                    checkoutInput.min = minCheckoutStr;
+                    
+                    if (checkoutInput.value && new Date(checkoutInput.value) <= new Date(checkinVal)) {
+                        checkoutInput.value = minCheckoutStr;
+                    }
+                }
+            });
+        }
+    });
 </script>
 {% endblock %}

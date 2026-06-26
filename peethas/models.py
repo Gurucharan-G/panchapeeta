@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import User
 
 
@@ -344,6 +344,7 @@ class UserProfile(models.Model):
     gotra = models.CharField(max_length=100, blank=True)
     nakshatra = models.CharField(max_length=100, blank=True)
     rashi = models.CharField(max_length=100, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f"Profile - {self.user.username}"
@@ -358,7 +359,8 @@ class UserProfile(models.Model):
             self.gender,
             self.gotra,
             self.nakshatra,
-            self.rashi
+            self.rashi,
+            self.date_of_birth
         ]
         filled = sum(1 for f in fields if f)
         return int((filled / len(fields)) * 100)
@@ -369,4 +371,114 @@ def get_user_profile(self):
     return profile
 
 User.profile = property(get_user_profile)
+
+
+class Building(models.Model):
+    peetha = models.ForeignKey(Peetha, on_delete=models.CASCADE, related_name='buildings')
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    total_floors = models.PositiveIntegerField(default=1)
+    rooms_per_floor = models.PositiveIntegerField(default=5)
+    ac_floors_count = models.PositiveIntegerField(default=0, help_text="Number of floors starting from ground (floor 0) that have AC rooms. Other floors will have ordinary rooms.")
+    ac_room_numbers = models.TextField(blank=True, default='', help_text="Comma-separated list of specific room numbers that should be AC (e.g. 'G1, G2, 101'). If specified, it overrides the AC floors count.")
+    ac_room_price = models.DecimalField(max_digits=10, decimal_places=2, default=1000.00)
+    ordinary_room_price = models.DecimalField(max_digits=10, decimal_places=2, default=500.00)
+    has_hot_water = models.BooleanField(default=False, help_text="Is hot water available in this building?")
+    hot_water_timings = models.CharField(max_length=100, blank=True, default='', help_text="Timings for hot water (e.g. '6:00 AM - 9:00 AM')")
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.peetha.name}"
+
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+            super().save(*args, **kwargs)
+            self.generate_rooms()
+
+    def generate_rooms(self):
+        valid_room_numbers = []
+        
+        custom_ac_rooms = []
+        if self.ac_room_numbers.strip():
+            custom_ac_rooms = [r.strip().upper() for r in self.ac_room_numbers.split(',') if r.strip()]
+
+        for floor in range(self.total_floors):
+            for room_idx in range(1, self.rooms_per_floor + 1):
+                if floor == 0:
+                    room_number = f"G{room_idx}"
+                else:
+                    room_number = f"{floor}{room_idx:02d}"
+                
+                valid_room_numbers.append(room_number)
+                
+                if custom_ac_rooms:
+                    room_type = 'AC' if room_number.upper() in custom_ac_rooms else 'Ordinary'
+                else:
+                    room_type = 'AC' if floor < self.ac_floors_count else 'Ordinary'
+                
+                price = self.ac_room_price if room_type == 'AC' else self.ordinary_room_price
+                
+                Room.objects.update_or_create(
+                    building=self,
+                    room_number=room_number,
+                    defaults={
+                        'floor': floor,
+                        'room_type': room_type,
+                        'price_per_night': price,
+                        'is_active': True
+                    }
+                )
+        
+        # Delete rooms no longer in the valid range
+        self.rooms.exclude(room_number__in=valid_room_numbers).delete()
+
+
+class Room(models.Model):
+    building = models.ForeignKey(Building, on_delete=models.CASCADE, related_name='rooms')
+    room_number = models.CharField(max_length=20)
+    floor = models.PositiveIntegerField(default=0)
+    room_type = models.CharField(
+        max_length=20, 
+        choices=(('AC', 'AC Room'), ('Ordinary', 'Ordinary Room')), 
+        default='Ordinary'
+    )
+    price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.building.name} - Room {self.room_number} ({self.get_room_type_display()})"
+
+
+class AccommodationBooking(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('success', 'Success'),
+        ('failed', 'Failed'),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='accommodation_bookings', null=True, blank=True)
+    peetha = models.ForeignKey(Peetha, on_delete=models.CASCADE, related_name='accommodation_bookings')
+    room = models.ForeignKey(Room, on_delete=models.PROTECT, related_name='bookings', null=True, blank=True)
+    room_type = models.CharField(
+        max_length=20,
+        choices=(('AC', 'AC Room'), ('Ordinary', 'Ordinary Room')),
+        default='Ordinary'
+    )
+    devotee_name = models.CharField(max_length=200)
+    devotee_phone = models.CharField(max_length=20)
+    devotee_email = models.EmailField(blank=True)
+    check_in_date = models.DateField()
+    check_out_date = models.DateField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    razorpay_order_id = models.CharField(max_length=100, blank=True)
+    razorpay_payment_id = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        assigned = f"Room {self.room.room_number}" if self.room else "Unassigned"
+        return f"{self.devotee_name} - {self.peetha.name} ({assigned}, {self.get_payment_status_display()})"
 

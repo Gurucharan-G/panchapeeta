@@ -1,0 +1,196 @@
+{% extends "peethas/index.html" %}
+{% load static %}
+
+{% block title %}Stay Confirmed - {{ peetha.name }}{% endblock %}
+
+{% block content %}
+<!-- Include html2pdf.js and html2canvas CDN libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<div class="container" style="padding-top: 120px; padding-bottom: 80px; min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fdfaf7;">
+    
+    <!-- Success Banner -->
+    <div style="text-align: center; margin-bottom: 30px; animation: fadeIn 0.8s ease-out;">
+        <div style="width: 70px; height: 70px; border-radius: 50%; background: #4CAF50; color: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 15px auto; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);">✓</div>
+        <h2 style="color: var(--dark); font-weight: 800; margin: 0; font-size: 1.8rem; letter-spacing: -0.5px;">Accommodation Booking Confirmed!</h2>
+        <p style="color: #666; margin-top: 5px; font-size: 1rem;">Your stay at the Peetha has been successfully reserved.</p>
+    </div>
+
+    <!-- Receipt Card (The content to print/download) -->
+    <div id="receipt-card" style="background: #fffdfb; border: 2px solid #f1e4d3; border-radius: 16px; box-shadow: 0 10px 30px rgba(220,130,50,0.06); max-width: 550px; width: 100%; position: relative; overflow: hidden; margin-bottom: 30px;">
+        
+        <!-- Saffron Border Top Header -->
+        <div style="background: linear-gradient(135deg, var(--saffron), #e65100); padding: 25px 20px; text-align: center; color: white; border-bottom: 4px double #ffe0b2;">
+            <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; opacity: 0.9; margin-bottom: 5px;">Sri Panchapeeta Veerashaiva Matha</div>
+            <h3 style="margin: 0; font-size: 1.4rem; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.15);">{{ peetha.name }}</h3>
+            <div style="font-size: 0.85rem; opacity: 0.85; margin-top: 3px;">Location: {{ peetha.location }}</div>
+        </div>
+
+        <div style="padding: 30px 25px; position: relative;">
+            <!-- Confirmed Watermark Seal -->
+            <div style="position: absolute; right: 25px; top: 15px; border: 3px double #4CAF50; color: #4CAF50; font-weight: 900; text-transform: uppercase; font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; transform: rotate(-5deg); letter-spacing: 1px; background: rgba(76, 175, 80, 0.05); user-select: none;">
+                ✓ CONFIRMED
+            </div>
+
+            <!-- Receipt Info Header -->
+            <div style="border-bottom: 1px dashed #e2d2be; padding-bottom: 15px; margin-bottom: 20px;">
+                <div style="font-size: 0.78rem; text-transform: uppercase; color: #888; font-weight: 600; letter-spacing: 0.5px;">Receipt Number</div>
+                <div style="font-size: 1.1rem; font-weight: 700; color: var(--dark); font-family: monospace;">{{ booking.razorpay_payment_id }}</div>
+                <div style="font-size: 0.72rem; color: #999; margin-top: 3px;">Booked on: {{ booking.created_at|date:"d M Y, h:i A" }}</div>
+            </div>
+
+            <!-- Main Booking Grid Details -->
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+                
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #faf5ef; padding-bottom: 8px;">
+                    <span style="font-size: 0.9rem; color: #777; font-weight: 500;">Accommodation Type:</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: var(--dark); text-align: right;">{{ booking.get_room_type_display }}</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #faf5ef; padding-bottom: 8px;">
+                    <span style="font-size: 0.9rem; color: #777; font-weight: 500;">Assigned Room:</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: var(--saffron); text-align: right;">
+                        Room {{ booking.room.room_number }} ({{ booking.room.building.name }})
+                    </span>
+                </div>
+
+                {% if booking.room and booking.room.building.has_hot_water %}
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #faf5ef; padding-bottom: 8px;">
+                    <span style="font-size: 0.9rem; color: #777; font-weight: 500;">🚿 Hot Water:</span>
+                    <span style="font-size: 0.95rem; font-weight: 600; color: #16a34a; text-align: right;">
+                        Available ({% if booking.room.building.hot_water_timings %}{{ booking.room.building.hot_water_timings }}{% else %}Yes{% endif %})
+                    </span>
+                </div>
+                {% endif %}
+
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #faf5ef; padding-bottom: 8px;">
+                    <span style="font-size: 0.9rem; color: #777; font-weight: 500;">Check-in Date:</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: var(--dark);">{{ booking.check_in_date|date:"d M Y" }}</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #faf5ef; padding-bottom: 8px;">
+                    <span style="font-size: 0.9rem; color: #777; font-weight: 500;">Check-out Date:</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: var(--dark);">{{ booking.check_out_date|date:"d M Y" }}</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #faf5ef; padding-bottom: 8px;">
+                    <span style="font-size: 0.9rem; color: #777; font-weight: 500;">Devotee Name:</span>
+                    <span style="font-size: 0.95rem; font-weight: 700; color: var(--dark);">{{ booking.devotee_name }}</span>
+                </div>
+
+                {% if booking.devotee_phone %}
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #faf5ef; padding-bottom: 8px;">
+                    <span style="font-size: 0.9rem; color: #777; font-weight: 500;">Phone Number:</span>
+                    <span style="font-size: 0.95rem; font-weight: 600; color: var(--dark);">{{ booking.devotee_phone }}</span>
+                </div>
+                {% endif %}
+
+                <!-- Cost / Amount Summary -->
+                <div style="margin-top: 15px; border-top: 2px double #e2d2be; padding-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 1rem; color: var(--dark); font-weight: 700;">Total Amount Paid:</span>
+                    <span style="font-size: 1.5rem; font-weight: 800; color: #2e7d32;">₹{{ booking.amount }}</span>
+                </div>
+                <div style="text-align: right; font-size: 0.7rem; color: #888; margin-top: -5px;">* Includes all taxes and maintenance charges.</div>
+
+            </div>
+        </div>
+        
+        <!-- Ticket Cut Bottom Border Edge style -->
+        <div style="height: 10px; background-image: radial-gradient(circle, transparent 4px, white 5px); background-size: 16px 16px; background-position: -8px 0; background-repeat: repeat-x; border-top: 1px dashed #e2d2be; margin-bottom: -1px;"></div>
+    </div>
+
+    <!-- Download & Share Action Buttons Group -->
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 550px; margin-bottom: 25px;">
+        <!-- PDF Button -->
+        <button type="button" onclick="downloadPDF()" class="pooja-contact-btn" style="flex: 1; min-width: 150px; background-color: var(--saffron); border: none; font-size: 0.95rem; font-weight: 700; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 10px rgba(220,130,50,0.25);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PDF
+        </button>
+
+        <!-- Image Button -->
+        <button type="button" onclick="downloadImage()" class="pooja-contact-btn" style="flex: 1; min-width: 150px; background-color: #2b2b2b; border: none; font-size: 0.95rem; font-weight: 700; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Download Image
+        </button>
+
+        <!-- Share Button -->
+        <button type="button" onclick="shareBooking()" class="pooja-contact-btn" style="flex: 1; min-width: 150px; background-color: #0d6efd; border: none; font-size: 0.95rem; font-weight: 700; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 10px rgba(13,110,253,0.2);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share Details
+        </button>
+    </div>
+
+    <!-- Return Link -->
+    <a href="{% url 'peethas:peetha_detail' peetha.slug %}#accommodation" style="color: #666; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 0.95rem; border-bottom: 1.5px solid transparent; transition: border-color 0.2s;" onmouseenter="this.style.borderColor='#666'" onmouseleave="this.style.borderColor='transparent'">
+        ← Return to {{ peetha.name }} Page
+    </a>
+
+</div>
+
+<!-- Interactive Client-side Scripting -->
+<script>
+function downloadPDF() {
+    const element = document.getElementById('receipt-card');
+    
+    const opt = {
+        margin:       10,
+        filename:     'Accommodation_Receipt_{{ booking.razorpay_payment_id }}.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+}
+
+function downloadImage() {
+    const element = document.getElementById('receipt-card');
+    
+    html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#fffdfb'
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Accommodation_Receipt_{{ booking.razorpay_payment_id }}.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+}
+
+function shareBooking() {
+    const shareText = `🙏 Accommodation Booking Confirmed! \n\n` +
+                 `• Type: {{ booking.get_room_type_display }}\n` +
+                 `• Room: Room {{ booking.room.room_number }} ({{ booking.room.building.name }})\n` +
+                 `• Matha: {{ peetha.name }} ({{ peetha.location }})\n` +
+                 `• Check-in: {{ booking.check_in_date|date:"d M Y" }}\n` +
+                 `• Check-out: {{ booking.check_out_date|date:"d M Y" }}\n` +
+                 `• Devotee: {{ booking.devotee_name }}\n` +
+                 `• Receipt No: {{ booking.razorpay_payment_id }}\n\n` +
+                 `Reserved officially via Sri Panchapeeta Veerashaiva Devotee Portal.`;
+
+    if (navigator.share) {
+        navigator.share({
+            title: 'Accommodation Booking Confirmed',
+            text: shareText
+        }).catch(err => {
+            console.error('Error sharing:', err);
+        });
+    } else {
+        navigator.clipboard.writeText(shareText).then(() => {
+            alert('Booking details copied to clipboard!');
+        }).catch(err => {
+            console.error('Could not copy text: ', err);
+        });
+    }
+}
+</script>
+
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+{% endblock %}

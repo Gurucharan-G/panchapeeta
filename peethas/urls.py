@@ -39,15 +39,24 @@ urlpatterns = [
     path('dashboard/peetha/<slug:slug>/pooja/<int:pk>/edit/', views.pooja_edit, name='pooja_edit'),
     path('dashboard/peetha/<slug:slug>/pooja/<int:pk>/delete/', views.pooja_delete, name='pooja_delete'),
     
+    # Building CRUD
+    path('dashboard/peetha/<slug:slug>/building/add/', views.building_add, name='building_add'),
+    path('dashboard/peetha/<slug:slug>/building/<int:pk>/edit/', views.building_edit, name='building_edit'),
+    path('dashboard/peetha/<slug:slug>/building/<int:pk>/delete/', views.building_delete, name='building_delete'),
+    
     # Pooja Booking
     path('peetha/<slug:peetha_slug>/book-pooja/', views.initiate_pooja_booking, name='initiate_pooja_booking'),
     path('peetha/<slug:peetha_slug>/pooja/<int:pooja_id>/availability/', views.pooja_availability, name='pooja_availability'),
     path('verify-pooja-payment/', views.verify_pooja_payment, name='verify_pooja_payment'),
     path('booking-success/<int:booking_id>/', views.booking_success, name='booking_success'),
     
+    # Accommodation Booking
+    path('peetha/<slug:peetha_slug>/book-accommodation/', views.initiate_accommodation_booking, name='initiate_accommodation_booking'),
+    path('peetha/<slug:peetha_slug>/accommodation/availability/', views.accommodation_availability, name='accommodation_availability'),
+    path('accommodation/booking-success/<int:booking_id>/', views.accommodation_booking_success, name='accommodation_booking_success'),
+    
     # Dashboard AJAX APIs
-    path('dashboard/api/date-bookings/', views.dashboard_date_bookings, name='dashboard_date_bookings'),
+    path('dashboard/api/bookings/', views.dashboard_bookings_list, name='dashboard_bookings_list'),
     path('dashboard/api/search-devotees/', views.dashboard_search_devotees, name='dashboard_search_devotees'),
-    path('dashboard/api/seva-bookings/', views.dashboard_seva_bookings, name='dashboard_seva_bookings'),
 ]
 

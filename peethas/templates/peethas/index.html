@@ -144,11 +144,6 @@
 
                 {% block nav_auth %}
                 {% if user.is_authenticated %}
-                    {% if user.is_superuser or user.handler_profile %}
-                        <a href="{% url 'peethas:dashboard_home' %}" class="nav-link nav-btn-dashboard">{{ labels.dashboard_btn|default:"Dashboard" }}</a>
-                    {% endif %}
-                    <a href="{% url 'peethas:my_bookings' %}" class="nav-link nav-btn-dashboard">{{ labels.nav_my_bookings|default:"My Bookings" }}</a>
-                    
                     <div class="nav-profile-dropdown">
                         <button type="button" class="dropdown-trigger-btn" onclick="toggleUserDropdown(event)" title="Profile Completion: {{ user.profile.completion_percentage }}%">
                             <div style="position: relative; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -187,12 +182,22 @@
                             <span class="dropdown-trigger-arrow">▼</span>
                         </button>
                         <div id="userDropdownMenu" class="dropdown-menu-list">
+                            {% if user.is_superuser or user.handler_profile %}
+                                <a href="{% url 'peethas:dashboard_home' %}" class="dropdown-menu-item">Dashboard</a>
+                            {% endif %}
+                            <a href="{% url 'peethas:my_bookings' %}" class="dropdown-menu-item">My Bookings</a>
                             <a href="{% url 'peethas:profile_view' %}" class="dropdown-menu-item">View Profile</a>
                             <a href="{% url 'peethas:logout' %}" class="dropdown-menu-item item-logout">Logout</a>
                         </div>
                     </div>
                 {% else %}
-                    <a href="javascript:void(0);" onclick="openAuthModal('signin')" class="nav-link nav-btn-dashboard">{{ labels.nav_sign_in|default:"Sign In / Sign Up" }}</a>
+                    <a href="javascript:void(0);" onclick="openAuthModal('signin')" class="nav-link nav-btn-dashboard">
+                        {% if devotee_registration_enabled %}
+                            {{ labels.nav_sign_in|default:"Sign In / Sign Up" }}
+                        {% else %}
+                            {{ labels.sign_in_only|default:"Sign In" }}
+                        {% endif %}
+                    </a>
                 {% endif %}
                 {% endblock %}
             </nav>
@@ -491,15 +496,24 @@
                     </a>
                 </div>
 
+                {% if devotee_registration_enabled %}
                 <div class="auth-footer" style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
                     <p style="color: #666; font-size: 0.9rem; margin: 0;">
                         Don't have an account? 
                         <a href="javascript:void(0);" onclick="toggleAuthModalView('signup')" style="color: var(--saffron); font-weight: bold; text-decoration: none;">Sign Up</a>
                     </p>
                 </div>
+                {% else %}
+                <div class="auth-footer" style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
+                    <p style="color: #888; font-size: 0.9rem; margin: 0;">
+                        Devotee registration is currently disabled.
+                    </p>
+                </div>
+                {% endif %}
             </div>
 
             <!-- Signup Content State -->
+            {% if devotee_registration_enabled %}
             <div id="modalSignUpContent" style="display: none;">
                 <div class="auth-header" style="text-align: center; margin-bottom: 25px;">
                     <div class="auth-icon" style="font-size: 2.5rem; margin-bottom: 5px;">🕉️</div>
@@ -553,6 +567,7 @@
                     </p>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
     {% endif %}

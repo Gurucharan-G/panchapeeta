@@ -19,3 +19,7 @@ class DynamicFeatureFlag:
 
 # Toggle between Rectangular and Circular portraits on the Home Page
 USE_RECTANGULAR_PORTRAITS = DynamicFeatureFlag('USE_RECTANGULAR_PORTRAITS', True)
+
+# Global Devotee Registration Flag
+DEVOTEE_REGISTRATION = DynamicFeatureFlag('DEVOTEE_REGISTRATION', True)
+

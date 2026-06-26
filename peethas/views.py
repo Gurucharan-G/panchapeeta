@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Peetha, TravelPlan, PeethaHandler, PeethaMedia, Pooja, PoojaBooking, PeethaPaymentConfig, FeatureFlag
-from .forms import TravelPlanForm, PeethaMediaAddForm, PeethaMediaEditForm, PeethaHandlerForm, PeethaPaymentConfigForm, PoojaForm
+from .models import Peetha, TravelPlan, PeethaHandler, PeethaMedia, Pooja, PoojaBooking, PeethaPaymentConfig, FeatureFlag, Building, Room, AccommodationBooking
+from .forms import TravelPlanForm, PeethaMediaAddForm, PeethaMediaEditForm, PeethaHandlerForm, PeethaPaymentConfigForm, PoojaForm, BuildingForm
 from django.db import models
 
 import datetime
@@ -69,6 +69,8 @@ TRANSLATIONS = {
         'sign_in_only': 'Sign In',
         'no_account_prompt': "Don't have an account?",
         'sign_up_btn': 'Sign Up',
+        'birthday_title': 'Happy Birthday',
+        'birthday_message': 'May the divine blessings of Lord Shiva and the holy Jagadgurus of the Pancha Peethas be with you on this auspicious day.',
     },
     'kn': {
         'site_title': 'ವೀರಶೈವ ಪಂಚಪೀಠಗಳು',
@@ -118,6 +120,8 @@ TRANSLATIONS = {
         'sign_in_only': 'ಸೈನ್ ಇನ್',
         'no_account_prompt': 'ಖಾತೆ ಇಲ್ಲವೇ?',
         'sign_up_btn': 'ಸೈನ್ ಅಪ್ ಮಾಡಿ',
+        'birthday_title': 'ಜನ್ಮದಿನದ ಶುಭಾಶಯಗಳು',
+        'birthday_message': 'ಈ ಪವಿತ್ರ ದಿನದಂದು ಭಗವಾನ್ ಶಿವ ಮತ್ತು ಪಂಚಪೀಠಗಳ ಜಗದ್ಗುರುಗಳ ದಿವ್ಯ ಆಶೀರ್ವಾದವು ನಿಮ್ಮ ಮೇಲಿರಲಿ. ✨🕉️',
     },
     'mr': {
         'site_title': 'वीरशैव पंचपीठ',
@@ -167,6 +171,8 @@ TRANSLATIONS = {
         'sign_in_only': 'लॉगिन करा',
         'no_account_prompt': 'खाते नाही का?',
         'sign_up_btn': 'साइन अप करा',
+        'birthday_title': 'वाढदिवसाच्या हार्दिक शुभेच्छा',
+        'birthday_message': 'या मंगलदिनी भगवान शिव आणि पंचपीठांच्या जगद्गुरूंचे दिव्य आशीर्वाद आपल्या पाठीशी राहोत.',
     },
     'hi': {
         'site_title': 'वीरशैव पंचपीठ',
@@ -216,6 +222,8 @@ TRANSLATIONS = {
         'sign_in_only': 'साइन इन करें',
         'no_account_prompt': 'क्या आपका खाता नहीं है?',
         'sign_up_btn': 'साइन अप करें',
+        'birthday_title': 'जन्मदिन की हार्दिक शुभकामनाएं',
+        'birthday_message': 'इस पावन अवसर पर भगवान शिव और पंचपीठों के जगद्गुरुओं का दिव्य आशीर्वाद आपको प्राप्त हो।',
     },
     'te': {
         'site_title': 'వీరశైవ పంచ పీఠాలు',
@@ -265,6 +273,8 @@ TRANSLATIONS = {
         'sign_in_only': 'సైన్ ఇన్',
         'no_account_prompt': 'ఖాతా లేదా?',
         'sign_up_btn': 'సైన్ అప్ చేయండి',
+        'birthday_title': 'పుట్టినరోజు శుభాకాంక్షలు',
+        'birthday_message': 'ఈ పవిత్ర దినమున శివుని మరియు పంచపీఠాల జగద్గురువుల దివ్య ఆశీస్సులు మీకు లభించాలని కోరుకుంటున్నాము.',
     },
     'ta': {
         'site_title': 'வீரசைவ பஞ்ச பீடங்கள்',
@@ -314,6 +324,8 @@ TRANSLATIONS = {
         'sign_in_only': 'உள்நுழைக',
         'no_account_prompt': 'கணக்கு இல்லையா?',
         'sign_up_btn': 'பதிவு செய்யவும்',
+        'birthday_title': 'இனிய பிறந்தநாள் நல்வாழ்த்துகள்',
+        'birthday_message': 'இந்த நன்னாளில் சிவபெருமானின் மற்றும் பஞ்ச பீடங்களின் ஜകத்குருக்களின் தெய்வீக அருள் உங்களுக்கு கிடைக்கட்டும். ✨🕉️',
     },
     'ml': {
         'site_title': 'വീരശൈവ പഞ്ചപീഠങ്ങൾ',
@@ -363,6 +375,8 @@ TRANSLATIONS = {
         'sign_in_only': 'സൈൻ ഇൻ ചെയ്യുക',
         'no_account_prompt': 'അക്കൗണ്ട് ഇല്ലേ?',
         'sign_up_btn': 'സൈൻ അപ്പ് ചെയ്യുക',
+        'birthday_title': 'ജന്മദിനാശംസകൾ',
+        'birthday_message': 'ഈ മംഗളദിനത്തിൽ പരമശിവന്റെയും പഞ്ചപീഠങ്ങളുടെ ജഗദ്ഗുരുക്കളുടെയും ദിവ്യാനുഗ്രഹം നിങ്ങൾക്ക് ഉണ്ടാകട്ടെ.',
     }
 }
 
@@ -428,6 +442,20 @@ def translate_object(obj, lang):
 def home(request):
     lang = get_language(request)
     peethas = [translate_object(p, lang) for p in Peetha.objects.all()]
+    
+    is_birthday = False
+    if request.user.is_authenticated:
+        try:
+            profile = request.user.profile
+            if profile.date_of_birth:
+                today = datetime.date.today()
+                if profile.date_of_birth.month == today.month and profile.date_of_birth.day == today.day:
+                    is_birthday = True
+        except Exception:
+            pass
+    if request.GET.get('test_birthday') == 'true':
+        is_birthday = True
+
     return render(request, 'peethas/home.html', {
         'peethas': peethas,
         'use_rectangular_portraits': USE_RECTANGULAR_PORTRAITS,
@@ -435,6 +463,7 @@ def home(request):
         'labels': TRANSLATIONS[lang],
         'heritage_content': HERITAGE_CONTENT[lang],
         'veerashaiva_content': VEERASHAIVA_CONTENT[lang],
+        'is_birthday': is_birthday,
     })
 
 
@@ -484,23 +513,26 @@ def peetha_detail(request, slug):
     # Dynamic styling variable
     show_admin_button = request.user.is_authenticated
 
-    # Feature Flags check
-    overall_flag, _ = FeatureFlag.objects.get_or_create(
-        name=f"{slug}_overall",
-        defaults={'is_enabled': True, 'description': f"Overall Master toggle ({peetha.name})"}
-    )
-    pooja_flag, _ = FeatureFlag.objects.get_or_create(
-        name=f"{slug}_pooja_booking",
-        defaults={'is_enabled': True, 'description': f"Pooja Booking flag ({peetha.name})"}
-    )
-    accommodation_flag, _ = FeatureFlag.objects.get_or_create(
-        name=f"{slug}_accommodation",
-        defaults={'is_enabled': True, 'description': f"Accommodation flag ({peetha.name})"}
-    )
+    # Feature Flags check — all peetha-level features
+    flag_keys = [
+        'overall', 'pooja_booking', 'accommodation', 'media_gallery',
+        'travel_plans', 'live_stream', 'contact_section'
+    ]
+    flags = {}
+    for key in flag_keys:
+        flag_obj, _ = FeatureFlag.objects.get_or_create(
+            name=f"{slug}_{key}",
+            defaults={'is_enabled': True, 'description': f"{key.replace('_', ' ').title()} flag ({peetha.name})"}
+        )
+        flags[key] = flag_obj.is_enabled
     
-    overall_enabled = overall_flag.is_enabled
-    pooja_booking_enabled = overall_enabled and pooja_flag.is_enabled
-    accommodation_enabled = overall_enabled and accommodation_flag.is_enabled
+    overall_enabled = flags['overall']
+    pooja_booking_enabled = overall_enabled and flags['pooja_booking']
+    accommodation_enabled = overall_enabled and flags['accommodation']
+    media_gallery_enabled = overall_enabled and flags['media_gallery']
+    travel_plans_enabled = overall_enabled and flags['travel_plans']
+    live_stream_enabled = overall_enabled and flags['live_stream']
+    contact_section_enabled = overall_enabled and flags['contact_section']
 
     return render(request, 'peethas/peetha_detail.html', {
         'peetha': peetha,
@@ -512,6 +544,10 @@ def peetha_detail(request, slug):
         'show_admin_button': show_admin_button,
         'pooja_booking_enabled': pooja_booking_enabled,
         'accommodation_enabled': accommodation_enabled,
+        'media_gallery_enabled': media_gallery_enabled,
+        'travel_plans_enabled': travel_plans_enabled,
+        'live_stream_enabled': live_stream_enabled,
+        'contact_section_enabled': contact_section_enabled,
     })
 
 
@@ -558,6 +594,11 @@ def register_view(request):
     if request.user.is_authenticated:
         return redirect('peethas:home')
         
+    from .feature_flags import DEVOTEE_REGISTRATION
+    if not bool(DEVOTEE_REGISTRATION):
+        messages.error(request, 'Devotee registration is currently disabled.')
+        return redirect('peethas:login')
+        
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -568,6 +609,7 @@ def register_view(request):
             messages.error(request, 'Username already exists. Please choose another one.')
         else:
             user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name)
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
             messages.success(request, 'Registration successful! Welcome.')
             
@@ -591,7 +633,7 @@ def logout_view(request):
 
 # ===== Dashboard & CRUD Views =====
 
-def check_peetha_authorization(user, peetha, readonly=False):
+def check_peetha_authorization(user, peetha, readonly=False, allow_staff_write=False):
     """
     Checks if the logged-in user is a superuser or the assigned handler/staff for the Peetha.
     For staff users (is_staff=True and not is_superuser), their access is strictly read-only.
@@ -603,7 +645,7 @@ def check_peetha_authorization(user, peetha, readonly=False):
         handler = user.handler_profile
         if handler.peetha == peetha:
             # Locked to this Peetha. If it's a write action (readonly=False) and they are staff, deny access
-            if not readonly and user.is_staff:
+            if not readonly and user.is_staff and not allow_staff_write:
                 raise PermissionDenied("Staff accounts have read-only access to this Peetha.")
             return True
     except PeethaHandler.DoesNotExist:
@@ -655,8 +697,12 @@ def dashboard_home(request):
         peethas_list = Peetha.objects.all().order_by('id')
         features_meta = [
             {'key': 'overall', 'name': 'Overall Status', 'desc': 'Master toggle for all features of this Peetha'},
-            {'key': 'pooja_booking', 'name': 'Pooja Booking', 'desc': 'Enable or disable Pooja Booking for this Peetha'},
-            {'key': 'accommodation', 'name': 'Accommodation', 'desc': 'Enable or disable Accommodation for this Peetha'},
+            {'key': 'pooja_booking', 'name': 'Pooja Booking', 'desc': 'Enable or disable online Pooja/Seva booking'},
+            {'key': 'accommodation', 'name': 'Accommodation', 'desc': 'Enable or disable Accommodation section'},
+            {'key': 'media_gallery', 'name': 'Media Gallery', 'desc': 'Show or hide the Photo & Video gallery'},
+            {'key': 'travel_plans', 'name': 'Swamiji Travel Plans', 'desc': 'Show or hide the Travel Plans timeline'},
+            {'key': 'live_stream', 'name': 'YouTube Live Stream', 'desc': 'Show or hide the Live Stream embed'},
+            {'key': 'contact_section', 'name': 'Contact Us', 'desc': 'Show or hide the Contact Us section'},
         ]
         
         feature_board = []
@@ -682,12 +728,18 @@ def dashboard_home(request):
                 'cells': row_cells
             })
 
-        # Exclude peetha-specific flags from general list
-        feature_flags = FeatureFlag.objects.exclude(
-            models.Q(name__contains='_overall') |
-            models.Q(name__contains='_pooja_booking') |
-            models.Q(name__contains='_accommodation')
-        ).order_by('name')
+        # All peetha-level feature keys (used to exclude from global settings list)
+        peetha_feature_keys = [f['key'] for f in features_meta]
+        peetha_flag_q = models.Q()
+        for key in peetha_feature_keys:
+            peetha_flag_q |= models.Q(name__endswith=f'_{key}')
+        feature_flags = FeatureFlag.objects.exclude(peetha_flag_q).order_by('name')
+
+        # Ensure global system flags exist
+        FeatureFlag.objects.get_or_create(
+            name='DEVOTEE_REGISTRATION',
+            defaults={'is_enabled': True, 'description': 'Allow new devotees to register on the platform'}
+        )
         
         # Forms for action panels
         handler_form = PeethaHandlerForm()
@@ -952,21 +1004,25 @@ def toggle_feature(request, pk):
     
     updated_flags = [flag]
     
+    # All peetha-level feature keys (must match features_meta in dashboard_home)
+    PEETHA_FEATURE_KEYS = [
+        'overall', 'pooja_booking', 'accommodation', 'media_gallery',
+        'travel_plans', 'live_stream', 'contact_section'
+    ]
+    CHILD_KEYS = [k for k in PEETHA_FEATURE_KEYS if k != 'overall']
+    
     peetha_slug, feature_key = None, None
-    if flag.name.endswith('_overall'):
-        peetha_slug = flag.name[:-8]
-        feature_key = 'overall'
-    elif flag.name.endswith('_pooja_booking'):
-        peetha_slug = flag.name[:-14]
-        feature_key = 'pooja_booking'
-    elif flag.name.endswith('_accommodation'):
-        peetha_slug = flag.name[:-14]
-        feature_key = 'accommodation'
+    for key in PEETHA_FEATURE_KEYS:
+        suffix = f'_{key}'
+        if flag.name.endswith(suffix):
+            peetha_slug = flag.name[:-len(suffix)]
+            feature_key = key
+            break
         
     if peetha_slug and feature_key:
-        # If overall is turned off, disable all other feature flags for this peetha
+        # If overall is turned off, disable all child feature flags for this peetha
         if feature_key == 'overall' and not flag.is_enabled:
-            for key in ['pooja_booking', 'accommodation']:
+            for key in CHILD_KEYS:
                 f_name = f"{peetha_slug}_{key}"
                 try:
                     f_obj = FeatureFlag.objects.get(name=f_name)
@@ -976,8 +1032,8 @@ def toggle_feature(request, pk):
                         updated_flags.append(f_obj)
                 except FeatureFlag.DoesNotExist:
                     pass
-        # If any feature is turned on, enable overall for this peetha
-        elif feature_key in ['pooja_booking', 'accommodation'] and flag.is_enabled:
+        # If any child feature is turned on, auto-enable overall for this peetha
+        elif feature_key in CHILD_KEYS and flag.is_enabled:
             overall_name = f"{peetha_slug}_overall"
             try:
                 overall_obj = FeatureFlag.objects.get(name=overall_name)
@@ -1018,6 +1074,11 @@ def dashboard_peetha(request, slug):
     media_form = PeethaMediaAddForm()
     travel_form = TravelPlanForm()
     pooja_form = PoojaForm()
+    building_form = BuildingForm()
+
+    buildings = peetha.buildings.all()
+    total_rooms_count = Room.objects.filter(building__peetha=peetha, building__is_active=True, is_active=True).count()
+    accommodation_bookings = AccommodationBooking.objects.filter(peetha=peetha).select_related('room', 'room__building').order_by('-created_at')
 
     return render(request, 'peethas/dashboard.html', {
         'is_admin': request.user.is_superuser,
@@ -1028,6 +1089,10 @@ def dashboard_peetha(request, slug):
         'media_form': media_form,
         'travel_form': travel_form,
         'pooja_form': pooja_form,
+        'building_form': building_form,
+        'buildings': buildings,
+        'total_rooms_count': total_rooms_count,
+        'accommodation_bookings': accommodation_bookings,
         'labels': TRANSLATIONS['en'],
         'lang': lang,
     })
@@ -1371,6 +1436,85 @@ def pooja_delete(request, slug, pk):
     return redirect(reverse('peethas:dashboard_peetha', kwargs={'slug': peetha.slug}) + '#pooja-section')
 
 
+# --- Building CRUD Views ---
+
+@login_required(login_url='peethas:login')
+def building_add(request, slug):
+    peetha = get_object_or_404(Peetha, slug=slug)
+    check_peetha_authorization(request.user, peetha, allow_staff_write=True)
+
+    if request.method == 'POST':
+        form = BuildingForm(request.POST)
+        if form.is_valid():
+            try:
+                building = form.save(commit=False)
+                building.peetha = peetha
+                building.save()
+                messages.success(request, "Building and rooms added successfully.")
+            except Exception as e:
+                messages.error(request, f"Error creating building: {e}")
+        else:
+            for error in form.errors.values():
+                messages.error(request, error)
+                
+    from django.urls import reverse
+    return redirect(reverse('peethas:dashboard_peetha', kwargs={'slug': peetha.slug}) + '#accommodation-section')
+
+
+@login_required(login_url='peethas:login')
+def building_edit(request, slug, pk):
+    peetha = get_object_or_404(Peetha, slug=slug)
+    check_peetha_authorization(request.user, peetha, allow_staff_write=True)
+    building_item = get_object_or_404(Building, pk=pk, peetha=peetha)
+
+    if request.method == 'POST':
+        form = BuildingForm(request.POST, instance=building_item)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Building and rooms updated successfully.")
+                from django.urls import reverse
+                return redirect(reverse('peethas:dashboard_peetha', kwargs={'slug': peetha.slug}) + '#accommodation-section')
+            except models.ProtectedError:
+                messages.error(request, "Cannot update building layout: Some rooms that would be deleted have active devotee bookings.")
+            except Exception as e:
+                messages.error(request, f"Error updating building: {e}")
+        else:
+            for error in form.errors.values():
+                messages.error(request, error)
+    else:
+        form = BuildingForm(instance=building_item)
+
+    lang = get_language(request)
+    return render(request, 'peethas/dashboard_edit.html', {
+        'peetha': peetha,
+        'edit_type': 'building',
+        'building_item': building_item,
+        'form': form,
+        'labels': TRANSLATIONS['en'],
+        'lang': lang,
+    })
+
+
+@login_required(login_url='peethas:login')
+def building_delete(request, slug, pk):
+    peetha = get_object_or_404(Peetha, slug=slug)
+    check_peetha_authorization(request.user, peetha, allow_staff_write=True)
+    building_item = get_object_or_404(Building, pk=pk, peetha=peetha)
+    
+    if request.method == 'POST':
+        try:
+            building_item.delete()
+            messages.success(request, "Building and all associated rooms deleted successfully.")
+        except models.ProtectedError:
+            messages.error(request, "Cannot delete building: Some rooms in this building have active devotee bookings.")
+        except Exception as e:
+            messages.error(request, f"Error deleting building: {e}")
+        
+    from django.urls import reverse
+    return redirect(reverse('peethas:dashboard_peetha', kwargs={'slug': peetha.slug}) + '#accommodation-section')
+
+
 # ===== POOJA BOOKING VIEWS =====
 
 @login_required(login_url='peethas:login')
@@ -1606,11 +1750,13 @@ def booking_success(request, booking_id):
 def my_bookings(request):
     lang = get_language(request)
     bookings = PoojaBooking.objects.filter(user=request.user).select_related('pooja', 'pooja__peetha').order_by('-created_at')
+    stay_bookings = AccommodationBooking.objects.filter(user=request.user).select_related('peetha', 'room', 'room__building').order_by('-created_at')
     
     return render(request, 'peethas/my_bookings.html', {
         'lang': lang,
         'labels': TRANSLATIONS[lang],
         'bookings': bookings,
+        'stay_bookings': stay_bookings,
     })
 
 
@@ -1632,6 +1778,16 @@ def profile_view(request):
         profile.gotra = request.POST.get('gotra', '').strip()
         profile.nakshatra = request.POST.get('nakshatra', '').strip()
         profile.rashi = request.POST.get('rashi', '').strip()
+        
+        dob_str = request.POST.get('date_of_birth', '').strip()
+        if dob_str:
+            try:
+                # HTML5 date inputs format is YYYY-MM-DD
+                profile.date_of_birth = datetime.datetime.strptime(dob_str, '%Y-%m-%d').date()
+            except ValueError:
+                profile.date_of_birth = None
+        else:
+            profile.date_of_birth = None
         
         # Handle profile pic removal
         if request.POST.get('remove_profile_pic') == 'true':
@@ -1658,55 +1814,142 @@ def profile_view(request):
 
 
 @login_required(login_url='peethas:login')
-def dashboard_date_bookings(request):
-    """AJAX API: Return bookings for a specific date, grouped by peetha.
-    Superusers see all peethas; handlers and staff see only their assigned peetha.
+def dashboard_bookings_list(request):
+    """AJAX API: Return bookings filtered by optional date, optional pooja_id, and optional peetha.
+    Superusers/Admins can filter by peetha slug; Handlers/Staff are restricted to their assigned peetha.
     """
+    if not (request.user.is_superuser or request.user.is_staff or hasattr(request.user, 'handler_profile')):
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
     if not request.user.is_superuser:
         if not hasattr(request.user, 'handler_profile'):
             return JsonResponse({'error': 'Unauthorized'}, status=403)
-        # Force only their assigned peetha
         handler = request.user.handler_profile
         peethas_qs = Peetha.objects.filter(pk=handler.peetha.pk)
     else:
-        # Superuser: all peethas or filtered by slug
         peetha_slug = request.GET.get('peetha', '')
         if peetha_slug:
             peethas_qs = Peetha.objects.filter(slug=peetha_slug)
         else:
             peethas_qs = Peetha.objects.all().order_by('id')
 
-    date_str = request.GET.get('date', '')
+    is_staff_readonly = request.user.is_staff and not request.user.is_superuser
+    range_str = request.GET.get('date_range', '').strip().lower()
+    if is_staff_readonly:
+        range_str = 'today'
+    start_date = None
+    end_date = None
+    date_display_val = "All Dates"
+    today = datetime.date.today()
 
-    if not date_str:
-        date_str = datetime.date.today().isoformat()
+    if range_str == '3m':
+        start_date = today - datetime.timedelta(days=90)
+        end_date = today
+        date_display_val = "Previous 3 Months"
+    elif range_str == '6m':
+        start_date = today - datetime.timedelta(days=180)
+        end_date = today
+        date_display_val = "Previous 6 Months"
+    elif range_str == '9m':
+        start_date = today - datetime.timedelta(days=270)
+        end_date = today
+        date_display_val = "Previous 9 Months"
+    elif range_str == '12m':
+        start_date = today - datetime.timedelta(days=365)
+        end_date = today
+        date_display_val = "Previous 12 Months"
+    elif range_str == 'today':
+        start_date = today
+        end_date = today
+        date_display_val = today.strftime('%A, %d %B %Y')
+    elif range_str == 'monthly':
+        month_str = request.GET.get('month', '').strip()
+        if month_str:
+            try:
+                parts = month_str.split('-')
+                year = int(parts[0])
+                month = int(parts[1])
+                start_date = datetime.date(year, month, 1)
+                if month == 12:
+                    end_date = datetime.date(year + 1, 1, 1) - datetime.timedelta(days=1)
+                else:
+                    end_date = datetime.date(year, month + 1, 1) - datetime.timedelta(days=1)
+                date_display_val = start_date.strftime('%B %Y')
+            except Exception:
+                return JsonResponse({'error': 'Invalid month format. Use YYYY-MM.'}, status=400)
+        else:
+            start_date = datetime.date(today.year, today.month, 1)
+            if today.month == 12:
+                end_date = datetime.date(today.year + 1, 1, 1) - datetime.timedelta(days=1)
+            else:
+                end_date = datetime.date(today.year, today.month + 1, 1) - datetime.timedelta(days=1)
+            date_display_val = start_date.strftime('%B %Y')
+    elif range_str == 'between':
+        start_str = request.GET.get('start_date', '').strip()
+        end_str = request.GET.get('end_date', '').strip()
+        if start_str and end_str:
+            try:
+                start_date = datetime.date.fromisoformat(start_str)
+                end_date = datetime.date.fromisoformat(end_str)
+                date_display_val = f"{start_date.strftime('%d %b %Y')} to {end_date.strftime('%d %b %Y')}"
+            except ValueError:
+                return JsonResponse({'error': 'Invalid start/end date format. Use YYYY-MM-DD.'}, status=400)
+        else:
+            start_date = today - datetime.timedelta(days=30)
+            end_date = today
+            date_display_val = f"{start_date.strftime('%d %b %Y')} to {end_date.strftime('%d %b %Y')}"
+    elif range_str == 'all':
+        date_display_val = "All Dates"
+    else:
+        date_str = request.GET.get('date', '').strip()
+        if date_str:
+            try:
+                target_date = datetime.date.fromisoformat(date_str)
+                start_date = target_date
+                end_date = target_date
+                date_display_val = target_date.strftime('%A, %d %B %Y')
+            except ValueError:
+                return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD.'}, status=400)
+        else:
+            date_display_val = "All Dates"
 
-    try:
-        target_date = datetime.date.fromisoformat(date_str)
-    except ValueError:
-        return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD.'}, status=400)
+    target_date = start_date if (start_date and start_date == end_date) else None
+
+    pooja_id = request.GET.get('pooja_id', '').strip()
+    pooja_filter = None
+    if pooja_id:
+        try:
+            pooja_filter = Pooja.objects.get(pk=int(pooja_id))
+            if not request.user.is_superuser:
+                if pooja_filter.peetha != request.user.handler_profile.peetha:
+                    return JsonResponse({'error': 'Unauthorized'}, status=403)
+        except (ValueError, Pooja.DoesNotExist):
+            return JsonResponse({'error': 'Invalid Pooja ID.'}, status=400)
 
     result = {
-        'date': target_date.isoformat(),
-        'date_display': target_date.strftime('%A, %d %B %Y'),
+        'date': start_date.isoformat() if (start_date and start_date == end_date) else '',
+        'date_range': range_str,
+        'date_display': date_display_val,
         'peethas': [],
         'total_bookings': 0,
-        'total_revenue': 0,
+        'total_revenue': 0.0,
         'total_pending': 0,
     }
 
     for peetha in peethas_qs:
-        bookings = PoojaBooking.objects.filter(
-            pooja__peetha=peetha,
-            date_of_pooja=target_date
-        ).select_related('pooja', 'user').order_by('-created_at')
+        bookings = PoojaBooking.objects.filter(pooja__peetha=peetha).select_related('pooja', 'user').order_by('-created_at')
+
+        if start_date and end_date:
+            bookings = bookings.filter(date_of_pooja__gte=start_date, date_of_pooja__lte=end_date)
+        if pooja_filter:
+            bookings = bookings.filter(pooja=pooja_filter)
 
         success_bookings = bookings.filter(payment_status='success')
         pending_bookings = bookings.filter(payment_status='pending')
         failed_bookings = bookings.filter(payment_status='failed')
 
         peetha_revenue = success_bookings.aggregate(total=models.Sum('amount'))['total'] or 0
-        peetha_revenue = float(peetha_revenue)
+        peetha_revenue = 0.0 if is_staff_readonly else float(peetha_revenue)
 
         bookings_data = []
         for b in bookings:
@@ -1717,34 +1960,39 @@ def dashboard_date_bookings(request):
                 'devotee_email': b.devotee_email or '',
                 'pooja_name': b.pooja.name,
                 'pooja_category': b.pooja.get_category_display(),
+                'date_of_pooja': b.date_of_pooja.strftime('%Y-%m-%d'),
                 'gotra': b.gotra or '',
                 'nakshatra': b.nakshatra or '',
                 'rashi': b.rashi or '',
                 'family_members': b.formatted_family_members or '',
-                'amount': float(b.amount),
+                'amount': 0.0 if is_staff_readonly else float(b.amount),
                 'payment_status': b.payment_status,
                 'payment_status_display': b.get_payment_status_display(),
                 'created_at': b.created_at.strftime('%d %b %Y, %I:%M %p') if b.created_at else '',
                 'razorpay_payment_id': b.razorpay_payment_id or '',
+                'transaction_id': b.razorpay_payment_id or '',
             })
 
-        # Slot utilization per pooja
-        poojas = Pooja.objects.filter(peetha=peetha, is_active=True).order_by('order', 'name')
         slot_info = []
-        for pooja in poojas:
-            booked_count = PoojaBooking.objects.filter(
-                pooja=pooja,
-                date_of_pooja=target_date,
-                payment_status='success'
-            ).count()
-            slot_info.append({
-                'pooja_name': pooja.name,
-                'category': pooja.get_category_display(),
-                'total_slots': pooja.total_slots,
-                'booked_slots': booked_count,
-                'available_slots': max(0, pooja.total_slots - booked_count),
-                'utilization_pct': round((booked_count / pooja.total_slots) * 100, 1) if pooja.total_slots > 0 else 0,
-            })
+        if target_date:
+            poojas = Pooja.objects.filter(peetha=peetha, is_active=True).order_by('order', 'name')
+            if pooja_filter and pooja_filter.peetha == peetha:
+                poojas = poojas.filter(pk=pooja_filter.pk)
+
+            for pooja in poojas:
+                booked_count = PoojaBooking.objects.filter(
+                    pooja=pooja,
+                    date_of_pooja=target_date,
+                    payment_status='success'
+                ).count()
+                slot_info.append({
+                    'pooja_name': pooja.name,
+                    'category': pooja.get_category_display(),
+                    'total_slots': pooja.total_slots,
+                    'booked_slots': booked_count,
+                    'available_slots': max(0, pooja.total_slots - booked_count),
+                    'utilization_pct': round((booked_count / pooja.total_slots) * 100, 1) if pooja.total_slots > 0 else 0,
+                })
 
         peetha_data = {
             'name': peetha.name,
@@ -1766,59 +2014,6 @@ def dashboard_date_bookings(request):
     result['total_revenue'] = round(result['total_revenue'], 2)
 
     return JsonResponse(result)
-
-
-@login_required(login_url='peethas:login')
-def dashboard_seva_bookings(request):
-    """
-    AJAX API: Return all bookings for a specific Pooja/Seva.
-    Superusers can query any Pooja; Handlers and Staff can only query Poojas belonging to their assigned Peetha.
-    """
-    if not (request.user.is_superuser or request.user.is_staff or hasattr(request.user, 'handler_profile')):
-        return JsonResponse({'error': 'Unauthorized'}, status=403)
-
-    pooja_id = request.GET.get('pooja_id', '')
-    
-    if not pooja_id:
-        return JsonResponse({'error': 'Pooja ID is required.'}, status=400)
-        
-    pooja = get_object_or_404(Pooja, pk=pooja_id)
-    
-    # Permission check for handlers/staff
-    if not request.user.is_superuser:
-        try:
-            handler = request.user.handler_profile
-            if pooja.peetha != handler.peetha:
-                return JsonResponse({'error': 'Unauthorized'}, status=403)
-        except PeethaHandler.DoesNotExist:
-            return JsonResponse({'error': 'Unauthorized'}, status=403)
-            
-    bookings = PoojaBooking.objects.filter(pooja=pooja).select_related('user').order_by('-date_of_pooja', '-created_at')
-    
-    bookings_list = []
-    for b in bookings:
-        family_str = b.formatted_family_members or ''
-        bookings_list.append({
-            'id': b.id,
-            'devotee_name': b.devotee_name,
-            'devotee_phone': b.devotee_phone,
-            'devotee_email': b.devotee_email or '',
-            'date_of_pooja': b.date_of_pooja.strftime('%Y-%m-%d'),
-            'gotra': b.gotra or '',
-            'nakshatra': b.nakshatra or '',
-            'rashi': b.rashi or '',
-            'family_members': family_str,
-            'amount': float(b.amount),
-            'payment_status': b.payment_status,
-            'created_at': b.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-            'transaction_id': b.transaction_id or '',
-        })
-        
-    return JsonResponse({
-        'pooja_name': pooja.name,
-        'peetha_name': pooja.peetha.name,
-        'bookings': bookings_list
-    })
 
 
 @login_required(login_url='peethas:login')
@@ -1928,4 +2123,153 @@ def dashboard_search_devotees(request):
         'per_page': per_page,
         'query': query,
         'gender': gender_filter,
+    })
+
+
+# ===== ACCOMMODATION BOOKING VIEWS =====
+
+def _get_available_rooms(peetha, room_type, check_in_date, check_out_date):
+    rooms = Room.objects.filter(
+        building__peetha=peetha,
+        building__is_active=True,
+        is_active=True,
+        room_type=room_type
+    )
+    overlapping_booking_room_ids = AccommodationBooking.objects.filter(
+        peetha=peetha,
+        room_type=room_type,
+        payment_status__in=['pending', 'success'],
+        check_in_date__lt=check_out_date,
+        check_out_date__gt=check_in_date
+    ).exclude(room_id__isnull=True).values_list('room_id', flat=True)
+    
+    return rooms.exclude(id__in=overlapping_booking_room_ids)
+
+
+def accommodation_availability(request, peetha_slug):
+    peetha = get_object_or_404(Peetha, slug=peetha_slug)
+    check_in_str = request.GET.get('check_in')
+    check_out_str = request.GET.get('check_out')
+    
+    if not check_in_str or not check_out_str:
+        return JsonResponse({'error': 'Please select both check-in and check-out dates.'}, status=400)
+        
+    try:
+        check_in_date = datetime.datetime.strptime(check_in_str, '%Y-%m-%d').date()
+        check_out_date = datetime.datetime.strptime(check_out_str, '%Y-%m-%d').date()
+    except (ValueError, TypeError):
+        return JsonResponse({'error': 'Invalid date format.'}, status=400)
+        
+    if check_in_date >= check_out_date:
+        return JsonResponse({'error': 'Check-out date must be after check-in date.'}, status=400)
+        
+    if check_in_date < datetime.date.today():
+        return JsonResponse({'error': 'Dates cannot be in the past.'}, status=400)
+        
+    availability = {}
+    for rtype in ['AC', 'Ordinary']:
+        avail_rooms = _get_available_rooms(peetha, rtype, check_in_date, check_out_date)
+        count = avail_rooms.count()
+        first_room = Room.objects.filter(building__peetha=peetha, room_type=rtype, is_active=True).first()
+        if first_room:
+            price = first_room.price_per_night
+        else:
+            b = Building.objects.filter(peetha=peetha, is_active=True).first()
+            if b:
+                price = b.ac_room_price if rtype == 'AC' else b.ordinary_room_price
+            else:
+                price = 1000.00 if rtype == 'AC' else 500.00
+                
+        # Collect hot water info for this room type
+        buildings_with_rooms = Building.objects.filter(rooms__in=avail_rooms).distinct()
+        hot_water_available = any(b.has_hot_water for b in buildings_with_rooms)
+        
+        timings_list = [b.hot_water_timings for b in buildings_with_rooms if b.has_hot_water and b.hot_water_timings.strip()]
+        hot_water_timings = timings_list[0] if timings_list else ("Available" if hot_water_available else "Not Available")
+                
+        availability[rtype] = {
+            'available_count': count,
+            'price_per_night': float(price),
+            'hot_water_available': hot_water_available,
+            'hot_water_timings': hot_water_timings if hot_water_available else 'Not Available',
+        }
+        
+    return JsonResponse({'availability': availability})
+
+
+@login_required(login_url='peethas:login')
+def initiate_accommodation_booking(request, peetha_slug):
+    if request.user.is_authenticated:
+        if request.user.is_staff or request.user.is_superuser or hasattr(request.user, 'handler_profile'):
+            raise PermissionDenied("Booking is not allowed for administrators, staff, or handlers.")
+            
+    peetha = get_object_or_404(Peetha, slug=peetha_slug)
+    
+    if request.method == 'POST':
+        devotee_name = request.POST.get('devotee_name')
+        devotee_phone = request.POST.get('devotee_phone')
+        devotee_email = request.POST.get('devotee_email', '')
+        room_type = request.POST.get('room_type')
+        check_in_str = request.POST.get('check_in_date')
+        check_out_str = request.POST.get('check_out_date')
+        
+        if not all([devotee_name, devotee_phone, room_type, check_in_str, check_out_str]):
+            messages.error(request, "Please fill in all required fields.")
+            return redirect('peethas:peetha_detail', slug=peetha.slug)
+            
+        try:
+            check_in_date = datetime.datetime.strptime(check_in_str, '%Y-%m-%d').date()
+            check_out_date = datetime.datetime.strptime(check_out_str, '%Y-%m-%d').date()
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid date selection.")
+            return redirect('peethas:peetha_detail', slug=peetha.slug)
+            
+        if check_in_date >= check_out_date:
+            messages.error(request, "Check-out date must be after check-in date.")
+            return redirect('peethas:peetha_detail', slug=peetha.slug)
+            
+        if check_in_date < datetime.date.today():
+            messages.error(request, "Stays cannot be booked for past dates.")
+            return redirect('peethas:peetha_detail', slug=peetha.slug)
+            
+        available_rooms = _get_available_rooms(peetha, room_type, check_in_date, check_out_date)
+        if not available_rooms.exists():
+            messages.error(request, f"Sorry, no {room_type} rooms are available for the selected dates.")
+            return redirect('peethas:peetha_detail', slug=peetha.slug)
+            
+        assigned_room = available_rooms.first()
+        nights = (check_out_date - check_in_date).days
+        amount = assigned_room.price_per_night * nights
+        
+        booking = AccommodationBooking.objects.create(
+            user=request.user,
+            peetha=peetha,
+            room=assigned_room,
+            room_type=room_type,
+            devotee_name=devotee_name,
+            devotee_phone=devotee_phone,
+            devotee_email=devotee_email,
+            check_in_date=check_in_date,
+            check_out_date=check_out_date,
+            amount=amount,
+            razorpay_order_id=f"ORD-ROOM-{int(datetime.datetime.now().timestamp())}",
+            razorpay_payment_id=f"PAY-ROOM-{int(datetime.datetime.now().timestamp())}",
+            payment_status='success'
+        )
+        
+        return redirect('peethas:accommodation_booking_success', booking_id=booking.id)
+        
+    return redirect('peethas:peetha_detail', slug=peetha.slug)
+
+
+@login_required(login_url='peethas:login')
+def accommodation_booking_success(request, booking_id):
+    booking = get_object_or_404(AccommodationBooking, pk=booking_id)
+    if booking.user != request.user and not (request.user.is_superuser or request.user.is_staff or hasattr(request.user, 'handler_profile')):
+        raise PermissionDenied("You do not have permission to view this receipt.")
+        
+    peetha = booking.peetha
+    return render(request, 'peethas/accommodation_success.html', {
+        'booking': booking,
+        'peetha': peetha,
     })

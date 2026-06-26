@@ -48,11 +48,53 @@
                 {% endfor %}
             </div>
         {% else %}
-            <div style="background: white; border-radius: 12px; padding: 40px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <div style="background: white; border-radius: 12px; padding: 40px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px;">
                 <div style="font-size: 3rem; margin-bottom: 20px;">🪷</div>
-                <h3 style="margin-bottom: 15px;">No Bookings Found</h3>
+                <h3 style="margin-bottom: 15px;">No Pooja Bookings Found</h3>
                 <p style="color: #666; margin-bottom: 25px;">You haven't booked any poojas yet. Visit one of our Peethas to make a booking.</p>
                 <a href="{% url 'peethas:home' %}" class="btn" style="background-color: var(--primary); color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none;">Explore Peethas</a>
+            </div>
+        {% endif %}
+
+        <!-- Stay Bookings -->
+        <h2 style="color: var(--dark); font-family: 'Playfair Display', serif; margin-top: 50px; margin-bottom: 30px;">My Stay Bookings</h2>
+
+        {% if stay_bookings %}
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
+                {% for booking in stay_bookings %}
+                    <div style="background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid {{ booking.peetha.color }};">
+                        <h3 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 10px;">{{ booking.get_room_type_display }}</h3>
+                        <p style="color: #666; font-size: 0.95rem; margin-bottom: 15px;">{{ booking.peetha.name }}</p>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <p style="margin-bottom: 5px;"><strong>Check-in:</strong> {{ booking.check_in_date|date:"d M Y" }}</p>
+                            <p style="margin-bottom: 5px;"><strong>Check-out:</strong> {{ booking.check_out_date|date:"d M Y" }}</p>
+                            <p style="margin-bottom: 5px;"><strong>Room:</strong> Room {{ booking.room.room_number }} ({{ booking.room.building.name }})</p>
+                            {% if booking.room and booking.room.building.has_hot_water %}
+                            <p style="margin-bottom: 5px;"><strong>🚿 Hot Water:</strong> Available ({% if booking.room.building.hot_water_timings %}{{ booking.room.building.hot_water_timings }}{% else %}Yes{% endif %})</p>
+                            {% endif %}
+                            <p style="margin-bottom: 5px;"><strong>Amount Paid:</strong> ₹{{ booking.amount }}</p>
+                            <p style="margin-bottom: 5px;"><strong>Devotee:</strong> {{ booking.devotee_name }}</p>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 15px;">
+                            <span style="font-size: 0.9rem; font-weight: bold; color: #28a745;">
+                                {{ booking.get_payment_status_display }}
+                            </span>
+                            
+                            {% if booking.razorpay_payment_id %}
+                                <span style="font-size: 0.8rem; color: #888;">ID: {{ booking.razorpay_payment_id|truncatechars:15 }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div style="background: white; border-radius: 12px; padding: 40px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                <div style="font-size: 3rem; margin-bottom: 20px;">🏨</div>
+                <h3 style="margin-bottom: 15px;">No Stays Booked Yet</h3>
+                <p style="color: #666; margin-bottom: 25px;">You haven't reserved any guest room stays yet.</p>
+                <a href="{% url 'peethas:home' %}#peethas-section" class="btn" style="background-color: var(--primary); color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none;">Explore Peethas & Stays</a>
             </div>
         {% endif %}
     </div>

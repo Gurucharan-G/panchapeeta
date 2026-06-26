@@ -39,3 +39,25 @@ class PoojaBookingAdmin(admin.ModelAdmin):
             'fields': ('amount', 'payment_status', 'razorpay_order_id', 'razorpay_payment_id', 'razorpay_signature', 'created_at'),
         }),
     )
+
+
+from .models import Building, Room, AccommodationBooking
+
+@admin.register(Building)
+class BuildingAdmin(admin.ModelAdmin):
+    list_display = ('name', 'peetha', 'total_floors', 'rooms_per_floor', 'ac_floors_count', 'ac_room_price', 'ordinary_room_price', 'is_active')
+    list_filter = ('peetha', 'is_active')
+    search_fields = ('name',)
+
+@admin.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ('room_number', 'building', 'floor', 'room_type', 'price_per_night', 'is_active')
+    list_filter = ('building__peetha', 'building', 'room_type', 'is_active')
+    search_fields = ('room_number',)
+
+@admin.register(AccommodationBooking)
+class AccommodationBookingAdmin(admin.ModelAdmin):
+    list_display = ('devotee_name', 'peetha', 'room', 'room_type', 'check_in_date', 'check_out_date', 'amount', 'payment_status', 'created_at')
+    list_filter = ('payment_status', 'peetha', 'room_type', 'check_in_date', 'check_out_date')
+    search_fields = ('devotee_name', 'devotee_phone', 'devotee_email', 'razorpay_order_id')
+    readonly_fields = ('created_at',)

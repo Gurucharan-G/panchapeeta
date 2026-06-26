@@ -322,4 +322,366 @@
         }
     });
 </script>
+
+{% if is_birthday %}
+<!-- Birthday Wish Overlay & Modal -->
+<div id="birthdayModal" class="birthday-overlay" style="display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); backdrop-filter: blur(8px); z-index: 99999; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s ease; pointer-events: none;">
+    <!-- Hanging Lamps on overlay -->
+    <div class="hanging-lamp lamp-left">
+        <div class="lamp-chain"></div>
+        <div class="lamp-body">
+            <div class="lamp-flame">
+                <div class="lamp-flame-inner"></div>
+            </div>
+        </div>
+    </div>
+    <div class="hanging-lamp lamp-right">
+        <div class="lamp-chain"></div>
+        <div class="lamp-body">
+            <div class="lamp-flame">
+                <div class="lamp-flame-inner"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="birthday-container" style="background: linear-gradient(135deg, #fffcf0 0%, #fff 100%); border: 3px solid var(--gold); border-radius: var(--radius-lg); padding: 40px; text-align: center; max-width: 480px; width: 90%; box-shadow: 0 15px 45px rgba(184, 134, 11, 0.35); position: relative; transform: scale(0.85); transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        
+        <!-- Saffron/Gold Top Garland Accent -->
+        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 8px; background: linear-gradient(90deg, var(--saffron) 0%, var(--gold) 50%, var(--saffron) 100%); border-top-left-radius: var(--radius-lg); border-top-right-radius: var(--radius-lg);"></div>
+        
+        <!-- Sitting Diyas on the card corners -->
+        <div class="modal-diya diya-left">
+            <div class="diya-flame">
+                <div class="diya-flame-inner"></div>
+            </div>
+            <div class="diya-base"></div>
+        </div>
+        <div class="modal-diya diya-right">
+            <div class="diya-flame">
+                <div class="diya-flame-inner"></div>
+            </div>
+            <div class="diya-base"></div>
+        </div>
+
+        <!-- Close Button -->
+        <button onclick="closeBirthdayModal()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.8rem; color: #888; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#888'">&times;</button>
+        
+        <!-- Birthday Image Placeholder -->
+        <div class="birthday-image-container" style="margin-bottom: 25px; display: flex; justify-content: center; align-items: center;">
+            <img src="{% static 'images/birthday_wish.png' %}" alt="Birthday Blessing" style="width: 150px; height: 150px; object-fit: contain; display: block; border: 2px dashed var(--gold); border-radius: 8px; padding: 10px; background-color: #fff9e6;" onerror="this.style.display='none'; document.getElementById('birthday-fallback-placeholder').style.display='flex';">
+            <div id="birthday-fallback-placeholder" style="width: 150px; height: 150px; border: 2px dashed var(--gold); border-radius: 8px; display: none; align-items: center; justify-content: center; background-color: #fff9e6; color: var(--gold); font-family: 'Playfair Display', serif; font-weight: bold; font-size: 0.95rem;">
+                Blessing Image
+            </div>
+        </div>
+
+        <!-- Greeting Header -->
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--saffron); margin: 0 0 15px; font-weight: 700;">
+            {{ labels.birthday_title }}, {{ user.first_name|default:user.username }}!
+        </h2>
+        
+        <!-- Separator -->
+        <div style="display: flex; align-items: center; justify-content: center; margin: 15px auto 25px; width: 60%;">
+            <span style="height: 1px; background: var(--gold); flex-grow: 1;"></span>
+            <span style="color: var(--gold); margin: 0 10px; font-size: 0.8rem;">♦</span>
+            <span style="height: 1px; background: var(--gold); flex-grow: 1;"></span>
+        </div>
+
+        <!-- Greeting message -->
+        <p style="font-size: 1.1rem; color: #4a5568; line-height: 1.6; margin-bottom: 30px; font-weight: 500;">
+            {{ labels.birthday_message }}
+        </p>
+
+        <!-- Acknowledge Button -->
+        <button onclick="closeBirthdayModal()" class="btn-primary" style="background-color: var(--saffron); color: white; border: none; padding: 12px 35px; border-radius: var(--radius-md); font-weight: bold; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 127, 80, 0.4); transition: transform 0.2s, background-color 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            Close
+        </button>
+    </div>
+</div>
+
+<style>
+    @keyframes floatIcon {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    @keyframes rotateGlow {
+        0% { transform: rotate(0deg) scale(1); }
+        50% { transform: rotate(180deg) scale(1.1); }
+        100% { transform: rotate(360deg) scale(1); }
+    }
+    .birthday-overlay.open {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+    .birthday-overlay.open .birthday-container {
+        transform: scale(1) !important;
+    }
+    /* Balloon animations */
+    .birthday-balloon {
+        position: fixed;
+        bottom: -100px;
+        width: 45px;
+        height: 55px;
+        border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+        z-index: 100001; /* Moved to foreground (above modal's 99999 z-index) */
+        pointer-events: none;
+        animation: floatUp 8s ease-in forwards;
+    }
+    .birthday-balloon::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 20px;
+        width: 0;
+        height: 0;
+        border-left: 3px solid transparent;
+        border-right: 3px solid transparent;
+        border-top: 8px solid inherit;
+    }
+    .birthday-balloon-string {
+        position: absolute;
+        bottom: -28px;
+        left: 22px;
+        width: 2px;
+        height: 20px;
+        background-color: #cbd5e1;
+    }
+    @keyframes floatUp {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.85;
+        }
+        90% {
+            opacity: 0.85;
+        }
+        100% {
+            transform: translateY(-110vh) rotate(15deg);
+            opacity: 0;
+        }
+    }
+
+    /* Sitting Diya Styles */
+    .modal-diya {
+        position: absolute;
+        bottom: -15px;
+        width: 50px;
+        height: 35px;
+        z-index: 100002; /* Float slightly in front */
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    }
+    .diya-left {
+        left: -20px;
+    }
+    .diya-right {
+        right: -20px;
+    }
+    .diya-base {
+        width: 50px;
+        height: 25px;
+        background: linear-gradient(135deg, #d35400 0%, #e67e22 50%, #d35400 100%);
+        border: 2px solid #b8860b;
+        border-radius: 0 0 25px 25px;
+        position: relative;
+    }
+    .diya-base::after {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 8px;
+        height: 4px;
+        background: #3e2723;
+        border-radius: 50%;
+    }
+    .diya-flame {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14px;
+        height: 22px;
+        background: linear-gradient(to bottom, #ffea00 0%, #ff7f00 70%, #d35400 100%);
+        border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
+        animation: diyaFlicker 1.2s ease-in-out infinite alternate;
+        transform-origin: bottom center;
+        box-shadow: 0 0 15px rgba(255, 165, 0, 0.8), 0 0 30px rgba(255, 127, 80, 0.5);
+    }
+    .diya-flame-inner {
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 6px;
+        height: 10px;
+        background: linear-gradient(to bottom, #ffffff 0%, #ffea00 100%);
+        border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
+    }
+
+    @keyframes diyaFlicker {
+        0% {
+            transform: translateX(-50%) scale(0.9) rotate(-3deg);
+        }
+        100% {
+            transform: translateX(-50%) scale(1.1) rotate(3deg);
+        }
+    }
+
+    /* Hanging Lamp Styles */
+    .hanging-lamp {
+        position: absolute;
+        top: -380px; /* Start hidden above screen */
+        width: 60px;
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 100000;
+        transition: top 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        pointer-events: none;
+    }
+    .birthday-overlay.open .hanging-lamp.lamp-left {
+        top: 0;
+        left: 8%;
+    }
+    .birthday-overlay.open .hanging-lamp.lamp-right {
+        top: 0;
+        right: 8%;
+    }
+    .lamp-chain {
+        width: 2px;
+        height: 180px;
+        background: linear-gradient(to bottom, var(--gold) 70%, #d4af37 100%);
+        box-shadow: 0 0 3px rgba(184, 134, 11, 0.5);
+        position: relative;
+    }
+    .lamp-chain::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 6px;
+        height: 6px;
+        background: var(--saffron);
+        border-radius: 50%;
+    }
+    .lamp-body {
+        width: 40px;
+        height: 40px;
+        background: radial-gradient(circle at 50% 30%, #ffd700 0%, #b8860b 80%, #8b6508 100%);
+        border: 1px solid #ffd700;
+        border-radius: 50% 50% 15% 15%;
+        position: relative;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.5);
+    }
+    .lamp-body::after {
+        content: '';
+        position: absolute;
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 12px;
+        height: 12px;
+        background: #b8860b;
+        border-radius: 0 0 5px 5px;
+        clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+    }
+    .lamp-flame {
+        position: absolute;
+        top: -22px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 16px;
+        height: 26px;
+        background: linear-gradient(to bottom, #ffea00 0%, #ff8c00 60%, #ff4500 100%);
+        border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
+        animation: lampFlicker 1.4s ease-in-out infinite alternate;
+        transform-origin: bottom center;
+        box-shadow: 0 0 20px rgba(255, 165, 0, 0.9), 0 0 40px rgba(255, 69, 0, 0.6);
+    }
+    .lamp-flame-inner {
+        position: absolute;
+        bottom: 3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 8px;
+        height: 12px;
+        background: linear-gradient(to bottom, #ffffff 0%, #ffea00 100%);
+        border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
+    }
+    
+    @keyframes lampFlicker {
+        0% {
+            transform: translateX(-50%) scale(0.95) rotate(-2deg);
+            opacity: 0.9;
+        }
+        50% {
+            transform: translateX(-50%) scale(1.05) rotate(2deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(-50%) scale(1.0) rotate(-1deg);
+            opacity: 0.95;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hanging-lamp {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('birthdayModal');
+        if (modal) {
+            // Wait slightly before opening for smooth transition
+            setTimeout(() => {
+                modal.classList.add('open');
+                startBalloons();
+            }, 800);
+        }
+    });
+
+    function closeBirthdayModal() {
+        const modal = document.getElementById('birthdayModal');
+        if (modal) {
+            modal.classList.remove('open');
+            // Clean up balloons
+            document.querySelectorAll('.birthday-balloon').forEach(el => el.remove());
+        }
+    }
+
+    function startBalloons() {
+        const colors = ['#ff7f50', '#ffb703', '#d4af37', '#ff4d6d', '#3a86c8', '#8338ec', '#2a9d8f'];
+        const container = document.body;
+        
+        for (let i = 0; i < 25; i++) {
+            setTimeout(() => {
+                const balloon = document.createElement('div');
+                const string = document.createElement('div');
+                
+                balloon.className = 'birthday-balloon';
+                string.className = 'birthday-balloon-string';
+                
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.backgroundColor = randomColor;
+                balloon.style.left = Math.random() * 90 + 'vw';
+                balloon.style.animationDelay = Math.random() * 4 + 's';
+                
+                // Color the after pseudo-element triangle dynamically by style
+                balloon.setAttribute('style', `background-color: ${randomColor}; left: ${Math.random() * 90}vw; animation-delay: ${Math.random() * 5}s; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));`);
+                
+                balloon.appendChild(string);
+                container.appendChild(balloon);
+            }, i * 250);
+        }
+    }
+</script>
+{% endif %}
+
 {% endblock %}

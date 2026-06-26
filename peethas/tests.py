@@ -175,7 +175,8 @@ class PoojaBookingTestCase(TestCase):
                 'gender': 'female',
                 'gotra': 'Kashyapa',
                 'nakshatra': 'Aswini',
-                'rashi': 'Mesha'
+                'rashi': 'Mesha',
+                'date_of_birth': '1990-05-15'
             }
         )
         self.assertEqual(response.status_code, 302)
@@ -192,7 +193,8 @@ class PoojaBookingTestCase(TestCase):
         self.assertEqual(profile.gotra, 'Kashyapa')
         self.assertEqual(profile.nakshatra, 'Aswini')
         self.assertEqual(profile.rashi, 'Mesha')
-        self.assertEqual(profile.completion_percentage(), 88)
+        self.assertEqual(profile.date_of_birth, datetime.date(1990, 5, 15))
+        self.assertEqual(profile.completion_percentage(), 90)
 
     def test_pooja_booking_disabled_flag(self):
         # Create and disable kashi_pooja_booking
@@ -546,20 +548,7 @@ class PoojaBookingTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 403)
 
-    def test_dashboard_date_bookings_api(self):
-        # Create a superuser
-        admin_user = User.objects.create_superuser(username='dateadmin', password='password123', email='dateadmin@example.com')
-        admin_client = Client()
-        admin_client.login(username='dateadmin', password='password123')
-        
-        # Call the date bookings API
-        response = admin_client.get(reverse('peethas:dashboard_date_bookings'), {'date': '2026-06-25'})
-        self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual(data['date'], '2026-06-25')
-        self.assertIn('peethas', data)
-
-    def test_dashboard_seva_bookings_api(self):
+    def test_dashboard_bookings_list_api(self):
         # Create a second Peetha and Pooja
         other_peetha = Peetha.objects.create(
             name='Balehonnur Peetha',
@@ -593,23 +582,696 @@ class PoojaBookingTestCase(TestCase):
         devotee_client.login(username='report_devotee', password='password123')
 
         # 1. Devotee querying the API -> should return 403
-        response = devotee_client.get(reverse('peethas:dashboard_seva_bookings'), {'pooja_id': self.pooja.id})
+        response = devotee_client.get(reverse('peethas:dashboard_bookings_list'))
         self.assertEqual(response.status_code, 403)
 
-        # 2. Handler querying bookings for their own Pooja -> should return 200
-        response = handler_client.get(reverse('peethas:dashboard_seva_bookings'), {'pooja_id': self.pooja.id})
+        # 2. Handler querying bookings without specific filters -> should return 200 (for their peetha only)
+        response = handler_client.get(reverse('peethas:dashboard_bookings_list'))
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        self.assertEqual(data['pooja_name'], self.pooja.name)
-        self.assertIn('bookings', data)
+        self.assertEqual(len(data['peethas']), 1)
+        self.assertEqual(data['peethas'][0]['slug'], self.peetha.slug)
 
-        # 3. Handler querying bookings for another Peetha's Pooja -> should return 403
-        response = handler_client.get(reverse('peethas:dashboard_seva_bookings'), {'pooja_id': other_pooja.id})
+        # 3. Handler querying booking list with pooja_id of their own Pooja -> should return 200
+        response = handler_client.get(reverse('peethas:dashboard_bookings_list'), {'pooja_id': self.pooja.id})
+        self.assertEqual(response.status_code, 200)
+
+        # 4. Handler querying bookings for another Peetha's Pooja -> should return 403
+        response = handler_client.get(reverse('peethas:dashboard_bookings_list'), {'pooja_id': other_pooja.id})
         self.assertEqual(response.status_code, 403)
 
-        # 4. Super Admin querying any Pooja bookings -> should return 200
-        response = admin_client.get(reverse('peethas:dashboard_seva_bookings'), {'pooja_id': other_pooja.id})
+        # 5. Super Admin querying any Pooja bookings -> should return 200
+        response = admin_client.get(reverse('peethas:dashboard_bookings_list'), {'pooja_id': other_pooja.id})
         self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['date_display'], 'All Dates')
+
+        # 6. Super Admin querying with a specific date
+        response = admin_client.get(reverse('peethas:dashboard_bookings_list'), {'date': '2026-06-25'})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['date'], '2026-06-25')
+
+        # 7. Super Admin querying with date ranges (3m, 6m, 12m)
+        for r in ['3m', '6m', '9m', '12m', 'today', 'all']:
+            response = admin_client.get(reverse('peethas:dashboard_bookings_list'), {'date_range': r})
+            self.assertEqual(response.status_code, 200)
+            data = response.json()
+            self.assertIn('date_display', data)
+
+    def test_staff_date_and_revenue_restrictions(self):
+        # Create a booking for today
+        today = datetime.date.today()
+        booking_today = PoojaBooking.objects.create(
+            user=self.user,
+            pooja=self.pooja,
+            devotee_name="Today Devotee",
+            devotee_phone="9999999999",
+            date_of_pooja=today,
+            amount=500.00,
+            payment_status="success"
+        )
+        # Create a booking for 5 days ago
+        five_days_ago = today - datetime.timedelta(days=5)
+        booking_past = PoojaBooking.objects.create(
+            user=self.user,
+            pooja=self.pooja,
+            devotee_name="Past Devotee",
+            devotee_phone="8888888888",
+            date_of_pooja=five_days_ago,
+            amount=300.00,
+            payment_status="success"
+        )
+
+        # Create a Staff user assigned to self.peetha
+        staff_user = User.objects.create_user(username='today_staff', password='password123', is_staff=True)
+        PeethaHandler.objects.create(user=staff_user, peetha=self.peetha)
+        staff_client = Client()
+        staff_client.login(username='today_staff', password='password123')
+
+        # 1. Staff queries bookings list API requesting date_range '3m'
+        response = staff_client.get(reverse('peethas:dashboard_bookings_list'), {'date_range': '3m'})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        # Date range must be overridden to 'today'
+        self.assertEqual(data['date_range'], 'today')
+        self.assertEqual(data['date_display'], today.strftime('%A, %d %B %Y'))
+
+        # Revenue metrics must be strictly 0.0
+        self.assertEqual(data['total_revenue'], 0.0)
+        self.assertEqual(data['peethas'][0]['revenue'], 0.0)
+
+        # Individual booking amounts must be 0.0 for staff
+        bookings_returned = data['peethas'][0]['bookings']
+        # Since staff is restricted to today, only today's booking should be returned
+        self.assertEqual(len(bookings_returned), 1)
+        self.assertEqual(bookings_returned[0]['devotee_name'], "Today Devotee")
+        self.assertEqual(bookings_returned[0]['amount'], 0.0)
+
+        # 2. Peetha Handler queries bookings list API requesting date_range '3m'
+        handler_user = User.objects.create_user(username='date_handler', password='password123')
+        PeethaHandler.objects.create(user=handler_user, peetha=self.peetha)
+        handler_client = Client()
+        handler_client.login(username='date_handler', password='password123')
+
+        response = handler_client.get(reverse('peethas:dashboard_bookings_list'), {'date_range': '3m'})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+
+        # Date range and revenue must NOT be overridden or zeroed out
+        self.assertEqual(data['date_range'], '3m')
+        self.assertEqual(data['total_revenue'], 800.0)
+        self.assertEqual(data['peethas'][0]['revenue'], 800.0)
+
+        bookings_returned = data['peethas'][0]['bookings']
+        self.assertEqual(len(bookings_returned), 2)
+        # Amounts must be correct actual amounts for handler
+        for b in bookings_returned:
+            if b['devotee_name'] == "Today Devotee":
+                self.assertEqual(b['amount'], 500.0)
+            elif b['devotee_name'] == "Past Devotee":
+                self.assertEqual(b['amount'], 300.0)
+
+
+class DevoteeRegistrationTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        # Ensure DEVOTEE_REGISTRATION flag object is created (defaulting to is_enabled=True)
+        self.flag, _ = FeatureFlag.objects.get_or_create(
+            name='DEVOTEE_REGISTRATION',
+            defaults={'is_enabled': True, 'description': 'Allow devotee registration'}
+        )
+
+    def test_registration_enabled_by_default(self):
+        # When devotee registration is enabled, visiting register page should return 200
+        response = self.client.get(reverse('peethas:register'))
+        self.assertEqual(response.status_code, 200)
+
+        # A post request should successfully register a new user
+        response = self.client.post(
+            reverse('peethas:register'),
+            {
+                'username': 'newdevotee',
+                'first_name': 'New Devotee',
+                'email': 'newdevotee@example.com',
+                'password': 'password123'
+            }
+        )
+        self.assertEqual(response.status_code, 302) # redirects to home
+        self.assertTrue(User.objects.filter(username='newdevotee').exists())
+
+    def test_registration_disabled(self):
+        # Disable devotee registration flag
+        self.flag.is_enabled = False
+        self.flag.save()
+
+        # Visiting register page should redirect to login
+        response = self.client.get(reverse('peethas:register'))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('login', response.url)
+
+        # Attempting to post to register should also redirect and not create a user
+        response = self.client.post(
+            reverse('peethas:register'),
+            {
+                'username': 'blockeddevotee',
+                'first_name': 'Blocked Devotee',
+                'email': 'blocked@example.com',
+                'password': 'password123'
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(User.objects.filter(username='blockeddevotee').exists())
+
+
+class UserBirthdayWishTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='birthdayuser', password='password123')
+        self.client = Client()
+        self.client.login(username='birthdayuser', password='password123')
+        # Ensure profile exists
+        self.profile = self.user.profile
+
+    def test_no_birthday_wish_when_dob_not_set(self):
+        self.profile.date_of_birth = None
+        self.profile.save()
+
+        response = self.client.get(reverse('peethas:home'))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['is_birthday'])
+        self.assertNotContains(response, 'id="birthdayModal"')
+
+    def test_no_birthday_wish_on_different_day(self):
+        today = datetime.date.today()
+        # Set birthday to yesterday
+        different_day = today - datetime.timedelta(days=1)
+        self.profile.date_of_birth = different_day
+        self.profile.save()
+
+        response = self.client.get(reverse('peethas:home'))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['is_birthday'])
+        self.assertNotContains(response, 'id="birthdayModal"')
+
+    def test_birthday_wish_on_birthday(self):
+        today = datetime.date.today()
+        # Set birthday to today (year 1995)
+        birthday_today = datetime.date(1995, today.month, today.day)
+        self.profile.date_of_birth = birthday_today
+        self.profile.save()
+
+        response = self.client.get(reverse('peethas:home'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['is_birthday'])
+        self.assertContains(response, 'id="birthdayModal"')
+
+
+from peethas.models import Building, Room, AccommodationBooking
+
+class AccommodationBookingTestCase(TestCase):
+    def setUp(self):
+        # Create user
+        self.user = User.objects.create_user(username='devotee1', password='password123')
+        # Create Peetha
+        self.peetha = Peetha.objects.create(
+            name='Kedar Peetha',
+            slug='kedar',
+            acharya='Jagadguru Kedar',
+            simhasana='Himavat Simhasana',
+            location='Kedarnath',
+            color='#008080'
+        )
+        # Create a Building
+        # Ground floor = floor 0. We'll have 2 floors, 3 rooms per floor, 1 AC floor (Ground floor will be AC)
+        self.building = Building.objects.create(
+            peetha=self.peetha,
+            name='Yatri Niwas Kedar',
+            total_floors=2,
+            rooms_per_floor=3,
+            ac_floors_count=1,
+            ac_room_price=1200.00,
+            ordinary_room_price=600.00
+        )
+        
+    def test_room_autogenerated_successfully(self):
+        # Building should have generated 6 rooms (floor 0: G1, G2, G3; floor 1: 101, 102, 103)
+        self.assertEqual(Room.objects.filter(building=self.building).count(), 6)
+        
+        # Floor 0 rooms should be AC
+        ac_rooms = Room.objects.filter(building=self.building, room_type='AC')
+        self.assertEqual(ac_rooms.count(), 3)
+        self.assertTrue(all(r.room_number in ['G1', 'G2', 'G3'] for r in ac_rooms))
+        self.assertEqual(ac_rooms.first().price_per_night, 1200.00)
+        
+        # Floor 1 rooms should be Ordinary
+        ord_rooms = Room.objects.filter(building=self.building, room_type='Ordinary')
+        self.assertEqual(ord_rooms.count(), 3)
+        self.assertTrue(all(r.room_number in ['101', '102', '103'] for r in ord_rooms))
+        self.assertEqual(ord_rooms.first().price_per_night, 600.00)
+
+    def test_stay_availability_endpoint(self):
+        today = datetime.date.today()
+        tomorrow = today + datetime.timedelta(days=1)
+        
+        # Query availability before any bookings
+        url = reverse('peethas:accommodation_availability', kwargs={'peetha_slug': self.peetha.slug})
+        response = self.client.get(f"{url}?check_in={today}&check_out={tomorrow}")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()['availability']
+        
+        # Both types should have 3 rooms pending
+        self.assertEqual(data['AC']['available_count'], 3)
+        self.assertEqual(data['Ordinary']['available_count'], 3)
+        self.assertEqual(data['AC']['price_per_night'], 1200.00)
+        self.assertEqual(data['Ordinary']['price_per_night'], 600.00)
+
+    def test_overlapping_stay_booking_reduces_availability(self):
+        today = datetime.date.today()
+        tomorrow = today + datetime.timedelta(days=1)
+        day_after = today + datetime.timedelta(days=2)
+        
+        # Create an active booking for an AC room today to tomorrow
+        room = Room.objects.filter(building=self.building, room_type='AC').first()
+        AccommodationBooking.objects.create(
+            user=self.user,
+            peetha=self.peetha,
+            room=room,
+            room_type='AC',
+            devotee_name='Devotee A',
+            devotee_phone='9876543210',
+            check_in_date=today,
+            check_out_date=tomorrow,
+            amount=1200.00,
+            payment_status='success'
+        )
+        
+        # Query availability for today -> tomorrow
+        url = reverse('peethas:accommodation_availability', kwargs={'peetha_slug': self.peetha.slug})
+        response = self.client.get(f"{url}?check_in={today}&check_out={tomorrow}")
+        data = response.json()['availability']
+        
+        # AC available count should drop to 2, Ordinary still 3
+        self.assertEqual(data['AC']['available_count'], 2)
+        self.assertEqual(data['Ordinary']['available_count'], 3)
+        
+        # Query availability for tomorrow -> day_after
+        response_next_day = self.client.get(f"{url}?check_in={tomorrow}&check_out={day_after}")
+        data_next_day = response_next_day.json()['availability']
+        
+        # No overlap, so both should have 3
+        self.assertEqual(data_next_day['AC']['available_count'], 3)
+        self.assertEqual(data_next_day['Ordinary']['available_count'], 3)
+
+    def test_stay_booking_via_post_works_and_allocates_room(self):
+        today = datetime.date.today()
+        tomorrow = today + datetime.timedelta(days=1)
+        
+        self.client.login(username='devotee1', password='password123')
+        
+        # Post booking request
+        url = reverse('peethas:initiate_accommodation_booking', kwargs={'peetha_slug': self.peetha.slug})
+        post_data = {
+            'devotee_name': 'Test Devotee Stay',
+            'devotee_phone': '9999988888',
+            'devotee_email': 'test@devotee.com',
+            'room_type': 'Ordinary',
+            'check_in_date': today.strftime('%Y-%m-%d'),
+            'check_out_date': tomorrow.strftime('%Y-%m-%d')
+        }
+        response = self.client.post(url, post_data)
+        
+        # Should redirect to receipt success page
+        self.assertEqual(response.status_code, 302)
+        booking = AccommodationBooking.objects.get(devotee_name='Test Devotee Stay')
+        
+        # Check that room was allocated in the background and is Ordinary
+        self.assertIsNotNone(booking.room)
+        self.assertEqual(booking.room.room_type, 'Ordinary')
+        self.assertTrue(booking.room.room_number in ['101', '102', '103'])
+        self.assertEqual(booking.amount, 600.00)
+        self.assertEqual(booking.payment_status, 'success')
+
+    def test_custom_ac_room_numbers_generation(self):
+        # Create a building with explicit ac_room_numbers override
+        b_custom = Building.objects.create(
+            peetha=self.peetha,
+            name='Custom AC Building',
+            total_floors=2,
+            rooms_per_floor=3,
+            ac_floors_count=1, # normally Floor 0 is AC (G1, G2, G3)
+            ac_room_numbers='G1, 102', # custom list overrides floor count
+            ac_room_price=1500.00,
+            ordinary_room_price=700.00
+        )
+        
+        # Total rooms should still be 6
+        self.assertEqual(Room.objects.filter(building=b_custom).count(), 6)
+        
+        # Only G1 and 102 should be AC
+        ac_rooms = Room.objects.filter(building=b_custom, room_type='AC')
+        self.assertEqual(ac_rooms.count(), 2)
+        self.assertTrue(all(r.room_number in ['G1', '102'] for r in ac_rooms))
+        
+        # The other 4 rooms should be Ordinary
+        ord_rooms = Room.objects.filter(building=b_custom, room_type='Ordinary')
+        self.assertEqual(ord_rooms.count(), 4)
+        self.assertTrue(all(r.room_number in ['G2', 'G3', '101', '103'] for r in ord_rooms))
+
+    def test_hot_water_configs_returned_correctly(self):
+        # Update building with hot water settings
+        self.building.has_hot_water = True
+        self.building.hot_water_timings = '6:00 AM - 9:00 AM'
+        self.building.save()
+        
+        today = datetime.date.today()
+        tomorrow = today + datetime.timedelta(days=1)
+        
+        url = reverse('peethas:accommodation_availability', kwargs={'peetha_slug': self.peetha.slug})
+        response = self.client.get(f"{url}?check_in={today}&check_out={tomorrow}")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()['availability']
+        
+        # Both AC and Ordinary have rooms in self.building, so both should have hot water info
+        self.assertTrue(data['AC']['hot_water_available'])
+        self.assertEqual(data['AC']['hot_water_timings'], '6:00 AM - 9:00 AM')
+        self.assertTrue(data['Ordinary']['hot_water_available'])
+        self.assertEqual(data['Ordinary']['hot_water_timings'], '6:00 AM - 9:00 AM')
+
+
+class BuildingCrudTestCase(TestCase):
+    def setUp(self):
+        # Create Peetha
+        self.peetha = Peetha.objects.create(
+            name='Kedar Peetha',
+            slug='kedar',
+            acharya='Jagadguru Kedar',
+            simhasana='Himavat Simhasana',
+            location='Kedarnath',
+            color='#008080'
+        )
+        # Create Superuser (Admin)
+        self.admin_user = User.objects.create_superuser(username='admin', password='password123', email='admin@example.com')
+        # Create Handler user
+        self.handler_user = User.objects.create_user(username='handler', password='password123')
+        PeethaHandler.objects.create(user=self.handler_user, peetha=self.peetha)
+        # Create Staff user (is_staff=True, linked to Peetha, should be able to edit building info)
+        self.staff_user = User.objects.create_user(username='staff_handler', password='password123', is_staff=True)
+        PeethaHandler.objects.create(user=self.staff_user, peetha=self.peetha)
+        # Create Devotee user (not authorized to manage buildings)
+        self.devotee = User.objects.create_user(username='devotee', password='password123')
+        
+        self.client = Client()
+
+    def test_building_add_unauthorized(self):
+        # Devotee tries to add building -> should fail with 403
+        self.client.login(username='devotee', password='password123')
+        url = reverse('peethas:building_add', kwargs={'slug': self.peetha.slug})
+        response = self.client.post(url, {
+            'name': 'Unauthorized Building',
+            'total_floors': 2,
+            'rooms_per_floor': 3,
+            'ac_floors_count': 1,
+            'ac_room_price': 1000,
+            'ordinary_room_price': 500,
+            'is_active': True
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(Building.objects.count(), 0)
+
+    def test_building_add_authorized(self):
+        self.client.login(username='handler', password='password123')
+        url = reverse('peethas:building_add', kwargs={'slug': self.peetha.slug})
+        response = self.client.post(url, {
+            'name': 'Handler Building',
+            'total_floors': 3,
+            'rooms_per_floor': 2,
+            'ac_floors_count': 1,
+            'ac_room_price': 1200.00,
+            'ordinary_room_price': 600.00,
+            'is_active': True
+        })
+        self.assertEqual(response.status_code, 302) # redirects to dashboard
+        
+        # Verify building created
+        building = Building.objects.get(name='Handler Building')
+        self.assertEqual(building.peetha, self.peetha)
+        
+        # Verify rooms generated (3 floors * 2 rooms = 6 rooms)
+        self.assertEqual(Room.objects.filter(building=building).count(), 6)
+        # Floor 0: G1, G2 (AC)
+        # Floor 1: 101, 102 (Ordinary)
+        # Floor 2: 201, 202 (Ordinary)
+        ac_rooms = Room.objects.filter(building=building, room_type='AC')
+        self.assertEqual(ac_rooms.count(), 2)
+        self.assertTrue(all(r.room_number in ['G1', 'G2'] for r in ac_rooms))
+        self.assertEqual(ac_rooms.first().price_per_night, 1200.00)
+
+    def test_building_edit_updates_rooms(self):
+        # Create a building first
+        building = Building.objects.create(
+            peetha=self.peetha,
+            name='Test Building',
+            total_floors=2,
+            rooms_per_floor=3,
+            ac_floors_count=1,
+            ac_room_price=1000.00,
+            ordinary_room_price=500.00
+        )
+        self.assertEqual(Room.objects.filter(building=building).count(), 6)
+        
+        self.client.login(username='handler', password='password123')
+        url = reverse('peethas:building_edit', kwargs={'slug': self.peetha.slug, 'pk': building.pk})
+        
+        # Edit: update prices, increase rooms_per_floor to 4, increase AC floors to 2
+        response = self.client.post(url, {
+            'name': 'Updated Test Building',
+            'description': 'New desc',
+            'total_floors': 2,
+            'rooms_per_floor': 4,
+            'ac_floors_count': 2,
+            'ac_room_price': 1500.00,
+            'ordinary_room_price': 800.00,
+            'is_active': True
+        })
+        self.assertEqual(response.status_code, 302)
+        
+        building.refresh_from_db()
+        self.assertEqual(building.name, 'Updated Test Building')
+        self.assertEqual(building.rooms_per_floor, 4)
+        
+        # Verify rooms count (2 floors * 4 rooms = 8 rooms)
+        self.assertEqual(Room.objects.filter(building=building).count(), 8)
+        # All floors are AC now since ac_floors_count = 2 (floors 0 and 1)
+        ac_rooms = Room.objects.filter(building=building, room_type='AC')
+        self.assertEqual(ac_rooms.count(), 8)
+        self.assertEqual(ac_rooms.first().price_per_night, 1500.00)
+
+    def test_building_edit_layout_pruning_with_bookings(self):
+        # Create building
+        building = Building.objects.create(
+            peetha=self.peetha,
+            name='Pruning Building',
+            total_floors=2,
+            rooms_per_floor=3,
+            ac_floors_count=1,
+            ac_room_price=1000.00,
+            ordinary_room_price=500.00
+        )
+        
+        # Create booking for Room 101 (floor 1, ordinary)
+        room_101 = Room.objects.get(building=building, room_number='101')
+        AccommodationBooking.objects.create(
+            user=self.devotee,
+            peetha=self.peetha,
+            room=room_101,
+            room_type='Ordinary',
+            devotee_name='Devotee B',
+            devotee_phone='1234567890',
+            check_in_date=datetime.date.today(),
+            check_out_date=datetime.date.today() + datetime.timedelta(days=1),
+            amount=500.00,
+            payment_status='success'
+        )
+        
+        self.client.login(username='handler', password='password123')
+        url = reverse('peethas:building_edit', kwargs={'slug': self.peetha.slug, 'pk': building.pk})
+        
+        # Try to decrease total_floors to 1. This would prune floor 1, including Room 101.
+        # It should fail because Room 101 has a booking and room delete is PROTECTed.
+        response = self.client.post(url, {
+            'name': 'Pruning Building',
+            'total_floors': 1,
+            'rooms_per_floor': 3,
+            'ac_floors_count': 1,
+            'ac_room_price': 1000.00,
+            'ordinary_room_price': 500.00,
+            'is_active': True
+        })
+        # It should re-render the edit form with an error (200) rather than redirecting (302)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Cannot update building layout")
+        
+        # Verify building total floors remains 2
+        building.refresh_from_db()
+        self.assertEqual(building.total_floors, 2)
+
+    def test_building_delete(self):
+        building = Building.objects.create(
+            peetha=self.peetha,
+            name='Delete Building',
+            total_floors=2,
+            rooms_per_floor=3,
+            ac_floors_count=1,
+            ac_room_price=1000.00,
+            ordinary_room_price=500.00
+        )
+        self.assertEqual(Room.objects.filter(building=building).count(), 6)
+        
+        self.client.login(username='handler', password='password123')
+        url = reverse('peethas:building_delete', kwargs={'slug': self.peetha.slug, 'pk': building.pk})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        
+        self.assertEqual(Building.objects.filter(pk=building.pk).count(), 0)
+        self.assertEqual(Room.objects.filter(building=building).count(), 0)
+
+    def test_building_delete_protected_with_booking(self):
+        building = Building.objects.create(
+            peetha=self.peetha,
+            name='Delete Protected Building',
+            total_floors=2,
+            rooms_per_floor=3,
+            ac_floors_count=1,
+            ac_room_price=1000.00,
+            ordinary_room_price=500.00
+        )
+        
+        # Create booking for Room G1 (floor 0, AC)
+        room_g1 = Room.objects.get(building=building, room_number='G1')
+        AccommodationBooking.objects.create(
+            user=self.devotee,
+            peetha=self.peetha,
+            room=room_g1,
+            room_type='AC',
+            devotee_name='Devotee C',
+            devotee_phone='1234567890',
+            check_in_date=datetime.date.today(),
+            check_out_date=datetime.date.today() + datetime.timedelta(days=1),
+            amount=1000.00,
+            payment_status='success'
+        )
+        
+        self.client.login(username='handler', password='password123')
+        url = reverse('peethas:building_delete', kwargs={'slug': self.peetha.slug, 'pk': building.pk})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        
+        # Verify building and rooms NOT deleted
+        self.assertEqual(Building.objects.filter(pk=building.pk).count(), 1)
+        self.assertEqual(Room.objects.filter(building=building).count(), 6)
+
+    def test_building_add_staff_authorized(self):
+        # Staff user should be authorized to add building
+        self.client.login(username='staff_handler', password='password123')
+        url = reverse('peethas:building_add', kwargs={'slug': self.peetha.slug})
+        response = self.client.post(url, {
+            'name': 'Staff Building',
+            'total_floors': 2,
+            'rooms_per_floor': 3,
+            'ac_floors_count': 1,
+            'ac_room_price': 1100.00,
+            'ordinary_room_price': 550.00,
+            'is_active': True
+        })
+        self.assertEqual(response.status_code, 302) # redirects to dashboard
+        building = Building.objects.get(name='Staff Building')
+        self.assertEqual(building.peetha, self.peetha)
+        self.assertEqual(Room.objects.filter(building=building).count(), 6)
+
+    def test_building_edit_staff_authorized(self):
+        building = Building.objects.create(
+            peetha=self.peetha,
+            name='Test Building to Edit',
+            total_floors=2,
+            rooms_per_floor=3,
+            ac_floors_count=1,
+            ac_room_price=1000.00,
+            ordinary_room_price=500.00
+        )
+        self.client.login(username='staff_handler', password='password123')
+        url = reverse('peethas:building_edit', kwargs={'slug': self.peetha.slug, 'pk': building.pk})
+        response = self.client.post(url, {
+            'name': 'Edited By Staff',
+            'description': 'Staff edited desc',
+            'total_floors': 2,
+            'rooms_per_floor': 3,
+            'ac_floors_count': 1,
+            'ac_room_price': 1100.00,
+            'ordinary_room_price': 550.00,
+            'is_active': True
+        })
+        self.assertEqual(response.status_code, 302)
+        building.refresh_from_db()
+        self.assertEqual(building.name, 'Edited By Staff')
+
+    def test_building_delete_staff_authorized(self):
+        building = Building.objects.create(
+            peetha=self.peetha,
+            name='Test Building to Delete',
+            total_floors=2,
+            rooms_per_floor=3,
+            ac_floors_count=1,
+            ac_room_price=1000.00,
+            ordinary_room_price=500.00
+        )
+        self.client.login(username='staff_handler', password='password123')
+        url = reverse('peethas:building_delete', kwargs={'slug': self.peetha.slug, 'pk': building.pk})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Building.objects.filter(pk=building.pk).count(), 0)
+
+    def test_building_actions_admin_superuser_authorized(self):
+        # Admin (superuser) should be authorized for add
+        self.client.login(username='admin', password='password123')
+        url_add = reverse('peethas:building_add', kwargs={'slug': self.peetha.slug})
+        response_add = self.client.post(url_add, {
+            'name': 'Admin Building',
+            'total_floors': 2,
+            'rooms_per_floor': 3,
+            'ac_floors_count': 1,
+            'ac_room_price': 1000.00,
+            'ordinary_room_price': 500.00,
+            'is_active': True
+        })
+        self.assertEqual(response_add.status_code, 302)
+        building = Building.objects.get(name='Admin Building')
+        
+        # Admin (superuser) should be authorized for edit
+        url_edit = reverse('peethas:building_edit', kwargs={'slug': self.peetha.slug, 'pk': building.pk})
+        response_edit = self.client.post(url_edit, {
+            'name': 'Admin Building Edited',
+            'description': 'Edited desc',
+            'total_floors': 2,
+            'rooms_per_floor': 3,
+            'ac_floors_count': 1,
+            'ac_room_price': 1000.00,
+            'ordinary_room_price': 500.00,
+            'is_active': True
+        })
+        self.assertEqual(response_edit.status_code, 302)
+        building.refresh_from_db()
+        self.assertEqual(building.name, 'Admin Building Edited')
+
+        # Admin (superuser) should be authorized for delete
+        url_delete = reverse('peethas:building_delete', kwargs={'slug': self.peetha.slug, 'pk': building.pk})
+        response_delete = self.client.post(url_delete)
+        self.assertEqual(response_delete.status_code, 302)
+        self.assertEqual(Building.objects.filter(pk=building.pk).count(), 0)
+
+
+
+
 
 
 
