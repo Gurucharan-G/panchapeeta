@@ -592,7 +592,7 @@
             </div>
         </button>
         <span class="player-label">Chanting</span>
-        <audio id="chanting-audio" loop preload="none">
+        <audio id="chanting-audio" loop preload="metadata">
             <source src="https://archive.org/download/OMNAMAHSHIVAYAMantraTrance/OM%20NAMAH%20SHIVAYA%20Mantra%20Trance%20with%20Shamanic%20Drums.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
@@ -605,16 +605,26 @@
             const playIcon = player.querySelector('.play-icon');
             const pauseIcon = player.querySelector('.pause-icon');
             const waves = player.querySelector('.sound-waves');
+            const label = player.querySelector('.player-label');
             
             if (audio.paused) {
+                label.textContent = "Loading...";
+                
                 audio.play().then(() => {
                     player.classList.add('playing');
                     playIcon.style.display = 'none';
                     pauseIcon.style.display = 'block';
                     waves.style.display = 'flex';
+                    label.textContent = "Chanting";
                 }).catch(err => {
-                    console.error("Audio playback blocked by browser autocomplete/interaction rules:", err);
-                    alert("Click anywhere on the webpage first, then click the play button to start the chant.");
+                    console.error("Audio playback error:", err);
+                    label.textContent = "Chanting";
+                    if (err.name === 'NotAllowedError') {
+                        alert("Please click anywhere on the webpage first, then click the play button to start the chant.");
+                    } else {
+                        // For AbortError or loading lag, simply log it and let it retry/buffer
+                        console.log("Audio stream buffering or load was aborted. Retrying...");
+                    }
                 });
             } else {
                 audio.pause();
@@ -622,6 +632,7 @@
                 playIcon.style.display = 'block';
                 pauseIcon.style.display = 'none';
                 waves.style.display = 'none';
+                label.textContent = "Chanting";
             }
         }
     </script>
