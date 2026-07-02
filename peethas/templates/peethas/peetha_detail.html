@@ -536,9 +536,14 @@
         font-size: 0.85rem;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
         border: 2px solid transparent;
         user-select: none;
+    }
+    .calendar-day:hover:not(.status-booked):not(.status-not-open):not(.empty) {
+        transform: scale(1.12);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        z-index: 1;
     }
     .calendar-day.empty {
         cursor: default;
@@ -574,8 +579,9 @@
     /* Selected state */
     .calendar-day.selected {
         border-color: var(--peetha-color, #0f172a) !important;
-        box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.15);
-        transform: scale(1.05);
+        box-shadow: 0 0 10px 2px color-mix(in srgb, var(--peetha-color, #0f172a) 40%, transparent) !important;
+        transform: scale(1.1);
+        font-weight: 700;
     }
     
     /* Legend */

@@ -32,6 +32,21 @@
     --gold-glow: rgba(184, 134, 11, 0.15);
     --saffron: #e67e22;
     --maroon: #6b2020;
+
+    /* Glassmorphism Variables */
+    --glass-bg: rgba(255, 255, 255, 0.55);
+    --glass-border: rgba(184, 134, 11, 0.15);
+    --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+    
+    /* Easing Tokens */
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    /* Theme Gradients */
+    --gradient-rambhapuri: linear-gradient(135deg, #1b5e20, #4caf50);
+    --gradient-ujjaini: linear-gradient(135deg, #b71c1c, #f44336);
+    --gradient-kedara: linear-gradient(135deg, #0d47a1, #2196f3);
+    --gradient-srisaila: linear-gradient(135deg, #e6c280, #ffffff);
+    --gradient-kashi: linear-gradient(135deg, #e65100, #ffb74d);
 }
 
 html {
@@ -152,6 +167,12 @@ img {
     border: 2px solid var(--text-muted);
     border-radius: 10px;
     position: relative;
+    animation: bounceMouse 2s ease-in-out infinite;
+}
+
+@keyframes bounceMouse {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
 }
 
 .scroll-wheel {
@@ -288,21 +309,32 @@ img {
     transform: translateY(-40%);
 }
 
-/* Custom reveal state for murals */
+/* Custom reveal state for murals with floating animations */
 .hero-mural.revealed {
     opacity: 0.9;
 }
 
 .mural-left.revealed {
-    transform: translateY(-50%);
+    animation: floatLeftMural 7s ease-in-out infinite;
 }
 
 .mural-right.revealed {
-    transform: translateY(-50%);
+    animation: floatRightMural 8s ease-in-out infinite;
+}
+
+@keyframes floatLeftMural {
+    0%, 100% { transform: translateY(-50%); }
+    50% { transform: translateY(-45%); }
+}
+
+@keyframes floatRightMural {
+    0%, 100% { transform: translateY(-50%); }
+    50% { transform: translateY(-55%); }
 }
 
 /* Hover effects */
 .hero-mural:hover {
+    animation-play-state: paused;
     border-color: rgba(184, 134, 11, 0.8);
     box-shadow: 
         0 20px 45px rgba(184, 134, 11, 0.2),
@@ -311,11 +343,11 @@ img {
 }
 
 .mural-left:hover {
-    transform: translateY(-53%);
+    transform: translateY(-53%) scale(1.02);
 }
 
 .mural-right:hover {
-    transform: translateY(-53%);
+    transform: translateY(-53%) scale(1.02);
 }
 
 .hero-mural img {
@@ -402,20 +434,22 @@ img {
     border-radius: var(--radius-lg);
     overflow: visible;
     box-shadow: var(--shadow-card);
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.5s var(--ease-spring),
+                box-shadow 0.5s var(--ease-spring),
+                background 0.4s ease,
+                border-color 0.4s ease;
     position: relative;
     padding-top: 90px; /* space for protruding portrait */
     margin-top: 75px; /* offset for protruding portrait */
 }
 
 .peetha-card:hover {
-    transform: translateY(-12px);
+    transform: translateY(-16px) scale(1.03) rotate(0.8deg);
     background: color-mix(in srgb, var(--peetha-color) 14%, #ffffff);
     border-color: color-mix(in srgb, var(--peetha-color) 40%, #ffffff);
     box-shadow:
-        0 24px 48px rgba(0, 0, 0, 0.08),
-        0 0 30px color-mix(in srgb, var(--peetha-color) 35%, transparent);
+        0 30px 60px rgba(0, 0, 0, 0.08),
+        0 0 40px color-mix(in srgb, var(--peetha-color) 45%, transparent);
 }
 
 /* --- White Card Overrides (Srisaila) --- */
@@ -472,10 +506,17 @@ img {
 }
 
 .peetha-card:hover .card-portrait {
-    transform: scale(1.04);
+    transform: scale(1.06);
     box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.14),
-        0 0 0 3px color-mix(in srgb, var(--peetha-color) 50%, transparent);
+        0 8px 24px rgba(0, 0, 0, 0.16),
+        0 0 0 4px color-mix(in srgb, var(--peetha-color) 70%, transparent),
+        0 0 20px 4px var(--gold-light);
+    animation: pulseGoldRing 2s ease-in-out infinite;
+}
+
+@keyframes pulseGoldRing {
+    0%, 100% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16), 0 0 0 4px color-mix(in srgb, var(--peetha-color) 70%, transparent), 0 0 16px 2px var(--gold-light); }
+    50% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16), 0 0 0 4px color-mix(in srgb, var(--peetha-color) 70%, transparent), 0 0 30px 6px var(--gold); }
 }
 
 .card-portrait:hover {
@@ -523,6 +564,32 @@ img {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shimmer Reflection Sweep */
+.card-body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    transform: skewX(-20deg);
+    transition: none;
+    pointer-events: none;
+}
+
+.peetha-card:hover .card-body::after {
+    left: 150%;
+    transition: left 0.8s ease-in-out;
 }
 
 .card-body h3 {
@@ -1209,22 +1276,22 @@ img {
     width: auto;
     min-width: 480px;
     max-width: 92%;
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(184, 134, 11, 0.22);
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(210%);
+    -webkit-backdrop-filter: blur(24px) saturate(210%);
+    border: 1.5px solid var(--glass-border);
     border-radius: 40px;
     box-shadow: 
-        0 10px 30px rgba(184, 134, 11, 0.06),
+        var(--glass-shadow),
         0 1px 0 rgba(255, 255, 255, 0.4) inset;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s var(--ease-spring);
 }
 
 .site-header.scrolled {
     top: 10px;
     background: rgba(255, 255, 255, 0.88);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-    border-color: rgba(184, 134, 11, 0.3);
+    box-shadow: 0 12px 40px rgba(184, 134, 11, 0.12);
+    border-color: rgba(184, 134, 11, 0.35);
 }
 
 .header-container {
@@ -1254,18 +1321,40 @@ img {
     color: var(--text-light);
     padding: 8px 16px;
     border-radius: 20px;
-    transition: all 0.25s ease;
     white-space: nowrap;
+    position: relative;
+    background: transparent !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 1px;
+    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), left 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .nav-link:hover {
     color: var(--gold);
-    background: rgba(184, 134, 11, 0.06);
+}
+
+.nav-link:hover::after {
+    width: 60%;
+    left: 20%;
 }
 
 .nav-link.active {
     color: var(--gold);
-    background: rgba(184, 134, 11, 0.12);
+}
+
+.nav-link.active::after {
+    width: 60%;
+    left: 20%;
 }
 
 /* Custom button overrides removed to inherit standard .nav-link styling */
@@ -1902,7 +1991,7 @@ img {
     bottom: 0;
     left: 4px;
     width: 2px;
-    background: var(--border);
+    background: linear-gradient(to bottom, var(--gold-light), var(--border));
 }
 
 .timeline-event-card {
@@ -1914,6 +2003,12 @@ img {
     gap: 20px;
     position: relative;
     box-shadow: var(--shadow);
+    transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+}
+
+.timeline-event-card:hover {
+    transform: translateX(6px);
+    box-shadow: 0 10px 25px rgba(184, 134, 11, 0.05);
 }
 
 .timeline-event-card::before {
@@ -1927,6 +2022,13 @@ img {
     border-radius: 50%;
     transform: translateX(-50%);
     box-shadow: 0 0 0 4px #ffffff;
+    transition: transform 0.3s var(--ease-spring), background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.timeline-event-card:hover::before {
+    background: var(--gold);
+    box-shadow: 0 0 0 4px #ffffff, 0 0 12px 3px var(--gold-light);
+    transform: translateX(-50%) scale(1.4);
 }
 
 .event-date {
