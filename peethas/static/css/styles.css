@@ -3732,37 +3732,37 @@ img.progressive-loaded {
 /* ===== Visual Theme Background Options for Testing ===== */
 
 /* 1. default/Warm Gold Theme */
-body.theme-warm-gold {
+body.theme-warm-gold, html.theme-warm-gold body {
     background: linear-gradient(135deg, #fffdfb 0%, #faf5eb 50%, #f6edd6 100%) !important;
 }
-body.theme-warm-gold .hero {
+body.theme-warm-gold .hero, html.theme-warm-gold .hero {
     background: linear-gradient(-45deg, #fffdfb, #faf5eb, #fffdfb, #f6edd6) !important;
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
 }
 
 /* 2. Ganges Mist Theme */
-body.theme-ganges-mist {
+body.theme-ganges-mist, html.theme-ganges-mist body {
     background: linear-gradient(165deg, #f3f6f7 0%, #fbfaf8 60%, #faf1df 100%) !important;
 }
-body.theme-ganges-mist .hero {
+body.theme-ganges-mist .hero, html.theme-ganges-mist .hero {
     background: linear-gradient(-45deg, #f3f6f7, #fbfaf8, #f3f6f7, #faf1df) !important;
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
 }
 
 /* 3. Ivory Marble Theme */
-body.theme-ivory-marble {
+body.theme-ivory-marble, html.theme-ivory-marble body {
     background: linear-gradient(180deg, #ffffff 0%, #fdfbf7 70%, #fcf7eb 100%) !important;
 }
-body.theme-ivory-marble .hero {
+body.theme-ivory-marble .hero, html.theme-ivory-marble .hero {
     background: linear-gradient(-45deg, #ffffff, #fdfbf7, #ffffff, #fcf7eb) !important;
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
 }
 
 /* 4. Dusk Saffron Theme (Dark Mode hint) */
-body.theme-dusk-saffron {
+body.theme-dusk-saffron, html.theme-dusk-saffron body {
     background: radial-gradient(circle at 50% 30%, #201615 0%, #150f0e 100%) !important;
     color: #f5ebe0 !important;
 }
