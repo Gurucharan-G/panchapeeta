@@ -591,80 +591,38 @@
                 <span class="wave-bar"></span>
             </div>
         </button>
-        <span class="player-label">Chanting</span>
-        <!-- Hidden container for YouTube Iframe Player -->
-        <div id="youtube-audio-player" style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none;"></div>
+        <span class="player-label">Om Chant</span>
+        <audio id="chanting-audio" loop preload="auto">
+            <source src="{% static 'audio/om_chant.wav' %}" type="audio/wav">
+        </audio>
     </div>
 
-    <!-- YouTube Iframe API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        var ytPlayer;
-        
-        // This function is automatically called when the YouTube Iframe API finishes loading
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('youtube-audio-player', {
-                height: '1',
-                width: '1',
-                videoId: '525j11f185c', // Om Namah Shivaya 108 Times by Rajshri Soul
-                playerVars: {
-                    'playsinline': 1,
-                    'loop': 1,
-                    'playlist': '525j11f185c',
-                    'controls': 0,
-                    'disablekb': 1,
-                    'fs': 0,
-                    'modestbranding': 1,
-                    'rel': 0,
-                    'showinfo': 0
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            console.log("Devotional Audio Player Loaded");
-        }
-
-        function onPlayerStateChange(event) {
+        function togglePlayState() {
+            const audio = document.getElementById('chanting-audio');
             const player = document.getElementById('devotional-player');
             const playIcon = player.querySelector('.play-icon');
             const pauseIcon = player.querySelector('.pause-icon');
             const waves = player.querySelector('.sound-waves');
             const label = player.querySelector('.player-label');
 
-            if (event.data === YT.PlayerState.PLAYING) {
-                player.classList.add('playing');
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-                waves.style.display = 'flex';
-                label.textContent = "Chanting";
+            if (audio.paused) {
+                audio.play().then(() => {
+                    player.classList.add('playing');
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                    waves.style.display = 'flex';
+                    label.textContent = "Om Chant";
+                }).catch(err => {
+                    console.error('Audio error:', err);
+                });
             } else {
+                audio.pause();
                 player.classList.remove('playing');
                 playIcon.style.display = 'block';
                 pauseIcon.style.display = 'none';
                 waves.style.display = 'none';
-                label.textContent = "Chanting";
-            }
-        }
-
-        function togglePlayState() {
-            if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') {
-                alert("Devotional player is still initializing. Please wait a moment...");
-                return;
-            }
-            
-            const playerState = ytPlayer.getPlayerState();
-            const label = document.querySelector('#devotional-player .player-label');
-            
-            if (playerState === YT.PlayerState.PLAYING) {
-                ytPlayer.pauseVideo();
-            } else {
-                label.textContent = "Loading...";
-                ytPlayer.playVideo();
+                label.textContent = "Om Chant";
             }
         }
     </script>
