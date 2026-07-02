@@ -144,12 +144,204 @@
     }
     .dashboard-main {
         flex: 1;
-        padding: 30px 40px;
+        padding: 28px clamp(20px, 3vw, 48px) 48px;
         overflow-y: auto;
-        background: #f8fafc;
+        background:
+            radial-gradient(circle at 92% 2%, rgba(234, 88, 12, 0.08), transparent 28rem),
+            #f8fafc;
         transition: padding 0.3s;
         box-sizing: border-box;
         min-width: 0;
+    }
+    .dashboard-main > .dashboard-header-bar,
+    .dashboard-main > .messages-container,
+    .dashboard-main > .tab-content,
+    .dashboard-main > .peetha-dashboard-wrapper {
+        width: 100%;
+        max-width: 1440px;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+    }
+    .dashboard-header-bar {
+        gap: 24px;
+        padding: 20px 22px;
+        margin-bottom: 24px;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+    .dashboard-header-copy {
+        min-width: 0;
+    }
+    .dashboard-eyebrow {
+        margin: 0 0 6px;
+        color: #c2410c;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+    }
+    .dashboard-header-bar h2 {
+        margin: 0;
+        line-height: 1.2;
+    }
+    .dashboard-header-description {
+        max-width: 720px;
+        margin: 8px 0 0;
+        color: #64748b;
+        font-size: 0.9rem;
+        line-height: 1.55;
+    }
+    .dashboard-header-meta {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+    }
+    .dashboard-user-chip,
+    .dashboard-header-action {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 8px 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background: #fff;
+        color: #334155;
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-decoration: none;
+        box-sizing: border-box;
+    }
+    .dashboard-header-action:hover {
+        border-color: #fdba74;
+        background: #fff7ed;
+        color: #c2410c;
+    }
+    .dashboard-user-avatar {
+        width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        background: #fff7ed;
+        color: #c2410c;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+    }
+    .role-badge {
+        margin-top: 8px;
+    }
+    .role-badge.role-superadmin {
+        background: #fff7ed;
+        color: #c2410c;
+    }
+    .role-badge.role-staff {
+        background: #eff6ff;
+        color: #1d4ed8;
+    }
+    .role-badge.role-handler {
+        background: #ecfdf5;
+        color: #047857;
+    }
+    .dashboard-access-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        max-width: 1440px;
+        margin: 0 auto 20px;
+        padding: 14px 16px;
+        border: 1px solid #bfdbfe;
+        border-radius: 12px;
+        background: #eff6ff;
+        color: #1e3a8a;
+        font-size: 0.88rem;
+        line-height: 1.5;
+        box-sizing: border-box;
+    }
+    .dashboard-access-note strong {
+        display: block;
+        margin-bottom: 2px;
+    }
+    .dashboard-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 18px;
+        margin-bottom: 28px;
+    }
+    .dashboard-stat-card {
+        position: relative;
+        min-height: 152px;
+        padding: 22px !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: left !important;
+        border: 1px solid #e2e8f0 !important;
+        border-top: 1px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        background: rgba(255,255,255,0.96) !important;
+        box-shadow: 0 8px 24px rgba(15,23,42,0.05) !important;
+        overflow: hidden;
+    }
+    .dashboard-stat-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 4px;
+        background: var(--stat-color, var(--saffron));
+    }
+    .dashboard-stat-icon {
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px !important;
+        border-radius: 11px;
+        background: var(--stat-bg, #fff7ed);
+        font-size: 1.25rem !important;
+    }
+    .dashboard-stat-card h4 {
+        margin: 0 0 5px !important;
+        color: #64748b !important;
+        font-size: 0.72rem !important;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+    }
+    .dashboard-stat-card p {
+        font-size: 1.85rem !important;
+        line-height: 1.1;
+    }
+    .dashboard-card,
+    .collapsible-card,
+    .peetha-dashboard-wrapper {
+        border-color: #e2e8f0;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+    .media-table-wrapper {
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 transparent;
+    }
+    .dashboard-table tbody tr {
+        transition: background-color 0.16s ease;
+    }
+    .dashboard-table tbody tr:hover {
+        background: #f8fafc;
+    }
+    .sidebar-menu-item:focus-visible,
+    .sidebar-submenu-item:focus-visible,
+    .sidebar-toggle-btn:focus-visible,
+    .mobile-menu-trigger:focus-visible,
+    .dashboard-header-action:focus-visible {
+        outline: 3px solid rgba(234, 88, 12, 0.24);
+        outline-offset: 2px;
     }
     @media (max-width: 1024px) {
         .dashboard-main {
@@ -157,6 +349,28 @@
         }
     }
     @media (max-width: 768px) {
+        .dashboard-main {
+            padding: 18px 14px 36px;
+        }
+        .dashboard-header-bar {
+            align-items: flex-start;
+            padding: 18px;
+        }
+        .dashboard-header-meta {
+            width: 100%;
+            justify-content: flex-start;
+        }
+        .dashboard-user-chip {
+            display: none;
+        }
+        .dashboard-stat-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .dashboard-stat-card {
+            min-height: 132px;
+            padding: 17px !important;
+        }
         .dashboard-sidebar {
             position: fixed;
             left: -280px;
@@ -207,6 +421,17 @@
         }
         .sidebar-backdrop.show {
             display: block;
+        }
+    }
+    @media (max-width: 520px) {
+        .dashboard-header-bar {
+            flex-direction: column;
+        }
+        .dashboard-header-bar h2 {
+            font-size: 1.45rem;
+        }
+        .dashboard-stat-grid {
+            grid-template-columns: 1fr;
         }
     }
     @media (min-width: 769px) {
@@ -556,6 +781,12 @@
                         </button>
                         <!-- Sub-options for Media Gallery -->
                         <div class="sidebar-submenu" id="media-submenu">
+                            {% if request.user.is_staff and not request.user.is_superuser %}
+                            <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('media-list', this, 'Media Gallery')">
+                                <span class="menu-icon">🖼️</span>
+                                <span class="menu-text">Media List</span>
+                            </button>
+                            {% else %}
                             <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('media-add', this, 'Media Gallery')">
                                 <span class="menu-icon">➕</span>
                                 <span class="menu-text">Add Media</span>
@@ -564,6 +795,7 @@
                                 <span class="menu-icon">🖼️</span>
                                 <span class="menu-text">Media List</span>
                             </button>
+                            {% endif %}
                         </div>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('travel-section', this)">
                             <span class="menu-icon">📅</span>
@@ -571,6 +803,12 @@
                         </button>
                         <!-- Sub-options for Swamiji Travel Plans -->
                         <div class="sidebar-submenu collapsed" id="travel-submenu">
+                            {% if request.user.is_staff and not request.user.is_superuser %}
+                            <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('travel-list', this, 'Swamiji Travel Plans')">
+                                <span class="menu-icon">📅</span>
+                                <span class="menu-text">Travel List</span>
+                            </button>
+                            {% else %}
                             <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('travel-add', this, 'Swamiji Travel Plans')">
                                 <span class="menu-icon">➕</span>
                                 <span class="menu-text">Add Travel Plan</span>
@@ -579,6 +817,7 @@
                                 <span class="menu-icon">📅</span>
                                 <span class="menu-text">Travel List</span>
                             </button>
+                            {% endif %}
                         </div>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('pooja-section', this)">
                             <span class="menu-icon">🕉️</span>
@@ -586,6 +825,12 @@
                         </button>
                         <!-- Sub-options for Pooja Management -->
                         <div class="sidebar-submenu collapsed" id="pooja-submenu">
+                            {% if request.user.is_staff and not request.user.is_superuser %}
+                            <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('pooja-list', this, 'Pooja Management')">
+                                <span class="menu-icon">🕉️</span>
+                                <span class="menu-text">Configured Poojas</span>
+                            </button>
+                            {% else %}
                             <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('pooja-add', this, 'Pooja Management')">
                                 <span class="menu-icon">➕</span>
                                 <span class="menu-text">Add Pooja/Seva</span>
@@ -594,6 +839,7 @@
                                 <span class="menu-icon">🕉️</span>
                                 <span class="menu-text">Configured Poojas</span>
                             </button>
+                            {% endif %}
                         </div>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('live-section', this)">
                             <span class="menu-icon">📺</span>
@@ -618,7 +864,7 @@
             <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar()"></div>
             
             <!-- Right Main Area -->
-            <main class="dashboard-main">
+            <main class="dashboard-main{% if request.user.is_staff and not request.user.is_superuser %} is-readonly{% endif %}">
                 <!-- Mobile Trigger -->
                 <button type="button" class="mobile-menu-trigger" onclick="toggleSidebar()">
                     <span>☰</span> Menu
@@ -626,19 +872,56 @@
 
                 <!-- Dashboard Header -->
                 <div class="dashboard-header-bar">
-                    <div>
+                    <div class="dashboard-header-copy">
+                        <p class="dashboard-eyebrow">{% if is_admin and not peetha %}Administration workspace{% else %}{{ peetha.name }} workspace{% endif %}</p>
                         <h2 id="dashboard-active-header">{% if is_admin and not peetha %}Overview & Analytics — Overview{% else %}Media Gallery{% endif %}</h2>
                         {% if is_admin and not peetha %}
                             {% if is_superuser %}
-                            <p class="role-badge">Super Admin Account</p>
+                            <p class="role-badge role-superadmin">Super Admin</p>
                             {% else %}
-                            <p class="role-badge">Staff Account (Read-Only)</p>
+                            <p class="role-badge role-staff">Staff · Read-only</p>
                             {% endif %}
                         {% else %}
-                        <p class="role-badge">Handler for {{ peetha.name }}</p>
+                            {% if request.user.is_superuser %}
+                            <p class="role-badge role-superadmin">Super Admin · Managing {{ peetha.name }}</p>
+                            {% elif request.user.is_staff %}
+                            <p class="role-badge role-staff">Staff · {{ peetha.name }} · Read-only content access</p>
+                            {% else %}
+                            <p class="role-badge role-handler">Peetha Handler · {{ peetha.name }}</p>
+                            {% endif %}
                         {% endif %}
+                        <p class="dashboard-header-description">
+                            {% if is_admin and not peetha %}
+                                {% if is_superuser %}Monitor activity across all Peethas and manage content, people, payments, and platform settings.{% else %}Review current activity and booking information without changing platform settings.{% endif %}
+                            {% elif request.user.is_staff and not request.user.is_superuser %}
+                                Review Peetha content and today’s booking activity. Accommodation records remain available to authorised staff.
+                            {% else %}
+                                Keep public content, seva availability, travel updates, bookings, and accommodation information current.
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="dashboard-header-meta">
+                        {% if peetha %}
+                        <a href="{% url 'peethas:peetha_detail' peetha.slug %}" class="dashboard-header-action" target="_blank" rel="noopener">
+                            <span>↗</span> View public page
+                        </a>
+                        {% endif %}
+                        <div class="dashboard-user-chip" title="Signed in account">
+                            <span class="dashboard-user-avatar">{{ request.user.username|slice:":1" }}</span>
+                            <span>{{ request.user.username }}</span>
+                        </div>
                     </div>
                 </div>
+
+                {% if request.user.is_staff and not request.user.is_superuser and peetha %}
+                <div class="dashboard-access-note" role="status">
+                    <span aria-hidden="true">ℹ️</span>
+                    <div>
+                        <strong>Read-only content access</strong>
+                        Media, travel, pooja, and live-stream information can be reviewed but not changed. Booking reports are limited to today; authorised accommodation maintenance remains available.
+                    </div>
+                </div>
+                {% endif %}
 
                 {% if messages %}
                 <div class="messages-container">
@@ -655,30 +938,30 @@
             <!-- Sub-Tab 1: Metrics -->
             <div id="overview-metrics" class="sub-tab-content active">
             <!-- Stats Cards Grid -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px;">
+            <div class="dashboard-stat-grid">
                 <!-- Stat Card 1 -->
-                <div class="dashboard-card" style="padding: 24px; text-align: center; border-top: 4px solid var(--saffron); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: white;">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px;">👥</div>
+                <div class="dashboard-card dashboard-stat-card" style="--stat-color: var(--saffron); --stat-bg: #fff7ed;">
+                    <div class="dashboard-stat-icon">👥</div>
                     <h4 style="color: #666; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; margin-top: 0;">Total Users</h4>
                     <p style="font-size: 2rem; font-weight: bold; color: var(--dark); margin: 0;">{{ total_users }}</p>
                 </div>
                 <!-- Stat Card 2 -->
-                <div class="dashboard-card" style="padding: 24px; text-align: center; border-top: 4px solid #4CAF50; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: white;">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px;">🙏</div>
+                <div class="dashboard-card dashboard-stat-card" style="--stat-color: #16a34a; --stat-bg: #f0fdf4;">
+                    <div class="dashboard-stat-icon">🙏</div>
                     <h4 style="color: #666; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; margin-top: 0;">Pooja Bookings</h4>
                     <p style="font-size: 2rem; font-weight: bold; color: var(--dark); margin: 0;">{{ total_bookings }}</p>
                 </div>
                 <!-- Stat Card 3 -->
                 {% if not request.user.is_staff or request.user.is_superuser %}
-                <div class="dashboard-card" style="padding: 24px; text-align: center; border-top: 4px solid #2196F3; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: white;">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px;">₹</div>
+                <div class="dashboard-card dashboard-stat-card" style="--stat-color: #2563eb; --stat-bg: #eff6ff;">
+                    <div class="dashboard-stat-icon">₹</div>
                     <h4 style="color: #666; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; margin-top: 0;">Total Revenue</h4>
                     <p style="font-size: 2rem; font-weight: bold; color: var(--dark); margin: 0;">₹{{ total_revenue }}</p>
                 </div>
                 {% endif %}
                 <!-- Stat Card 4 -->
-                <div class="dashboard-card" style="padding: 24px; text-align: center; border-top: 4px solid #FF9800; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: white;">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px;">💳</div>
+                <div class="dashboard-card dashboard-stat-card" style="--stat-color: #d97706; --stat-bg: #fffbeb;">
+                    <div class="dashboard-stat-icon">💳</div>
                     <h4 style="color: #666; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; margin-top: 0;">Active Gateways</h4>
                     <p style="font-size: 2rem; font-weight: bold; color: var(--dark); margin: 0;">{{ active_payments }}</p>
                 </div>
@@ -1289,6 +1572,7 @@
             <!-- TAB 1: Media Gallery Section -->
             <div id="media-section" class="tab-content active">
                 <!-- Add Media Form -->
+                {% if not request.user.is_staff or request.user.is_superuser %}
                 <div id="media-add" class="sub-tab-content active">
                     <div class="collapsible-card">
                         <div class="card-header" onclick="toggleCardCollapse(this)">
@@ -1354,9 +1638,10 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
 
                 <!-- Media List -->
-                <div id="media-list" class="sub-tab-content">
+                <div id="media-list" class="sub-tab-content{% if request.user.is_staff and not request.user.is_superuser %} active{% endif %}">
                     <div class="collapsible-card">
                         <div class="card-header" onclick="toggleCardCollapse(this)">
                             <h3>🖼️ Uploaded Media Items</h3>
@@ -1370,7 +1655,7 @@
                                             <th>Type</th>
                                             <th>Title</th>
                                             <th>Content</th>
-                                            <th>Actions</th>
+                                            {% if not request.user.is_staff or request.user.is_superuser %}<th>Actions</th>{% endif %}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1400,6 +1685,7 @@
                                                 <a href="{{ item.youtube_url }}" target="_blank" class="yt-link">YouTube Video</a>
                                                 {% endif %}
                                             </td>
+                                            {% if not request.user.is_staff or request.user.is_superuser %}
                                             <td>
                                                 <div class="table-actions">
                                                     <a href="{% url 'peethas:media_edit' peetha.slug item.pk %}" class="btn-edit">Edit</a>
@@ -1409,10 +1695,11 @@
                                                     </form>
                                                 </div>
                                             </td>
+                                            {% endif %}
                                         </tr>
                                         {% empty %}
                                         <tr>
-                                            <td colspan="4" class="no-records">No media items uploaded yet.</td>
+                                            <td colspan="{% if request.user.is_staff and not request.user.is_superuser %}3{% else %}4{% endif %}" class="no-records">No media items uploaded yet.</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -1426,6 +1713,7 @@
             <!-- TAB 2: Travel Plans Section -->
             <div id="travel-section" class="tab-content">
                 <!-- Add Travel Form -->
+                {% if not request.user.is_staff or request.user.is_superuser %}
                 <div id="travel-add" class="sub-tab-content active">
                     <div class="collapsible-card">
                         <div class="card-header" onclick="toggleCardCollapse(this)">
@@ -1487,9 +1775,10 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
 
                 <!-- Travel List -->
-                <div id="travel-list" class="sub-tab-content">
+                <div id="travel-list" class="sub-tab-content{% if request.user.is_staff and not request.user.is_superuser %} active{% endif %}">
                     <div class="collapsible-card">
                         <div class="card-header" onclick="toggleCardCollapse(this)">
                             <h3>📅 Scheduled Travel Plans</h3>
@@ -1503,18 +1792,20 @@
                                         <th>Dates</th>
                                         <th>Location</th>
                                         <th>Title</th>
-                                        <th>Actions</th>
+                                        {% if not request.user.is_staff or request.user.is_superuser %}<th>Actions</th>{% endif %}
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for item in travel_list %}
                                     <tr>
+                                        {% if not request.user.is_staff or request.user.is_superuser %}
                                         <td>
                                             <strong>{{ item.start_date }}</strong>
                                             {% if item.end_date %}
                                             <div class="end-date-label">to {{ item.end_date }}</div>
                                             {% endif %}
                                         </td>
+                                        {% endif %}
                                         <td>
                                             {{ item.location }}
                                             {% if item.location_kn %}<div class="lang-indicator">KN: {{ item.location_kn }}</div>{% endif %}
@@ -1539,7 +1830,7 @@
                                     </tr>
                                     {% empty %}
                                     <tr>
-                                        <td colspan="4" class="no-records">No travel plans scheduled yet.</td>
+                                        <td colspan="{% if request.user.is_staff and not request.user.is_superuser %}3{% else %}4{% endif %}" class="no-records">No travel plans scheduled yet.</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -1580,6 +1871,7 @@
                     }
                 </style>
                 <!-- Add Pooja Form -->
+                {% if not request.user.is_staff or request.user.is_superuser %}
                 <div id="pooja-add" class="sub-tab-content active">
                     <div class="collapsible-card">
                         <div class="card-header" onclick="toggleCardCollapse(this)">
@@ -1676,9 +1968,10 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
 
                 <!-- Pooja List -->
-                <div id="pooja-list" class="sub-tab-content">
+                <div id="pooja-list" class="sub-tab-content{% if request.user.is_staff and not request.user.is_superuser %} active{% endif %}">
                     <div class="collapsible-card">
                         <div class="card-header" onclick="toggleCardCollapse(this)">
                             <h3>🕉️ Configured Poojas & Sevas</h3>
@@ -1694,12 +1987,13 @@
                                         <th>Daily Slots</th>
                                         <th>Availability</th>
                                         <th>Status</th>
-                                        <th>Actions</th>
+                                        {% if not request.user.is_staff or request.user.is_superuser %}<th>Actions</th>{% endif %}
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for item in pooja_list %}
                                     <tr>
+                                        {% if not request.user.is_staff or request.user.is_superuser %}
                                         <td>
                                             <strong>{{ item.name }}</strong>
                                             <div style="font-size: 0.8rem; color:#888;">Cat: {{ item.get_category_display }}</div>
@@ -1707,6 +2001,7 @@
                                             {% if item.name_mr %}<div class="lang-indicator">MR: {{ item.name_mr }}</div>{% endif %}
                                             {% if item.name_hi %}<div class="lang-indicator">HI: {{ item.name_hi }}</div>{% endif %}
                                         </td>
+                                        {% endif %}
                                         <td><strong>₹{{ item.price }}</strong></td>
                                         <td>{{ item.total_slots }}</td>
                                         <td>
@@ -1735,7 +2030,7 @@
                                     </tr>
                                     {% empty %}
                                     <tr>
-                                        <td colspan="6" class="no-records">No poojas configured yet.</td>
+                                        <td colspan="{% if request.user.is_staff and not request.user.is_superuser %}5{% else %}6{% endif %}" class="no-records">No poojas configured yet.</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -1754,6 +2049,16 @@
                         <span class="card-collapse-icon">▼</span>
                     </div>
                     <div class="card-body">
+                    {% if request.user.is_staff and not request.user.is_superuser %}
+                    <div class="dashboard-access-note" style="margin-bottom: 0;">
+                        <span aria-hidden="true">📺</span>
+                        <div>
+                            <strong>Current public live-stream settings</strong>
+                            <div>Title: {{ peetha.live_youtube_title|default:"Not configured" }}</div>
+                            <div>Link: {% if peetha.live_youtube_url %}<a href="{{ peetha.live_youtube_url }}" target="_blank" rel="noopener">{{ peetha.live_youtube_url }}</a>{% else %}Not configured{% endif %}</div>
+                        </div>
+                    </div>
+                    {% else %}
                     <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Provide a YouTube live stream video URL (e.g. <code>https://www.youtube.com/watch?v=...</code> or <code>https://youtu.be/...</code>). Devotees will see a prominent Live Stream player on the Peetha's detail page when a link is active. Leave the field empty to deactivate the live stream.</p>
                     <form method="post" action="{% url 'peethas:update_peetha_live' peetha.slug %}" class="dashboard-form">
                         {% csrf_token %}
@@ -1767,6 +2072,7 @@
                         </div>
                         <button type="submit" class="btn-primary">Update Live Link</button>
                     </form>
+                    {% endif %}
                     </div>
                 </div>
             </div>
@@ -2155,6 +2461,16 @@
     };
 
     function switchTab(tabId, btn) {
+        // If this tab has a submenu, treat it as a dropdown toggle (do not switch main view)
+        if (TAB_SUBMENU_MAP[tabId]) {
+            const submenuId = TAB_SUBMENU_MAP[tabId];
+            const submenuEl = document.getElementById(submenuId);
+            if (submenuEl) {
+                submenuEl.classList.toggle('collapsed');
+            }
+            return;
+        }
+
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
@@ -2179,40 +2495,8 @@
             headerEl.innerText = btnText.trim();
         }
 
-        // Generic submenu visibility cascade — open the matching submenu, collapse all others
-        Object.entries(TAB_SUBMENU_MAP).forEach(([sectionId, submenuId]) => {
-            const submenuEl = document.getElementById(submenuId);
-            if (!submenuEl) return;
-            if (sectionId === tabId) {
-                submenuEl.classList.remove('collapsed');
-                // Trigger the active (or first) sub-item to set correct header
-                const activeSub = submenuEl.querySelector('.sidebar-submenu-item.active') || submenuEl.querySelector('.sidebar-submenu-item');
-                if (activeSub) {
-                    activeSub.click();
-                }
-            } else {
-                submenuEl.classList.add('collapsed');
-            }
-        });
-        
-        // Build hash — include sub-view ID for roles, or sub-tab for sections with submenus
-        let newHash = '#' + tabId;
-        if (tabId === 'roles-section') {
-            const activeSubView = document.querySelector('.roles-sub-view.active-sub-view');
-            if (activeSubView) {
-                newHash = '#' + tabId + ':' + activeSubView.id;
-            }
-        } else if (TAB_SUBMENU_MAP[tabId] && tabId !== 'roles-section') {
-            const parentContainer = document.getElementById(tabId);
-            if (parentContainer) {
-                const activeSubTab = parentContainer.querySelector('.sub-tab-content.active');
-                if (activeSubTab) {
-                    newHash = '#' + tabId + ':' + activeSubTab.id;
-                }
-            }
-        }
-        
         // Update hash in URL
+        let newHash = '#' + tabId;
         if (history.replaceState) {
             history.replaceState(null, null, newHash);
         } else {
@@ -2231,8 +2515,24 @@
         if (!targetContent) return;
         const parentSection = targetContent.closest('.tab-content');
         
-        // Scope: only toggle sub-tabs within the same parent section
         if (parentSection) {
+            // Activate the parent main tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            parentSection.classList.add('active');
+            
+            // Activate the parent main tab button
+            document.querySelectorAll('.tab-btn').forEach(button => {
+                button.classList.remove('active');
+            });
+            const parentTabId = parentSection.id;
+            const parentBtn = document.querySelector(`.tab-btn[onclick*="${parentTabId}"]`);
+            if (parentBtn) {
+                parentBtn.classList.add('active');
+            }
+
+            // Scope: only toggle sub-tabs within the same parent section
             parentSection.querySelectorAll('.sub-tab-content').forEach(content => {
                 content.classList.remove('active');
             });
@@ -2312,6 +2612,28 @@
     }
 
     function switchRolesSubView(subViewId, btn) {
+        const targetContent = document.getElementById(subViewId);
+        if (!targetContent) return;
+        
+        const parentSection = targetContent.closest('.tab-content');
+        if (parentSection) {
+            // Activate the parent main tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            parentSection.classList.add('active');
+            
+            // Activate the parent main tab button
+            document.querySelectorAll('.tab-btn').forEach(button => {
+                button.classList.remove('active');
+            });
+            const parentTabId = parentSection.id;
+            const parentBtn = document.querySelector(`.tab-btn[onclick*="${parentTabId}"]`);
+            if (parentBtn) {
+                parentBtn.classList.add('active');
+            }
+        }
+
         document.querySelectorAll('.roles-sub-view').forEach(view => {
             view.classList.remove('active-sub-view');
         });

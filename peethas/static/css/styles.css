@@ -3201,7 +3201,7 @@ img.progressive-loaded {
     .header-container {
         flex-direction: row; /* changed */
         flex-wrap: wrap; /* changed */
-        justify-content: center; /* keep them close */
+        justify-content: space-between;
         align-items: center;
         gap: 15px;
         padding: 12px 10px;
@@ -3315,6 +3315,21 @@ img.progressive-loaded {
         height: 120px;
     }
     
+    /* Rectangle Variant Override for tablets/mobile */
+    .use-rectangle .peetha-card {
+        padding-top: 120px;
+        margin-top: 100px;
+    }
+    
+    .use-rectangle .card-portrait-wrapper {
+        top: -95px;
+    }
+    
+    .use-rectangle .card-portrait {
+        width: 160px;
+        height: 200px;
+    }
+    
     /* About Section */
     .about-section {
         padding: 50px 0;
@@ -3384,6 +3399,21 @@ img.progressive-loaded {
     .peetha-card {
         margin-left: 20px;
         margin-right: 20px;
+    }
+    
+    /* Rectangle Variant Override for small mobile */
+    .use-rectangle .peetha-card {
+        padding-top: 100px;
+        margin-top: 80px;
+    }
+    
+    .use-rectangle .card-portrait-wrapper {
+        top: -75px;
+    }
+    
+    .use-rectangle .card-portrait {
+        width: 130px;
+        height: 160px;
     }
 
     /* Auth Forms */
