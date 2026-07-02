@@ -572,6 +572,60 @@
     </div>
     {% endif %}
 
+    <!-- Devotional Audio Player -->
+    <div id="devotional-player" class="devotional-audio-player">
+        <button class="player-toggle-btn" onclick="togglePlayState()" title="Play Om Namah Shivaya Chanting">
+            <!-- Play Icon -->
+            <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <!-- Pause Icon -->
+            <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                <rect x="6" y="4" width="4" height="16"></rect>
+                <rect x="14" y="4" width="4" height="16"></rect>
+            </svg>
+            <!-- Sound Waves Animation -->
+            <div class="sound-waves" style="display: none; align-items: flex-end; gap: 2px; width: 12px; height: 12px;">
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+            </div>
+        </button>
+        <span class="player-label">Chanting</span>
+        <audio id="chanting-audio" loop preload="none">
+            <source src="https://archive.org/download/OMNAMAHSHIVAYAMantraTrance/OM%20NAMAH%20SHIVAYA%20Mantra%20Trance%20with%20Shamanic%20Drums.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <script>
+        function togglePlayState() {
+            const audio = document.getElementById('chanting-audio');
+            const player = document.getElementById('devotional-player');
+            const playIcon = player.querySelector('.play-icon');
+            const pauseIcon = player.querySelector('.pause-icon');
+            const waves = player.querySelector('.sound-waves');
+            
+            if (audio.paused) {
+                audio.play().then(() => {
+                    player.classList.add('playing');
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                    waves.style.display = 'flex';
+                }).catch(err => {
+                    console.error("Audio playback blocked by browser autocomplete/interaction rules:", err);
+                    alert("Click anywhere on the webpage first, then click the play button to start the chant.");
+                });
+            } else {
+                audio.pause();
+                player.classList.remove('playing');
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                waves.style.display = 'none';
+            }
+        }
+    </script>
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>
