@@ -242,8 +242,15 @@
                 <!-- Theme Selector -->
                 <div class="theme-selector-container">
                     <div class="custom-dropdown" id="themeDropdown">
-                        <button class="dropdown-trigger" style="padding-right: 28px;">
-                            🎨 <span class="current-theme">Warm Gold</span>
+                        <button class="dropdown-trigger">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px; margin-right: 6px; color: var(--gold);">
+                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19C5.35634 19.5 5.24264 20.5 4.5 21C4 21.3 3.5 21.7 3 22C4.5 22 10.5 22 12 22Z"></path>
+                                <circle cx="7.5" cy="10.5" r="1.5" fill="currentColor"></circle>
+                                <circle cx="11.5" cy="7.5" r="1.5" fill="currentColor"></circle>
+                                <circle cx="16.5" cy="9.5" r="1.5" fill="currentColor"></circle>
+                                <circle cx="15.5" cy="14.5" r="1.5" fill="currentColor"></circle>
+                            </svg>
+                            <span class="current-theme">Warm Gold</span>
                             <span class="dropdown-arrow"></span>
                         </button>
                         <div class="dropdown-menu">
@@ -259,6 +266,11 @@
                 <div class="lang-selector-container">
                     <div class="custom-dropdown" id="langDropdown">
                         <button class="dropdown-trigger">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px; margin-right: 6px; color: var(--gold);">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
                             <span class="current-lang">
                                 {% if lang == 'en' %}English{% elif lang == 'kn' %}ಕನ್ನಡ{% elif lang == 'mr' %}मराठी{% elif
                                 lang == 'hi' %}हिन्दी{% elif lang == 'te' %}తెలుగు{% elif lang == 'ta' %}தமிழ்{% elif lang
