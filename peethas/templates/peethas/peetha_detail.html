@@ -583,7 +583,14 @@
 
 <style>
     :root {
-        --peetha-color: {{ peetha.color }};
+        {% if peetha.color|lower == '#ffffff' or peetha.color|lower == 'white' or peetha.color|lower == '#fff' or 'kashi' in peetha.name|lower %}
+            --peetha-color: #d4af37; /* Mild Goldish Accent */
+            --hero-bg-override: #fcf9f2; /* Cream Hero Background */
+            --bg-light: #fbf8f3; /* Cream Page Background */
+        {% else %}
+            --peetha-color: {{ peetha.color }};
+            --hero-bg-override: linear-gradient(135deg, color-mix(in srgb, var(--peetha-color) 8%, white), var(--bg-light));
+        {% endif %}
     }
     .custom-calendar-container {
         background: #f8fafc;
