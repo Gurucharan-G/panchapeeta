@@ -26,56 +26,72 @@
 
 <!-- ===== TAB: About / Peetha Info ===== --><section class="detail-body peetha-tab-section active" id="tab-about">
     <div class="container">
-        <!-- 1. Full-Width Key Details Section at the top -->
-        <!-- 1. Full-Width Key Details Section at the top -->
-        <div class="info-card key-details-top-card" style="--peetha-color: var(--peetha-color);">
-            <h3>
+        <!-- 1. Full-Width Key Details Mosaic Grid -->
+        <div class="key-details-showcase">
+            <h3 class="key-details-showcase-title">
                 <span>🔱</span> {{ labels.key_details }}
             </h3>
-            <div class="key-details-top-grid">
-                <div class="detail-item-top">
-                    <div class="detail-icon-box">🪶</div>
-                    <div class="detail-text-box">
-                        <span class="detail-label">{{ labels.founding_acharya }}</span>
-                        <span class="detail-value">{{ peetha.acharya }}</span>
+            
+            <div class="key-details-mosaic">
+                <!-- Founding Acharya (Large span-2) -->
+                <div class="mosaic-item span-2" style="--peetha-color: var(--peetha-color);">
+                    <div class="mosaic-icon-box">🪶</div>
+                    <div class="mosaic-text-box">
+                        <span class="mosaic-label">{{ labels.founding_acharya }}</span>
+                        <span class="mosaic-value">{{ peetha.acharya }}</span>
                     </div>
                 </div>
-                
+
+                <!-- Current Jagathguru (Large span-2, if exists) -->
+                {% if peetha.current_swamiji %}
+                <div class="mosaic-item span-2" style="--peetha-color: var(--peetha-color);">
+                    <div class="mosaic-icon-box">☀️</div>
+                    <div class="mosaic-text-box">
+                        <span class="mosaic-label">{{ labels.current_swamiji_label }}</span>
+                        <span class="mosaic-value">{{ peetha.current_swamiji }}</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Gotra (Normal span-1) -->
                 {% if peetha.gotra %}
-                <div class="detail-item-top">
-                    <div class="detail-icon-box">🧬</div>
-                    <div class="detail-text-box">
-                        <span class="detail-label">Gotra</span>
-                        <span class="detail-value">{{ peetha.gotra }}</span>
+                <div class="mosaic-item" style="--peetha-color: var(--peetha-color);">
+                    <div class="mosaic-icon-box">🧬</div>
+                    <div class="mosaic-text-box">
+                        <span class="mosaic-label">Gotra</span>
+                        <span class="mosaic-value">{{ peetha.gotra }}</span>
                     </div>
                 </div>
                 {% endif %}
 
+                <!-- Gotra Purusha (Normal span-1) -->
                 {% if peetha.gotra_purusha %}
-                <div class="detail-item-top">
-                    <div class="detail-icon-box">📿</div>
-                    <div class="detail-text-box">
-                        <span class="detail-label">Gotra Purusha</span>
-                        <span class="detail-value">{{ peetha.gotra_purusha }}</span>
+                <div class="mosaic-item" style="--peetha-color: var(--peetha-color);">
+                    <div class="mosaic-icon-box">📿</div>
+                    <div class="mosaic-text-box">
+                        <span class="mosaic-label">Gotra Purusha</span>
+                        <span class="mosaic-value">{{ peetha.gotra_purusha }}</span>
                     </div>
                 </div>
                 {% endif %}
 
-                <div class="detail-item-top">
-                    <div class="detail-icon-box">👑</div>
-                    <div class="detail-text-box">
-                        <span class="detail-label">{{ labels.simhasana_label }}</span>
-                        <span class="detail-value">{{ peetha.simhasana }}</span>
+                <!-- Simhasana (Normal span-1) -->
+                <div class="mosaic-item" style="--peetha-color: var(--peetha-color);">
+                    <div class="mosaic-icon-box">👑</div>
+                    <div class="mosaic-text-box">
+                        <span class="mosaic-label">{{ labels.simhasana_label }}</span>
+                        <span class="mosaic-value">{{ peetha.simhasana }}</span>
                     </div>
                 </div>
 
-                <div class="detail-item-top">
-                    <div class="detail-icon-box">🕉️</div>
-                    <div class="detail-text-box">
-                        <span class="detail-label">{{ labels.associated_linga_label }}</span>
-                        <span class="detail-value">
+                <!-- Associated Linga (Normal span-1) -->
+                <div class="mosaic-item" style="--peetha-color: var(--peetha-color);">
+                    <div class="mosaic-icon-box">🕉️</div>
+                    <div class="mosaic-text-box">
+                        <span class="mosaic-label">{{ labels.associated_linga_label }}</span>
+                        <span class="mosaic-value">
                             {% if peetha.associated_linga_map_url %}
-                                <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer" class="linga-link-glow" style="color: var(--saffron); text-decoration: none;">🔱 {{ peetha.associated_linga }}</a>
+                                <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer">🔱 {{ peetha.associated_linga }}</a>
                             {% else %}
                                 {{ peetha.associated_linga }}
                             {% endif %}
@@ -83,21 +99,12 @@
                     </div>
                 </div>
 
-                {% if peetha.current_swamiji %}
-                <div class="detail-item-top">
-                    <div class="detail-icon-box">☀️</div>
-                    <div class="detail-text-box">
-                        <span class="detail-label">{{ labels.current_swamiji_label }}</span>
-                        <span class="detail-value">{{ peetha.current_swamiji }}</span>
-                    </div>
-                </div>
-                {% endif %}
-
-                <div class="detail-item-top">
-                    <div class="detail-icon-box">📍</div>
-                    <div class="detail-text-box">
-                        <span class="detail-label">{{ labels.location_label }}</span>
-                        <span class="detail-value">{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</span>
+                <!-- Location (Wide span-4) -->
+                <div class="mosaic-item span-4" style="--peetha-color: var(--peetha-color);">
+                    <div class="mosaic-icon-box">📍</div>
+                    <div class="mosaic-text-box">
+                        <span class="mosaic-label">{{ labels.location_label }}</span>
+                        <span class="mosaic-value">{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</span>
                     </div>
                 </div>
             </div>
