@@ -3970,39 +3970,215 @@ body.theme-dusk-saffron .auth-modal-close-btn:hover {
     color: #fff;
 }
 
-/* Premium Key Details Mosaic Grid Showcase */
-.key-details-showcase {
+/* Premium Two-Column Split Grid Layout for Peetha Details */
+.detail-split-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 40px;
+    align-items: start;
     margin-bottom: 40px;
 }
-.key-details-showcase-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    color: var(--text);
-    margin-top: 0;
-    margin-bottom: 24px;
-    border-bottom: 2px solid var(--peetha-color);
-    padding-bottom: 12px;
-    display: inline-block;
+
+.detail-sidebar-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
-.key-details-mosaic {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+
+.detail-main-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    min-width: 0; /* Prevents flex items from overflowing horizontal boundaries */
 }
-.mosaic-item {
+
+/* 1. Compact Heritage Registry Card */
+.peetha-registry-card {
     background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 16px;
     padding: 24px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
     position: relative;
     overflow: hidden;
 }
-.mosaic-item::before {
+.peetha-registry-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--peetha-color);
+}
+.registry-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+}
+.registry-list {
+    display: flex;
+    flex-direction: column;
+}
+.registry-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.06);
+    gap: 16px;
+}
+.registry-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.registry-item:first-child {
+    padding-top: 0;
+}
+.registry-label-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+.registry-icon {
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--peetha-color);
+}
+.registry-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+}
+.registry-value {
+    font-size: 0.94rem;
+    font-weight: 600;
+    color: var(--text);
+    text-align: right;
+    max-width: 60%;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+.registry-value a {
+    color: var(--peetha-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-bottom: 1px dashed color-mix(in srgb, var(--peetha-color) 40%, transparent);
+}
+.registry-value a:hover {
+    color: var(--saffron);
+    border-bottom-style: solid;
+    border-bottom-color: var(--saffron);
+}
+
+/* 2. Compact Travel Plans Timeline */
+.peetha-travel-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
+    position: relative;
+    overflow: hidden;
+}
+.peetha-travel-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--peetha-color);
+}
+.compact-travel-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.compact-timeline-month {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--peetha-color);
+    margin-bottom: 5px;
+    border-left: 2px solid var(--peetha-color);
+    padding-left: 8px;
+}
+.compact-timeline-events {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.compact-event-card {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding-left: 10px;
+    position: relative;
+}
+.compact-event-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--text-muted);
+}
+.compact-event-date {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    min-width: 45px;
+}
+.compact-event-sep {
+    margin: 0 2px;
+    color: var(--text-muted);
+}
+.compact-event-details {
+    flex: 1;
+    min-width: 0;
+}
+.compact-event-details h6 {
+    margin: 0 0 2px 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.35;
+}
+.compact-event-loc {
+    margin: 0;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+}
+
+/* 3. Main Content Cards (About/History) */
+.peetha-content-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+    padding: 28px 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
+    position: relative;
+    overflow: hidden;
+}
+.peetha-content-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -4010,125 +4186,92 @@ body.theme-dusk-saffron .auth-modal-close-btn:hover {
     width: 4px;
     height: 100%;
     background: var(--peetha-color);
-    opacity: 0.8;
-    transition: width 0.3s ease;
 }
-.mosaic-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
-    border-color: color-mix(in srgb, var(--peetha-color) 30%, transparent);
-}
-.mosaic-item:hover::before {
-    width: 6px;
-}
-.mosaic-item.span-2 {
-    grid-column: span 2;
-}
-.mosaic-item.span-4 {
-    grid-column: span 4;
-}
-.mosaic-icon-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 56px;
-    height: 56px;
-    border-radius: 14px;
-    font-size: 1.55rem;
-    color: var(--peetha-color);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-.mosaic-item:hover .mosaic-icon-box {
-    background: var(--peetha-color) !important;
-    color: #ffffff !important;
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--peetha-color) 30%, transparent);
-}
-.mosaic-text-box {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    flex: 1;
-    min-width: 0;
-}
-.mosaic-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    color: var(--text-muted);
-}
-.mosaic-value {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--text);
+.peetha-content-card h3 {
+    margin-top: 0;
+    margin-bottom: 18px;
     font-family: 'Playfair Display', serif;
-    line-height: 1.45;
-    word-wrap: break-word;
+    font-size: 1.5rem;
+    color: var(--text);
+    border-bottom: 2px solid color-mix(in srgb, var(--peetha-color) 15%, transparent);
+    padding-bottom: 8px;
+    display: inline-block;
 }
-.mosaic-value a {
-    color: var(--peetha-color);
-    text-decoration: none;
-    transition: all 0.2s ease;
-    border-bottom: 1.5px dashed color-mix(in srgb, var(--peetha-color) 40%, transparent);
-    padding-bottom: 1px;
+.peetha-content-card p {
+    font-size: 0.98rem;
+    line-height: 1.8;
+    color: var(--text-light);
+    text-align: justify;
+    margin: 0;
 }
-.mosaic-value a:hover {
-    color: var(--saffron);
-    border-bottom-style: solid;
-    border-bottom-color: var(--saffron);
+.peetha-content-card .history-content {
+    font-size: 0.98rem;
+    line-height: 1.8;
+    color: var(--text-light);
+    text-align: justify;
+}
+.peetha-content-card .history-content p {
+    margin-bottom: 15px;
+}
+.peetha-content-card .history-content p:last-child {
+    margin-bottom: 0;
 }
 
-/* Dusk Theme support for Mosaic Grid */
-body.theme-dusk-saffron .mosaic-item {
+/* Dusk Theme Compatibility overrides */
+body.theme-dusk-saffron .peetha-registry-card,
+body.theme-dusk-saffron .peetha-travel-card,
+body.theme-dusk-saffron .peetha-content-card {
     background: #1e1b19 !important;
     border-color: #2b2521 !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
 }
-body.theme-dusk-saffron .mosaic-item:hover {
-    border-color: color-mix(in srgb, var(--peetha-color) 40%, transparent) !important;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35) !important;
+body.theme-dusk-saffron .registry-item {
+    border-bottom-color: rgba(255, 255, 255, 0.05);
 }
-body.theme-dusk-saffron .mosaic-value {
+body.theme-dusk-saffron .registry-value {
     color: #e2d4c5 !important;
 }
-body.theme-dusk-saffron .mosaic-value a {
+body.theme-dusk-saffron .registry-value a {
     color: #f97316 !important;
 }
+body.theme-dusk-saffron .compact-event-details h6,
+body.theme-dusk-saffron .compact-event-date {
+    color: #e2d4c5 !important;
+}
+body.theme-dusk-saffron .peetha-content-card p,
+body.theme-dusk-saffron .peetha-content-card .history-content {
+    color: #bfaea2 !important;
+}
+body.theme-dusk-saffron .compact-event-card::before {
+    background: #554a42;
+}
 
-/* Responsive Media Queries for Mosaic */
-@media (max-width: 1024px) {
-    .key-details-mosaic {
-        grid-template-columns: repeat(2, 1fr);
+/* Responsive Media Queries */
+@media (max-width: 991px) {
+    .detail-split-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
     }
-    .mosaic-item.span-2 {
-        grid-column: span 2;
-    }
-    .mosaic-item.span-4 {
-        grid-column: span 2;
+    .detail-sidebar-column {
+        flex-direction: column;
     }
 }
 @media (max-width: 600px) {
-    .key-details-mosaic {
-        grid-template-columns: 1fr;
+    .peetha-content-card {
+        padding: 20px;
     }
-    .mosaic-item.span-2 {
-        grid-column: span 1;
+    .peetha-content-card p,
+    .peetha-content-card .history-content {
+        text-align: left;
     }
-    .mosaic-item.span-4 {
-        grid-column: span 1;
+    .registry-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
     }
-    .mosaic-item {
-        padding: 18px;
-        gap: 15px;
-    }
-    .mosaic-icon-box {
-        min-width: 48px;
-        height: 48px;
-        font-size: 1.35rem;
-    }
-    .mosaic-value {
-        font-size: 0.98rem;
+    .registry-value {
+        text-align: left;
+        max-width: 100%;
     }
 }
 

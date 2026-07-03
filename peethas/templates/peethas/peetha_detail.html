@@ -25,169 +25,163 @@
 </section>
 
 <!-- ===== TAB: About / Peetha Info ===== --><section class="detail-body peetha-tab-section active" id="tab-about">
-    <div class="container">
-        <!-- 1. Full-Width Key Details Mosaic Grid -->
-        <div class="key-details-showcase">
-            <h3 class="key-details-showcase-title">
-                <span>🔱</span> {{ labels.key_details }}
-            </h3>
+    <div class="container">        <!-- Two-Column Split Layout for Registry/Travel & Main Content -->
+        <div class="detail-split-grid">
             
-            <div class="key-details-mosaic">
-                <!-- Founding Acharya (Large span-2) -->
-                <div class="mosaic-item span-2" style="--peetha-color: var(--peetha-color);">
-                    <div class="mosaic-icon-box">🪶</div>
-                    <div class="mosaic-text-box">
-                        <span class="mosaic-label">{{ labels.founding_acharya }}</span>
-                        <span class="mosaic-value">{{ peetha.acharya }}</span>
-                    </div>
-                </div>
-
-                <!-- Current Jagathguru (Large span-2, if exists) -->
-                {% if peetha.current_swamiji %}
-                <div class="mosaic-item span-2" style="--peetha-color: var(--peetha-color);">
-                    <div class="mosaic-icon-box">☀️</div>
-                    <div class="mosaic-text-box">
-                        <span class="mosaic-label">{{ labels.current_swamiji_label }}</span>
-                        <span class="mosaic-value">{{ peetha.current_swamiji }}</span>
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Gotra (Normal span-1) -->
-                {% if peetha.gotra %}
-                <div class="mosaic-item" style="--peetha-color: var(--peetha-color);">
-                    <div class="mosaic-icon-box">🧬</div>
-                    <div class="mosaic-text-box">
-                        <span class="mosaic-label">Gotra</span>
-                        <span class="mosaic-value">{{ peetha.gotra }}</span>
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Gotra Purusha (Normal span-1) -->
-                {% if peetha.gotra_purusha %}
-                <div class="mosaic-item" style="--peetha-color: var(--peetha-color);">
-                    <div class="mosaic-icon-box">📿</div>
-                    <div class="mosaic-text-box">
-                        <span class="mosaic-label">Gotra Purusha</span>
-                        <span class="mosaic-value">{{ peetha.gotra_purusha }}</span>
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Simhasana (Normal span-1) -->
-                <div class="mosaic-item" style="--peetha-color: var(--peetha-color);">
-                    <div class="mosaic-icon-box">👑</div>
-                    <div class="mosaic-text-box">
-                        <span class="mosaic-label">{{ labels.simhasana_label }}</span>
-                        <span class="mosaic-value">{{ peetha.simhasana }}</span>
-                    </div>
-                </div>
-
-                <!-- Associated Linga (Normal span-1) -->
-                <div class="mosaic-item" style="--peetha-color: var(--peetha-color);">
-                    <div class="mosaic-icon-box">🕉️</div>
-                    <div class="mosaic-text-box">
-                        <span class="mosaic-label">{{ labels.associated_linga_label }}</span>
-                        <span class="mosaic-value">
-                            {% if peetha.associated_linga_map_url %}
-                                <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer">🔱 {{ peetha.associated_linga }}</a>
-                            {% else %}
-                                {{ peetha.associated_linga }}
-                            {% endif %}
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Location (Wide span-4) -->
-                <div class="mosaic-item span-4" style="--peetha-color: var(--peetha-color);">
-                    <div class="mosaic-icon-box">📍</div>
-                    <div class="mosaic-text-box">
-                        <span class="mosaic-label">{{ labels.location_label }}</span>
-                        <span class="mosaic-value">{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 2. Live Stream (Full Width, if active) -->
-        {% if live_stream_enabled and peetha.live_youtube_url %}
-        <div id="live-stream-container" class="live-stream-card" style="margin-bottom: 40px; border-radius: 12px; background: white; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 24px; overflow: hidden; --peetha-color: var(--peetha-color);">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
-                <h3 style="margin: 0; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 10px; color: var(--text);">
-                    <span style="font-size: 1.5rem;">📺</span> {{ peetha.live_youtube_title|default:"Swamiji Divine Live Stream" }}
-                </h3>
-                <span class="live-badge" style="background-color: #ffeef0; color: #d32f2f; border: 1px solid #ffcdd2; font-weight: bold; font-size: 0.85rem; padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
-                    <span class="live-dot" style="display: inline-block; width: 8px; height: 8px; background-color: #d32f2f; border-radius: 50%; animation: pulse-live 1.5s infinite;"></span>
-                    LIVE NOW
-                </span>
-            </div>
-            <div class="video-ratio-container" style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%; border-radius: 8px; overflow: hidden; background: #000;">
-                <iframe src="https://www.youtube-nocookie.com/embed/{{ peetha.get_live_youtube_id }}" referrerpolicy="strict-origin-when-cross-origin" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- 3. About & History Split (Clean 50/50 Grid Layout) -->
-        <div class="about-history-split" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-bottom: 40px;">
-            <div class="content-section" style="background: white; padding: 24px 30px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text); border-bottom: 2px solid var(--peetha-color); padding-bottom: 8px; display: inline-block; margin-top: 0; margin-bottom: 18px;">
-                    {{ labels.about_label }}
-                </h3>
-                <p style="font-size: 1rem; line-height: 1.85; color: var(--text-light); text-align: justify; margin: 0;">
-                    {{ peetha.description }}
-                </p>
-            </div>
-
-            <div class="content-section" style="background: white; padding: 24px 30px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text); border-bottom: 2px solid var(--peetha-color); padding-bottom: 8px; display: inline-block; margin-top: 0; margin-bottom: 18px;">
-                    {{ labels.history_label }}
-                </h3>
-                <div style="font-size: 1rem; line-height: 1.85; color: var(--text-light); text-align: justify; margin: 0;">
-                    {{ peetha.history|linebreaks }}
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. Swamiji Travel Plans (Full-Width Row) -->
-        {% if travel_plans_enabled %}
-        <div class="content-section travel-plans-full-row" style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 40px;">
-            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text); border-bottom: 2px solid var(--peetha-color); padding-bottom: 8px; display: inline-block; margin-top: 0; margin-bottom: 24px;">
-                {{ labels.travel_plans_title }}
-            </h3>
-            <div class="travel-timeline" style="max-width: 100%;">
-                {% for group in travel_plans_grouped %}
-                    <div class="timeline-month-header">
-                        <h4>{{ group.month_str }}</h4>
-                    </div>
-                    <div class="timeline-events" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
-                        {% for event in group.plans %}
-                            <div class="timeline-event-card" style="--peetha-color: var(--peetha-color); margin: 0; width: 100%;">
-                                <div class="event-date">
-                                    <span class="event-day">{{ event.start_date|date:"d" }}</span>
-                                    {% if event.end_date %}
-                                        <span class="event-date-sep">-</span>
-                                        <span class="event-day">{{ event.end_date|date:"d" }}</span>
-                                    {% endif %}
-                                </div>
-                                <div class="event-details">
-                                    <h5>{{ event.title }}</h5>
-                                    <p class="event-location">📍 {{ event.location }}</p>
-                                    {% if event.description %}
-                                        <p class="event-desc">{{ event.description }}</p>
-                                    {% endif %}
-                                </div>
+            <!-- LEFT COLUMN: Compact Heritage Registry & Travel Plans -->
+            <div class="detail-sidebar-column">
+                
+                <!-- 1. Compact Heritage Registry Card -->
+                <div class="peetha-registry-card" style="--peetha-color: var(--peetha-color);">
+                    <h3 class="registry-title">
+                        <span>🔱</span> {{ labels.key_details }}
+                    </h3>
+                    <div class="registry-list">
+                        <div class="registry-item">
+                            <div class="registry-label-box">
+                                <span class="registry-icon">🪶</span>
+                                <span class="registry-label">{{ labels.founding_acharya }}</span>
                             </div>
+                            <span class="registry-value">{{ peetha.acharya }}</span>
+                        </div>
+
+                        {% if peetha.gotra %}
+                        <div class="registry-item">
+                            <div class="registry-label-box">
+                                <span class="registry-icon">🧬</span>
+                                <span class="registry-label">Gotra</span>
+                            </div>
+                            <span class="registry-value">{{ peetha.gotra }}</span>
+                        </div>
+                        {% endif %}
+
+                        {% if peetha.gotra_purusha %}
+                        <div class="registry-item">
+                            <div class="registry-label-box">
+                                <span class="registry-icon">📿</span>
+                                <span class="registry-label">Gotra Purusha</span>
+                            </div>
+                            <span class="registry-value">{{ peetha.gotra_purusha }}</span>
+                        </div>
+                        {% endif %}
+
+                        <div class="registry-item">
+                            <div class="registry-label-box">
+                                <span class="registry-icon">👑</span>
+                                <span class="registry-label">{{ labels.simhasana_label }}</span>
+                            </div>
+                            <span class="registry-value">{{ peetha.simhasana }}</span>
+                        </div>
+
+                        <div class="registry-item">
+                            <div class="registry-label-box">
+                                <span class="registry-icon">🕉️</span>
+                                <span class="registry-label">{{ labels.associated_linga_label }}</span>
+                            </div>
+                            <span class="registry-value">
+                                {% if peetha.associated_linga_map_url %}
+                                    <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer">🔱 {{ peetha.associated_linga }}</a>
+                                {% else %}
+                                    {{ peetha.associated_linga }}
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        {% if peetha.current_swamiji %}
+                        <div class="registry-item">
+                            <div class="registry-label-box">
+                                <span class="registry-icon">☀️</span>
+                                <span class="registry-label">{{ labels.current_swamiji_label }}</span>
+                            </div>
+                            <span class="registry-value">{{ peetha.current_swamiji }}</span>
+                        </div>
+                        {% endif %}
+
+                        <div class="registry-item">
+                            <div class="registry-label-box">
+                                <span class="registry-icon">📍</span>
+                                <span class="registry-label">{{ labels.location_label }}</span>
+                            </div>
+                            <span class="registry-value">{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Compact Travel Plans Timeline -->
+                {% if travel_plans_enabled %}
+                <div class="peetha-travel-card" style="--peetha-color: var(--peetha-color);">
+                    <h3 class="registry-title">
+                        <span>📅</span> {{ labels.travel_plans_title }}
+                    </h3>
+                    <div class="compact-travel-timeline">
+                        {% for group in travel_plans_grouped %}
+                            <div class="compact-timeline-month">{{ group.month_str }}</div>
+                            <div class="compact-timeline-events">
+                                {% for event in group.plans %}
+                                    <div class="compact-event-card">
+                                        <div class="compact-event-date">
+                                            <span class="compact-event-day">{{ event.start_date|date:"d" }}</span>
+                                            {% if event.end_date %}
+                                                <span class="compact-event-sep">-</span>
+                                                <span class="compact-event-day">{{ event.end_date|date:"d" }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="compact-event-details">
+                                            <h6>{{ event.title }}</h6>
+                                            <p class="compact-event-loc">📍 {{ event.location }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% empty %}
+                            <p class="no-data-msg">{{ labels.no_travel_plans }}</p>
                         {% endfor %}
                     </div>
-                {% empty %}
-                    <p class="no-data-msg">{{ labels.no_travel_plans }}</p>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
+                </div>
+                {% endif %}
 
-        <!-- 5. Photo & Video Gallery (Full-Width Row) -->
+            </div>
+
+            <!-- RIGHT COLUMN: Livestream, About & History Descriptions -->
+            <div class="detail-main-column">
+                
+                <!-- Livestream (Top of right column, if active) -->
+                {% if live_stream_enabled and peetha.live_youtube_url %}
+                <div id="live-stream-container" class="live-stream-card" style="--peetha-color: var(--peetha-color);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                        <h3 style="margin: 0; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 10px; color: var(--text); font-size: 1.3rem;">
+                            <span>📺</span> {{ peetha.live_youtube_title|default:"Swamiji Divine Live Stream" }}
+                        </h3>
+                        <span class="live-badge" style="background-color: #ffeef0; color: #d32f2f; border: 1px solid #ffcdd2; font-weight: bold; font-size: 0.8rem; padding: 3px 8px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px;">
+                            <span class="live-dot" style="display: inline-block; width: 6px; height: 6px; background-color: #d32f2f; border-radius: 50%; animation: pulse-live 1.5s infinite;"></span>
+                            LIVE
+                        </span>
+                    </div>
+                    <div class="video-ratio-container" style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%; border-radius: 8px; overflow: hidden; background: #000;">
+                        <iframe src="https://www.youtube-nocookie.com/embed/{{ peetha.get_live_youtube_id }}" referrerpolicy="strict-origin-when-cross-origin" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- About Card -->
+                <div class="peetha-content-card" style="--peetha-color: var(--peetha-color);">
+                    <h3>{{ labels.about_label }}</h3>
+                    <p>{{ peetha.description }}</p>
+                </div>
+
+                <!-- History Card -->
+                <div class="peetha-content-card" style="--peetha-color: var(--peetha-color);">
+                    <h3>{{ labels.history_label }}</h3>
+                    <div class="history-content">
+                        {{ peetha.history|linebreaks }}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 3. Photo & Video Gallery (Full Width at the bottom) -->
         {% if media_gallery_enabled %}
         <div class="content-section media-gallery-full-row" style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 40px; margin-bottom: 50px;">
             <h3 style="font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text); border-bottom: 2px solid var(--peetha-color); padding-bottom: 8px; display: inline-block; margin-top: 0; margin-bottom: 24px;">
@@ -226,7 +220,6 @@
         </div>
         {% endif %}
     </div>
-</section>
 </section>
 
 <!-- ===== TAB: Jagathguru ===== -->
