@@ -38,8 +38,11 @@
         </a>
         {% endif %}
         {% if media_gallery_enabled %}
-        <a href="#gallery" class="sub-nav-link peetha-tab" data-tab="gallery">
-            {{ labels.media_gallery_title|default:"Photos & Videos" }}
+        <a href="#photos" class="sub-nav-link peetha-tab" data-tab="photos">
+            Photos
+        </a>
+        <a href="#videos" class="sub-nav-link peetha-tab" data-tab="videos">
+            Videos
         </a>
         {% endif %}
     </div>
@@ -209,25 +212,51 @@
 </section>
 {% endif %}
 
-<!-- ===== TAB: Gallery ===== -->
+<!-- ===== TAB: Photos ===== -->
 {% if media_gallery_enabled %}
-<section class="detail-body peetha-tab-section" id="tab-gallery">
+<section class="detail-body peetha-tab-section" id="tab-photos">
     <div class="container">
         <div class="peetha-content-card">
             <h3 style="font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text); border-bottom: 2px solid var(--peetha-color); padding-bottom: 8px; display: inline-block; margin-top: 0; margin-bottom: 24px;">
-                {{ labels.media_gallery_title }}
+                Photos
             </h3>
             <div class="media-gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
                 {% for item in media_gallery %}
-                    <div class="gallery-item-card" style="margin: 0; width: 100%;">
-                        {% if item.media_type == 'photo' %}
+                    {% if item.media_type == 'photo' %}
+                        <div class="gallery-item-card" style="margin: 0; width: 100%;">
                             {% if item.photo_file %}
                                 <div class="gallery-image-wrapper" onclick="openLightbox('{{ item.photo_file.url }}', '{{ item.title|escapejs }}', '{{ item.description|escapejs }}')">
                                     <img loading="lazy" src="{{ item.photo_file.url }}" alt="{{ item.title }}">
                                     <div class="gallery-zoom-overlay">View Photo</div>
                                 </div>
                             {% endif %}
-                        {% else %}
+                            <div class="gallery-caption">
+                                <h5>{{ item.title }}</h5>
+                                {% if item.description %}
+                                    <p>{{ item.description }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <p class="no-data-msg">{{ labels.no_media }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== TAB: Videos ===== -->
+<section class="detail-body peetha-tab-section" id="tab-videos">
+    <div class="container">
+        <div class="peetha-content-card">
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text); border-bottom: 2px solid var(--peetha-color); padding-bottom: 8px; display: inline-block; margin-top: 0; margin-bottom: 24px;">
+                Videos
+            </h3>
+            <div class="media-gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
+                {% for item in media_gallery %}
+                    {% if item.media_type == 'video' %}
+                        <div class="gallery-item-card" style="margin: 0; width: 100%;">
                             {% if item.get_youtube_id %}
                                 <div class="gallery-video-wrapper">
                                     <div class="video-ratio-container">
@@ -235,14 +264,14 @@
                                     </div>
                                 </div>
                             {% endif %}
-                        {% endif %}
-                        <div class="gallery-caption">
-                            <h5>{{ item.title }}</h5>
-                            {% if item.description %}
-                                <p>{{ item.description }}</p>
-                            {% endif %}
+                            <div class="gallery-caption">
+                                <h5>{{ item.title }}</h5>
+                                {% if item.description %}
+                                    <p>{{ item.description }}</p>
+                                {% endif %}
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                 {% empty %}
                     <p class="no-data-msg">{{ labels.no_media }}</p>
                 {% endfor %}
