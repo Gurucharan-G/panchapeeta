@@ -25,21 +25,21 @@
 <div class="peetha-sub-navbar" style="--peetha-color: var(--peetha-color);">
     <div class="sub-nav-container">
         <a href="#about" class="sub-nav-link peetha-tab active" data-tab="about">
-            <span>🔱</span> {{ labels.about_label|default:"About" }}
+            {{ labels.about_label|default:"About" }}
         </a>
         {% if peetha.current_swamiji %}
         <a href="#jagathguru" class="sub-nav-link peetha-tab" data-tab="jagathguru">
-            <span>☀️</span> {{ labels.nav_jagathguru|default:"Jagathguru" }}
+            {{ labels.nav_jagathguru|default:"Jagathguru" }}
         </a>
         {% endif %}
         {% if travel_plans_enabled %}
         <a href="#travel-plans" class="sub-nav-link peetha-tab" data-tab="travel-plans">
-            <span>📅</span> {{ labels.travel_plans_title|default:"Travel Plans" }}
+            {{ labels.travel_plans_title|default:"Travel Plans" }}
         </a>
         {% endif %}
         {% if media_gallery_enabled %}
         <a href="#gallery" class="sub-nav-link peetha-tab" data-tab="gallery">
-            <span>🖼️</span> {{ labels.media_gallery_title|default:"Photos & Videos" }}
+            {{ labels.media_gallery_title|default:"Photos & Videos" }}
         </a>
         {% endif %}
     </div>
@@ -57,12 +57,11 @@
                 <!-- 1. Compact Heritage Registry Card -->
                 <div class="peetha-registry-card" style="--peetha-color: var(--peetha-color);">
                     <h3 class="registry-title">
-                        <span>🔱</span> {{ labels.about_label|default:"About" }}
+                        {{ labels.about_label|default:"About" }}
                     </h3>
                     <div class="registry-list">
                         <div class="registry-item">
                             <div class="registry-label-box">
-                                <span class="registry-icon">🪶</span>
                                 <span class="registry-label">{{ labels.founding_acharya }}</span>
                             </div>
                             <span class="registry-value">{{ peetha.acharya }}</span>
@@ -71,7 +70,6 @@
                         {% if peetha.gotra %}
                         <div class="registry-item">
                             <div class="registry-label-box">
-                                <span class="registry-icon">🧬</span>
                                 <span class="registry-label">Gotra</span>
                             </div>
                             <span class="registry-value">{{ peetha.gotra }}</span>
@@ -81,7 +79,6 @@
                         {% if peetha.gotra_purusha %}
                         <div class="registry-item">
                             <div class="registry-label-box">
-                                <span class="registry-icon">📿</span>
                                 <span class="registry-label">Gotra Purusha</span>
                             </div>
                             <span class="registry-value">{{ peetha.gotra_purusha }}</span>
@@ -90,7 +87,6 @@
 
                         <div class="registry-item">
                             <div class="registry-label-box">
-                                <span class="registry-icon">👑</span>
                                 <span class="registry-label">{{ labels.simhasana_label }}</span>
                             </div>
                             <span class="registry-value">{{ peetha.simhasana }}</span>
@@ -98,12 +94,11 @@
 
                         <div class="registry-item">
                             <div class="registry-label-box">
-                                <span class="registry-icon">🕉️</span>
                                 <span class="registry-label">{{ labels.associated_linga_label }}</span>
                             </div>
                             <span class="registry-value">
                                 {% if peetha.associated_linga_map_url %}
-                                    <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer">🔱 {{ peetha.associated_linga }}</a>
+                                    <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer">{{ peetha.associated_linga }}</a>
                                 {% else %}
                                     {{ peetha.associated_linga }}
                                 {% endif %}
@@ -113,7 +108,6 @@
                         {% if peetha.current_swamiji %}
                         <div class="registry-item">
                             <div class="registry-label-box">
-                                <span class="registry-icon">☀️</span>
                                 <span class="registry-label">{{ labels.current_swamiji_label }}</span>
                             </div>
                             <span class="registry-value">{{ peetha.current_swamiji }}</span>
@@ -122,7 +116,6 @@
 
                         <div class="registry-item">
                             <div class="registry-label-box">
-                                <span class="registry-icon">📍</span>
                                 <span class="registry-label">{{ labels.location_label }}</span>
                             </div>
                             <span class="registry-value">{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</span>
@@ -140,7 +133,7 @@
                 <div id="live-stream-container" class="live-stream-card" style="--peetha-color: var(--peetha-color);">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                         <h3 style="margin: 0; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 10px; color: var(--text); font-size: 1.3rem;">
-                            <span>📺</span> {{ peetha.live_youtube_title|default:"Swamiji Divine Live Stream" }}
+                            {{ peetha.live_youtube_title|default:"Swamiji Divine Live Stream" }}
                         </h3>
                         <span class="live-badge" style="background-color: #ffeef0; color: #d32f2f; border: 1px solid #ffcdd2; font-weight: bold; font-size: 0.8rem; padding: 3px 8px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px;">
                             <span class="live-dot" style="display: inline-block; width: 6px; height: 6px; background-color: #d32f2f; border-radius: 50%; animation: pulse-live 1.5s infinite;"></span>
@@ -180,7 +173,7 @@
     <div class="container">
         <div class="peetha-content-card" style="--peetha-color: var(--peetha-color); border-left: none; border-top: 4px solid var(--peetha-color); padding: 30px;">
             <h3 style="font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text); border-bottom: 2px solid var(--peetha-color); padding-bottom: 8px; display: inline-block; margin-top: 0; margin-bottom: 24px;">
-                <span>📅</span> {{ labels.travel_plans_title }}
+                {{ labels.travel_plans_title }}
             </h3>
             <div class="travel-timeline" style="max-width: 100%;">
                 {% for group in travel_plans_grouped %}
@@ -199,7 +192,7 @@
                                 </div>
                                 <div class="event-details" style="flex: 1; min-width: 0;">
                                     <h5 style="margin: 0 0 5px 0; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: bold; color: var(--text);">{{ event.title }}</h5>
-                                    <p class="event-location" style="margin: 0 0 6px 0; font-size: 0.82rem; color: var(--text-muted); font-weight: 500;">📍 {{ event.location }}</p>
+                                    <p class="event-location" style="margin: 0 0 6px 0; font-size: 0.82rem; color: var(--text-muted); font-weight: 500;">{{ event.location }}</p>
                                     {% if event.description %}
                                         <p class="event-desc" style="margin: 0; font-size: 0.86rem; color: var(--text-light); line-height: 1.4;">{{ event.description }}</p>
                                     {% endif %}
@@ -222,7 +215,7 @@
     <div class="container">
         <div class="peetha-content-card" style="--peetha-color: var(--peetha-color); border-left: none; border-top: 4px solid var(--peetha-color); padding: 30px;">
             <h3 style="font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text); border-bottom: 2px solid var(--peetha-color); padding-bottom: 8px; display: inline-block; margin-top: 0; margin-bottom: 24px;">
-                <span>🖼️</span> {{ labels.media_gallery_title }}
+                {{ labels.media_gallery_title }}
             </h3>
             <div class="media-gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
                 {% for item in media_gallery %}
