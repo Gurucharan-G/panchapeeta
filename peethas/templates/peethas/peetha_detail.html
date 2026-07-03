@@ -1238,8 +1238,24 @@
     // Listen for hash changes
     window.addEventListener('hashchange', handlePeethaTabs);
 
+    // Dynamically align the switcher dropdown's empty gap right under the active tab link
+    function alignSwitcherDropdown() {
+        const dropdown = document.querySelector('.nav-peetha-dropdown');
+        if (dropdown) {
+            const menu = dropdown.querySelector('.nav-dropdown-menu');
+            const gap = dropdown.querySelector('.nav-dropdown-gap-item');
+            if (menu && gap) {
+                const gapCenter = gap.offsetLeft + (gap.offsetWidth / 2);
+                const offsetLeft = (menu.offsetWidth / 2) - gapCenter;
+                menu.style.left = `calc(50% + ${offsetLeft}px)`;
+            }
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         handlePeethaTabs();
+        alignSwitcherDropdown();
+        window.addEventListener('resize', alignSwitcherDropdown);
 
         // Add click listeners to peetha tab nav links
         document.querySelectorAll('.peetha-tab').forEach(link => {
