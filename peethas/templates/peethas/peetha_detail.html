@@ -27,56 +27,78 @@
 <!-- ===== TAB: About / Peetha Info ===== --><section class="detail-body peetha-tab-section active" id="tab-about">
     <div class="container">
         <!-- 1. Full-Width Key Details Section at the top -->
-        <div class="info-card key-details-top-card" style="--peetha-color: var(--peetha-color); margin-bottom: 40px; padding: 24px 30px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: white;">
-            <h3 style="margin-top: 0; margin-bottom: 24px; font-family: 'Playfair Display', serif; font-size: 1.45rem; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+        <!-- 1. Full-Width Key Details Section at the top -->
+        <div class="info-card key-details-top-card" style="--peetha-color: var(--peetha-color);">
+            <h3>
                 <span>🔱</span> {{ labels.key_details }}
             </h3>
-            <div class="key-details-top-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
-                <div class="detail-item-top" style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; background: rgba(0,0,0,0.015); border-radius: 8px; border-left: 4px solid var(--peetha-color);">
-                    <span class="detail-label" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 700;">{{ labels.founding_acharya }}</span>
-                    <span class="detail-value" style="font-size: 0.95rem; font-weight: 600; color: var(--text);">{{ peetha.acharya }}</span>
+            <div class="key-details-top-grid">
+                <div class="detail-item-top">
+                    <div class="detail-icon-box">🪶</div>
+                    <div class="detail-text-box">
+                        <span class="detail-label">{{ labels.founding_acharya }}</span>
+                        <span class="detail-value">{{ peetha.acharya }}</span>
+                    </div>
                 </div>
                 
                 {% if peetha.gotra %}
-                <div class="detail-item-top" style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; background: rgba(0,0,0,0.015); border-radius: 8px; border-left: 4px solid var(--peetha-color);">
-                    <span class="detail-label" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 700;">Gotra</span>
-                    <span class="detail-value" style="font-size: 0.95rem; font-weight: 600; color: var(--text);">{{ peetha.gotra }}</span>
+                <div class="detail-item-top">
+                    <div class="detail-icon-box">🧬</div>
+                    <div class="detail-text-box">
+                        <span class="detail-label">Gotra</span>
+                        <span class="detail-value">{{ peetha.gotra }}</span>
+                    </div>
                 </div>
                 {% endif %}
 
                 {% if peetha.gotra_purusha %}
-                <div class="detail-item-top" style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; background: rgba(0,0,0,0.015); border-radius: 8px; border-left: 4px solid var(--peetha-color);">
-                    <span class="detail-label" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 700;">Gotra Purusha</span>
-                    <span class="detail-value" style="font-size: 0.95rem; font-weight: 600; color: var(--text);">{{ peetha.gotra_purusha }}</span>
+                <div class="detail-item-top">
+                    <div class="detail-icon-box">📿</div>
+                    <div class="detail-text-box">
+                        <span class="detail-label">Gotra Purusha</span>
+                        <span class="detail-value">{{ peetha.gotra_purusha }}</span>
+                    </div>
                 </div>
                 {% endif %}
 
-                <div class="detail-item-top" style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; background: rgba(0,0,0,0.015); border-radius: 8px; border-left: 4px solid var(--peetha-color);">
-                    <span class="detail-label" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 700;">{{ labels.simhasana_label }}</span>
-                    <span class="detail-value" style="font-size: 0.95rem; font-weight: 600; color: var(--text);">{{ peetha.simhasana }}</span>
+                <div class="detail-item-top">
+                    <div class="detail-icon-box">👑</div>
+                    <div class="detail-text-box">
+                        <span class="detail-label">{{ labels.simhasana_label }}</span>
+                        <span class="detail-value">{{ peetha.simhasana }}</span>
+                    </div>
                 </div>
 
-                <div class="detail-item-top" style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; background: rgba(0,0,0,0.015); border-radius: 8px; border-left: 4px solid var(--peetha-color);">
-                    <span class="detail-label" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 700;">{{ labels.associated_linga_label }}</span>
-                    <span class="detail-value" style="font-size: 0.95rem; font-weight: 600; color: var(--text);">
-                        {% if peetha.associated_linga_map_url %}
-                            <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer" style="color: var(--saffron); text-decoration: none;">🔱 {{ peetha.associated_linga }}</a>
-                        {% else %}
-                            {{ peetha.associated_linga }}
-                        {% endif %}
-                    </span>
+                <div class="detail-item-top">
+                    <div class="detail-icon-box">🕉️</div>
+                    <div class="detail-text-box">
+                        <span class="detail-label">{{ labels.associated_linga_label }}</span>
+                        <span class="detail-value">
+                            {% if peetha.associated_linga_map_url %}
+                                <a href="{{ peetha.associated_linga_map_url }}" target="_blank" rel="noopener noreferrer" class="linga-link-glow" style="color: var(--saffron); text-decoration: none;">🔱 {{ peetha.associated_linga }}</a>
+                            {% else %}
+                                {{ peetha.associated_linga }}
+                            {% endif %}
+                        </span>
+                    </div>
                 </div>
 
                 {% if peetha.current_swamiji %}
-                <div class="detail-item-top" style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; background: rgba(0,0,0,0.015); border-radius: 8px; border-left: 4px solid var(--peetha-color);">
-                    <span class="detail-label" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 700;">{{ labels.current_swamiji_label }}</span>
-                    <span class="detail-value" style="font-size: 0.95rem; font-weight: 600; color: var(--text);">{{ peetha.current_swamiji }}</span>
+                <div class="detail-item-top">
+                    <div class="detail-icon-box">☀️</div>
+                    <div class="detail-text-box">
+                        <span class="detail-label">{{ labels.current_swamiji_label }}</span>
+                        <span class="detail-value">{{ peetha.current_swamiji }}</span>
+                    </div>
                 </div>
                 {% endif %}
 
-                <div class="detail-item-top" style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; background: rgba(0,0,0,0.015); border-radius: 8px; border-left: 4px solid var(--peetha-color);">
-                    <span class="detail-label" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 700;">{{ labels.location_label }}</span>
-                    <span class="detail-value" style="font-size: 0.95rem; font-weight: 600; color: var(--text);">{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</span>
+                <div class="detail-item-top">
+                    <div class="detail-icon-box">📍</div>
+                    <div class="detail-text-box">
+                        <span class="detail-label">{{ labels.location_label }}</span>
+                        <span class="detail-value">{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -3970,17 +3970,112 @@ body.theme-dusk-saffron .auth-modal-close-btn:hover {
     color: #fff;
 }
 
+/* Premium Key Details Top Card Redesign */
+.key-details-top-card {
+    background: linear-gradient(135deg, #ffffff, #fbfaf8);
+    border: 1px solid rgba(0,0,0,0.06) !important;
+    border-radius: 16px !important;
+    padding: 30px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04) !important;
+    margin-bottom: 40px;
+}
+.key-details-top-card h3 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.key-details-top-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+.detail-item-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: #ffffff;
+    border: 1px solid #f0edf8;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.015);
+}
+.detail-item-top:hover {
+    transform: translateY(-4px);
+    border-color: var(--peetha-color);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+.detail-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.025);
+    font-size: 1.35rem;
+    color: var(--peetha-color);
+    transition: all 0.3s ease;
+}
+.detail-item-top:hover .detail-icon-box {
+    background: var(--peetha-color);
+    color: #ffffff;
+}
+.detail-text-box {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    overflow: hidden;
+}
+.detail-item-top .detail-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+.detail-item-top .detail-value {
+    font-size: 0.94rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.detail-item-top:hover .detail-value {
+    white-space: normal;
+    overflow: visible;
+}
+
 /* Dusk Theme support for Top Key Details Card */
 body.theme-dusk-saffron .key-details-top-card {
-    background: #1e1b19 !important;
+    background: linear-gradient(135deg, #181513, #1e1b19) !important;
     border-color: #36312d !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
 }
 body.theme-dusk-saffron .key-details-top-card h3 {
     color: #e2d4c5 !important;
     border-bottom-color: #36312d !important;
 }
 body.theme-dusk-saffron .detail-item-top {
+    background: #1e1b19 !important;
+    border-color: #2b2521 !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+body.theme-dusk-saffron .detail-item-top:hover {
+    border-color: var(--peetha-color) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+}
+body.theme-dusk-saffron .detail-icon-box {
     background: rgba(255, 255, 255, 0.02) !important;
 }
 body.theme-dusk-saffron .detail-item-top .detail-value {
