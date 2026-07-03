@@ -2702,12 +2702,12 @@ img {
 }
 
 .jagathguru-photo-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-top: 4px solid var(--peetha-color);
-    border-radius: var(--radius);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: 4px solid var(--peetha-color);
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
 }
 
 .jagathguru-img {
@@ -2738,12 +2738,12 @@ img {
 }
 
 .jagathguru-info-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-top: 4px solid var(--peetha-color);
-    border-radius: var(--radius);
-    padding: 28px 24px;
-    box-shadow: var(--shadow);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: 4px solid var(--peetha-color);
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
 }
 
 .jagathguru-info-card h3 {
@@ -2780,13 +2780,13 @@ img {
 }
 
 .coming-soon-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-top: 4px solid var(--peetha-color);
-    border-radius: var(--radius);
-    padding: 48px 40px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: 4px solid var(--peetha-color);
+    border-radius: 16px;
+    padding: 30px 24px;
     text-align: center;
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
     max-width: 500px;
     width: 100%;
 }
@@ -3141,13 +3141,13 @@ img {
 }
 
 .contact-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-top: 4px solid var(--peetha-color);
-    border-radius: var(--radius);
-    padding: 28px 24px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: 4px solid var(--peetha-color);
+    border-radius: 16px;
+    padding: 20px 24px;
     text-align: center;
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -4222,7 +4222,11 @@ body.theme-dusk-saffron .auth-modal-close-btn:hover {
 /* Dusk Theme Compatibility overrides */
 body.theme-dusk-saffron .peetha-registry-card,
 body.theme-dusk-saffron .peetha-travel-card,
-body.theme-dusk-saffron .peetha-content-card {
+body.theme-dusk-saffron .peetha-content-card,
+body.theme-dusk-saffron .jagathguru-photo-card,
+body.theme-dusk-saffron .jagathguru-info-card,
+body.theme-dusk-saffron .coming-soon-card,
+body.theme-dusk-saffron .contact-card {
     background: #1e1b19 !important;
     border-color: #2b2521 !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
@@ -4277,99 +4281,103 @@ body.theme-dusk-saffron .compact-event-card::before {
     }
 }
 
-/* Premium Segmented Local Sub-Navbar styles */
+/* Premium Local Sub-Navbar styles */
 .peetha-sub-navbar {
     width: 100%;
-    background: transparent;
-    border: none;
+    background: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     position: sticky;
     top: 76px; /* Sits cleanly below the scrolled main header */
     z-index: 99;
     margin-bottom: 20px;
-    padding: 10px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
 }
 .sub-nav-container {
-    max-width: max-content;
+    max-width: 1200px;
     margin: 0 auto;
-    background: rgba(0, 0, 0, 0.035);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 100px;
-    padding: 4px;
+    padding: 0 24px;
     display: flex;
     align-items: center;
-    gap: 4px;
-    height: 46px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+    justify-content: center;
+    gap: 32px;
+    height: 52px;
 }
 .sub-nav-link {
     font-family: 'Inter', sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     font-weight: 700;
     color: var(--text-muted);
     display: flex;
     align-items: center;
+    gap: 8px;
     height: 100%;
-    padding: 0 20px;
-    border-radius: 100px;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0 4px;
+    position: relative;
+    transition: color 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     cursor: pointer;
-    text-decoration: none;
+}
+.sub-nav-link span {
+    font-size: 1.05rem;
 }
 .sub-nav-link:hover {
     color: var(--peetha-color);
-    background: rgba(0, 0, 0, 0.025);
+}
+.sub-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--peetha-color);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
 }
 .sub-nav-link.active {
-    color: #ffffff !important;
-    background: var(--peetha-color);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--peetha-color) 30%, transparent);
-    transform: translateY(-1px);
+    color: var(--peetha-color);
+}
+.sub-nav-link.active::after {
+    transform: scaleX(1);
+    transform-origin: left;
 }
 
-/* Dusk Theme Compatibility overrides for Segmented Control Sub-Navbar */
-body.theme-dusk-saffron .sub-nav-container {
-    background: rgba(255, 255, 255, 0.03) !important;
-    border-color: rgba(255, 255, 255, 0.06) !important;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+/* Dusk Theme Compatibility overrides for Sub-Navbar */
+body.theme-dusk-saffron .peetha-sub-navbar {
+    background: #181513 !important;
+    border-bottom-color: #2b2521 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
 }
 body.theme-dusk-saffron .sub-nav-link {
     color: #bfaea2 !important;
 }
-body.theme-dusk-saffron .sub-nav-link:hover {
-    color: var(--peetha-color) !important;
-    background: rgba(255, 255, 255, 0.02) !important;
-}
+body.theme-dusk-saffron .sub-nav-link:hover,
 body.theme-dusk-saffron .sub-nav-link.active {
-    color: #ffffff !important;
-    background: var(--peetha-color) !important;
-    box-shadow: 0 4px 15px color-mix(in srgb, var(--peetha-color) 40%, transparent) !important;
+    color: var(--peetha-color) !important;
 }
 
 /* Subnav Mobile responsiveness overrides */
 @media (max-width: 768px) {
     .peetha-sub-navbar {
         top: 66px;
-        padding: 8px 0;
     }
     .sub-nav-container {
-        max-width: 92%;
-        gap: 2px;
-        height: 42px;
+        gap: 16px;
+        height: 48px;
         overflow-x: auto;
         justify-content: flex-start;
         -webkit-overflow-scrolling: touch;
-        border-radius: 30px;
     }
     .sub-nav-container::-webkit-scrollbar {
         display: none;
     }
     .sub-nav-link {
-        font-size: 0.72rem;
+        font-size: 0.76rem;
         white-space: nowrap;
-        padding: 0 14px;
-        border-radius: 30px;
     }
 }
 
