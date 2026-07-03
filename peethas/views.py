@@ -472,6 +472,30 @@ def peetha_detail(request, slug):
     peetha = get_object_or_404(Peetha, slug=slug)
     peetha = translate_object(peetha, lang)
 
+    # Dynamic Gotra & Gotra Purusha details based on Peetha slug
+    gotra_map = {
+        'rambhapuri': {'gotra': 'Veera Gotra', 'gotra_purusha': 'Jagadguru Renukacharya'},
+        'ujjaini': {'gotra': 'Sadachar Gotra', 'gotra_purusha': 'Jagadguru Marulasiddharadhya'},
+        'kedara': {'gotra': 'Ekottara Gotra', 'gotra_purusha': 'Jagadguru Ekandaradhya'},
+        'srisaila': {'gotra': 'Panchavarna Gotra', 'gotra_purusha': 'Jagadguru Panditaradhya'},
+        'kashi': {'gotra': 'Dharmottara Gotra', 'gotra_purusha': 'Jagadguru Vishwaradhya'},
+    }
+    
+    gotra_translations = {
+        'kn': {
+            'rambhapuri': {'gotra': 'ವೀರ ಗೋತ್ರ', 'gotra_purusha': 'ಜಗದ್ಗುರು ರೇಣುಕಾಚಾರ್ಯ'},
+            'ujjaini': {'gotra': 'ಸದಾಚಾರ ಗೋತ್ರ', 'gotra_purusha': 'ಜಗದ್ಗುರು ಮರುಳಸಿದ್ದಾರಾಧ್ಯ'},
+            'kedara': {'gotra': 'ಏಕೋತ್ತರ ಗೋತ್ರ', 'gotra_purusha': 'ಜಗದ್ಗುರು ಏಕಾದಾರಾಧ್ಯ'},
+            'srisaila': {'gotra': 'ಪಂಚವರ್ಣ ಗೋತ್ರ', 'gotra_purusha': 'ಜಗದ್ಗುರು ಪಂಡಿತಾರಾಧ್ಯ'},
+            'kashi': {'gotra': 'ಧರ್ಮೋತ್ತರ ಗೋತ್ರ', 'gotra_purusha': 'ಜಗದ್ಗುರು ವಿಶ್ವಾರಾಧ್ಯ'},
+        }
+    }
+    
+    details = gotra_translations.get(lang, {}).get(slug, gotra_map.get(slug, {'gotra': '', 'gotra_purusha': ''}))
+    peetha.gotra = details['gotra']
+    peetha.gotra_purusha = details['gotra_purusha']
+
+
     # 1. Fetch Travel Plans from current month onwards
     today = datetime.date.today()
     start_of_current_month = datetime.date(today.year, today.month, 1)

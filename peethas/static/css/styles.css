@@ -3970,6 +3970,26 @@ body.theme-dusk-saffron .auth-modal-close-btn:hover {
     color: #fff;
 }
 
+/* Dusk Theme support for Top Key Details Card */
+body.theme-dusk-saffron .key-details-top-card {
+    background: #1e1b19 !important;
+    border-color: #36312d !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+}
+body.theme-dusk-saffron .key-details-top-card h3 {
+    color: #e2d4c5 !important;
+    border-bottom-color: #36312d !important;
+}
+body.theme-dusk-saffron .detail-item-top {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+body.theme-dusk-saffron .detail-item-top .detail-value {
+    color: #e2d4c5 !important;
+}
+body.theme-dusk-saffron .detail-item-top .detail-value a {
+    color: #f97316 !important;
+}
+
 
 
 
