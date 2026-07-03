@@ -24,9 +24,6 @@
 <!-- ===== Peetha Sub-Navbar (Local Tabs) ===== -->
 <div class="peetha-sub-navbar" style="--peetha-color: var(--peetha-color);">
     <div class="sub-nav-container">
-        <a href="#about" class="sub-nav-link peetha-tab active" data-tab="about">
-            <span>🔱</span> {{ labels.key_details }}
-        </a>
         {% if peetha.current_swamiji %}
         <a href="#jagathguru" class="sub-nav-link peetha-tab" data-tab="jagathguru">
             <span>☀️</span> {{ labels.nav_jagathguru|default:"Jagathguru" }}
