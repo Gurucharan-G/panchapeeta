@@ -22,7 +22,7 @@
 </section>
 
 <!-- ===== Peetha Sub-Navbar (Local Tabs) ===== -->
-<div class="peetha-sub-navbar" style="--peetha-color: var(--peetha-color);">
+<div class="peetha-sub-navbar" style="--peetha-color: {{ peetha.color }};">
     <div class="sub-nav-container">
         <a href="#about" class="sub-nav-link peetha-tab active" data-tab="about">
             {{ labels.about_label|default:"About" }}
@@ -213,7 +213,7 @@
 {% if media_gallery_enabled %}
 <section class="detail-body peetha-tab-section" id="tab-gallery">
     <div class="container">
-        <div class="peetha-content-card" style="--peetha-color: var(--peetha-color); border-left: none; border-top: 4px solid var(--peetha-color); padding: 30px;">
+        <div class="peetha-content-card" style="border-left: none; border-top: 4px solid var(--peetha-color); padding: 30px;">
             <h3 style="font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text); border-bottom: 2px solid var(--peetha-color); padding-bottom: 8px; display: inline-block; margin-top: 0; margin-bottom: 24px;">
                 {{ labels.media_gallery_title }}
             </h3>
@@ -257,7 +257,7 @@
 <section class="detail-body peetha-tab-section" id="tab-jagathguru">
     <div class="container">
         <div class="jagathguru-section">
-            <div class="jagathguru-header" style="--peetha-color: var(--peetha-color);">
+            <div class="jagathguru-header">
                 <div class="section-decor">
                     <span class="decor-line"></span>
                     <span class="decor-line"></span>
@@ -266,7 +266,7 @@
             </div>
 
             <div class="jagathguru-profile">
-                <div class="jagathguru-photo-card" style="--peetha-color: var(--peetha-color);">
+                <div class="jagathguru-photo-card">
                     {% if peetha.swamiji_photo %}
                         <img loading="lazy" src="{{ peetha.swamiji_photo.url }}" alt="{{ peetha.current_swamiji }}" class="jagathguru-img">
                     {% else %}
@@ -276,7 +276,7 @@
                     {% endif %}
                 </div>
 
-                <div class="jagathguru-info-card" style="--peetha-color: var(--peetha-color);">
+                <div class="jagathguru-info-card">
                     <h3>{{ peetha.current_swamiji }}</h3>
                     <p class="jagathguru-peetha-name" style="color: var(--peetha-color);">{{ peetha.name }}</p>
 
@@ -300,7 +300,7 @@
 <section class="detail-body peetha-tab-section" id="tab-pooja-booking">
     <div class="container">
         <div class="pooja-section">
-            <div class="jagathguru-header" style="--peetha-color: var(--peetha-color);">
+            <div class="jagathguru-header">
                 <div class="section-decor">
                     <span class="decor-line"></span>
                     <span class="decor-line"></span>
@@ -353,7 +353,7 @@
                 </div>
             {% else %}
                 <div class="pooja-coming-soon">
-                    <div class="coming-soon-card" style="--peetha-color: var(--peetha-color);">
+                    <div class="coming-soon-card">
                         <h3>Online Pooja Booking</h3>
                         {% if not pooja_booking_enabled %}
                             <p>Online pooja booking facility for <strong>{{ peetha.name }}</strong> is currently unavailable or under maintenance.</p>
@@ -375,7 +375,7 @@
 <section class="detail-body peetha-tab-section" id="tab-accommodation">
     <div class="container">
         <div class="pooja-section">
-            <div class="jagathguru-header" style="--peetha-color: var(--peetha-color);">
+            <div class="jagathguru-header">
                 <div class="section-decor">
                     <span class="decor-line"></span>
                     <span class="decor-line"></span>
@@ -475,7 +475,7 @@
                 </div>
             {% else %}
                 <div class="pooja-coming-soon">
-                    <div class="coming-soon-card" style="--peetha-color: var(--peetha-color);">
+                    <div class="coming-soon-card">
                         <h3>Accommodation Facility</h3>
                         <p>Devotee accommodation bookings for <strong>{{ peetha.name }}</strong> are currently unavailable or undergoing maintenance.</p>
                         <p class="coming-soon-subtitle">Please contact the Peetha directly for stay options and availability inquiries.</p>
@@ -494,7 +494,7 @@
 <section class="detail-body peetha-tab-section" id="tab-contact-us">
     <div class="container">
         <div class="contact-section">
-            <div class="jagathguru-header" style="--peetha-color: var(--peetha-color);">
+            <div class="jagathguru-header">
                 <div class="section-decor">
                     <span class="decor-line"></span>
                     <span class="decor-line"></span>
@@ -504,27 +504,27 @@
 
             <div class="contact-cards-grid">
                 {% if peetha.contact_address %}
-                <div class="contact-card" style="--peetha-color: var(--peetha-color);">
+                <div class="contact-card">
                     <h4>Address</h4>
                     <p>{{ peetha.contact_address|linebreaks }}</p>
                 </div>
                 {% endif %}
 
                 {% if peetha.contact_phone %}
-                <div class="contact-card" style="--peetha-color: var(--peetha-color);">
+                <div class="contact-card">
                     <h4>Phone</h4>
                     <p><a href="tel:{{ peetha.contact_phone }}">{{ peetha.contact_phone }}</a></p>
                 </div>
                 {% endif %}
 
                 {% if peetha.contact_email %}
-                <div class="contact-card" style="--peetha-color: var(--peetha-color);">
+                <div class="contact-card">
                     <h4>Email</h4>
                     <p><a href="mailto:{{ peetha.contact_email }}">{{ peetha.contact_email }}</a></p>
                 </div>
                 {% endif %}
 
-                <div class="contact-card" style="--peetha-color: var(--peetha-color);">
+                <div class="contact-card">
                     <h4>{{ peetha.name }}</h4>
                     <p>{{ peetha.location }}{% if lang == 'en' and peetha.state %}, {{ peetha.state }}{% endif %}</p>
                 </div>
@@ -532,7 +532,7 @@
 
             {% if not peetha.contact_address and not peetha.contact_phone and not peetha.contact_email %}
             <div class="pooja-coming-soon">
-                <div class="coming-soon-card" style="--peetha-color: var(--peetha-color);">
+                <div class="coming-soon-card">
                     <h3>Contact Information</h3>
                     <p>Contact details for <strong>{{ peetha.name }}</strong> will be updated soon.</p>
                 </div>
