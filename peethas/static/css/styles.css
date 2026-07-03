@@ -4429,6 +4429,9 @@ body.theme-dusk-saffron .sub-nav-link.active {
 .nav-peetha-dropdown .nav-dropdown-gap-item {
     visibility: hidden;
     pointer-events: none;
+    width: 60px; /* Balanced, reduced gap size */
+    padding: 8px 0; /* Clear horizontal padding to narrow the gap */
+    flex-shrink: 0;
 }
 
 /* Elegant vertical divider lines between horizontal elements (even if adjacent to gap) */
