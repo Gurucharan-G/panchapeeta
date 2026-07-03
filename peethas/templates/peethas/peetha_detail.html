@@ -5,7 +5,20 @@
 
 {% block nav_items %}
 <a href="{% url 'peethas:home' %}" class="nav-link">{{ labels.nav_home|default:"Home" }}</a>
-<a href="#about" class="nav-link peetha-tab active" data-tab="about">{{ peetha.name }}</a>
+<div class="nav-peetha-dropdown">
+    <a href="#about" class="nav-link peetha-tab active" data-tab="about" style="display: inline-flex; align-items: center; gap: 4px;">
+        {{ peetha.name }} <span class="nav-dropdown-arrow" style="font-size: 0.7rem; transition: transform 0.2s;">▼</span>
+    </a>
+    <div class="nav-dropdown-menu">
+        {% for p in all_peethas %}
+            {% if p.id != peetha.id %}
+                <a href="{% url 'peethas:peetha_detail' p.id %}" class="nav-dropdown-item">
+                    {{ p.name }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
 {% if pooja_booking_enabled %}<a href="#pooja-booking" class="nav-link peetha-tab" data-tab="pooja-booking">{{ labels.nav_pooja_booking|default:"Pooja Booking" }}</a>{% endif %}
 {% if accommodation_enabled %}<a href="#accommodation" class="nav-link peetha-tab" data-tab="accommodation">Accommodation</a>{% endif %}
 {% if contact_section_enabled %}<a href="#contact-us" class="nav-link peetha-tab" data-tab="contact-us">{{ labels.nav_contact_us|default:"Contact Us" }}</a>{% endif %}

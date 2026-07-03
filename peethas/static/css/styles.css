@@ -4362,5 +4362,79 @@ body.theme-dusk-saffron .sub-nav-link.active {
 }
 
 
+/* -------------------------------------------------------------
+   4. Main Nav Peetha Switcher Dropdown (Hover Switcher)
+   ------------------------------------------------------------- */
+.nav-peetha-dropdown {
+    position: relative;
+    display: inline-block;
+}
 
+/* Arrow rotating transition */
+.nav-peetha-dropdown:hover .nav-dropdown-arrow {
+    transform: rotate(180deg);
+    color: var(--peetha-color);
+}
 
+/* Dropdown Menu styling - premium styling */
+.nav-peetha-dropdown .nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: #ffffff;
+    border: 1px solid rgba(184, 134, 11, 0.15);
+    border-top: 3px solid var(--peetha-color); /* Matches card style */
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 6px 0;
+    min-width: 210px;
+    z-index: 1100;
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                opacity 0.2s ease, 
+                visibility 0.2s ease;
+}
+
+/* Hover to show dropdown */
+.nav-peetha-dropdown:hover .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Dropdown Items styling */
+.nav-peetha-dropdown .nav-dropdown-item {
+    display: block;
+    padding: 10px 18px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-light);
+    text-decoration: none;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+/* Hover style on items: slides in slightly with color change */
+.nav-peetha-dropdown .nav-dropdown-item:hover {
+    color: var(--peetha-color);
+    background: color-mix(in srgb, var(--peetha-color) 6%, transparent);
+    padding-left: 22px;
+}
+
+/* Support for Dusk Dark Theme */
+body.theme-dusk-saffron .nav-peetha-dropdown .nav-dropdown-menu {
+    background: #1e1b18;
+    border-color: rgba(229, 193, 88, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+body.theme-dusk-saffron .nav-peetha-dropdown .nav-dropdown-item {
+    color: #e5c158;
+}
+body.theme-dusk-saffron .nav-peetha-dropdown .nav-dropdown-item:hover {
+    color: #ffffff;
+    background: rgba(229, 193, 88, 0.1);
+}
