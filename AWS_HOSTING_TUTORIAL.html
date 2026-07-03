@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Hosting Tutorial — Veerashaiva Pancha Peethas</title>
+    <meta name="description" content="Complete step-by-step guide to deploying the Panchapeetas Django application on AWS Free Tier with EC2, RDS, S3, Nginx, and Gunicorn.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --bg: #0f1117;
+            --bg-secondary: #161822;
+            --bg-tertiary: #1e2030;
+            --bg-card: #1a1d2e;
+            --border: #2a2d3e;
+            --border-highlight: #3d4157;
+            --text-primary: #e2e5f0;
+            --text-secondary: #a0a5b8;
+            --text-muted: #6b7089;
+            --accent: #f97316;
+            --accent-hover: #fb923c;
+            --accent-glow: rgba(249, 115, 22, 0.15);
+            --green: #4ade80;
+            --green-bg: rgba(74, 222, 128, 0.1);
+            --green-border: rgba(74, 222, 128, 0.25);
+            --blue: #60a5fa;
+            --blue-bg: rgba(96, 165, 250, 0.1);
+            --blue-border: rgba(96, 165, 250, 0.25);
+            --yellow: #fbbf24;
+            --yellow-bg: rgba(251, 191, 36, 0.1);
+            --yellow-border: rgba(251, 191, 36, 0.25);
+            --red: #f87171;
+            --red-bg: rgba(248, 113, 113, 0.1);
+            --red-border: rgba(248, 113, 113, 0.25);
+            --purple: #c084fc;
+            --code-bg: #12141f;
+            --code-border: #252840;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* ===== HEADER ===== */
+        .hero {
+            background: linear-gradient(135deg, #1a0e2e 0%, #0f1117 40%, #0c1a1a 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 60px 40px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(249, 115, 22, 0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(96, 165, 250, 0.04) 0%, transparent 50%);
+            animation: heroGlow 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-5%, 3%); }
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+            position: relative;
+            background: linear-gradient(135deg, #fff 0%, #f97316 50%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero .badge-row {
+            margin-top: 24px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid;
+        }
+
+        .badge-free { background: var(--green-bg); color: var(--green); border-color: var(--green-border); }
+        .badge-info { background: var(--blue-bg); color: var(--blue); border-color: var(--blue-border); }
+        .badge-warn { background: var(--yellow-bg); color: var(--yellow); border-color: var(--yellow-border); }
+
+        /* ===== LAYOUT ===== */
+        .layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ===== SIDEBAR NAV ===== */
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 30px 20px;
+            border-right: 1px solid var(--border);
+            background: var(--bg-secondary);
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        .sidebar-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 7px 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.82rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+            line-height: 1.4;
+        }
+
+        .sidebar a:hover {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .sidebar a.active {
+            color: var(--accent);
+            background: var(--accent-glow);
+            font-weight: 600;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .content {
+            flex: 1;
+            min-width: 0;
+            padding: 40px 50px 80px;
+            max-width: 900px;
+        }
+
+        /* ===== HEADINGS ===== */
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 60px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+            letter-spacing: -0.02em;
+            scroll-margin-top: 30px;
+        }
+
+        h2:first-of-type { margin-top: 0; }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 36px;
+            margin-bottom: 14px;
+            letter-spacing: -0.01em;
+        }
+
+        /* ===== PARAGRAPHS ===== */
+        p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        strong { color: var(--text-primary); font-weight: 600; }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+        /* ===== TABLES ===== */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 11px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+        td strong { color: var(--accent); }
+
+        td code {
+            background: var(--code-bg);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            border: 1px solid var(--code-border);
+        }
+
+        /* ===== CODE BLOCKS ===== */
+        .code-block {
+            position: relative;
+            margin: 18px 0;
+            border-radius: 10px;
+            border: 1px solid var(--code-border);
+            background: var(--code-bg);
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--code-border);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover { color: var(--text-primary); border-color: var(--border-highlight); }
+        .copy-btn.copied { color: var(--green); border-color: var(--green-border); }
+
+        pre {
+            padding: 18px 20px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.84rem;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        pre .comment { color: #5a6178; }
+        pre .keyword { color: var(--purple); }
+        pre .string { color: var(--green); }
+        pre .added { color: var(--green); }
+        pre .removed { color: var(--red); }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        p code, li code {
+            background: var(--code-bg);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 0.84rem;
+            border: 1px solid var(--code-border);
+            color: var(--accent);
+        }
+
+        /* ===== ALERT BOXES ===== */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid;
+            font-size: 0.9rem;
+        }
+
+        .alert-title {
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .alert-tip { background: var(--green-bg); border-color: var(--green-border); }
+        .alert-tip .alert-title { color: var(--green); }
+        .alert-tip p { color: #9ae6b4; }
+
+        .alert-note { background: var(--blue-bg); border-color: var(--blue-border); }
+        .alert-note .alert-title { color: var(--blue); }
+        .alert-note p { color: #93c5fd; }
+
+        .alert-important { background: var(--purple); background: rgba(192, 132, 252, 0.1); border-color: rgba(192, 132, 252, 0.25); }
+        .alert-important .alert-title { color: var(--purple); }
+        .alert-important p { color: #d8b4fe; }
+
+        .alert-warning { background: var(--yellow-bg); border-color: var(--yellow-border); }
+        .alert-warning .alert-title { color: var(--yellow); }
+        .alert-warning p { color: #fde68a; }
+
+        .alert-caution { background: var(--red-bg); border-color: var(--red-border); }
+        .alert-caution .alert-title { color: var(--red); }
+        .alert-caution p { color: #fca5a5; }
+
+        .alert p { margin-bottom: 0; }
+
+        /* ===== LISTS ===== */
+        ul, ol {
+            padding-left: 24px;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        li { margin-bottom: 6px; }
+
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
+
+        /* ===== HR ===== */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+
+        /* ===== MERMAID ===== */
+        .mermaid-wrap {
+            margin: 24px 0;
+            padding: 30px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        .mermaid { display: inline-block; }
+
+        /* ===== DIFF BLOCK ===== */
+        .diff-line-added { color: var(--green); }
+        .diff-line-removed { color: var(--red); }
+        .diff-line-context { color: var(--text-muted); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .sidebar { display: none; }
+            .content { padding: 30px 24px 60px; }
+            .hero { padding: 40px 24px; }
+            .hero h1 { font-size: 1.8rem; }
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.4rem; }
+            .content { padding: 20px 16px 40px; }
+            h2 { font-size: 1.4rem; }
+            table { font-size: 0.78rem; }
+            th, td { padding: 8px 10px; }
+        }
+
+        /* ===== STEP NUMBER ===== */
+        .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-glow);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        /* Number highlight */
+        .num-highlight {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Emoji in text */
+        .emoji { font-style: normal; }
+
+        /* Blockquote */
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding: 12px 20px;
+            margin: 16px 0;
+            background: var(--bg-tertiary);
+            border-radius: 0 8px 8px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+    <h1>🚀 Hosting the Panchapeetas Django App on AWS</h1>
+    <p class="subtitle">A step-by-step guide to deploying the <strong>Veerashaiva Pancha Peethas</strong> Django application on Amazon Web Services, migrating from PythonAnywhere/SQLite to a production-grade stack.</p>
+    <div class="badge-row">
+        <span class="badge badge-free">✅ Free Tier — $0/month (Year 1)</span>
+        <span class="badge badge-info">📦 Django 5.1 + PostgreSQL + S3</span>
+        <span class="badge badge-warn">⚡ ~50K–100K monthly visitors</span>
+    </div>
+</div>
+
+<!-- ===== LAYOUT ===== -->
+<div class="layout">
+
+    <!-- ===== SIDEBAR ===== -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-title">Table of Contents</div>
+        <a href="#architecture">1. Architecture Overview</a>
+        <a href="#prerequisites">2. Prerequisites</a>
+        <a href="#ec2">3. Launch EC2 Instance</a>
+        <a href="#server-setup">4. Initial Server Setup</a>
+        <a href="#rds">5. PostgreSQL on RDS</a>
+        <a href="#s3">6. S3 for Media & Static</a>
+        <a href="#deploy">7. Deploy Django App</a>
+        <a href="#gunicorn">8. Configure Gunicorn</a>
+        <a href="#nginx">9. Configure Nginx</a>
+        <a href="#ssl">10. SSL Certificate</a>
+        <a href="#production-settings">11. Production Settings</a>
+        <a href="#domain">12. Domain Name Setup</a>
+        <a href="#monitoring">13. Monitoring & Maintenance</a>
+        <a href="#cost">14. Free Tier Cost Breakdown</a>
+        <a href="#traffic">15. Traffic Capacity & Limits</a>
+        <a href="#livestream">16. Live Streaming</a>
+        <a href="#temp-upgrade">17. Temporary Upgrade</a>
+        <a href="#troubleshooting">18. Troubleshooting</a>
+        <a href="#quick-ref">Quick Reference</a>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="content">
+
+        <!-- ==================== SECTION 1 ==================== -->
+        <h2 id="architecture"><span class="step-num">1</span> Architecture Overview</h2>
+
+        <div class="mermaid-wrap">
+            <pre class="mermaid">
+graph TB
+    subgraph Internet
+        U["👤 Devotees / Browsers"]
+    end
+
+    subgraph AWS Cloud
+        R53["Route 53 - DNS"]
+
+        subgraph VPC
+            subgraph Public Subnet
+                EC2["EC2 Instance\nUbuntu 24.04\nNginx + Gunicorn + Django"]
+            end
+
+            subgraph Private Subnet
+                RDS["RDS PostgreSQL\n Database"]
+            end
+        end
+
+        S3["S3 Bucket\n Media and Static Files"]
+        CF["CloudFront\n CDN - Optional"]
+    end
+
+    U --> R53
+    R53 --> EC2
+    EC2 --> RDS
+    EC2 --> S3
+    CF --> S3
+            </pre>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Component</th><th>AWS Service</th><th>Free Tier?</th><th>Purpose</th></tr></thead>
+                <tbody>
+                    <tr><td>Web Server</td><td><code>EC2 (t2.micro)</code></td><td>✅ 750 hrs/month free</td><td>Runs Nginx + Gunicorn + Django</td></tr>
+                    <tr><td>Database</td><td><code>RDS PostgreSQL (db.t3.micro)</code></td><td>✅ 750 hrs/month free</td><td>Replaces SQLite for production</td></tr>
+                    <tr><td>Media Storage</td><td><code>S3</code></td><td>✅ 5 GB free</td><td>Stores peetha photos, swamiji images, profile pics</td></tr>
+                    <tr><td>Static Files</td><td><code>S3 + CloudFront</code></td><td>✅ 50 GB transfer free</td><td>CSS, JS, images served via CDN</td></tr>
+                    <tr><td>DNS</td><td><code>Route 53</code></td><td>❌ ~$0.50/month</td><td>Custom domain (optional — use external registrar for $0)</td></tr>
+                    <tr><td>SSL</td><td><code>Let's Encrypt</code></td><td>✅ Always free</td><td>HTTPS encryption</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 2 ==================== -->
+        <h2 id="prerequisites"><span class="step-num">2</span> Prerequisites</h2>
+
+        <p>Before starting, ensure you have:</p>
+        <ul class="checklist">
+            <li>An <strong>AWS Account</strong> (<a href="https://aws.amazon.com/free/" target="_blank">Sign up here</a>)</li>
+            <li>A <strong>domain name</strong> (e.g., <code>panchapeethas.org</code>) — can be purchased via Route 53 or any registrar</li>
+            <li><strong>AWS CLI</strong> installed on your local machine</li>
+            <li>A <strong>key pair</strong> (<code>.pem</code> file) for SSH access</li>
+            <li><strong>Git</strong> installed locally</li>
+        </ul>
+
+        <div class="alert alert-tip">
+            <div class="alert-title">💡 Tip</div>
+            <p>AWS Free Tier gives you 750 hours/month of <code>t2.micro</code> EC2 + 750 hours/month of <code>db.t3.micro</code> RDS + 5 GB S3 for the <strong>first 12 months</strong>. This is more than enough for the Panchapeetas platform. Your total cost in Year 1 will be <strong>~$0/month</strong> (or $0.50 if using Route 53 for DNS).</p>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 3 ==================== -->
+        <h2 id="ec2"><span class="step-num">3</span> Step 1 — Launch an EC2 Instance</h2>
+
+        <h3>3.1 Choose the Instance</h3>
+        <ol>
+            <li>Go to <strong>AWS Console → EC2 → Launch Instance</strong></li>
+            <li>Configure:</li>
+        </ol>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Name</strong></td><td><code>panchapeethas-webserver</code></td></tr>
+                    <tr><td><strong>AMI</strong></td><td>Ubuntu Server 24.04 LTS (64-bit x86)</td></tr>
+                    <tr><td><strong>Instance type</strong></td><td><code>t2.micro</code> (1 vCPU, 1 GB RAM) — <strong>Free Tier eligible</strong></td></tr>
+                    <tr><td><strong>Key pair</strong></td><td>Create new or select existing <code>.pem</code> key</td></tr>
+                    <tr><td><strong>Storage</strong></td><td>30 GB gp3 (SSD) — Free Tier includes 30 GB</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>3.2 Configure Security Group</h3>
+        <p>Create a security group named <code>panchapeethas-sg</code> with these inbound rules:</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Type</th><th>Port</th><th>Source</th><th>Purpose</th></tr></thead>
+                <tbody>
+                    <tr><td>SSH</td><td>22</td><td>Your IP</td><td>Remote access</td></tr>
+                    <tr><td>HTTP</td><td>80</td><td>0.0.0.0/0</td><td>Web traffic</td></tr>
+                    <tr><td>HTTPS</td><td>443</td><td>0.0.0.0/0</td><td>Secure web traffic</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>3.3 Allocate an Elastic IP</h3>
+        <ol>
+            <li>Go to <strong>EC2 → Elastic IPs → Allocate</strong></li>
+            <li>Associate the Elastic IP with your instance</li>
+        </ol>
+
+        <div class="alert alert-important">
+            <div class="alert-title">⚠️ Important</div>
+            <p>Always use an Elastic IP for production. Without one, your server's public IP changes every time the instance restarts, breaking DNS records and SSL certificates.</p>
+        </div>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="comment"># Note your Elastic IP, e.g.:</span>
+<span class="comment"># 13.235.XX.XX</span></pre>
+        </div>
+
+        <h3>3.4 Connect to Your Instance</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="comment"># Make the key read-only (on Windows, adjust via Properties > Security)</span>
+chmod 400 panchapeethas-key.pem
+
+<span class="comment"># SSH into the server</span>
+ssh -i panchapeethas-key.pem ubuntu@13.235.XX.XX</pre>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 4 ==================== -->
+        <h2 id="server-setup"><span class="step-num">4</span> Step 2 — Initial Server Setup</h2>
+
+        <p>Run these commands on the EC2 instance after SSH'ing in:</p>
+
+        <h3>4.1 Update System Packages</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo apt update && sudo apt upgrade -y</pre>
+        </div>
+
+        <h3>4.2 Install Required System Packages</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo apt install -y \
+    python3-pip \
+    python3-venv \
+    python3-dev \
+    libpq-dev \
+    postgresql-client \
+    nginx \
+    certbot \
+    python3-certbot-nginx \
+    git \
+    supervisor \
+    libjpeg-dev \
+    zlib1g-dev \
+    libfreetype6-dev</pre>
+        </div>
+
+        <div class="alert alert-note">
+            <div class="alert-title">ℹ️ Note</div>
+            <p><code>libjpeg-dev</code>, <code>zlib1g-dev</code>, and <code>libfreetype6-dev</code> are required by the <strong>Pillow</strong> library that your project uses for image handling (swamiji photos, profile pics, peetha media).</p>
+        </div>
+
+        <h3>4.3 Create a Dedicated System User</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo adduser --system --group --home /opt/panchapeethas panchapeethas</pre>
+        </div>
+
+        <h3>4.4 Set Up the Firewall</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo ufw allow OpenSSH
+sudo ufw allow <span class="string">'Nginx Full'</span>
+sudo ufw enable
+sudo ufw status</pre>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 5 ==================== -->
+        <h2 id="rds"><span class="step-num">5</span> Step 3 — Set Up PostgreSQL on RDS</h2>
+
+        <div class="alert alert-warning">
+            <div class="alert-title">⚠️ Warning</div>
+            <p>SQLite (currently used in <code>config/settings.py</code>) is <strong>not suitable for production</strong>. It doesn't support concurrent writes, which will cause errors when multiple devotees book poojas simultaneously. Migrate to PostgreSQL.</p>
+        </div>
+
+        <h3>5.1 Create an RDS Instance</h3>
+        <ol>
+            <li>Go to <strong>AWS Console → RDS → Create database</strong></li>
+            <li>Configure:</li>
+        </ol>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Engine</strong></td><td>PostgreSQL 16</td></tr>
+                    <tr><td><strong>Template</strong></td><td>Free Tier (or Production)</td></tr>
+                    <tr><td><strong>DB Instance Identifier</strong></td><td><code>panchapeethas-db</code></td></tr>
+                    <tr><td><strong>Master username</strong></td><td><code>panchapeethas_admin</code></td></tr>
+                    <tr><td><strong>Master password</strong></td><td><em>(generate a strong password and save it)</em></td></tr>
+                    <tr><td><strong>Instance class</strong></td><td><code>db.t3.micro</code> (Free Tier) or <code>db.t3.small</code></td></tr>
+                    <tr><td><strong>Storage</strong></td><td>20 GB gp3, enable auto-scaling</td></tr>
+                    <tr><td><strong>VPC</strong></td><td>Same VPC as your EC2</td></tr>
+                    <tr><td><strong>Public access</strong></td><td><strong>No</strong></td></tr>
+                    <tr><td><strong>Security group</strong></td><td>Create new: <code>panchapeethas-db-sg</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>5.2 Configure DB Security Group</h3>
+        <p>Edit <code>panchapeethas-db-sg</code> inbound rules:</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Type</th><th>Port</th><th>Source</th><th>Purpose</th></tr></thead>
+                <tbody>
+                    <tr><td>PostgreSQL</td><td>5432</td><td><code>panchapeethas-sg</code> (EC2 SG)</td><td>Allow EC2 → RDS</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>5.3 Test the Connection from EC2</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="comment"># From your EC2 instance:</span>
+psql -h panchapeethas-db.xxxxxx.ap-south-1.rds.amazonaws.com \
+     -U panchapeethas_admin \
+     -d postgres
+
+<span class="comment"># Inside psql, create the database:</span>
+CREATE DATABASE panchapeethas_db;
+\q</pre>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 6 ==================== -->
+        <h2 id="s3"><span class="step-num">6</span> Step 4 — Configure S3 for Media & Static Files</h2>
+
+        <p>Your app stores images in <code>media/peetha_media/</code> and <code>media/profile_pics/</code>. On AWS, these should live in S3.</p>
+
+        <h3>6.1 Create an S3 Bucket</h3>
+        <ol>
+            <li>Go to <strong>AWS Console → S3 → Create Bucket</strong></li>
+            <li>Configure:</li>
+        </ol>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Bucket name</strong></td><td><code>panchapeethas-media</code></td></tr>
+                    <tr><td><strong>Region</strong></td><td><code>ap-south-1</code> (Mumbai)</td></tr>
+                    <tr><td><strong>Block public access</strong></td><td>Uncheck "Block all public access" for media</td></tr>
+                    <tr><td><strong>Versioning</strong></td><td>Enabled (protects against accidental deletes)</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>6.2 Create an IAM User for S3 Access</h3>
+        <ol>
+            <li>Go to <strong>IAM → Users → Create User</strong></li>
+            <li>Name: <code>panchapeethas-s3-user</code></li>
+            <li>Attach this custom policy:</li>
+        </ol>
+
+        <div class="code-block">
+            <div class="code-header"><span>json — IAM Policy</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>{
+    <span class="string">"Version"</span>: <span class="string">"2012-10-17"</span>,
+    <span class="string">"Statement"</span>: [
+        {
+            <span class="string">"Effect"</span>: <span class="string">"Allow"</span>,
+            <span class="string">"Action"</span>: [
+                <span class="string">"s3:PutObject"</span>,
+                <span class="string">"s3:GetObject"</span>,
+                <span class="string">"s3:DeleteObject"</span>,
+                <span class="string">"s3:ListBucket"</span>
+            ],
+            <span class="string">"Resource"</span>: [
+                <span class="string">"arn:aws:s3:::panchapeethas-media"</span>,
+                <span class="string">"arn:aws:s3:::panchapeethas-media/*"</span>
+            ]
+        }
+    ]
+}</pre>
+        </div>
+
+        <p>4. Generate <strong>Access Key</strong> and <strong>Secret Key</strong> — save them securely.</p>
+
+        <h3>6.3 S3 Bucket Policy for Public Media Access</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>json — Bucket Policy</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>{
+    <span class="string">"Version"</span>: <span class="string">"2012-10-17"</span>,
+    <span class="string">"Statement"</span>: [
+        {
+            <span class="string">"Sid"</span>: <span class="string">"PublicReadMedia"</span>,
+            <span class="string">"Effect"</span>: <span class="string">"Allow"</span>,
+            <span class="string">"Principal"</span>: <span class="string">"*"</span>,
+            <span class="string">"Action"</span>: <span class="string">"s3:GetObject"</span>,
+            <span class="string">"Resource"</span>: <span class="string">"arn:aws:s3:::panchapeethas-media/media/*"</span>
+        }
+    ]
+}</pre>
+        </div>
+
+        <h3>6.4 Install Django S3 Storage Backend</h3>
+        <p>Add these to your <code>requirements.txt</code>:</p>
+
+        <div class="code-block">
+            <div class="code-header"><span>diff — requirements.txt</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="diff-line-context"> Django>=5.1.4,<5.2</span>
+<span class="diff-line-context"> pillow>=12.0.0</span>
+<span class="diff-line-context"> emoji>=2.15.0</span>
+<span class="diff-line-context"> razorpay>=1.4.1</span>
+<span class="diff-line-context"> whitenoise>=6.8.2</span>
+<span class="diff-line-context"> django-allauth>=0.61.0</span>
+<span class="diff-line-added">+gunicorn>=22.0.0</span>
+<span class="diff-line-added">+psycopg2-binary>=2.9.9</span>
+<span class="diff-line-added">+django-storages>=1.14.2</span>
+<span class="diff-line-added">+boto3>=1.34.0</span></pre>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 7 ==================== -->
+        <h2 id="deploy"><span class="step-num">7</span> Step 5 — Deploy the Django Application</h2>
+
+        <h3>7.1 Clone the Repository</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo -u panchapeethas -s
+cd /opt/panchapeethas
+
+<span class="comment"># Clone your repo</span>
+git clone https://github.com/Gurucharan-G/panchapeeta.git app
+cd app</pre>
+        </div>
+
+        <h3>7.2 Create a Virtual Environment</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>python3 -m venv venv
+source venv/bin/activate
+
+<span class="comment"># Install dependencies</span>
+pip install --upgrade pip
+pip install -r requirements.txt</pre>
+        </div>
+
+        <h3>7.3 Create the Environment File</h3>
+        <p>Create <code>/opt/panchapeethas/app/.env</code>:</p>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo nano /opt/panchapeethas/app/.env</pre>
+        </div>
+
+        <p>Add the following content:</p>
+
+        <div class="code-block">
+            <div class="code-header"><span>ini — .env</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="comment"># ===== DJANGO CORE =====</span>
+DJANGO_SECRET_KEY=your-very-long-random-secret-key-here
+PRODUCTION=True
+DJANGO_ALLOWED_HOSTS=panchapeethas.org,www.panchapeethas.org,13.235.XX.XX
+
+<span class="comment"># ===== DATABASE (RDS PostgreSQL) =====</span>
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=panchapeethas_db
+DB_USER=panchapeethas_admin
+DB_PASSWORD=your-rds-password-here
+DB_HOST=panchapeethas-db.xxxxxx.ap-south-1.rds.amazonaws.com
+DB_PORT=5432
+
+<span class="comment"># ===== AWS S3 =====</span>
+AWS_ACCESS_KEY_ID=AKIA...your-key
+AWS_SECRET_ACCESS_KEY=your-secret-key
+AWS_STORAGE_BUCKET_NAME=panchapeethas-media
+AWS_S3_REGION_NAME=ap-south-1
+
+<span class="comment"># ===== GOOGLE OAUTH (django-allauth) =====</span>
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+<span class="comment"># ===== RAZORPAY =====</span>
+<span class="comment"># (Razorpay keys are managed per-Peetha via the PeethaPaymentConfig model)</span></pre>
+        </div>
+
+        <div class="alert alert-caution">
+            <div class="alert-title">🔴 Caution</div>
+            <p>Never commit the <code>.env</code> file to Git. Add it to <code>.gitignore</code> immediately.</p>
+        </div>
+
+        <h3>7.4 Generate a Secure Secret Key</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>python3 -c <span class="string">"from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"</span></pre>
+        </div>
+
+        <p>Copy the output and paste it as the <code>DJANGO_SECRET_KEY</code> value in <code>.env</code>.</p>
+
+        <hr>
+
+        <!-- ==================== SECTION 8 ==================== -->
+        <h2 id="gunicorn"><span class="step-num">8</span> Step 6 — Configure Gunicorn (WSGI Server)</h2>
+
+        <p>Gunicorn replaces Django's development server (<code>runserver</code>) for production.</p>
+
+        <h3>8.1 Test Gunicorn</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>cd /opt/panchapeethas/app
+source venv/bin/activate
+
+gunicorn --bind 0.0.0.0:8000 config.wsgi:application
+<span class="comment"># Visit http://13.235.XX.XX:8000 to verify (then Ctrl+C)</span></pre>
+        </div>
+
+        <h3>8.2 Create a Systemd Service</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo nano /etc/systemd/system/panchapeethas.service</pre>
+        </div>
+
+        <p>Paste:</p>
+
+        <div class="code-block">
+            <div class="code-header"><span>ini — systemd service</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>[Unit]
+Description=Panchapeethas Django Application (Gunicorn)
+After=network.target
+
+[Service]
+User=panchapeethas
+Group=panchapeethas
+WorkingDirectory=/opt/panchapeethas/app
+EnvironmentFile=/opt/panchapeethas/app/.env
+ExecStart=/opt/panchapeethas/app/venv/bin/gunicorn \
+    --workers 2 \
+    --bind unix:/opt/panchapeethas/app/panchapeethas.sock \
+    --timeout 120 \
+    --access-logfile /var/log/panchapeethas/access.log \
+    --error-logfile /var/log/panchapeethas/error.log \
+    config.wsgi:application
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target</pre>
+        </div>
+
+        <h3>8.3 Create Log Directory & Enable Service</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo mkdir -p /var/log/panchapeethas
+sudo chown panchapeethas:panchapeethas /var/log/panchapeethas
+
+sudo systemctl daemon-reload
+sudo systemctl start panchapeethas
+sudo systemctl enable panchapeethas
+
+<span class="comment"># Verify it's running</span>
+sudo systemctl status panchapeethas</pre>
+        </div>
+
+        <div class="alert alert-tip">
+            <div class="alert-title">💡 Tip</div>
+            <p><strong>Why 2 workers?</strong> The <code>t2.micro</code> has 1 vCPU and 1 GB RAM. The formula is <code>(2 × CPU cores) + 1 = 3</code>, but we use 2 to stay within the 1 GB RAM limit. Each Gunicorn worker uses ~100–150 MB. If you upgrade to <code>t3.small</code> (2 vCPU, 2 GB RAM) for an event, increase this to 3–4 workers.</p>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 9 ==================== -->
+        <h2 id="nginx"><span class="step-num">9</span> Step 7 — Configure Nginx (Reverse Proxy)</h2>
+
+        <p>Nginx sits in front of Gunicorn, handling SSL termination, static files, and request buffering.</p>
+
+        <h3>9.1 Create the Nginx Site Config</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo nano /etc/nginx/sites-available/panchapeethas</pre>
+        </div>
+
+        <p>Paste:</p>
+
+        <div class="code-block">
+            <div class="code-header"><span>nginx</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="keyword">server</span> {
+    listen 80;
+    server_name panchapeethas.org www.panchapeethas.org 13.235.XX.XX;
+
+    <span class="comment"># Redirect all HTTP to HTTPS (enabled after SSL setup)</span>
+    <span class="comment"># return 301 https://$host$request_uri;</span>
+
+    <span class="comment"># Max upload size (for swamiji photos, media uploads)</span>
+    client_max_body_size 20M;
+
+    <span class="comment"># Static files (served by WhiteNoise, but Nginx can cache)</span>
+    <span class="keyword">location</span> /static/ {
+        alias /opt/panchapeethas/app/staticfiles/;
+        expires 30d;
+        add_header Cache-Control <span class="string">"public, immutable"</span>;
+    }
+
+    <span class="comment"># Media files (if not using S3 yet)</span>
+    <span class="keyword">location</span> /media/ {
+        alias /opt/panchapeethas/app/media/;
+        expires 7d;
+    }
+
+    <span class="comment"># Proxy to Gunicorn</span>
+    <span class="keyword">location</span> / {
+        proxy_pass http://unix:/opt/panchapeethas/app/panchapeethas.sock;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}</pre>
+        </div>
+
+        <h3>9.2 Enable the Site</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo ln -s /etc/nginx/sites-available/panchapeethas /etc/nginx/sites-enabled/
+sudo rm /etc/nginx/sites-enabled/default
+
+<span class="comment"># Test configuration</span>
+sudo nginx -t
+
+<span class="comment"># Restart Nginx</span>
+sudo systemctl restart nginx</pre>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 10 ==================== -->
+        <h2 id="ssl"><span class="step-num">10</span> Step 8 — SSL Certificate with Let's Encrypt</h2>
+
+        <h3>10.1 Obtain the Certificate</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo certbot --nginx -d panchapeethas.org -d www.panchapeethas.org</pre>
+        </div>
+
+        <p>Follow the prompts (enter email, agree to terms). Certbot will:</p>
+        <ul>
+            <li>Obtain the SSL certificate</li>
+            <li>Auto-modify your Nginx config to redirect HTTP → HTTPS</li>
+        </ul>
+
+        <h3>10.2 Verify Auto-Renewal</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>sudo certbot renew --dry-run</pre>
+        </div>
+
+        <div class="alert alert-note">
+            <div class="alert-title">ℹ️ Note</div>
+            <p>Certbot automatically sets up a cron job/systemd timer to renew certificates before they expire (every 90 days).</p>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 11 ==================== -->
+        <h2 id="production-settings"><span class="step-num">11</span> Step 9 — Production Settings Changes</h2>
+
+        <p>Create a new file <code>config/settings_production.py</code> or update <code>config/settings.py</code> to read from environment variables:</p>
+
+        <h3>11.1 Update <code>config/settings.py</code></h3>
+        <p>The key changes needed in your existing settings.py:</p>
+
+        <div class="code-block">
+            <div class="code-header"><span>python — config/settings.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="keyword">import</span> os
+<span class="keyword">from</span> pathlib <span class="keyword">import</span> Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+<span class="comment"># ===== SECURITY =====</span>
+SECRET_KEY = os.environ.get(<span class="string">'DJANGO_SECRET_KEY'</span>)
+DEBUG = <span class="keyword">not</span> os.environ.get(<span class="string">'PRODUCTION'</span>, <span class="string">'False'</span>) == <span class="string">'True'</span>  <span class="comment"># Already done ✅</span>
+
+ALLOWED_HOSTS = os.environ.get(
+    <span class="string">'DJANGO_ALLOWED_HOSTS'</span>,
+    <span class="string">'localhost,127.0.0.1'</span>
+).split(<span class="string">','</span>)
+
+<span class="comment"># ===== DATABASE =====</span>
+<span class="comment"># Replace the SQLite block with:</span>
+<span class="keyword">if</span> os.environ.get(<span class="string">'DB_ENGINE'</span>):
+    DATABASES = {
+        <span class="string">'default'</span>: {
+            <span class="string">'ENGINE'</span>: os.environ.get(<span class="string">'DB_ENGINE'</span>, <span class="string">'django.db.backends.sqlite3'</span>),
+            <span class="string">'NAME'</span>: os.environ.get(<span class="string">'DB_NAME'</span>, BASE_DIR / <span class="string">'db.sqlite3'</span>),
+            <span class="string">'USER'</span>: os.environ.get(<span class="string">'DB_USER'</span>, <span class="string">''</span>),
+            <span class="string">'PASSWORD'</span>: os.environ.get(<span class="string">'DB_PASSWORD'</span>, <span class="string">''</span>),
+            <span class="string">'HOST'</span>: os.environ.get(<span class="string">'DB_HOST'</span>, <span class="string">'localhost'</span>),
+            <span class="string">'PORT'</span>: os.environ.get(<span class="string">'DB_PORT'</span>, <span class="string">'5432'</span>),
+        }
+    }
+<span class="keyword">else</span>:
+    DATABASES = {
+        <span class="string">'default'</span>: {
+            <span class="string">'ENGINE'</span>: <span class="string">'django.db.backends.sqlite3'</span>,
+            <span class="string">'NAME'</span>: BASE_DIR / <span class="string">'db.sqlite3'</span>,
+        }
+    }
+
+<span class="comment"># ===== AWS S3 STORAGE (production only) =====</span>
+<span class="keyword">if not</span> DEBUG:
+    <span class="comment"># Static files via WhiteNoise (already configured ✅)</span>
+    STATICFILES_STORAGE = <span class="string">"whitenoise.storage.CompressedManifestStaticFilesStorage"</span>
+
+    <span class="comment"># Media files via S3</span>
+    DEFAULT_FILE_STORAGE = <span class="string">'storages.backends.s3boto3.S3Boto3Storage'</span>
+    AWS_ACCESS_KEY_ID = os.environ.get(<span class="string">'AWS_ACCESS_KEY_ID'</span>)
+    AWS_SECRET_ACCESS_KEY = os.environ.get(<span class="string">'AWS_SECRET_ACCESS_KEY'</span>)
+    AWS_STORAGE_BUCKET_NAME = os.environ.get(<span class="string">'AWS_STORAGE_BUCKET_NAME'</span>)
+    AWS_S3_REGION_NAME = os.environ.get(<span class="string">'AWS_S3_REGION_NAME'</span>, <span class="string">'ap-south-1'</span>)
+    AWS_S3_CUSTOM_DOMAIN = <span class="string">f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'</span>
+    AWS_DEFAULT_ACL = <span class="keyword">None</span>
+    AWS_S3_OBJECT_PARAMETERS = {
+        <span class="string">'CacheControl'</span>: <span class="string">'max-age=86400'</span>,
+    }
+    MEDIA_URL = <span class="string">f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'</span>
+
+<span class="comment"># ===== SECURITY HEADERS (production) =====</span>
+<span class="keyword">if not</span> DEBUG:
+    SECURE_SSL_REDIRECT = <span class="keyword">True</span>
+    SESSION_COOKIE_SECURE = <span class="keyword">True</span>
+    CSRF_COOKIE_SECURE = <span class="keyword">True</span>
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = <span class="keyword">True</span>
+    SECURE_HSTS_PRELOAD = <span class="keyword">True</span>
+    SECURE_PROXY_SSL_HEADER = (<span class="string">'HTTP_X_FORWARDED_PROTO'</span>, <span class="string">'https'</span>)  <span class="comment"># NEW</span>
+    CSRF_TRUSTED_ORIGINS = [
+        <span class="string">'https://panchapeethas.org'</span>,
+        <span class="string">'https://www.panchapeethas.org'</span>,
+    ]  <span class="comment"># NEW</span></pre>
+        </div>
+
+        <h3>11.2 Run Migrations & Collect Static</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>cd /opt/panchapeethas/app
+source venv/bin/activate
+
+<span class="comment"># Load environment variables</span>
+export $(grep -v '^#' .env | xargs)
+
+<span class="comment"># Run migrations on the new PostgreSQL database</span>
+python manage.py migrate
+
+<span class="comment"># Collect static files</span>
+python manage.py collectstatic --noinput
+
+<span class="comment"># Create a superuser for the admin panel</span>
+python manage.py createsuperuser</pre>
+        </div>
+
+        <h3>11.3 Migrate Existing Data from SQLite</h3>
+        <p>If you have existing data in <code>db.sqlite3</code> that you want to move to PostgreSQL:</p>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="comment"># Step 1: Export data from SQLite (on your local machine)</span>
+python manage.py dumpdata --exclude contenttypes --exclude auth.permission \
+    --indent 2 > datadump.json
+
+<span class="comment"># Step 2: Copy to EC2</span>
+scp -i panchapeethas-key.pem datadump.json ubuntu@13.235.XX.XX:/opt/panchapeethas/app/
+
+<span class="comment"># Step 3: Load into PostgreSQL (on EC2)</span>
+python manage.py loaddata datadump.json</pre>
+        </div>
+
+        <div class="alert alert-warning">
+            <div class="alert-title">⚠️ Warning</div>
+            <p>Run <code>python manage.py migrate</code> on the RDS database <strong>before</strong> loading the data dump. The tables must exist first.</p>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 12 ==================== -->
+        <h2 id="domain"><span class="step-num">12</span> Step 10 — Domain Name Setup (Route 53)</h2>
+
+        <h3>12.1 If Domain is on Route 53</h3>
+        <ol>
+            <li>Go to <strong>Route 53 → Hosted Zones → your domain</strong></li>
+            <li>Create records:</li>
+        </ol>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Record Type</th><th>Name</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td>A</td><td><code>panchapeethas.org</code></td><td><code>13.235.XX.XX</code> (your Elastic IP)</td></tr>
+                    <tr><td>A</td><td><code>www.panchapeethas.org</code></td><td><code>13.235.XX.XX</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>12.2 If Domain is with Another Registrar (GoDaddy, Namecheap, etc.)</h3>
+        <ol>
+            <li>Add an <strong>A record</strong> pointing to your Elastic IP</li>
+            <li>Or, point nameservers to Route 53's NS records</li>
+        </ol>
+
+        <hr>
+
+        <!-- ==================== SECTION 13 ==================== -->
+        <h2 id="monitoring"><span class="step-num">13</span> Step 11 — Monitoring & Maintenance</h2>
+
+        <h3>13.1 Deployment Script</h3>
+        <p>Run this after every deployment:</p>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash — deploy.sh</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="comment">#!/bin/bash</span>
+<span class="comment"># deploy.sh — save this in /opt/panchapeethas/app/</span>
+
+cd /opt/panchapeethas/app
+source venv/bin/activate
+export $(grep -v '^#' .env | xargs)
+
+git pull origin main
+pip install -r requirements.txt
+python manage.py migrate --noinput
+python manage.py collectstatic --noinput
+
+sudo systemctl restart panchapeethas
+sudo systemctl restart nginx
+
+echo <span class="string">"✅ Deployment complete!"</span></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre>chmod +x /opt/panchapeethas/app/deploy.sh</pre>
+        </div>
+
+        <h3>13.2 View Logs</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="comment"># Gunicorn application logs</span>
+sudo tail -f /var/log/panchapeethas/error.log
+
+<span class="comment"># Nginx access logs</span>
+sudo tail -f /var/log/nginx/access.log
+
+<span class="comment"># Django errors (if you add file logging)</span>
+sudo tail -f /var/log/panchapeethas/access.log</pre>
+        </div>
+
+        <h3>13.3 Set Up CloudWatch Monitoring (Optional)</h3>
+        <ol>
+            <li>Go to <strong>EC2 → Instance → Monitoring tab → Manage detailed monitoring</strong></li>
+            <li>Enable detailed monitoring (1-minute intervals)</li>
+            <li>Set up <strong>CloudWatch Alarms</strong> for:
+                <ul>
+                    <li>CPU utilization > 80%</li>
+                    <li>Disk space > 85%</li>
+                    <li>Status check failures</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3>13.4 Automatic Database Backups</h3>
+        <p>RDS handles automated backups:</p>
+        <ol>
+            <li>Go to <strong>RDS → Your DB → Modify</strong></li>
+            <li>Set <strong>Backup retention period</strong> to 7 days</li>
+            <li>Enable <strong>Multi-AZ deployment</strong> for high availability (production)</li>
+        </ol>
+
+        <hr>
+
+        <!-- ==================== SECTION 14 ==================== -->
+        <h2 id="cost"><span class="step-num">14</span> Free Tier Cost Breakdown</h2>
+
+        <h3>Year 1 (Free Tier Active)</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Service</th><th>Instance</th><th>Free Tier Allowance</th><th>Monthly Cost</th></tr></thead>
+                <tbody>
+                    <tr><td>EC2</td><td><code>t2.micro</code> (1 vCPU, 1 GB)</td><td>750 hrs/month</td><td><strong>$0</strong></td></tr>
+                    <tr><td>RDS PostgreSQL</td><td><code>db.t3.micro</code></td><td>750 hrs/month</td><td><strong>$0</strong></td></tr>
+                    <tr><td>S3</td><td>5 GB storage</td><td>5 GB + 20K GETs</td><td><strong>$0</strong></td></tr>
+                    <tr><td>EBS Storage</td><td>30 GB gp3</td><td>30 GB free</td><td><strong>$0</strong></td></tr>
+                    <tr><td>Elastic IP</td><td>Associated with running instance</td><td>Free when attached</td><td><strong>$0</strong></td></tr>
+                    <tr><td>Data Transfer</td><td>Outbound</td><td>100 GB/month</td><td><strong>$0</strong></td></tr>
+                    <tr><td>SSL (Let's Encrypt)</td><td>Certificate</td><td>Always free</td><td><strong>$0</strong></td></tr>
+                    <tr><td>Route 53 (optional)</td><td>Hosted zone</td><td>Not included in Free Tier</td><td>~$0.50</td></tr>
+                    <tr style="background: var(--green-bg);"><td><strong>Total (Year 1)</strong></td><td></td><td><em>or $0.50 with Route 53</em></td><td><strong style="color: var(--green); font-size: 1.1rem;">$0/month</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert alert-tip">
+            <div class="alert-title">💡 Tip</div>
+            <p><strong>Skip Route 53 entirely</strong> to make it truly $0/month. Just point your domain's A record to the Elastic IP from your existing domain registrar (GoDaddy, Namecheap, etc.).</p>
+        </div>
+
+        <h3>After Year 1 (Free Tier Expired)</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Service</th><th>Instance</th><th>Monthly Cost (ap-south-1)</th></tr></thead>
+                <tbody>
+                    <tr><td>EC2</td><td><code>t2.micro</code></td><td>~$8.50/month</td></tr>
+                    <tr><td>RDS PostgreSQL</td><td><code>db.t3.micro</code></td><td>~$13/month</td></tr>
+                    <tr><td>S3</td><td>5 GB storage + transfers</td><td>~$1/month</td></tr>
+                    <tr><td>Elastic IP</td><td>Associated with running instance</td><td>$0</td></tr>
+                    <tr style="background: var(--yellow-bg);"><td><strong>Total (After Year 1)</strong></td><td></td><td><strong>~$22.50/month</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert alert-tip">
+            <div class="alert-title">💡 Tip</div>
+            <p><strong>Save money after Free Tier</strong>: Use <strong>EC2 Reserved Instances</strong> (1-year commitment) for ~40% savings on EC2, bringing total to ~$15/month.</p>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 15 ==================== -->
+        <h2 id="traffic"><span class="step-num">15</span> Traffic Capacity & Limits</h2>
+
+        <h3><code>t2.micro</code> Specifications</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Resource</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td>vCPU</td><td>1</td></tr>
+                    <tr><td>RAM</td><td>1 GB</td></tr>
+                    <tr><td>Baseline CPU</td><td>10%</td></tr>
+                    <tr><td>Burst CPU</td><td>100% (using credits)</td></tr>
+                    <tr><td>CPU credits earned/hour</td><td>6</td></tr>
+                    <tr><td>Max stored credits</td><td>144</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>How Much Traffic Can It Handle?</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Metric</th><th><code>t2.micro</code> Capacity</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Concurrent users</strong></td><td>~20–50 at the same time</td></tr>
+                    <tr><td><strong>Requests per second</strong></td><td>~10–30 req/s</td></tr>
+                    <tr><td><strong>Daily unique visitors</strong></td><td>~2,000–5,000</td></tr>
+                    <tr><td><strong>Monthly visitors</strong></td><td>~50,000–100,000</td></tr>
+                    <tr><td><strong>Daily page views</strong></td><td>~10,000–25,000</td></tr>
+                    <tr><td><strong>Pooja bookings per day</strong></td><td>~500</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Performance by Feature</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Action</th><th>Response Time</th><th>Daily Capacity</th></tr></thead>
+                <tbody>
+                    <tr><td>Homepage load</td><td>~200–400ms</td><td>Thousands</td></tr>
+                    <tr><td>Peetha detail page</td><td>~300–500ms</td><td>Thousands</td></tr>
+                    <tr><td>Pooja booking + Razorpay</td><td>~500–800ms</td><td>~500 bookings</td></tr>
+                    <tr><td>Media gallery (images from S3)</td><td>Fast ✅</td><td>Unlimited (S3 offloads this)</td></tr>
+                    <tr><td>Google OAuth login</td><td>~300ms</td><td>Hundreds</td></tr>
+                    <tr><td>Admin dashboard</td><td>~400ms</td><td>No issue</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Understanding CPU Credits (Burstable Performance)</h3>
+        <p>The <code>t2.micro</code> uses a <strong>CPU credit system</strong> — think of it like a prepaid mobile plan:</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Traffic Pattern</th><th>What Happens</th><th>Duration at Full Speed</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Normal</strong> (&lt; 10% CPU avg)</td><td>Credits accumulate ✅</td><td>Indefinitely</td></tr>
+                    <tr><td><strong>Spike</strong> (500 users at once)</td><td>Burns stored credits ⚡</td><td>~1–2 hours</td></tr>
+                    <tr><td><strong>Moderate spike</strong> (100 users)</td><td>Gradual credit use</td><td>~4–6 hours</td></tr>
+                    <tr><td><strong>Sustained high load</strong> (hours of &gt; 20% CPU)</td><td>Credits deplete → throttled to 10% 🐢</td><td>Site becomes slow</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>When to Upgrade</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Signal</th><th>Action</th></tr></thead>
+                <tbody>
+                    <tr><td>CPU credits consistently at 0</td><td>Upgrade to <code>t3.small</code> (~$15/month)</td></tr>
+                    <tr><td>Response times &gt; 2 seconds</td><td>Increase Gunicorn workers (needs more RAM)</td></tr>
+                    <tr><td>&gt; 200 concurrent users during festivals</td><td>Temporarily upgrade (see Section 17)</td></tr>
+                    <tr><td>&gt; 500 daily pooja bookings</td><td>Consider RDS <code>db.t3.small</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert alert-note">
+            <div class="alert-title">ℹ️ Note</div>
+            <p>For a temple/spiritual platform like Panchapeetas, typical early traffic is <strong>100–500 visitors/day</strong> — well within <code>t2.micro</code> capacity. You'll only hit limits during viral moments or major festivals.</p>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 16 ==================== -->
+        <h2 id="livestream"><span class="step-num">16</span> Live Streaming — How It Actually Works</h2>
+
+        <p>Your app uses <strong>embedded YouTube live streams</strong> (via the <code>live_youtube_url</code> field on each Peetha). This is critical to understand for capacity planning:</p>
+
+        <h3>Architecture: YouTube Does the Heavy Lifting</h3>
+
+        <div class="mermaid-wrap">
+            <pre class="mermaid">
+graph LR
+    U["👤 3000 Devotees"] -->|"1 page load\n(one-time request)"| EC2["Your EC2\nt2.micro"]
+    U -->|"Video stream\n(10 hrs continuous)"| YT["YouTube Servers\nGoogle Infrastructure"]
+
+    style EC2 fill:#4ade80,stroke:#166534
+    style YT fill:#ef4444,stroke:#991b1b
+            </pre>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Action</th><th>Hits Your EC2?</th><th>Load on Your Server</th></tr></thead>
+                <tbody>
+                    <tr><td>Opening the peetha page</td><td>✅ Yes</td><td><strong>1 request per user</strong></td></tr>
+                    <tr><td>Watching YouTube live stream for hours</td><td>❌ No</td><td><strong>Zero</strong> — YouTube handles it</td></tr>
+                    <tr><td>Refreshing the page</td><td>✅ Yes</td><td>1 request</td></tr>
+                    <tr><td>Booking a pooja while watching</td><td>✅ Yes</td><td>2–3 requests</td></tr>
+                    <tr><td>YouTube chat/comments</td><td>❌ No</td><td>YouTube handles it</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Real Scenario: 3000 Users × 10 Hours × 10 Days</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Peak EC2 load</strong></td><td>~3000 page loads when users first open the page</td></tr>
+                    <tr><td><strong>Sustained EC2 load while watching</strong></td><td><strong>Nearly zero</strong></td></tr>
+                    <tr><td><strong>YouTube cost to you</strong></td><td><strong>$0</strong> — YouTube hosts everything for free</td></tr>
+                    <tr><td><strong>EC2 data transfer</strong></td><td>~3000 × 500 KB = <strong>~1.5 GB</strong> one-time</td></tr>
+                    <tr><td><strong>S3 data transfer</strong></td><td>Images on the page = ~3 GB total</td></tr>
+                    <tr><td><strong>Your total cost</strong></td><td><strong>$0</strong> (Free Tier)</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Can <code>t2.micro</code> Handle the Initial Rush?</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>If 3000 users arrive...</th><th>Result</th></tr></thead>
+                <tbody>
+                    <tr><td>Over 2–3 hours (gradual)</td><td>✅ <strong>Fine</strong> — ~15 req/sec is manageable</td></tr>
+                    <tr><td>Within 30 minutes</td><td>⚠️ <strong>Sluggish page loads</strong> but functional</td></tr>
+                    <tr><td>All within 5 minutes (simultaneous)</td><td>❌ <strong>Will struggle</strong> — temporarily upgrade to <code>t3.small</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert alert-tip">
+            <div class="alert-title">💡 Tip</div>
+            <p>If you announce a live stream time in advance (e.g., "Swamiji's live darshan at 6 PM"), expect most users to arrive within a 15-minute window. In this case, temporarily upgrade to <code>t3.small</code> for that day (see next section). After the page loads, your server is essentially idle while 3000 users watch YouTube.</p>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 17 ==================== -->
+        <h2 id="temp-upgrade"><span class="step-num">17</span> Temporary Upgrade for Events</h2>
+
+        <p>For high-traffic events (festivals, special live streams), you can upgrade your EC2 instance temporarily and downgrade after. It takes ~2 minutes and costs very little.</p>
+
+        <h3>How to Upgrade (3 Steps)</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>Steps</span></div>
+            <pre>Step 1: Stop the instance
+   AWS Console → EC2 → Select instance → Instance State → Stop
+
+Step 2: Change instance type
+   Actions → Instance Settings → Change Instance Type → t3.small → Apply
+
+Step 3: Start the instance
+   Instance State → Start</pre>
+        </div>
+
+        <h3>How to Downgrade After the Event</h3>
+        <p>Same 3 steps — just change <code>t3.small</code> back to <code>t2.micro</code>.</p>
+
+        <div class="alert alert-note">
+            <div class="alert-title">ℹ️ Note</div>
+            <p>Your <strong>Elastic IP stays attached</strong> through stop/start, so your domain URL doesn't change. All data, configuration, and deployments remain intact. Nothing needs to be re-configured.</p>
+        </div>
+
+        <h3>Downtime During Upgrade</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Step</th><th>Duration</th></tr></thead>
+                <tbody>
+                    <tr><td>Stop instance</td><td>~30 seconds</td></tr>
+                    <tr><td>Change type</td><td>Instant</td></tr>
+                    <tr><td>Start instance</td><td>~60 seconds</td></tr>
+                    <tr style="background: var(--green-bg);"><td><strong>Total downtime</strong></td><td><strong>~2 minutes</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Cost for Temporary Upgrades</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Instance</th><th>Cost/Hour</th><th>1 Day</th><th>3 Days</th><th>10 Days</th></tr></thead>
+                <tbody>
+                    <tr><td><code>t2.micro</code> (Free Tier)</td><td>$0</td><td>$0</td><td>$0</td><td>$0</td></tr>
+                    <tr><td><code>t3.small</code> (2 vCPU, 2 GB)</td><td>$0.023</td><td><strong>$0.55</strong></td><td><strong>$1.66</strong></td><td><strong>$5.52</strong></td></tr>
+                    <tr><td><code>t3.medium</code> (2 vCPU, 4 GB)</td><td>$0.046</td><td><strong>$1.10</strong></td><td><strong>$3.31</strong></td><td><strong>$11.04</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Don't Forget: Update Gunicorn Workers After Upgrade</h3>
+        <p>When you upgrade to <code>t3.small</code> (2 GB RAM), increase Gunicorn workers for better performance:</p>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="comment"># SSH into EC2 after the instance restarts</span>
+ssh -i panchapeethas-key.pem ubuntu@13.235.XX.XX
+
+<span class="comment"># Edit the service file</span>
+sudo nano /etc/systemd/system/panchapeethas.service
+<span class="comment"># Change: --workers 2  →  --workers 4</span>
+
+<span class="comment"># Reload and restart</span>
+sudo systemctl daemon-reload
+sudo systemctl restart panchapeethas</pre>
+        </div>
+
+        <p>When you downgrade back to <code>t2.micro</code>, change workers back to 2.</p>
+
+        <h3>Example: Shivaratri Live Event Plan</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>🕉️ Event Plan</span></div>
+            <pre>📅 Day before Shivaratri:
+   └─ Stop → Change to t3.small → Start         (~₹45/day)
+   └─ SSH in → Update Gunicorn workers to 4
+   └─ Test the site is working
+
+🕉️ Shivaratri Day:
+   └─ 3000 devotees watch live darshan            ✅ No issues
+   └─ Pooja bookings come in throughout the day   ✅ Handled
+   └─ YouTube serves all video traffic             ✅ $0 cost
+
+📅 Day after Shivaratri:
+   └─ Stop → Change back to t2.micro → Start      ($0/day)
+   └─ SSH in → Update Gunicorn workers back to 2
+   └─ Total event cost: ~₹45 ($0.55)</pre>
+        </div>
+
+        <hr>
+
+        <!-- ==================== SECTION 18 ==================== -->
+        <h2 id="troubleshooting"><span class="step-num">18</span> Troubleshooting</h2>
+
+        <h3>Common Issues</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Problem</th><th>Cause</th><th>Solution</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>502 Bad Gateway</strong></td><td>Gunicorn not running or socket mismatch</td><td><code>sudo systemctl status panchapeethas</code> → check logs</td></tr>
+                    <tr><td><strong>Static files missing</strong></td><td><code>collectstatic</code> not run</td><td><code>python manage.py collectstatic --noinput</code></td></tr>
+                    <tr><td><strong>Media uploads fail</strong></td><td>S3 permissions or bucket policy</td><td>Check IAM policy and bucket CORS settings</td></tr>
+                    <tr><td><strong>Database connection refused</strong></td><td>Security group misconfigured</td><td>Ensure EC2 SG is allowed in RDS SG on port 5432</td></tr>
+                    <tr><td><strong>CSRF verification failed</strong></td><td>Missing <code>CSRF_TRUSTED_ORIGINS</code></td><td>Add your domain to <code>CSRF_TRUSTED_ORIGINS</code> in settings</td></tr>
+                    <tr><td><strong>Google OAuth redirect error</strong></td><td>Wrong callback URL in Google Console</td><td>Update to <code>https://panchapeethas.org/accounts/google/login/callback/</code></td></tr>
+                    <tr><td><strong>Razorpay webhook failures</strong></td><td>Server not reachable on HTTPS</td><td>Verify SSL is working and port 443 is open</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Useful Debug Commands</h3>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="comment"># Check if Gunicorn is running</span>
+sudo systemctl status panchapeethas
+
+<span class="comment"># Check Nginx config syntax</span>
+sudo nginx -t
+
+<span class="comment"># Check open ports</span>
+sudo ss -tlnp
+
+<span class="comment"># Test database connection</span>
+python manage.py dbshell
+
+<span class="comment"># Run Django checks</span>
+python manage.py check --deploy</pre>
+        </div>
+
+        <hr>
+
+        <!-- ==================== QUICK REFERENCE ==================== -->
+        <h2 id="quick-ref">Quick Reference — Complete Command Summary</h2>
+
+        <div class="code-block">
+            <div class="code-header"><span>bash — Full Setup</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="comment"># ===== FIRST-TIME SETUP =====</span>
+<span class="comment"># 1. SSH into EC2</span>
+ssh -i panchapeethas-key.pem ubuntu@13.235.XX.XX
+
+<span class="comment"># 2. Install packages</span>
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y python3-pip python3-venv python3-dev libpq-dev \
+    postgresql-client nginx certbot python3-certbot-nginx git \
+    libjpeg-dev zlib1g-dev libfreetype6-dev
+
+<span class="comment"># 3. Clone & set up</span>
+sudo adduser --system --group --home /opt/panchapeethas panchapeethas
+sudo -u panchapeethas git clone &lt;repo-url&gt; /opt/panchapeethas/app
+cd /opt/panchapeethas/app
+sudo -u panchapeethas python3 -m venv venv
+sudo -u panchapeethas venv/bin/pip install -r requirements.txt
+
+<span class="comment"># 4. Configure .env, systemd service, nginx (as shown above)</span>
+
+<span class="comment"># 5. Deploy</span>
+python manage.py migrate
+python manage.py collectstatic --noinput
+python manage.py createsuperuser
+sudo systemctl start panchapeethas
+sudo systemctl start nginx
+
+<span class="comment"># 6. SSL</span>
+sudo certbot --nginx -d panchapeethas.org -d www.panchapeethas.org
+
+<span class="comment"># ===== SUBSEQUENT DEPLOYMENTS =====</span>
+/opt/panchapeethas/app/deploy.sh</pre>
+        </div>
+
+        <hr>
+
+        <div class="alert alert-important">
+            <div class="alert-title">⚠️ Important — After Deployment Checklist</div>
+            <p>
+                1. Update your <strong>Google OAuth</strong> redirect URIs in the Google Cloud Console to use your new AWS domain<br>
+                2. Re-configure the <strong>Django Sites</strong> framework (<code>SITE_ID = 1</code>) via the admin panel to match your new domain<br>
+                3. Update <strong>Razorpay webhook URLs</strong> in the Razorpay Dashboard to point to your new domain<br>
+                4. Load your existing Peetha data using <code>loaddata</code> or re-enter it via the admin dashboard
+            </p>
+        </div>
+
+        <br><br>
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+            🕉️ Veerashaiva Pancha Peethas — AWS Hosting Tutorial<br>
+            Generated for the Panchapeetas Django Project
+        </p>
+
+    </main>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+    // Initialize Mermaid
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        themeVariables: {
+            primaryColor: '#1e2030',
+            primaryTextColor: '#e2e5f0',
+            primaryBorderColor: '#3d4157',
+            lineColor: '#6b7089',
+            secondaryColor: '#161822',
+            tertiaryColor: '#0f1117',
+            fontFamily: 'Inter, sans-serif'
+        }
+    });
+
+    // Copy code to clipboard
+    function copyCode(btn) {
+        const pre = btn.closest('.code-block').querySelector('pre');
+        const text = pre.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = 'Copy';
+                btn.classList.remove('copied');
+            }, 2000);
+        });
+    }
+
+    // Sidebar active link tracking
+    const sections = document.querySelectorAll('h2[id]');
+    const navLinks = document.querySelectorAll('.sidebar a');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                const activeLink = document.querySelector(`.sidebar a[href="#${entry.target.id}"]`);
+                if (activeLink) activeLink.classList.add('active');
+            }
+        });
+    }, { rootMargin: '-10% 0px -80% 0px' });
+
+    sections.forEach(section => observer.observe(section));
+</script>
+
+</body>
+</html>
