@@ -614,21 +614,58 @@
             min-height: 96px;
             padding: 12px 14px !important;
         }
-        .sidebar-menu {
-            flex-wrap: nowrap !important;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            padding: 8px 16px;
+        .dashboard-sidebar {
+            position: fixed !important;
+            left: -280px !important;
+            top: 80px !important;
+            height: calc(100vh - 80px) !important;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1) !important;
+            z-index: 1000 !important;
+            background: white !important;
+            width: 280px !important;
+            border-right: 1px solid #cbd5e1 !important;
         }
-        .sidebar-submenu {
-            flex-wrap: nowrap !important;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            padding: 6px 16px;
-            margin-top: 4px;
+        .dashboard-sidebar.mobile-open {
+            left: 0 !important;
         }
-        .sidebar-header {
-            padding: 10px 16px;
+        .dashboard-sidebar.mobile-open .sidebar-menu-item span.menu-text,
+        .dashboard-sidebar.mobile-open .sidebar-logo span.logo-text {
+            opacity: 1 !important;
+            width: auto !important;
+            display: inline !important;
+        }
+        .sidebar-toggle-btn {
+            display: none !important;
+        }
+        .mobile-menu-trigger {
+            display: flex !important;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #475569;
+            font-size: 0.85rem;
+            width: fit-content;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 80px);
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+        }
+        .sidebar-backdrop.show {
+            display: block;
         }
     }
     @media (max-width: 520px) {
@@ -637,6 +674,14 @@
         }
         .dashboard-stat-grid {
             grid-template-columns: 1fr;
+        }
+    }
+    @media (min-width: 769px) {
+        .mobile-menu-trigger {
+            display: none !important;
+        }
+        .sidebar-backdrop {
+            display: none !important;
         }
     }
 
