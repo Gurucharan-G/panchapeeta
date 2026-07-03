@@ -24,6 +24,9 @@
 <!-- ===== Peetha Sub-Navbar (Local Tabs) ===== -->
 <div class="peetha-sub-navbar" style="--peetha-color: var(--peetha-color);">
     <div class="sub-nav-container">
+        <a href="#about" class="sub-nav-link peetha-tab active" data-tab="about">
+            <span>🔱</span> {{ labels.about_label|default:"About" }}
+        </a>
         {% if peetha.current_swamiji %}
         <a href="#jagathguru" class="sub-nav-link peetha-tab" data-tab="jagathguru">
             <span>☀️</span> {{ labels.nav_jagathguru|default:"Jagathguru" }}
@@ -54,7 +57,7 @@
                 <!-- 1. Compact Heritage Registry Card -->
                 <div class="peetha-registry-card" style="--peetha-color: var(--peetha-color);">
                     <h3 class="registry-title">
-                        <span>🔱</span> {{ labels.key_details }}
+                        <span>🔱</span> {{ labels.about_label|default:"About" }}
                     </h3>
                     <div class="registry-list">
                         <div class="registry-item">
