@@ -808,7 +808,7 @@ img {
 }
 
 .detail-hero {
-    background: var(--hero-bg-override, linear-gradient(135deg, color-mix(in srgb, var(--peetha-color) 8%, white), var(--bg-light)));
+    background: var(--peetha-hero-bg);
     padding: 80px 0 0;
     border-bottom: 3px solid var(--peetha-color);
     position: relative;

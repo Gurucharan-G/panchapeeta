@@ -583,13 +583,17 @@
 
 <style>
     :root {
-        {% if peetha.color|lower == '#ffffff' or peetha.color|lower == 'white' or peetha.color|lower == '#fff' or 'kashi' in peetha.name|lower %}
-            --peetha-color: #d4af37; /* Mild Goldish Accent */
-            --hero-bg-override: #fcf9f2; /* Cream Hero Background */
-            --bg-light: #fbf8f3; /* Cream Page Background */
+        {% if peetha.color|lower == '#ffffff' or peetha.color|lower == 'white' or peetha.color|lower == '#fff' %}
+        --peetha-color: #c59b4e; /* Mild goldish accent color fallback */
+        --peetha-hero-bg: #faf5eb; /* Cream background color */
         {% else %}
-            --peetha-color: {{ peetha.color }};
-            --hero-bg-override: linear-gradient(135deg, color-mix(in srgb, var(--peetha-color) 8%, white), var(--bg-light));
+        --peetha-color: {{ peetha.color }};
+        --peetha-hero-bg: linear-gradient(135deg, color-mix(in srgb, {{ peetha.color }} 8%, white), var(--bg-light));
+        {% endif %}
+    }
+    body.theme-dusk-saffron {
+        {% if peetha.color|lower == '#ffffff' or peetha.color|lower == 'white' or peetha.color|lower == '#fff' %}
+        --peetha-hero-bg: #1c1815; /* Warm dark brown/cream background for dark theme */
         {% endif %}
     }
     .custom-calendar-container {
