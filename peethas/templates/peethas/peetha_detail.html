@@ -9,6 +9,12 @@
 {% if peetha.current_swamiji %}
 <a href="#jagathguru" class="nav-link peetha-tab" data-tab="jagathguru">{{ labels.nav_jagathguru|default:"Jagathguru" }}</a>
 {% endif %}
+{% if travel_plans_enabled %}
+<a href="#travel-plans" class="nav-link peetha-tab" data-tab="travel-plans">{{ labels.travel_plans_title|default:"Travel Plans" }}</a>
+{% endif %}
+{% if media_gallery_enabled %}
+<a href="#gallery" class="nav-link peetha-tab" data-tab="gallery">{{ labels.media_gallery_title|default:"Gallery" }}</a>
+{% endif %}
 {% if pooja_booking_enabled %}<a href="#pooja-booking" class="nav-link peetha-tab" data-tab="pooja-booking">{{ labels.nav_pooja_booking|default:"Pooja Booking" }}</a>{% endif %}
 {% if accommodation_enabled %}<a href="#accommodation" class="nav-link peetha-tab" data-tab="accommodation">Accommodation</a>{% endif %}
 {% if contact_section_enabled %}<a href="#contact-us" class="nav-link peetha-tab" data-tab="contact-us">{{ labels.nav_contact_us|default:"Contact Us" }}</a>{% endif %}
@@ -24,11 +30,13 @@
     </div>
 </section>
 
-<!-- ===== TAB: About / Peetha Info ===== --><section class="detail-body peetha-tab-section active" id="tab-about">
-    <div class="container">        <!-- Two-Column Split Layout for Registry/Travel & Main Content -->
+<!-- ===== TAB: About / Peetha Info ===== -->
+<section class="detail-body peetha-tab-section active" id="tab-about">
+    <div class="container">
+        <!-- Two-Column Split Layout for Registry & Main Content -->
         <div class="detail-split-grid">
             
-            <!-- LEFT COLUMN: Compact Heritage Registry & Travel Plans -->
+            <!-- LEFT COLUMN: Compact Heritage Registry -->
             <div class="detail-sidebar-column">
                 
                 <!-- 1. Compact Heritage Registry Card -->
@@ -107,39 +115,6 @@
                     </div>
                 </div>
 
-                <!-- 2. Compact Travel Plans Timeline -->
-                {% if travel_plans_enabled %}
-                <div class="peetha-travel-card" style="--peetha-color: var(--peetha-color);">
-                    <h3 class="registry-title">
-                        <span>📅</span> {{ labels.travel_plans_title }}
-                    </h3>
-                    <div class="compact-travel-timeline">
-                        {% for group in travel_plans_grouped %}
-                            <div class="compact-timeline-month">{{ group.month_str }}</div>
-                            <div class="compact-timeline-events">
-                                {% for event in group.plans %}
-                                    <div class="compact-event-card">
-                                        <div class="compact-event-date">
-                                            <span class="compact-event-day">{{ event.start_date|date:"d" }}</span>
-                                            {% if event.end_date %}
-                                                <span class="compact-event-sep">-</span>
-                                                <span class="compact-event-day">{{ event.end_date|date:"d" }}</span>
-                                            {% endif %}
-                                        </div>
-                                        <div class="compact-event-details">
-                                            <h6>{{ event.title }}</h6>
-                                            <p class="compact-event-loc">📍 {{ event.location }}</p>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% empty %}
-                            <p class="no-data-msg">{{ labels.no_travel_plans }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-
             </div>
 
             <!-- RIGHT COLUMN: Livestream, About & History Descriptions -->
@@ -181,11 +156,58 @@
 
         </div>
 
-        <!-- 3. Photo & Video Gallery (Full Width at the bottom) -->
-        {% if media_gallery_enabled %}
-        <div class="content-section media-gallery-full-row" style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 40px; margin-bottom: 50px;">
+    </div>
+</section>
+
+<!-- ===== TAB: Travel Plans ===== -->
+{% if travel_plans_enabled %}
+<section class="detail-body peetha-tab-section" id="tab-travel-plans">
+    <div class="container">
+        <div class="peetha-content-card" style="--peetha-color: var(--peetha-color); border-left: none; border-top: 4px solid var(--peetha-color); padding: 30px;">
             <h3 style="font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text); border-bottom: 2px solid var(--peetha-color); padding-bottom: 8px; display: inline-block; margin-top: 0; margin-bottom: 24px;">
-                {{ labels.media_gallery_title }}
+                <span>📅</span> {{ labels.travel_plans_title }}
+            </h3>
+            <div class="travel-timeline" style="max-width: 100%;">
+                {% for group in travel_plans_grouped %}
+                    <div class="timeline-month-header" style="margin-top: 25px; margin-bottom: 15px;">
+                        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--peetha-color); font-weight: bold;">{{ group.month_str }}</h4>
+                    </div>
+                    <div class="timeline-events" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                        {% for event in group.plans %}
+                            <div class="timeline-event-card" style="--peetha-color: var(--peetha-color); margin: 0; width: 100%; display: flex; gap: 15px; background: #ffffff; border: 1px solid rgba(0,0,0,0.06); border-radius: 12px; padding: 20px; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.015);">
+                                <div class="event-date" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 60px; height: 60px; background: color-mix(in srgb, var(--peetha-color) 8%, transparent); border-radius: 10px; color: var(--peetha-color); font-weight: bold; font-size: 1.1rem; line-height: 1.2;">
+                                    <span class="event-day" style="display: block;">{{ event.start_date|date:"d" }}</span>
+                                    {% if event.end_date %}
+                                        <span class="event-date-sep" style="font-size: 0.8rem; opacity: 0.6;">-</span>
+                                        <span class="event-day" style="display: block; font-size: 0.95rem;">{{ event.end_date|date:"d" }}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="event-details" style="flex: 1; min-width: 0;">
+                                    <h5 style="margin: 0 0 5px 0; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: bold; color: var(--text);">{{ event.title }}</h5>
+                                    <p class="event-location" style="margin: 0 0 6px 0; font-size: 0.82rem; color: var(--text-muted); font-weight: 500;">📍 {{ event.location }}</p>
+                                    {% if event.description %}
+                                        <p class="event-desc" style="margin: 0; font-size: 0.86rem; color: var(--text-light); line-height: 1.4;">{{ event.description }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% empty %}
+                    <p class="no-data-msg">{{ labels.no_travel_plans }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ===== TAB: Gallery ===== -->
+{% if media_gallery_enabled %}
+<section class="detail-body peetha-tab-section" id="tab-gallery">
+    <div class="container">
+        <div class="peetha-content-card" style="--peetha-color: var(--peetha-color); border-left: none; border-top: 4px solid var(--peetha-color); padding: 30px;">
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text); border-bottom: 2px solid var(--peetha-color); padding-bottom: 8px; display: inline-block; margin-top: 0; margin-bottom: 24px;">
+                <span>🖼️</span> {{ labels.media_gallery_title }}
             </h3>
             <div class="media-gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
                 {% for item in media_gallery %}
@@ -218,9 +240,9 @@
                 {% endfor %}
             </div>
         </div>
-        {% endif %}
     </div>
 </section>
+{% endif %}
 
 <!-- ===== TAB: Jagathguru ===== -->
 {% if peetha.current_swamiji %}
