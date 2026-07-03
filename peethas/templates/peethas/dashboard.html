@@ -15,39 +15,39 @@
     /* Refactored sidebar layout styles */
     .dashboard-layout-container {
         display: flex;
+        flex-direction: column; /* Row-to-Column */
         min-height: calc(100vh - 80px);
         position: relative;
         background: #f1f5f9;
         width: 100%;
     }
     
-    /* 1. Sleek Dark Premium Sidebar */
+    /* 1. Sleek Dark Premium Horizontal Sticky Dock Navigation */
     .dashboard-sidebar {
-        width: 280px;
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
         background: #0f172a; /* Premium Dark Navy */
         border-right: none;
-        display: flex;
-        flex-direction: column;
-        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        flex-shrink: 0;
-        position: sticky;
+        display: flex !important;
+        flex-direction: column !important;
+        position: sticky !important;
         top: 80px;
-        height: calc(100vh - 80px);
         z-index: 100;
         box-sizing: border-box;
-        box-shadow: 4px 0 15px rgba(15, 23, 42, 0.08);
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.08);
     }
     .dashboard-sidebar.collapsed {
-        width: 78px;
+        width: 100% !important; /* Remain full width on horizontal collapse */
     }
     .sidebar-header {
-        padding: 24px 20px;
+        padding: 12px 24px;
         border-bottom: 1px solid #1e293b;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        overflow: hidden;
-        white-space: nowrap;
+        width: 100%;
+        box-sizing: border-box;
     }
     .sidebar-logo {
         display: flex;
@@ -61,168 +61,115 @@
     .sidebar-logo span.logo-text {
         transition: opacity 0.2s;
     }
-    .dashboard-sidebar.collapsed .sidebar-logo span.logo-text {
-        opacity: 0;
-        width: 0;
-        pointer-events: none;
-    }
     .sidebar-toggle-btn {
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px solid #334155;
-        cursor: pointer;
-        padding: 6px 8px;
-        border-radius: 6px;
-        color: #94a3b8;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-    }
-    .sidebar-toggle-btn:hover {
-        background: rgba(249, 115, 22, 0.15);
-        color: #ffedd5;
-        border-color: var(--saffron);
+        display: none !important; /* Hide vertical toggle button */
     }
     .sidebar-menu {
-        flex: 1;
-        padding: 20px 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        overflow-y: auto;
-        overflow-x: hidden;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 24px;
+        background: #0b0f19; /* Slightly darker row for items */
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: auto;
+        scrollbar-width: none;
     }
     .sidebar-menu::-webkit-scrollbar {
-        width: 4px;
-    }
-    .sidebar-menu::-webkit-scrollbar-thumb {
-        background: #334155;
-        border-radius: 2px;
+        display: none;
     }
     .sidebar-menu-item {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 12px;
-        padding: 11px 14px;
-        border-radius: 8px;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 6px;
         color: #94a3b8;
         font-weight: 500;
         text-decoration: none;
         transition: all 0.2s ease;
         border: none;
         background: none;
-        width: 100%;
-        text-align: left;
         cursor: pointer;
         font-family: inherit;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         white-space: nowrap;
-        box-sizing: border-box;
     }
     .sidebar-menu-item:hover {
         background: rgba(255, 255, 255, 0.03);
         color: #f8fafc;
     }
     .sidebar-menu-item.active {
-        background: rgba(249, 115, 22, 0.1);
+        background: rgba(249, 115, 22, 0.12);
         color: #ff9800;
         font-weight: 600;
-        border-left: 3px solid var(--saffron);
-        border-radius: 0 8px 8px 0;
-        padding-left: 11px;
+        border-left: none;
+        border-bottom: 2px solid var(--saffron);
+        border-radius: 6px 6px 0 0;
     }
     .sidebar-menu-item span.menu-text {
         transition: opacity 0.2s;
     }
-    .dashboard-sidebar.collapsed .sidebar-menu-item span.menu-text {
-        opacity: 0;
-        width: 0;
-        pointer-events: none;
-        display: none;
-    }
-    .dashboard-sidebar.collapsed .sidebar-menu-item {
-        padding: 12px;
-        justify-content: center;
-        border-left: none;
-        border-radius: 8px;
-    }
-    .dashboard-sidebar.collapsed .sidebar-menu-item.active {
-        background: rgba(249, 115, 22, 0.15);
-        color: #ff9800;
-    }
-    .dashboard-sidebar.collapsed .sidebar-menu-item span.menu-icon {
-        font-size: 1.25rem;
-    }
     .sidebar-peetha-title {
-        padding: 12px 14px 4px;
+        padding: 0 10px;
         font-size: 0.72rem;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: #64748b;
         font-weight: 700;
-        margin-bottom: 8px;
-    }
-    .dashboard-sidebar.collapsed .sidebar-peetha-title {
-        display: none;
-    }
-    .sidebar-footer {
-        padding: 16px;
-        border-top: 1px solid #1e293b;
-        overflow: hidden;
-        white-space: nowrap;
-        text-align: center;
-        background: #0b0f19;
-    }
-    .dashboard-sidebar.collapsed .sidebar-footer {
-        display: none;
-    }
-
-    /* Submenus in dark sidebar */
-    .sidebar-submenu {
-        padding-left: 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-        margin-bottom: 6px;
-        transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-        overflow: hidden;
-    }
-    .sidebar-submenu.collapsed {
-        max-height: 0;
-        opacity: 0;
-        margin-bottom: 0;
-        pointer-events: none;
-    }
-    .sidebar-submenu-item {
+        margin-right: 12px;
+        border-right: 1px solid #1e293b;
+        height: 20px;
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 7px 12px;
-        border-radius: 6px;
+    }
+    .sidebar-footer {
+        display: none !important; /* Hide footer on horizontal bar */
+    }
+
+    /* Submenus in dark horizontal bar */
+    .sidebar-submenu {
+        flex-basis: 100%; /* Force line break in flex-wrap container */
+        width: 100%;
+        padding: 8px 0;
+        margin-top: 8px;
+        border-top: 1px solid #1e293b;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px;
+        transition: none;
+        overflow: visible;
+    }
+    .sidebar-submenu.collapsed {
+        display: none !important;
+    }
+    .sidebar-submenu-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 4px;
         color: #64748b;
         font-weight: 500;
         text-decoration: none;
         transition: all 0.2s ease;
         border: none;
         background: none;
-        width: 100%;
-        text-align: left;
         cursor: pointer;
         font-family: inherit;
         font-size: 0.82rem;
         white-space: nowrap;
-        box-sizing: border-box;
     }
     .sidebar-submenu-item:hover {
-        background: rgba(255, 255, 255, 0.02);
         color: #f8fafc;
     }
     .sidebar-submenu-item.active {
         color: #ff9800;
         font-weight: 600;
-    }
-    .dashboard-sidebar.collapsed .sidebar-submenu {
-        display: none;
+        background: rgba(255, 255, 255, 0.02);
     }
 
     /* 2. Clean Main Content Workspace */
@@ -426,7 +373,72 @@
         margin: 0 !important;
     }
 
-    /* 4. Less Scroll Table and Card Wrappers */
+    /* 4. Drawer slide-out overlay cards (Less Scroll) */
+    .sub-tab-content[id$="-add"] {
+        position: fixed !important;
+        top: 0 !important;
+        right: -520px !important;
+        width: 500px !important;
+        max-width: 90vw !important;
+        height: 100vh !important;
+        background: white !important;
+        z-index: 10000 !important;
+        box-shadow: -10px 0 30px rgba(15, 23, 42, 0.15) !important;
+        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
+        display: block !important;
+        visibility: hidden;
+        padding: 0 !important;
+        box-sizing: border-box;
+    }
+    .sub-tab-content[id$="-add"].active {
+        right: 0 !important;
+        visibility: visible !important;
+    }
+    .sub-tab-content[id$="-add"] .collapsible-card {
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    .sub-tab-content[id$="-add"] .card-header {
+        border-bottom: 1px solid #e2e8f0 !important;
+        border-radius: 0 !important;
+        background: #f8fafc !important;
+        padding: 16px 20px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+    .sub-tab-content[id$="-add"] .card-body {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+    }
+    .drawer-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(4px);
+        z-index: 9999;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .drawer-backdrop.show {
+        display: block;
+        opacity: 1;
+    }
+
+    /* Force sibling list views to remain always visible behind drawers */
+    .tab-content.active .sub-tab-content[id$="-list"] {
+        display: block !important;
+    }
+
+    /* 5. General Dashboard Layout Cards */
     .dashboard-card {
         border: 1px solid #cbd5e1;
         border-radius: 12px;
@@ -443,9 +455,9 @@
         margin-bottom: 12px;
     }
 
-    /* Internal Table scroll constraint to prevent endless page scroll */
+    /* Internal Table scroll constraint */
     .media-table-wrapper {
-        max-height: 360px; /* Limits table length, forcing vertical scroll inside the card */
+        max-height: 420px;
         overflow-y: auto;
         border: 1px solid #cbd5e1;
         border-radius: 8px;
@@ -467,7 +479,7 @@
         background: #94a3b8;
     }
 
-    /* Header remains sticky inside table wrapper */
+    /* Sticky headers */
     .media-table-wrapper table thead th {
         position: sticky;
         top: 0;
@@ -540,12 +552,7 @@
         display: block;
     }
 
-    /* 5. Responsive styling and mobile updates */
-    @media (max-width: 1024px) {
-        .dashboard-main {
-            padding: 20px 16px;
-        }
-    }
+    /* 6. Responsive styling and mobile updates */
     @media (max-width: 768px) {
         .dashboard-main {
             padding: 16px 12px 30px;
@@ -560,9 +567,6 @@
             width: 100%;
             justify-content: flex-start;
         }
-        .dashboard-user-chip {
-            display: none;
-        }
         .dashboard-stat-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 10px;
@@ -571,57 +575,21 @@
             min-height: 96px;
             padding: 12px 14px !important;
         }
-        .dashboard-sidebar {
-            position: fixed;
-            left: -280px;
-            top: 80px;
-            height: calc(100vh - 80px);
-            box-shadow: 10px 0 30px rgba(0,0,0,0.15);
-            z-index: 1000;
-            background: #0f172a !important; /* Keep premium dark sidebar on mobile */
+        .sidebar-menu {
+            flex-wrap: nowrap !important;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 8px 16px;
         }
-        .dashboard-sidebar.mobile-open {
-            left: 0;
-            width: 280px !important;
+        .sidebar-submenu {
+            flex-wrap: nowrap !important;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 6px 16px;
+            margin-top: 4px;
         }
-        .dashboard-sidebar.mobile-open .sidebar-menu-item span.menu-text,
-        .dashboard-sidebar.mobile-open .sidebar-logo span.logo-text {
-            opacity: 1 !important;
-            width: auto !important;
-            display: inline !important;
-        }
-        .sidebar-toggle-btn {
-            display: none;
-        }
-        .mobile-menu-trigger {
-            display: flex !important;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            background: white;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #475569;
-            font-size: 0.85rem;
-            width: fit-content;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-        .sidebar-backdrop {
-            display: none;
-            position: fixed;
-            top: 80px;
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 80px);
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 999;
-        }
-        .sidebar-backdrop.show {
-            display: block;
+        .sidebar-header {
+            padding: 10px 16px;
         }
     }
     @media (max-width: 520px) {
@@ -630,14 +598,6 @@
         }
         .dashboard-stat-grid {
             grid-template-columns: 1fr;
-        }
-    }
-    @media (min-width: 769px) {
-        .mobile-menu-trigger {
-            display: none !important;
-        }
-        .sidebar-backdrop {
-            display: none !important;
         }
     }
 
@@ -2553,14 +2513,32 @@
         'pooja-section': 'pooja-submenu'
     };
 
-    function switchTab(tabId, btn) {
-        // If this tab has a submenu, treat it as a dropdown toggle (do not switch main view)
+    function switchTab(tabId, btn, autoClickFirst = true) {
+        // Collapse all submenus first
+        Object.values(TAB_SUBMENU_MAP).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('collapsed');
+        });
+
+        // If this tab has a submenu, expand it and auto-click its first item
         if (TAB_SUBMENU_MAP[tabId]) {
             const submenuId = TAB_SUBMENU_MAP[tabId];
             const submenuEl = document.getElementById(submenuId);
             if (submenuEl) {
-                submenuEl.classList.toggle('collapsed');
+                submenuEl.classList.remove('collapsed');
+                if (autoClickFirst) {
+                    const firstSubBtn = submenuEl.querySelector('.sidebar-submenu-item');
+                    if (firstSubBtn) {
+                        firstSubBtn.click();
+                        return;
+                    }
+                }
             }
+            // Fallback: active parent tab highlighting
+            document.querySelectorAll('.tab-btn').forEach(button => {
+                button.classList.remove('active');
+            });
+            if (btn) btn.classList.add('active');
             return;
         }
 
@@ -2571,7 +2549,7 @@
             button.classList.remove('active');
         });
         document.getElementById(tabId).classList.add('active');
-        btn.classList.add('active');
+        if (btn) btn.classList.add('active');
         
         // Auto-close mobile sidebar drawer
         const sidebar = document.getElementById('dashboard-sidebar');
@@ -2859,7 +2837,7 @@
                 return onclickAttr && onclickAttr.includes(sectionId);
             });
             if (tabBtn) {
-                switchTab(sectionId, tabBtn);
+                switchTab(sectionId, tabBtn, false);
             }
             
             if (subViewId) {
@@ -2993,6 +2971,67 @@
                     showToast(`Failed to update feature flag. Please try again.`, 'error');
                 });
             });
+        });
+
+        // Close active form drawer
+        window.closeActiveDrawer = function() {
+            const activeDrawer = document.querySelector('.sub-tab-content[id$="-add"].active');
+            if (activeDrawer) {
+                const parent = activeDrawer.closest('.tab-content');
+                if (parent) {
+                    // Try to click the corresponding list sibling button
+                    const parentId = parent.id;
+                    const subId = parentId.replace('-section', '-submenu');
+                    const listBtn = document.querySelector(`.sidebar-submenu .sidebar-submenu-item[onclick*="-list"]`) || 
+                                    document.querySelector(`#${subId} .sidebar-submenu-item[onclick*="-list"]`);
+                    if (listBtn) {
+                        listBtn.click();
+                    } else {
+                        activeDrawer.classList.remove('active');
+                        const backdrop = document.getElementById('drawer-backdrop');
+                        if (backdrop) backdrop.classList.remove('show');
+                    }
+                }
+            }
+        };
+
+        // Create drawer backdrop dynamically
+        const backdropEl = document.createElement('div');
+        backdropEl.className = 'drawer-backdrop';
+        backdropEl.id = 'drawer-backdrop';
+        backdropEl.addEventListener('click', window.closeActiveDrawer);
+        document.body.appendChild(backdropEl);
+
+        // Watch active class on drawers to toggle backdrop
+        const observer = new MutationObserver(() => {
+            const activeDrawer = document.querySelector('.sub-tab-content[id$="-add"].active');
+            const drawerBackdrop = document.getElementById('drawer-backdrop');
+            if (drawerBackdrop) {
+                if (activeDrawer) {
+                    drawerBackdrop.classList.add('show');
+                } else {
+                    drawerBackdrop.classList.remove('show');
+                }
+            }
+        });
+
+        document.querySelectorAll('.sub-tab-content[id$="-add"]').forEach(drawer => {
+            observer.observe(drawer, { attributes: true, attributeFilter: ['class'] });
+
+            // Create dynamic close cross in headers
+            const header = drawer.querySelector('.card-header');
+            if (header && !header.querySelector('.drawer-close-btn')) {
+                const closeBtn = document.createElement('button');
+                closeBtn.type = 'button';
+                closeBtn.className = 'drawer-close-btn';
+                closeBtn.innerHTML = '&times;';
+                closeBtn.style.cssText = 'background:none; border:none; font-size:1.6rem; cursor:pointer; color:#94a3b8; padding:0 8px; line-height:1; display:flex; align-items:center;';
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    window.closeActiveDrawer();
+                });
+                header.appendChild(closeBtn);
+            }
         });
     });
 
