@@ -740,6 +740,10 @@ def dashboard_home(request):
             name='DEVOTEE_REGISTRATION',
             defaults={'is_enabled': True, 'description': 'Allow new devotees to register on the platform'}
         )
+        FeatureFlag.objects.get_or_create(
+            name='DEVOTIONAL_CHANTING',
+            defaults={'is_enabled': True, 'description': 'Enable the floating devotional chanting player at the bottom right'}
+        )
         
         # Forms for action panels
         handler_form = PeethaHandlerForm()

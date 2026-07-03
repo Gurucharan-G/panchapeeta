@@ -572,6 +572,7 @@
     </div>
     {% endif %}
 
+    {% if devotional_chanting_enabled %}
     <!-- Devotional Audio Player -->
     <div id="devotional-player" class="devotional-audio-player">
         <button class="player-toggle-btn" onclick="togglePlayState()" title="Play Om Namah Shivaya Chanting">
@@ -598,9 +599,10 @@
 
     <script>
         const audio = document.getElementById('chanting-audio');
-        audio.volume = 0.08;
-        audio.muted = true;
-        let hasStarted = false;
+        if (audio) {
+            audio.volume = 0.08;
+            audio.muted = true;
+            let hasStarted = false;
 
         function doPlay() {
             if (hasStarted) return;
@@ -660,7 +662,9 @@
                 updatePlayerUI(false);
             }
         }
+        }
     </script>
+    {% endif %}
 
     {% block extra_js %}{% endblock %}
 </body>

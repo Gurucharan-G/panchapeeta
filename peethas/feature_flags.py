@@ -23,3 +23,7 @@ USE_RECTANGULAR_PORTRAITS = DynamicFeatureFlag('USE_RECTANGULAR_PORTRAITS', True
 # Global Devotee Registration Flag
 DEVOTEE_REGISTRATION = DynamicFeatureFlag('DEVOTEE_REGISTRATION', True)
 
+# Global Devotional Chanting Player Flag
+DEVOTIONAL_CHANTING = DynamicFeatureFlag('DEVOTIONAL_CHANTING', True)
+
+
