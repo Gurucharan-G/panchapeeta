@@ -1155,13 +1155,14 @@
             if (aboutSection) aboutSection.classList.add('active');
         }
         
-        // Activate the corresponding nav link
-        const targetLink = document.querySelector(`.peetha-tab[data-tab="${tabName}"]`);
-        if (targetLink) {
-            targetLink.classList.add('active');
+        // Activate all corresponding nav links
+        const targetLinks = document.querySelectorAll(`.peetha-tab[data-tab="${tabName}"]`);
+        if (targetLinks.length > 0) {
+            targetLinks.forEach(link => link.classList.add('active'));
         } else {
-            const defaultLink = document.querySelector('.peetha-tab[data-tab="about"]');
-            if (defaultLink) defaultLink.classList.add('active');
+            document.querySelectorAll('.peetha-tab[data-tab="about"]').forEach(link => {
+                link.classList.add('active');
+            });
         }
 
         // Scroll to top when switching tabs, unless target is live stream card
