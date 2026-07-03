@@ -3974,21 +3974,21 @@ body.theme-dusk-saffron .auth-modal-close-btn:hover {
 .detail-split-grid {
     display: grid;
     grid-template-columns: 360px 1fr;
-    gap: 40px;
+    gap: 24px;
     align-items: start;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .detail-sidebar-column {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
 }
 
 .detail-main-column {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 16px;
     min-width: 0; /* Prevents flex items from overflowing horizontal boundaries */
 }
 
@@ -3997,7 +3997,7 @@ body.theme-dusk-saffron .auth-modal-close-btn:hover {
     background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 16px;
-    padding: 24px;
+    padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
     position: relative;
     overflow: hidden;
@@ -4013,7 +4013,7 @@ body.theme-dusk-saffron .auth-modal-close-btn:hover {
 }
 .registry-title {
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     font-family: 'Playfair Display', serif;
     font-size: 1.3rem;
     color: var(--text);
@@ -4021,7 +4021,7 @@ body.theme-dusk-saffron .auth-modal-close-btn:hover {
     align-items: center;
     gap: 8px;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 12px;
+    padding-bottom: 8px;
 }
 .registry-list {
     display: flex;
@@ -4174,7 +4174,7 @@ body.theme-dusk-saffron .auth-modal-close-btn:hover {
     background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 16px;
-    padding: 28px 30px;
+    padding: 20px 24px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
     position: relative;
     overflow: hidden;
@@ -4190,12 +4190,12 @@ body.theme-dusk-saffron .auth-modal-close-btn:hover {
 }
 .peetha-content-card h3 {
     margin-top: 0;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
     font-family: 'Playfair Display', serif;
     font-size: 1.5rem;
     color: var(--text);
     border-bottom: 2px solid color-mix(in srgb, var(--peetha-color) 15%, transparent);
-    padding-bottom: 8px;
+    padding-bottom: 6px;
     display: inline-block;
 }
 .peetha-content-card p {
@@ -4284,7 +4284,7 @@ body.theme-dusk-saffron .compact-event-card::before {
     position: sticky;
     top: 76px; /* Sits cleanly below the scrolled main header */
     z-index: 99;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
 }
 .sub-nav-container {
