@@ -309,32 +309,21 @@ img {
     transform: translateY(-40%);
 }
 
-/* Custom reveal state for murals with floating animations */
+/* Custom reveal state for murals — static, no floating */
 .hero-mural.revealed {
     opacity: 0.9;
 }
 
 .mural-left.revealed {
-    animation: floatLeftMural 7s ease-in-out infinite;
+    transform: translateY(-50%);
 }
 
 .mural-right.revealed {
-    animation: floatRightMural 8s ease-in-out infinite;
-}
-
-@keyframes floatLeftMural {
-    0%, 100% { transform: translateY(-50%); }
-    50% { transform: translateY(-45%); }
-}
-
-@keyframes floatRightMural {
-    0%, 100% { transform: translateY(-50%); }
-    50% { transform: translateY(-55%); }
+    transform: translateY(-50%);
 }
 
 /* Hover effects */
 .hero-mural:hover {
-    animation-play-state: paused;
     border-color: rgba(184, 134, 11, 0.8);
     box-shadow: 
         0 20px 45px rgba(184, 134, 11, 0.2),
@@ -343,11 +332,11 @@ img {
 }
 
 .mural-left:hover {
-    transform: translateY(-53%) scale(1.02);
+    transform: translateY(-50%) scale(1.02);
 }
 
 .mural-right:hover {
-    transform: translateY(-53%) scale(1.02);
+    transform: translateY(-50%) scale(1.02);
 }
 
 .hero-mural img {
@@ -3839,6 +3828,148 @@ body.theme-dusk-saffron .devotional-audio-player {
 }
 body.theme-dusk-saffron .player-label {
     color: #e2d4c5 !important;
+}
+
+/* ===== Live Stream Inline Bar ===== */
+.live-stream-inline-bar {
+    display: block;
+    background: linear-gradient(135deg, #fff5f5 0%, #ffebeb 100%);
+    border: 1px solid #feb2b2;
+    border-radius: 12px;
+    padding: 12px 20px;
+    margin-bottom: 25px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+.live-stream-inline-bar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(229, 62, 62, 0.1);
+    border-color: #fc8181;
+}
+.live-info-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.live-inline-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #e53e3e;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.live-title {
+    color: #2d3748;
+    font-size: 0.95rem;
+}
+.live-title strong {
+    color: #e53e3e;
+}
+@keyframes pulse-live {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.6; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Dusk Theme compatibility for Live Bar */
+body.theme-dusk-saffron .live-stream-inline-bar {
+    background: linear-gradient(135deg, #2d1818 0%, #201111 100%);
+    border-color: #742a2a;
+}
+body.theme-dusk-saffron .live-title {
+    color: #e2d4c5;
+}
+
+/* ===== Interactive Auth Modal Overlay & Container ===== */
+.auth-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.auth-modal-overlay.open {
+    display: flex;
+    opacity: 1;
+}
+.auth-modal-container {
+    background: white;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 440px;
+    padding: 35px 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+.auth-modal-overlay.open .auth-modal-container {
+    transform: translateY(0);
+}
+.auth-modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2.2rem;
+    cursor: pointer;
+    color: #888;
+    line-height: 1;
+    outline: none;
+    transition: color 0.2s;
+}
+.auth-modal-close-btn:hover {
+    color: var(--dark);
+}
+
+/* Form Styles inside Modal */
+.form-group input:focus {
+    border-color: var(--saffron) !important;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.15);
+}
+.google-login-btn:hover {
+    background-color: #f7f9fa !important;
+    border-color: #ccc !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08) !important;
+}
+
+/* Dusk Theme compatibility for Auth Modal */
+body.theme-dusk-saffron .auth-modal-container {
+    background: #1e1b19;
+    border: 1px solid #36312d;
+}
+body.theme-dusk-saffron .auth-modal-container h2 {
+    color: #e2d4c5 !important;
+}
+body.theme-dusk-saffron .auth-modal-container p {
+    color: #a09284 !important;
+}
+body.theme-dusk-saffron .auth-modal-container label {
+    color: #e2d4c5 !important;
+}
+body.theme-dusk-saffron .auth-modal-container input {
+    background: #2b2521;
+    border-color: #473f38;
+    color: #fff;
+}
+body.theme-dusk-saffron .auth-modal-close-btn:hover {
+    color: #fff;
 }
 
 
