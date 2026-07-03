@@ -4277,103 +4277,99 @@ body.theme-dusk-saffron .compact-event-card::before {
     }
 }
 
-/* Premium Local Sub-Navbar styles */
+/* Premium Segmented Local Sub-Navbar styles */
 .peetha-sub-navbar {
     width: 100%;
-    background: #ffffff;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    background: transparent;
+    border: none;
     position: sticky;
     top: 76px; /* Sits cleanly below the scrolled main header */
     z-index: 99;
     margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
+    padding: 10px 0;
 }
 .sub-nav-container {
-    max-width: 1200px;
+    max-width: max-content;
     margin: 0 auto;
-    padding: 0 24px;
+    background: rgba(0, 0, 0, 0.035);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 100px;
+    padding: 4px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 32px;
-    height: 52px;
+    gap: 4px;
+    height: 46px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 .sub-nav-link {
     font-family: 'Inter', sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 700;
     color: var(--text-muted);
     display: flex;
     align-items: center;
-    gap: 8px;
     height: 100%;
-    padding: 0 4px;
-    position: relative;
-    transition: color 0.3s ease;
+    padding: 0 20px;
+    border-radius: 100px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     text-transform: uppercase;
     letter-spacing: 0.8px;
     cursor: pointer;
-}
-.sub-nav-link span {
-    font-size: 1.05rem;
+    text-decoration: none;
 }
 .sub-nav-link:hover {
     color: var(--peetha-color);
-}
-.sub-nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--peetha-color);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
+    background: rgba(0, 0, 0, 0.025);
 }
 .sub-nav-link.active {
-    color: var(--peetha-color);
-}
-.sub-nav-link.active::after {
-    transform: scaleX(1);
-    transform-origin: left;
+    color: #ffffff !important;
+    background: var(--peetha-color);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--peetha-color) 30%, transparent);
+    transform: translateY(-1px);
 }
 
-/* Dusk Theme Compatibility overrides for Sub-Navbar */
-body.theme-dusk-saffron .peetha-sub-navbar {
-    background: #181513 !important;
-    border-bottom-color: #2b2521 !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+/* Dusk Theme Compatibility overrides for Segmented Control Sub-Navbar */
+body.theme-dusk-saffron .sub-nav-container {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-color: rgba(255, 255, 255, 0.06) !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 body.theme-dusk-saffron .sub-nav-link {
     color: #bfaea2 !important;
 }
-body.theme-dusk-saffron .sub-nav-link:hover,
-body.theme-dusk-saffron .sub-nav-link.active {
+body.theme-dusk-saffron .sub-nav-link:hover {
     color: var(--peetha-color) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+body.theme-dusk-saffron .sub-nav-link.active {
+    color: #ffffff !important;
+    background: var(--peetha-color) !important;
+    box-shadow: 0 4px 15px color-mix(in srgb, var(--peetha-color) 40%, transparent) !important;
 }
 
 /* Subnav Mobile responsiveness overrides */
 @media (max-width: 768px) {
     .peetha-sub-navbar {
         top: 66px;
+        padding: 8px 0;
     }
     .sub-nav-container {
-        gap: 16px;
-        height: 48px;
+        max-width: 92%;
+        gap: 2px;
+        height: 42px;
         overflow-x: auto;
         justify-content: flex-start;
         -webkit-overflow-scrolling: touch;
+        border-radius: 30px;
     }
     .sub-nav-container::-webkit-scrollbar {
         display: none;
     }
     .sub-nav-link {
-        font-size: 0.76rem;
+        font-size: 0.72rem;
         white-space: nowrap;
+        padding: 0 14px;
+        border-radius: 30px;
     }
 }
 
