@@ -6,15 +6,6 @@
 {% block nav_items %}
 <a href="{% url 'peethas:home' %}" class="nav-link">{{ labels.nav_home|default:"Home" }}</a>
 <a href="#about" class="nav-link peetha-tab active" data-tab="about">{{ peetha.name }}</a>
-{% if peetha.current_swamiji %}
-<a href="#jagathguru" class="nav-link peetha-tab" data-tab="jagathguru">{{ labels.nav_jagathguru|default:"Jagathguru" }}</a>
-{% endif %}
-{% if travel_plans_enabled %}
-<a href="#travel-plans" class="nav-link peetha-tab" data-tab="travel-plans">{{ labels.travel_plans_title|default:"Travel Plans" }}</a>
-{% endif %}
-{% if media_gallery_enabled %}
-<a href="#gallery" class="nav-link peetha-tab" data-tab="gallery">{{ labels.media_gallery_title|default:"Gallery" }}</a>
-{% endif %}
 {% if pooja_booking_enabled %}<a href="#pooja-booking" class="nav-link peetha-tab" data-tab="pooja-booking">{{ labels.nav_pooja_booking|default:"Pooja Booking" }}</a>{% endif %}
 {% if accommodation_enabled %}<a href="#accommodation" class="nav-link peetha-tab" data-tab="accommodation">Accommodation</a>{% endif %}
 {% if contact_section_enabled %}<a href="#contact-us" class="nav-link peetha-tab" data-tab="contact-us">{{ labels.nav_contact_us|default:"Contact Us" }}</a>{% endif %}
@@ -29,6 +20,30 @@
         </div>
     </div>
 </section>
+
+<!-- ===== Peetha Sub-Navbar (Local Tabs) ===== -->
+<div class="peetha-sub-navbar" style="--peetha-color: var(--peetha-color);">
+    <div class="sub-nav-container">
+        <a href="#about" class="sub-nav-link peetha-tab active" data-tab="about">
+            <span>🔱</span> {{ labels.key_details }}
+        </a>
+        {% if peetha.current_swamiji %}
+        <a href="#jagathguru" class="sub-nav-link peetha-tab" data-tab="jagathguru">
+            <span>☀️</span> {{ labels.nav_jagathguru|default:"Jagathguru" }}
+        </a>
+        {% endif %}
+        {% if travel_plans_enabled %}
+        <a href="#travel-plans" class="sub-nav-link peetha-tab" data-tab="travel-plans">
+            <span>📅</span> {{ labels.travel_plans_title|default:"Travel Plans" }}
+        </a>
+        {% endif %}
+        {% if media_gallery_enabled %}
+        <a href="#gallery" class="sub-nav-link peetha-tab" data-tab="gallery">
+            <span>🖼️</span> {{ labels.media_gallery_title|default:"Photos & Videos" }}
+        </a>
+        {% endif %}
+    </div>
+</div>
 
 <!-- ===== TAB: About / Peetha Info ===== -->
 <section class="detail-body peetha-tab-section active" id="tab-about">
