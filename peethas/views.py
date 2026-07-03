@@ -1060,6 +1060,18 @@ def toggle_feature(request, pk):
                         updated_flags.append(f_obj)
                 except FeatureFlag.DoesNotExist:
                     pass
+        # If overall is turned on, enable all child feature flags for this peetha
+        elif feature_key == 'overall' and flag.is_enabled:
+            for key in CHILD_KEYS:
+                f_name = f"{peetha_slug}_{key}"
+                try:
+                    f_obj = FeatureFlag.objects.get(name=f_name)
+                    if not f_obj.is_enabled:
+                        f_obj.is_enabled = True
+                        f_obj.save()
+                        updated_flags.append(f_obj)
+                except FeatureFlag.DoesNotExist:
+                    pass
         # If any child feature is turned on, auto-enable overall for this peetha
         elif feature_key in CHILD_KEYS and flag.is_enabled:
             overall_name = f"{peetha_slug}_overall"
