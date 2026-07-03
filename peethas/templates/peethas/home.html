@@ -63,8 +63,10 @@
 
                     <!-- Mutt photo in center -->
                     <div class="card-mutt-photo">
-                        <img loading="lazy" src="{% static 'images/mutts/' %}{{ peetha.slug }}.jpg" alt="{{ peetha.name }} Photo"
-                            onerror="this.parentElement.classList.add('no-image')">
+                        <img loading="lazy" 
+                             src="{% static 'images/mutts/' %}{{ peetha.slug }}.jpg" 
+                             alt="{{ peetha.name }} Photo"
+                             onerror="this.onerror=function(){ this.onerror=function(){ this.parentElement.classList.add('no-image'); }; this.src='{% static 'images/mutts/' %}{{ peetha.slug }}.webp'; }; this.src='{% static 'images/mutts/' %}{{ peetha.slug }}.png';">
                         <div class="mutt-fallback">
                             <span class="mutt-fallback-icon">🛕</span>
                             <span class="mutt-fallback-text">Photo</span>
