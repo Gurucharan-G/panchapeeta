@@ -3798,17 +3798,16 @@ img.progressive-loaded {
 }
 
 .ecg-line {
-    stroke-dasharray: 60;
-    stroke-dashoffset: 60;
+    transform-box: view-box;
     animation: drawECG 1.8s linear infinite;
 }
 
 @keyframes drawECG {
     0% {
-        stroke-dashoffset: 60;
+        transform: translateX(0);
     }
     100% {
-        stroke-dashoffset: 0;
+        transform: translateX(-50px); /* Move exactly one full loop cycle */
     }
 }
 
