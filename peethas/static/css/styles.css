@@ -3767,7 +3767,12 @@ img.progressive-loaded {
     transform: scale(1.05);
 }
 
-.player-toggle-btn svg {
+.player-toggle-btn.playing {
+    width: 52px;
+    border-radius: 18px;
+}
+
+.player-toggle-btn svg.play-icon {
     width: 14px;
     height: 14px;
 }
@@ -3782,47 +3787,29 @@ img.progressive-loaded {
     user-select: none;
 }
 
-/* Sound waves animation bars */
-.sound-waves {
+/* ECG Heartbeat Wave Animation styles */
+.ecg-wave {
     display: flex;
-    align-items: flex-end;
-    gap: 3px;
-    width: 22px;
-    height: 14px;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 16px;
+    color: white;
 }
 
-.wave-bar {
-    width: 2px;
-    height: 100%;
-    background-color: white;
-    border-radius: 1px;
-    animation: bounceWave 0.8s ease-in-out infinite alternate;
-    transform-origin: bottom;
+.ecg-line {
+    stroke-dasharray: 60;
+    stroke-dashoffset: 60;
+    animation: drawECG 1.8s linear infinite;
 }
 
-.wave-bar:nth-child(2) {
-    animation-delay: 0.15s;
-    height: 60%;
-}
-
-.wave-bar:nth-child(3) {
-    animation-delay: 0.3s;
-    height: 80%;
-}
-
-.wave-bar:nth-child(4) {
-    animation-delay: 0.1s;
-    height: 45%;
-}
-
-.wave-bar:nth-child(5) {
-    animation-delay: 0.25s;
-    height: 70%;
-}
-
-@keyframes bounceWave {
-    0% { transform: scaleY(0.25); }
-    100% { transform: scaleY(1); }
+@keyframes drawECG {
+    0% {
+        stroke-dashoffset: 60;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
 }
 
 /* Playing state dynamic pulsing outline */

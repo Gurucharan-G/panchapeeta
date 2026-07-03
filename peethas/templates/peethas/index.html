@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=1.5">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=1.6">
     <style>
         /* User dropdown base styling */
         .nav-profile-dropdown {
@@ -584,14 +584,10 @@
                 <rect x="6" y="4" width="4" height="16"></rect>
                 <rect x="14" y="4" width="4" height="16"></rect>
             </svg>
-            <!-- Sound Waves Animation -->
-            <div class="sound-waves" style="display: none; align-items: flex-end; gap: 3px; width: 22px; height: 14px;">
-                <span class="wave-bar"></span>
-                <span class="wave-bar"></span>
-                <span class="wave-bar"></span>
-                <span class="wave-bar"></span>
-                <span class="wave-bar"></span>
-            </div>
+            <!-- ECG Heartbeat Wave Animation -->
+            <svg class="ecg-wave" style="display: none; width: 34px; height: 16px;" viewBox="0 0 50 20">
+                <path class="ecg-line" d="M0,10 L12,10 L15,6 L18,14 L21,2 L24,18 L27,10 L50,10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
         </button>
         <span class="player-label">Chant</span>
         <audio id="chanting-audio" loop preload="auto">
@@ -640,19 +636,19 @@
         function updatePlayerUI(playing) {
             const player = document.getElementById('devotional-player');
             const playIcon = player.querySelector('.play-icon');
-            const pauseIcon = player.querySelector('.pause-icon');
-            const waves = player.querySelector('.sound-waves');
+            const ecg = player.querySelector('.ecg-wave');
+            const toggleBtn = player.querySelector('.player-toggle-btn');
 
             if (playing) {
                 player.classList.add('playing');
+                toggleBtn.classList.add('playing');
                 playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-                waves.style.display = 'flex';
+                ecg.style.display = 'block';
             } else {
                 player.classList.remove('playing');
+                toggleBtn.classList.remove('playing');
                 playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-                waves.style.display = 'none';
+                ecg.style.display = 'none';
             }
         }
 
