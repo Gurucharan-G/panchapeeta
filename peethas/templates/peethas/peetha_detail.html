@@ -11,7 +11,11 @@
     </a>
     <div class="nav-dropdown-menu">
         {% for p in all_peethas %}
-            {% if p.id != peetha.id %}
+            {% if p.id == peetha.id %}
+                <span class="nav-dropdown-gap-item">
+                    {{ p.name }}
+                </span>
+            {% else %}
                 <a href="{% url 'peethas:peetha_detail' p.slug %}" class="nav-dropdown-item">
                     {{ p.name }}
                 </a>

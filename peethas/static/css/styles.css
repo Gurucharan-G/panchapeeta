@@ -4409,7 +4409,8 @@ body.theme-dusk-saffron .sub-nav-link.active {
 }
 
 /* Dropdown Items styling */
-.nav-peetha-dropdown .nav-dropdown-item {
+.nav-peetha-dropdown .nav-dropdown-item,
+.nav-peetha-dropdown .nav-dropdown-gap-item {
     display: inline-block;
     padding: 8px 14px;
     font-size: 0.74rem;
@@ -4424,8 +4425,14 @@ body.theme-dusk-saffron .sub-nav-link.active {
     transition: all 0.2s ease;
 }
 
-/* Elegant vertical divider lines between items */
-.nav-peetha-dropdown .nav-dropdown-item + .nav-dropdown-item::before {
+/* Make the gap item invisible but preserve its spacing in the flex layout */
+.nav-peetha-dropdown .nav-dropdown-gap-item {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Elegant vertical divider lines between horizontal elements (even if adjacent to gap) */
+.nav-peetha-dropdown .nav-dropdown-menu > *:not(:first-child)::before {
     content: '';
     position: absolute;
     left: -2px;
@@ -4434,6 +4441,7 @@ body.theme-dusk-saffron .sub-nav-link.active {
     width: 1px;
     background: rgba(184, 134, 11, 0.15);
     pointer-events: none;
+    visibility: visible; /* Ensure line stays visible even if the gap item is hidden */
 }
 
 /* Hover style on items: color change & light background pill */
@@ -4451,7 +4459,7 @@ body.theme-dusk-saffron .nav-peetha-dropdown .nav-dropdown-menu {
 body.theme-dusk-saffron .nav-peetha-dropdown .nav-dropdown-item {
     color: #e5c158;
 }
-body.theme-dusk-saffron .nav-peetha-dropdown .nav-dropdown-item + .nav-dropdown-item::before {
+body.theme-dusk-saffron .nav-peetha-dropdown .nav-dropdown-menu > *:not(:first-child)::before {
     background: rgba(229, 193, 88, 0.15);
 }
 body.theme-dusk-saffron .nav-peetha-dropdown .nav-dropdown-item:hover {
