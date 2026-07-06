@@ -1,5 +1,5 @@
 from .models import Peetha
-from .feature_flags import DEVOTEE_REGISTRATION, DEVOTIONAL_CHANTING
+from .feature_flags import DEVOTEE_REGISTRATION, DEVOTIONAL_CHANTING, DEVOTIONAL_CHANTING_AUTOPLAY
 
 def live_peethas_processor(request):
     """
@@ -12,5 +12,6 @@ def live_peethas_processor(request):
         'all_peethas': all_peethas,
         'devotee_registration_enabled': bool(DEVOTEE_REGISTRATION),
         'devotional_chanting_enabled': bool(DEVOTIONAL_CHANTING),
+        'devotional_chanting_autoplay': bool(DEVOTIONAL_CHANTING_AUTOPLAY),
     }
 

@@ -6,50 +6,148 @@
 
 ## Table of Contents
 
-1. [Architecture Overview](#1-architecture-overview)
-2. [Prerequisites](#2-prerequisites)
-3. [Step 1 — Launch an EC2 Instance](#3-step-1--launch-an-ec2-instance)
-4. [Step 2 — Initial Server Setup](#4-step-2--initial-server-setup)
-5. [Step 3 — Set Up PostgreSQL on RDS](#5-step-3--set-up-postgresql-on-rds)
-6. [Step 4 — Configure S3 for Media & Static Files](#6-step-4--configure-s3-for-media--static-files)
-7. [Step 5 — Deploy the Django Application](#7-step-5--deploy-the-django-application)
-8. [Step 6 — Configure Gunicorn (WSGI Server)](#8-step-6--configure-gunicorn-wsgi-server)
-9. [Step 7 — Configure Nginx (Reverse Proxy)](#9-step-7--configure-nginx-reverse-proxy)
-10. [Step 8 — SSL Certificate with Let's Encrypt](#10-step-8--ssl-certificate-with-lets-encrypt)
-11. [Step 9 — Production Settings Changes](#11-step-9--production-settings-changes)
-12. [Step 10 — Domain Name Setup (Route 53)](#12-step-10--domain-name-setup-route-53)
-13. [Step 11 — Monitoring & Maintenance](#13-step-11--monitoring--maintenance)
-14. [Free Tier Cost Breakdown](#14-free-tier-cost-breakdown)
-15. [Traffic Capacity & Limits](#15-traffic-capacity--limits)
-16. [Live Streaming — How It Actually Works](#16-live-streaming--how-it-actually-works)
-17. [Temporary Upgrade for Events](#17-temporary-upgrade-for-events)
-18. [Troubleshooting](#18-troubleshooting)
+1. [AWS Basics for Beginners](#1-aws-basics-for-beginners)
+2. [Terminal & SSH Basics](#2-terminal--ssh-basics)
+3. [Architecture Overview](#3-architecture-overview)
+4. [Prerequisites](#4-prerequisites)
+5. [Step 1 — Launch an EC2 Instance](#5-step-1--launch-an-ec2-instance)
+6. [Step 2 — Initial Server Setup](#6-step-2--initial-server-setup)
+7. [Step 3 — Set Up PostgreSQL on RDS](#7-step-3--set-up-postgresql-on-rds)
+8. [Step 4 — Configure S3 for Media & Static Files](#8-step-4--configure-s3-for-media--static-files)
+9. [Step 5 — Deploy the Django Application](#9-step-5--deploy-the-django-application)
+10. [Step 6 — Configure Gunicorn (WSGI Server)](#10-step-6--configure-gunicorn-wsgi-server)
+11. [Step 7 — Configure Nginx (Reverse Proxy)](#11-step-7--configure-nginx-reverse-proxy)
+12. [Step 8 — SSL Certificate with Let's Encrypt](#12-step-8--ssl-certificate-with-lets-encrypt)
+13. [Step 9 — Production Settings Changes](#13-step-9--production-settings-changes)
+14. [Step 10 — Domain Name Setup](#14-step-10--domain-name-setup)
+15. [Step 11 — Monitoring & Maintenance](#15-step-11--monitoring--maintenance)
+16. [Free Tier Cost Breakdown](#16-free-tier-cost-breakdown)
+17. [Traffic Capacity & Limits](#17-traffic-capacity--limits)
+18. [Live Streaming — How It Actually Works](#18-live-streaming--how-it-actually-works)
+19. [Temporary Upgrade for Events](#19-temporary-upgrade-for-events)
+20. [Troubleshooting](#20-troubleshooting)
+21. [Quick Reference](#quick-reference)
 
 ---
 
-## 1. Architecture Overview
+## 1. AWS Basics for Beginners
+
+Welcome! If you have never worked with Amazon Web Services (AWS) or web hosting before, don't worry. This guide is written specifically for you. Think of AWS as a giant company where you can rent computers, databases, and hard drives that live on the internet, instead of buying physical ones for your office.
+
+### 1.1 Understanding Key AWS Concepts
+
+Before clicking any buttons, here is a simple translation of the technical names you will see in this guide:
+
+| Technical Term | Plain English Translation | What it does for Panchapeetas |
+| :--- | :--- | :--- |
+| **EC2 Instance** | A Virtual Computer in the Cloud | The main computer where the website code runs. It is kept on 24/7 so anyone can visit your site at any time. |
+| **RDS PostgreSQL** | A Private Database Box | A secure database vault that only stores your website's structured data (devotee profiles, pooja bookings, peetha information). It is separate from the EC2 computer for safety and speed. |
+| **S3 Bucket** | An Online Storage Folder | Like a Google Drive folder. This is where Swamiji photos, Peetha display images, and devotee profile pictures are stored securely. |
+| **Elastic IP** | Permanent Phone Number | A permanent address for your virtual computer. Normally, when cloud computers reboot, their address changes. An Elastic IP ensures your website domain always knows exactly where to send visitors. |
+| **Security Group** | Virtual Security Guard | A checklist of rules that decides who is allowed to connect to your servers. For example, it lets anyone visit the website, but only lets you manage the server. |
+
+### 1.2 Creating an AWS Account & Security Alerts
+
+To avoid unexpected fees and set up your account safely, follow these steps:
+
+1. Go to [AWS Free Tier Sign Up](https://aws.amazon.com/free/) and click **Create a Free Account**.
+2. Fill in your email, a strong password, and a contact name. You will need to enter a credit or debit card. *AWS charges a small temporary authorization fee (~$1 or ₹2) to verify your card, which is refunded immediately.*
+3. Choose the **Basic Support — Free** plan when asked to choose a support plan.
+
+> [!IMPORTANT]
+> **Crucial: Set Up a Billing Alarm (Prevent Surprise Bills!)**
+> AWS Free Tier is generous, but if you accidentally configure something wrong, you could get charged. Setting up an alarm ensures you get an email if your usage goes over $0.01.
+>
+> 1. Log in to your **AWS Console**.
+> 2. In the top search bar, type **Billing** and select it.
+> 3. On the left menu, click **Billing preferences**. Scroll down, check the boxes for **Receive PDF invoice by email** and **Receive Free Tier usage alerts**, and click **Save preferences**.
+> 4. Now, type **Budgets** in the top search bar and click it.
+> 5. Click the orange **Create budget** button.
+> 6. Select the **Templates (simplified)** option, select the **Zero Spend Budget** template, enter your email address under **Email recipients**, and click **Create budget**.
+
+---
+
+## 2. Terminal & SSH Basics
+
+To set up the server, you will need to type commands into a command line (often called the **Terminal**). This is like talking directly to the virtual computer without using a mouse.
+
+### 2.1 What is SSH and how do I use my Key Pair?
+
+When you create your EC2 instance, you will download a security key file ending in `.pem` (e.g., `panchapeethas-key.pem`). This key acts as your password. Because it is highly sensitive, your computer will refuse to connect if the key's permissions are too open.
+
+#### Option A: Connecting on Windows (using Command Prompt / cmd)
+
+If you are on Windows, you must configure the key file properties before using it:
+
+1. Find your downloaded `.pem` file in Windows File Explorer (usually in your Downloads folder).
+2. Right-click the file and select **Properties**.
+3. Go to the **Security** tab and click **Advanced**.
+4. Click **Disable inheritance**, then choose *"Remove all inherited permissions from this object"*.
+5. Click **Add** → click **Select a principal** at the top.
+6. In the box, type your Windows username (e.g., `Bhoja`), click **Check Names** to verify, and click **OK**.
+7. Check the box for **Read** permissions under Basic permissions, and click **OK**.
+8. Click **Apply**, then click **OK** on all open windows.
+
+Now, open Command Prompt (search for `cmd` in the Start menu) and type:
+
+```bash
+# Move to the downloads folder where your key is saved
+cd Downloads
+
+# Connect to the server (replace 13.235.XX.XX with your Elastic IP)
+ssh -i panchapeethas-key.pem ubuntu@13.235.XX.XX
+```
+
+#### Option B: Connecting on macOS / Linux
+
+Open the **Terminal** app and type:
+
+```bash
+# Move to the downloads folder
+cd ~/Downloads
+
+# Lock the file permissions (makes it private/secure)
+chmod 400 panchapeethas-key.pem
+
+# Connect to the server (replace 13.235.XX.XX with your Elastic IP)
+ssh -i panchapeethas-key.pem ubuntu@13.235.XX.XX
+```
+
+### 2.2 Beginner's Guide to the Nano Editor
+
+During the setup, you will need to edit text files on the server (like setting database passwords). We use a simple terminal text editor called **Nano**. When you run a command like `sudo nano .env`, the terminal screen will turn into a text editor.
+
+> **How to use Nano:**
+> - **Moving around:** You *cannot* use your mouse. Use the **arrow keys** on your keyboard to move the text cursor.
+> - **Typing:** Just start typing normally to add text.
+> - **Saving your changes:** Press **Ctrl + O** (Write Out) on your keyboard. It will show the file name at the bottom. Press **Enter** to confirm saving.
+> - **Exiting the editor:** Press **Ctrl + X**. If you forgot to save, it will ask at the bottom: *"Save modified buffer?"*. Press **Y** for Yes, then press **Enter** to exit.
+
+---
+
+## 3. Architecture Overview
 
 ```mermaid
 graph TB
-    subgraph "Internet"
+    subgraph Internet
         U["👤 Devotees / Browsers"]
     end
 
-    subgraph "AWS Cloud"
-        R53["Route 53<br/>(DNS)"]
-        
-        subgraph "VPC"
-            subgraph "Public Subnet"
-                EC2["EC2 Instance<br/>Ubuntu 24.04<br/>Nginx + Gunicorn + Django"]
+    subgraph AWS Cloud
+        R53["Route 53 - DNS"]
+
+        subgraph VPC
+            subgraph Public Subnet
+                EC2["EC2 Instance\nUbuntu 24.04\nNginx + Gunicorn + Django"]
             end
-            
-            subgraph "Private Subnet"
-                RDS["RDS PostgreSQL<br/>(Database)"]
+
+            subgraph Private Subnet
+                RDS["RDS PostgreSQL\n Database"]
             end
         end
-        
-        S3["S3 Bucket<br/>(Media & Static Files)"]
-        CF["CloudFront<br/>(CDN - Optional)"]
+
+        S3["S3 Bucket\n Media and Static Files"]
+        CF["CloudFront\n CDN - Optional"]
     end
 
     U --> R53
@@ -60,92 +158,123 @@ graph TB
 ```
 
 | Component | AWS Service | Free Tier? | Purpose |
-|-----------|-------------|------------|---------|
-| Web Server | EC2 (`t2.micro`) | ✅ 750 hrs/month free | Runs Nginx + Gunicorn + Django |
-| Database | RDS PostgreSQL (`db.t3.micro`) | ✅ 750 hrs/month free | Replaces SQLite for production |
-| Media Storage | S3 | ✅ 5 GB free | Stores peetha photos, swamiji images, profile pics |
-| Static Files | S3 + CloudFront | ✅ 50 GB transfer free | CSS, JS, images served via CDN |
-| DNS | Route 53 | ❌ ~$0.50/month | Custom domain management (optional — can use external registrar for $0) |
-| SSL | Let's Encrypt | ✅ Always free | HTTPS encryption |
+| :--- | :--- | :--- | :--- |
+| Web Server | `EC2 (t3.micro or t2.micro)` | ✅ 750 hrs/month free | Runs Nginx + Gunicorn + Django |
+| Database | `RDS PostgreSQL (db.t3.micro)` | ✅ 750 hrs/month free | Replaces SQLite for production |
+| Media Storage | `S3` | ✅ 5 GB free | Stores peetha photos, swamiji images, profile pics |
+| Static Files | `S3 + CloudFront` | ✅ 50 GB transfer free | CSS, JS, images served via CDN |
+| DNS | `Route 53` | ❌ ~$0.50/month | Custom domain (optional — use external registrar for $0) |
+| SSL | `Let's Encrypt` | ✅ Always free | HTTPS encryption |
 
 ---
 
-## 2. Prerequisites
+## 4. Prerequisites
 
 Before starting, ensure you have:
-
-- [ ] An **AWS Account** ([Sign up here](https://aws.amazon.com/free/))
-- [ ] A **domain name** (e.g., `panchapeethas.org`) — can be purchased via Route 53 or any registrar
-- [ ] **AWS CLI** installed on your local machine
-- [ ] A **key pair** (`.pem` file) for SSH access
-- [ ] **Git** installed locally
+- An **AWS Account** ([Sign up here](https://aws.amazon.com/free/))
+- A **domain name** (e.g., `panchapeethas.org`) — can be purchased via Route 53 or any registrar
+- **AWS CLI** installed on your local machine
+- A **key pair** (`.pem` file) for SSH access
+- **Git** installed locally
 
 > [!TIP]
-> AWS Free Tier gives you 750 hours/month of `t2.micro` EC2 + 750 hours/month of `db.t3.micro` RDS + 5 GB S3 for the **first 12 months**. This is more than enough for the Panchapeetas platform. Your total cost in Year 1 will be **~$0/month** (or $0.50 if using Route 53 for DNS).
+> AWS Free Tier gives you 750 hours/month of `t3.micro` (or `t2.micro`) EC2 + 750 hours/month of `db.t3.micro` RDS + 5 GB S3 for the **first 12 months**. This is more than enough for the Panchapeetas platform. Your total cost in Year 1 will be **~$0/month** (or $0.50 if using Route 53 for DNS).
 
 ---
 
-## 3. Step 1 — Launch an EC2 Instance
+## 5. Step 1 — Launch an EC2 Instance
 
-### 3.1 Choose the Instance
+### 5.1 Choose the Instance (Virtual Server)
 
-1. Go to **AWS Console → EC2 → Launch Instance**
-2. Configure:
+Follow these exact steps to create your free virtual server computer in the AWS Console:
 
-| Setting | Value |
-|---------|-------|
-| **Name** | `panchapeethas-webserver` |
-| **AMI** | Ubuntu Server 24.04 LTS (64-bit x86) |
-| **Instance type** | `t2.micro` (1 vCPU, 1 GB RAM) — **Free Tier eligible** |
-| **Key pair** | Create new or select existing `.pem` key |
-| **Storage** | 30 GB gp3 (SSD) — Free Tier includes 30 GB |
+1. Type **EC2** in the top AWS search bar and click the first option.
+2. Click the orange **Launch instance** button on the right.
+3. Under <strong>Name and tags</strong>, type <code>panchapeethas-webserver</code>.
+4. Under <strong>Application and OS Images (Amazon Machine Image)</strong>, click the <strong>Ubuntu</strong> logo, then make sure the dropdown says <strong>Ubuntu Server 24.04 LTS (HVM), SSD Volume Type</strong> and shows the label *"Free Tier eligible"*.
+5. Under <strong>Instance type</strong>, select <strong>t3.micro</strong> (or <strong>t2.micro</strong>) depending on which one is labeled *"Free tier eligible"* in your console. *(Note: We highly recommend t3.micro since it has 2 vCPUs and provides double the processing capability of t2.micro's 1 vCPU for the same free price.)*
+6. Under <strong>Key pair (login)</strong>, click <strong>Create new key pair</strong>:
+   - **Key pair name**: Type `panchapeethas-key`.
+   - **Key pair type**: Select `RSA`.
+   - **Private key file format**: Select `.pem`.
+   - Click the orange **Create key pair** button. This will automatically download a file named `panchapeethas-key.pem` to your computer. **Keep this file safe; if you lose it, you will never be able to log into your server.**
+7. Under <strong>Network settings</strong>, click <strong>Edit</strong> in the top right of that box:
+   - Verify **Auto-assign public IP** is set to **Enable**.
+   - For Firewall, select **Create security group** and name it `panchapeethas-sg`.
+   - In the description, type `Panchapeethas Web Security Group`.
+8. Under <strong>Configure storage</strong>, change the number from 8 GiB to **30 GiB**. *(AWS Free Tier allows up to 30 GB of storage for free; using more disk space is helpful so the database and logs don't run out of space.)*
+9. Click the orange **Launch instance** button in the bottom right panel.
 
-### 3.2 Configure Security Group
+### 5.2 Configure Security Group
 
-Create a security group named `panchapeethas-sg` with these inbound rules:
+Now that you have created the EC2 instance, you need to configure its security rules (the firewall) to allow web traffic and remote login access. Here is how to configure it click-by-click:
 
-| Type | Port | Source | Purpose |
-|------|------|--------|---------|
-| SSH | 22 | Your IP | Remote access |
-| HTTP | 80 | 0.0.0.0/0 | Web traffic |
-| HTTPS | 443 | 0.0.0.0/0 | Secure web traffic |
+1. Go to the left sidebar of the EC2 Dashboard, scroll down to **Network & Security**, and click on **Security Groups**.
+2. Find the security group created for your instance (it should be named `panchapeethas-sg`, or look for the one associated with your instance if it was created under a default name like `launch-wizard-1`). Click on its **Security group ID** link.
+3. In the bottom panel, click on the **Inbound rules** tab, then click the **Edit inbound rules** button on the right.
+4. Click the **Add rule** button three times, and fill in the details for these three rules:
 
-### 3.3 Allocate an Elastic IP
+| Rule | Type (Dropdown) | Port Range | Source (Dropdown) | Purpose / Description |
+| :--- | :--- | :--- | :--- | :--- |
+| **Rule 1** | `SSH` | `22` | Select `My IP` (or `Anywhere-IPv4`) | Allows you to securely connect from your computer terminal |
+| **Rule 2** | `HTTP` | `80` | Select `Anywhere-IPv4` (fills in `0.0.0.0/0`) | Allows devotees to view the website normally |
+| **Rule 3** | `HTTPS` | `443` | Select `Anywhere-IPv4` (fills in `0.0.0.0/0`) | Allows secure, encrypted HTTPS checkout and visits |
 
-1. Go to **EC2 → Elastic IPs → Allocate**
-2. Associate the Elastic IP with your instance
+5. Click the orange **Save rules** button in the bottom right corner of the page.
+
+### 5.3 Allocate an Elastic IP (Permanent Address)
+
+1. Go to the left sidebar of the EC2 Dashboard, scroll down to **Network & Security**, and click **Elastic IPs**.
+2. Click the orange **Allocate Elastic IP address** button in the top right.
+3. Click **Allocate** at the bottom.
+4. Select the newly created IP address from the list, click the **Actions** button, and choose **Associate Elastic IP address**.
+5. Choose **Instance** in the resource type, search for your `panchapeethas-webserver` instance in the dropdown box, and click **Associate**.
 
 > [!IMPORTANT]
 > Always use an Elastic IP for production. Without one, your server's public IP changes every time the instance restarts, breaking DNS records and SSL certificates.
 
 ```bash
-# Note your Elastic IP, e.g.:
-# 13.235.XX.XX
+# Note down your Elastic IP from the AWS dashboard, e.g.:
+13.235.XX.XX
 ```
 
-### 3.4 Connect to Your Instance
+### 5.4 Connect to Your Instance
+
+Use the steps in Section 2 to set up permissions and run the SSH command:
 
 ```bash
-# Make the key read-only (on Windows, adjust via Properties > Security)
-chmod 400 panchapeethas-key.pem
-
-# SSH into the server
+# SSH into the server (replace 13.235.XX.XX with your Elastic IP)
 ssh -i panchapeethas-key.pem ubuntu@13.235.XX.XX
 ```
 
 ---
 
-## 4. Step 2 — Initial Server Setup
+## 6. Step 2 — Initial Server Setup
 
-Run these commands on the EC2 instance after SSH'ing in:
+Run these commands on the EC2 instance after SSH'ing in. These commands will configure your Linux server environment.
 
-### 4.1 Update System Packages
+### 6.1 Update System Packages
+
+Before installing software, update the list of available software on the server to prevent security issues.
+
+> **What this command does:**
+> - `sudo`: "Superuser Do" — runs the command as the system administrator.
+> - `apt update`: Refreshes the local catalog of packages available for install.
+> - `apt upgrade -y`: Installs updates for all currently installed programs (the `-y` auto-approves the command).
 
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
 
-### 4.2 Install Required System Packages
+### 6.2 Install Required System Packages
+
+Install python utilities, database libraries, Nginx web server, and SSL tools needed by the Django app.
+
+> **What this command does:**
+> - `python3-pip` / `python3-venv`: Python package installer and virtual environment creator.
+> - `nginx`: The web server that receives traffic from the internet.
+> - `certbot` / `python3-certbot-nginx`: Automatic tools to secure your website with free SSL certificates.
+> - `libjpeg-dev` / `zlib1g-dev`: Required for the Python Image Library (Pillow) to process image uploads.
 
 ```bash
 sudo apt install -y \
@@ -164,16 +293,27 @@ sudo apt install -y \
     libfreetype6-dev
 ```
 
-> [!NOTE]
-> `libjpeg-dev`, `zlib1g-dev`, and `libfreetype6-dev` are required by the **Pillow** library that your project uses for image handling (swamiji photos, profile pics, peetha media).
+### 6.3 Create a Dedicated System User
 
-### 4.3 Create a Dedicated System User
+Create a restricted user called `panchapeethas` to run the website. This prevents security bugs in the app from affecting the rest of the server.
+
+> **What this command does:**
+> - `adduser`: Adds a new user account.
+> - `--system --group`: Creates a system account without a login screen (strictly for running programs).
+> - `--home /opt/panchapeethas`: Creates a directory where our website code will reside.
 
 ```bash
 sudo adduser --system --group --home /opt/panchapeethas panchapeethas
 ```
 
-### 4.4 Set Up the Firewall
+### 6.4 Set Up the Firewall
+
+Turn on the built-in firewall on the server to block all ports except SSH (22) and Web traffic (80 and 443).
+
+> **What this command does:**
+> - `ufw allow OpenSSH`: Keeps your remote connection open so you don't get locked out.
+> - `ufw allow 'Nginx Full'`: Opens ports 80 (HTTP) and 443 (HTTPS) to the public.
+> - `ufw enable`: Turns on the firewall rules.
 
 ```bash
 sudo ufw allow OpenSSH
@@ -184,73 +324,95 @@ sudo ufw status
 
 ---
 
-## 5. Step 3 — Set Up PostgreSQL on RDS
+## 7. Step 3 — Set Up PostgreSQL on RDS
 
 > [!WARNING]
-> SQLite (currently used in `config/settings.py`) is **not suitable for production**. It doesn't support concurrent writes, which will cause errors when multiple devotees book poojas simultaneously. Migrate to PostgreSQL.
+> SQLite (currently used in local development) is **not suitable for production**. It doesn't support concurrent writes, which will cause crash errors when multiple devotees try to book poojas simultaneously. You must migrate to PostgreSQL on RDS.
 
-### 5.1 Create an RDS Instance
+### 7.1 Create an RDS Instance (Database Server)
 
-1. Go to **AWS Console → RDS → Create database**
-2. Configure:
+PostgreSQL is a production-ready database engine. Managed databases are handled by AWS RDS. Here is how to create one click-by-click:
 
-| Setting | Value |
-|---------|-------|
-| **Engine** | PostgreSQL 16 |
-| **Template** | Free Tier (or Production) |
-| **DB Instance Identifier** | `panchapeethas-db` |
-| **Master username** | `panchapeethas_admin` |
-| **Master password** | *(generate a strong password and save it)* |
-| **Instance class** | `db.t3.micro` (Free Tier) or `db.t3.small` |
-| **Storage** | 20 GB gp3, enable auto-scaling |
-| **VPC** | Same VPC as your EC2 |
-| **Public access** | **No** |
-| **Security group** | Create new: `panchapeethas-db-sg` |
+1. Type **RDS** in the top AWS search bar and select the first option.
+2. Click the orange **Create database** button.
+3. Under **Choose a database creation method**, select **Standard create**.
+4. Under **Engine options**, click the **PostgreSQL** circle.
+5. Under **Templates**, click the **Free Tier** circle. *(IMPORTANT: Do not skip this! Free Tier ensures you are not billed for this database during your first year.)*
+6. Under **Settings**:
+   - **DB instance identifier**: Type `panchapeethas-db`.
+   - **Master username**: Type `panchapeethas_admin`.
+   - **Credentials management**: Select **Self managed**.
+   - **Master password**: Type a strong, long password. **Write this password down immediately in a safe note; you will need it in Step 9.**
+7. Under **Connectivity**:
+   - Select the default **Virtual Private Cloud (VPC)** (the same VPC your EC2 instance is in).
+   - For **Public access**, click **No** (for security; only your website server should be allowed to speak to the database).
+   - For **VPC security group**, select **Create new** and type the name `panchapeethas-db-sg`.
+8. Scroll to the very bottom and click the orange **Create database** button. *It takes about 5 to 10 minutes for AWS to configure the database computer. Wait until its status shows as "Available" in the list.*
 
-### 5.2 Configure DB Security Group
+### 7.2 Configure DB Security Group
 
-Edit `panchapeethas-db-sg` inbound rules:
+Configure the security rules to allow your EC2 instance to connect to your RDS Database:
 
-| Type | Port | Source | Purpose |
-|------|------|--------|---------|
-| PostgreSQL | 5432 | `panchapeethas-sg` (EC2 SG) | Allow EC2 → RDS |
+1. In the RDS Database detail view under **Connectivity & security**, click the link under **VPC security groups** (which should be `panchapeethas-db-sg`).
+2. In the Security Groups list, select it, scroll down, and click the **Inbound rules** tab. Click **Edit inbound rules**.
+3. Click **Add rule**:
+   - **Type**: Choose **PostgreSQL**.
+   - **Port range**: Set to `5432`.
+   - **Source**: Choose **Custom** and select `panchapeethas-sg` (your EC2 security group) from the search dropdown.
+4. Click **Save rules**.
 
-### 5.3 Test the Connection from EC2
+### 7.3 Test the Connection from EC2
+
+Login to your database from the EC2 terminal command prompt to ensure access is working correctly, then create the production database:
+
+> **What this command does:**
+> - `psql`: Runs the PostgreSQL client tool.
+> - `-h`: Connects to the host address of the RDS database.
+> - `-U`: Logs in with your master username.
+> - `CREATE DATABASE panchapeethas_db;`: Creates a blank database schema for our site.
 
 ```bash
-# From your EC2 instance:
+# From your EC2 instance terminal (replace Host Endpoint URL with yours):
 psql -h panchapeethas-db.xxxxxx.ap-south-1.rds.amazonaws.com \
      -U panchapeethas_admin \
      -d postgres
 
-# Inside psql, create the database:
+# Inside the PostgreSQL database client, type this command and press Enter:
 CREATE DATABASE panchapeethas_db;
+
+# Type this to exit:
 \q
 ```
 
 ---
 
-## 6. Step 4 — Configure S3 for Media & Static Files
+## 8. Step 4 — Configure S3 for Media & Static Files
 
-Your app stores images in `media/peetha_media/` and `media/profile_pics/`. On AWS, these should live in S3.
+Your app stores images in `media/peetha_media/` and `media/profile_pics/`. On AWS, these files must be stored in S3 for persistence.
 
-### 6.1 Create an S3 Bucket
+### 8.1 Create an S3 Bucket (Storage Folder)
 
-1. Go to **AWS Console → S3 → Create Bucket**
-2. Configure:
+An S3 bucket is like an online hard drive for your website's files. Here is how to create it click-by-click:
 
-| Setting | Value |
-|---------|-------|
-| **Bucket name** | `panchapeethas-media` |
-| **Region** | `ap-south-1` (Mumbai) |
-| **Block public access** | Uncheck "Block all public access" for media |
-| **Versioning** | Enabled (protects against accidental deletes) |
+1. Type **S3** in the top AWS search bar and click the first option.
+2. Click the orange **Create bucket** button on the right.
+3. Under **Bucket name**, type a unique name in all lowercase with hyphens, like `panchapeethas-media-files`. *Bucket names must be unique across all of AWS.*
+4. Under **AWS Region**, choose **ap-south-1 (Asia Pacific / Mumbai)** for speed in India.
+5. Scroll down to **Object Ownership** and select **ACLs enabled** (this is needed for Django to specify file permissions). Leave it set to **Bucket owner preferred**.
+6. Scroll down to **Block Public Access settings for this bucket**. Uncheck the main box for **Block all public access**. *This is necessary so that devotees visiting your website can view Swamiji photos and images.*
+7. Check the acknowledgement box below it: *"I acknowledge that the current settings might result in this bucket and the objects within it becoming public."*
+8. Leave everything else at default and click the orange **Create bucket** button at the very bottom.
 
-### 6.2 Create an IAM User for S3 Access
+### 8.2 Create an IAM User for S3 Access
 
-1. Go to **IAM → Users → Create User**
-2. Name: `panchapeethas-s3-user`
-3. Attach this custom policy:
+Create a secure access account for Django to save files to the S3 bucket:
+
+1. Search **IAM** in the top search bar and click it.
+2. Click **Users** on the left, then click the **Create user** button in the top right.
+3. Name the user `panchapeethas-s3-user` and click **Next**.
+4. Select **Attach policies directly**.
+5. Click **Create policy**. A new tab will open.
+6. Click the **JSON** tab and paste this policy content (replace `panchapeethas-media` with your actual bucket name):
 
 ```json
 {
@@ -272,10 +434,19 @@ Your app stores images in `media/peetha_media/` and `media/profile_pics/`. On AW
     ]
 }
 ```
+7. Click **Next: Tags**, click **Next: Review**. Give the policy a name like `PanchapeethasS3Policy` and click **Create policy**.
+8. Go back to the other tab/window, search for `PanchapeethasS3Policy` in the filter list, check the box, and click **Next** and then **Create user**.
+9. Click on the newly created user in the list, go to the **Security credentials** tab, and click **Create access key**.
+10. Select **Application running outside AWS** and click **Next**, then click **Create access key**.
+11. **Copy the Access Key ID and Secret Access Key immediately and save them somewhere secure. You will need them in Step 9.**
 
-4. Generate **Access Key** and **Secret Key** — save them securely.
+### 8.3 S3 Bucket Policy for Public Media Access
 
-### 6.3 S3 Bucket Policy for Public Media Access
+Set permissions so that uploaded media files are readable by public visitors:
+
+1. Go back to the S3 bucket dashboard, click on your bucket name, and go to the **Permissions** tab.
+2. Scroll down to **Bucket policy** and click **Edit**.
+3. Paste this JSON (replace `panchapeethas-media` with your bucket name) and click **Save changes**:
 
 ```json
 {
@@ -292,9 +463,9 @@ Your app stores images in `media/peetha_media/` and `media/profile_pics/`. On AW
 }
 ```
 
-### 6.4 Install Django S3 Storage Backend
+### 8.4 Install Django S3 Storage Backend
 
-Add these to your `requirements.txt`:
+Add these dependencies to your local `requirements.txt` file before pushing code to git:
 
 ```diff
  Django>=5.1.4,<5.2
@@ -311,9 +482,16 @@ Add these to your `requirements.txt`:
 
 ---
 
-## 7. Step 5 — Deploy the Django Application
+## 9. Step 5 — Deploy the Django Application
 
-### 7.1 Clone the Repository
+### 9.1 Clone the Repository
+
+Switch to your dedicated user and clone your project code from GitHub onto the server:
+
+> **What this command does:**
+> - `sudo -u panchapeethas -s`: Logs into the shell command line as the restricted system user.
+> - `cd /opt/panchapeethas`: Navigates to the directory where our code will live.
+> - `git clone ...`: Copies your website project files from GitHub.
 
 ```bash
 sudo -u panchapeethas -s
@@ -324,7 +502,14 @@ git clone https://github.com/Gurucharan-G/panchapeeta.git app
 cd app
 ```
 
-### 7.2 Create a Virtual Environment
+### 9.2 Create a Virtual Environment
+
+Set up an isolated python sandbox space for our packages to be installed safely:
+
+> **What this command does:**
+> - `python3 -m venv venv`: Creates a folder named 'venv' containing an isolated copy of Python.
+> - `source venv/bin/activate`: Tells the command prompt to use this isolated copy of Python.
+> - `pip install -r requirements.txt`: Installs all listed python libraries inside the sandbox folder.
 
 ```bash
 python3 -m venv venv
@@ -335,15 +520,18 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 7.3 Create the Environment File
+### 9.3 Create the Environment File
 
-Create `/opt/panchapeethas/app/.env`:
+Create a hidden configuration settings file to store database credentials and secret keys securely:
+
+> **What this command does:**
+> - `sudo nano /opt/panchapeethas/app/.env`: Opens the Nano text editor to create a file named `.env`.
 
 ```bash
 sudo nano /opt/panchapeethas/app/.env
 ```
 
-Add the following content:
+Paste the following contents into the Nano text editor. Replace keys, database endpoint addresses, and passwords with your actual details. Make sure there are no spaces around the `=` signs:
 
 ```ini
 # ===== DJANGO CORE =====
@@ -365,48 +553,50 @@ AWS_SECRET_ACCESS_KEY=your-secret-key
 AWS_STORAGE_BUCKET_NAME=panchapeethas-media
 AWS_S3_REGION_NAME=ap-south-1
 
-# ===== GOOGLE OAUTH (django-allauth) =====
+# ===== GOOGLE OAUTH =====
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
-
-# ===== RAZORPAY =====
-# (Razorpay keys are managed per-Peetha via the PeethaPaymentConfig model)
 ```
+*(Remember: In Nano, save by pressing **Ctrl + O**, then press **Enter**. Exit by pressing **Ctrl + X**.)*
 
 > [!CAUTION]
-> Never commit the `.env` file to Git. Add it to `.gitignore` immediately.
+> Never commit the `.env` file to Git/GitHub. Add it to `.gitignore` immediately. If committed, anyone on the internet can see your database password.
 
-### 7.4 Generate a Secure Secret Key
+### 9.4 Generate a Secure Secret Key
+
+Run this script command to output a secure random code to paste into your `.env` file:
 
 ```bash
 python3 -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 ```
 
-Copy the output and paste it as the `DJANGO_SECRET_KEY` value in `.env`.
-
 ---
 
-## 8. Step 6 — Configure Gunicorn (WSGI Server)
+## 10. Step 6 — Configure Gunicorn (WSGI Server)
 
-Gunicorn replaces Django's development server (`runserver`) for production.
+Gunicorn runs the Python application server in the background. It takes requests from Nginx and passes them to Django.
 
-### 8.1 Test Gunicorn
+### 10.1 Test Gunicorn
+
+Make sure Gunicorn can start and run the application without errors:
 
 ```bash
 cd /opt/panchapeethas/app
 source venv/bin/activate
 
 gunicorn --bind 0.0.0.0:8000 config.wsgi:application
-# Visit http://13.235.XX.XX:8000 to verify (then Ctrl+C)
+# Visit http://13.235.XX.XX:8000 on your browser to verify (then press Ctrl+C in terminal to stop it)
 ```
 
-### 8.2 Create a Systemd Service
+### 10.2 Create a Systemd Service
+
+Create a service config so that Ubuntu keeps Gunicorn running at all times automatically, even after server reboots:
 
 ```bash
 sudo nano /etc/systemd/system/panchapeethas.service
 ```
 
-Paste:
+Paste the configuration details below into the file:
 
 ```ini
 [Unit]
@@ -432,7 +622,15 @@ RestartSec=3
 WantedBy=multi-user.target
 ```
 
-### 8.3 Create Log Directory & Enable Service
+### 10.3 Create Log Directory & Enable Service
+
+Configure folder permissions and start the system service:
+
+> **What this command does:**
+> - `mkdir -p`: Creates a folder path to store log outputs.
+> - `chown`: Sets the owner of the folder to our restricted user.
+> - `systemctl daemon-reload`: Tells Ubuntu to scan for new services.
+> - `systemctl start / enable`: Starts the service now and configures it to run automatically on system boot.
 
 ```bash
 sudo mkdir -p /var/log/panchapeethas
@@ -442,52 +640,51 @@ sudo systemctl daemon-reload
 sudo systemctl start panchapeethas
 sudo systemctl enable panchapeethas
 
-# Verify it's running
+# Verify that it is running successfully (should say 'active (running)')
 sudo systemctl status panchapeethas
 ```
 
 > [!TIP]
-> **Why 2 workers?** The `t2.micro` has 1 vCPU and 1 GB RAM. The formula is `(2 × CPU cores) + 1 = 3`, but we use 2 to stay within the 1 GB RAM limit. Each Gunicorn worker uses ~100-150 MB. If you upgrade to `t3.small` (2 vCPU, 2 GB RAM) for an event, increase this to 3–4 workers.
+> **Why 2 workers?** The `t2.micro` server has 1 vCPU and 1 GB RAM. The formula is `(2 × CPU cores) + 1 = 3`, but we use 2 workers to save RAM. If you upgrade to `t3.small` (2 vCPU, 2 GB RAM) for a festival, increase this to 4 workers.
 
 ---
 
-## 9. Step 7 — Configure Nginx (Reverse Proxy)
+## 11. Step 7 — Configure Nginx (Reverse Proxy)
 
-Nginx sits in front of Gunicorn, handling SSL termination, static files, and request buffering.
+Nginx sits in front of Gunicorn. It manages SSL security certificates, handles static assets (CSS/JS), and acts as the gatekeeper.
 
-### 9.1 Create the Nginx Site Config
+### 11.1 Create the Nginx Site Config
+
+Open a new Nginx website configuration file:
 
 ```bash
 sudo nano /etc/nginx/sites-available/panchapeethas
 ```
 
-Paste:
+Paste the following Nginx server config block. Replace domain names and server IP address with your details:
 
 ```nginx
 server {
     listen 80;
     server_name panchapeethas.org www.panchapeethas.org 13.235.XX.XX;
 
-    # Redirect all HTTP to HTTPS (enabled after SSL setup)
-    # return 301 https://$host$request_uri;
-
     # Max upload size (for swamiji photos, media uploads)
     client_max_body_size 20M;
 
-    # Static files (served by WhiteNoise, but Nginx can cache)
+    # Static files (handled by Django but cached by Nginx)
     location /static/ {
         alias /opt/panchapeethas/app/staticfiles/;
         expires 30d;
         add_header Cache-Control "public, immutable";
     }
 
-    # Media files (if not using S3 yet)
+    # Media files (temporary fallbacks if S3 is down)
     location /media/ {
         alias /opt/panchapeethas/app/media/;
         expires 7d;
     }
 
-    # Proxy to Gunicorn
+    # Pass all other traffic to the Gunicorn background socket
     location / {
         proxy_pass http://unix:/opt/panchapeethas/app/panchapeethas.sock;
         proxy_set_header Host $host;
@@ -498,51 +695,58 @@ server {
 }
 ```
 
-### 9.2 Enable the Site
+### 11.2 Enable the Site
+
+Activate Nginx config by creating a symbolic link shortcut to it in Nginx's enabled sites folder:
+
+> **What this command does:**
+> - `ln -s`: Creates a pointer link between sites-available and sites-enabled folders.
+> - `rm ... default`: Deletes Nginx's default test page configuration.
+> - `nginx -t`: Verifies there are no spelling errors in Nginx files.
 
 ```bash
 sudo ln -s /etc/nginx/sites-available/panchapeethas /etc/nginx/sites-enabled/
-sudo rm /etc/nginx/sites-enabled/default
+sudo rm -f /etc/nginx/sites-enabled/default
 
-# Test configuration
+# Test configuration (must return syntax is ok)
 sudo nginx -t
 
-# Restart Nginx
+# Restart Nginx server to apply changes
 sudo systemctl restart nginx
 ```
 
 ---
 
-## 10. Step 8 — SSL Certificate with Let's Encrypt
+## 12. Step 8 — SSL Certificate with Let's Encrypt
 
-### 10.1 Obtain the Certificate
+SSL adds a padlock next to your domain, enabling HTTPS security. Without it, credit card processors like Razorpay will block payments.
+
+### 12.1 Obtain the Certificate
+
+Run Certbot to request a secure key certificate. It will modify your Nginx config to automatically redirect HTTP traffic to secure HTTPS:
 
 ```bash
 sudo certbot --nginx -d panchapeethas.org -d www.panchapeethas.org
 ```
+*(Follow prompts: Enter your email, type 'Y' to accept terms, and choose 'Yes' when asked to redirect all HTTP traffic to HTTPS.)*
 
-Follow the prompts (enter email, agree to terms). Certbot will:
-- Obtain the SSL certificate
-- Auto-modify your Nginx config to redirect HTTP → HTTPS
+### 12.2 Verify Auto-Renewal
 
-### 10.2 Verify Auto-Renewal
+Certificates expire after 90 days. Run a test dry-run to ensure the automated renewal program works:
 
 ```bash
 sudo certbot renew --dry-run
 ```
 
-> [!NOTE]
-> Certbot automatically sets up a cron job/systemd timer to renew certificates before they expire (every 90 days).
-
 ---
 
-## 11. Step 9 — Production Settings Changes
+## 13. Step 9 — Production Settings Changes
 
-Create a new file `config/settings_production.py` or update `config/settings.py` to read from environment variables:
+Configure Django settings inside `config/settings.py` to load database passwords and keys from the private `.env` file instead of hardcoded values.
 
-### 11.1 Update `config/settings.py`
+### 13.1 Update `config/settings.py`
 
-The key changes needed in your existing [settings.py](file:///c:/Users/Bhoja/.gemini/antigravity-ide/scratch/panchapeetas/config/settings.py):
+Make sure these variables are set dynamically using environment variables:
 
 ```python
 import os
@@ -550,26 +754,25 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ===== SECURITY =====
+# ===== SECURITY settings =====
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
-DEBUG = not os.environ.get('PRODUCTION', 'False') == 'True'  # Already done ✅
+DEBUG = not os.environ.get('PRODUCTION', 'False') == 'True'
 
 ALLOWED_HOSTS = os.environ.get(
     'DJANGO_ALLOWED_HOSTS',
     'localhost,127.0.0.1'
 ).split(',')
 
-# ===== DATABASE =====
-# Replace the SQLite block with:
+# ===== DATABASE setup =====
 if os.environ.get('DB_ENGINE'):
     DATABASES = {
         'default': {
-            'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.sqlite3'),
-            'NAME': os.environ.get('DB_NAME', BASE_DIR / 'db.sqlite3'),
-            'USER': os.environ.get('DB_USER', ''),
-            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-            'HOST': os.environ.get('DB_HOST', 'localhost'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
+            'ENGINE': os.environ.get('DB_ENGINE'),
+            'NAME': os.environ.get('DB_NAME'),
+            'USER': os.environ.get('DB_USER'),
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
+            'HOST': os.environ.get('DB_HOST'),
+            'PORT': os.environ.get('DB_PORT'),
         }
     }
 else:
@@ -580,12 +783,10 @@ else:
         }
     }
 
-# ===== AWS S3 STORAGE (production only) =====
+# ===== AWS S3 MEDIA STORAGE (production only) =====
 if not DEBUG:
-    # Static files via WhiteNoise (already configured ✅)
     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-    # Media files via S3
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
@@ -598,31 +799,39 @@ if not DEBUG:
     }
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
-# ===== SECURITY HEADERS (production) =====
+# ===== HTTPS SECURITY HEADERS =====
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True                   # Already done ✅
-    SESSION_COOKIE_SECURE = True                 # Already done ✅
-    CSRF_COOKIE_SECURE = True                    # Already done ✅
-    SECURE_HSTS_SECONDS = 31536000               # Already done ✅
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True         # Already done ✅
-    SECURE_HSTS_PRELOAD = True                   # Already done ✅
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # NEW
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     CSRF_TRUSTED_ORIGINS = [
         'https://panchapeethas.org',
         'https://www.panchapeethas.org',
-    ]  # NEW
+    ]
 ```
 
-### 11.2 Run Migrations & Collect Static
+### 13.2 Run Migrations & Collect Static
+
+Run these django configuration commands inside the active virtual environment on EC2:
+
+> **What this command does:**
+> - `export $(...)`: Loads your credentials inside the `.env` file into command line memory.
+> - `python manage.py migrate`: Instructs Django to generate database tables in your secure PostgreSQL database.
+> - `collectstatic`: Moves CSS stylesheet, layout scripts, and logos into a folder Nginx can access.
+> - `createsuperuser`: Prompts you to set up an admin login username and password.
 
 ```bash
 cd /opt/panchapeethas/app
 source venv/bin/activate
 
-# Load environment variables
+# Load settings settings variables
 export $(grep -v '^#' .env | xargs)
 
-# Run migrations on the new PostgreSQL database
+# Run migrations
 python manage.py migrate
 
 # Collect static files
@@ -632,116 +841,110 @@ python manage.py collectstatic --noinput
 python manage.py createsuperuser
 ```
 
-### 11.3 Migrate Existing Data from SQLite
+### 13.3 Migrate Existing Data from SQLite
 
-If you have existing data in `db.sqlite3` that you want to move to PostgreSQL:
+To move existing data from SQLite database to the RDS database PostgreSQL server:
 
 ```bash
-# Step 1: Export data from SQLite (on your local machine)
+# Step 1: Export data from local machine
 python manage.py dumpdata --exclude contenttypes --exclude auth.permission \
     --indent 2 > datadump.json
 
-# Step 2: Copy to EC2
+# Step 2: Copy datadump to EC2
 scp -i panchapeethas-key.pem datadump.json ubuntu@13.235.XX.XX:/opt/panchapeethas/app/
 
-# Step 3: Load into PostgreSQL (on EC2)
+# Step 3: Load into PostgreSQL on EC2
 python manage.py loaddata datadump.json
 ```
 
-> [!WARNING]
-> Run `python manage.py migrate` on the RDS database **before** loading the data dump. The tables must exist first.
+---
+
+## 14. Step 10 — Domain Name Setup
+
+### 14.1 If using AWS Route 53
+
+1. Search **Route 53** in the top console search bar.
+2. Click **Hosted zones** and select your domain name.
+3. Click **Create record**:
+   - **Record name**: Leave blank (for `panchapeethas.org`).
+   - **Record type**: Select `A — Routes traffic to an IPv4 address`.
+   - **Value**: Paste your Elastic IP address.
+   - Click **Create records**.
+4. Click **Create record** again:
+   - **Record name**: Type `www`.
+   - **Record type**: Select `A`.
+   - **Value**: Paste your Elastic IP address.
+   - Click **Create records**.
+
+### 14.2 If Domain is with another registrar (GoDaddy, Namecheap, Hostinger, etc.)
+
+Log into your provider's control panel (GoDaddy, etc.), open your domain's DNS Settings page, and add an **A record** pointing to your Elastic IP:
+
+| Type | Host/Name | Value/IP | TTL |
+| :--- | :--- | :--- | :--- |
+| A | `@` (or blank) | `13.235.XX.XX` (Your Elastic IP) | Default / 3600 |
+| A | `www` | `13.235.XX.XX` (Your Elastic IP) | Default / 3600 |
 
 ---
 
-## 12. Step 10 — Domain Name Setup (Route 53)
+## 15. Step 11 — Monitoring & Maintenance
 
-### 12.1 If Domain is on Route 53
+### 15.1 Automation: Deployment Script
 
-1. Go to **Route 53 → Hosted Zones → your domain**
-2. Create records:
-
-| Record Type | Name | Value |
-|-------------|------|-------|
-| A | `panchapeethas.org` | `13.235.XX.XX` (your Elastic IP) |
-| A | `www.panchapeethas.org` | `13.235.XX.XX` |
-
-### 12.2 If Domain is with Another Registrar (GoDaddy, Namecheap, etc.)
-
-1. Add an **A record** pointing to your Elastic IP
-2. Or, point nameservers to Route 53's NS records
-
----
-
-## 13. Step 11 — Monitoring & Maintenance
-
-### 13.1 Deployment Checklist
-
-Run this after every deployment:
+Save this script on the server. Whenever you update code, you will only need to run this single file to apply updates:
 
 ```bash
 #!/bin/bash
-# deploy.sh — save this in /opt/panchapeethas/app/
+# Save this file inside /opt/panchapeethas/app/deploy.sh
 
 cd /opt/panchapeethas/app
 source venv/bin/activate
 export $(grep -v '^#' .env | xargs)
 
+# Pull latest code from Github
 git pull origin main
+
+# Install packages & apply updates
 pip install -r requirements.txt
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 
+# Restart system services to pick up code changes
 sudo systemctl restart panchapeethas
 sudo systemctl restart nginx
 
-echo "✅ Deployment complete!"
+echo "✅ Website Deployment update complete!"
 ```
 
-Make it executable:
-
 ```bash
+# Make the script runnable
 chmod +x /opt/panchapeethas/app/deploy.sh
+
+# To run it in the future, simply run:
+./deploy.sh
 ```
 
-### 13.2 View Logs
+### 15.2 View Server Logs
+
+If the site returns errors, use these commands to inspect what went wrong in the background:
 
 ```bash
-# Gunicorn application logs
+# View Gunicorn python application logs
 sudo tail -f /var/log/panchapeethas/error.log
 
-# Nginx access logs
+# View Nginx access traffic logs
 sudo tail -f /var/log/nginx/access.log
-
-# Django errors (if you add file logging)
-sudo tail -f /var/log/panchapeethas/access.log
 ```
-
-### 13.3 Set Up CloudWatch Monitoring (Optional)
-
-1. Go to **EC2 → Instance → Monitoring tab → Manage detailed monitoring**
-2. Enable detailed monitoring (1-minute intervals)
-3. Set up **CloudWatch Alarms** for:
-   - CPU utilization > 80%
-   - Disk space > 85%
-   - Status check failures
-
-### 13.4 Automatic Database Backups
-
-RDS handles automated backups:
-
-1. Go to **RDS → Your DB → Modify**
-2. Set **Backup retention period** to 7 days
-3. Enable **Multi-AZ deployment** for high availability (production)
 
 ---
 
-## 14. Free Tier Cost Breakdown
+## 16. Free Tier Cost Breakdown
 
 ### Year 1 (Free Tier Active)
 
 | Service | Instance | Free Tier Allowance | Monthly Cost |
-|---------|----------|--------------------|--------------|
-| EC2 | `t2.micro` (1 vCPU, 1 GB) | 750 hrs/month | **$0** |
+| :--- | :--- | :--- | :--- |
+| EC2 | `t3.micro` or `t2.micro` (1-2 vCPU, 1 GB) | 750 hrs/month | **$0** |
 | RDS PostgreSQL | `db.t3.micro` | 750 hrs/month | **$0** |
 | S3 | 5 GB storage | 5 GB + 20K GETs | **$0** |
 | EBS Storage | 30 GB gp3 | 30 GB free | **$0** |
@@ -749,34 +952,30 @@ RDS handles automated backups:
 | Data Transfer | Outbound | 100 GB/month | **$0** |
 | SSL (Let's Encrypt) | Certificate | Always free | **$0** |
 | Route 53 (optional) | Hosted zone | Not included in Free Tier | ~$0.50 |
-| **Total (Year 1)** | | | **$0/month** |
-| | | *(or $0.50 with Route 53)* | |
+| **Total (Year 1)** | | *or $0.50 with Route 53* | **$0/month** |
 
 > [!TIP]
-> **Skip Route 53 entirely** to make it truly $0/month. Just point your domain's A record to the Elastic IP from your existing domain registrar (GoDaddy, Namecheap, etc.).
+> **Skip Route 53 entirely** to make hosting truly $0/month. Just point your domain's A record directly to the Elastic IP address from your existing domain registrar panel (GoDaddy, Namecheap, etc.) at no extra cost.
 
 ### After Year 1 (Free Tier Expired)
 
 | Service | Instance | Monthly Cost (ap-south-1) |
-|---------|----------|---------------------------|
-| EC2 | `t2.micro` | ~$8.50/month |
+| :--- | :--- | :--- |
+| EC2 | `t3.micro` or `t2.micro` | ~$8.50/month |
 | RDS PostgreSQL | `db.t3.micro` | ~$13/month |
 | S3 | 5 GB storage + transfers | ~$1/month |
 | Elastic IP | Associated with running instance | $0 |
 | **Total (After Year 1)** | | **~$22.50/month** |
 
-> [!TIP]
-> **Save money after Free Tier**: Use **EC2 Reserved Instances** (1-year commitment) for ~40% savings on EC2, bringing total to ~$15/month.
-
 ---
 
-## 15. Traffic Capacity & Limits
+## 17. Traffic Capacity & Limits
 
-### `t2.micro` Specifications
+### `t3.micro` (and `t2.micro`) Specifications
 
 | Resource | Value |
-|----------|-------|
-| vCPU | 1 |
+| :--- | :--- |
+| vCPU | 2 (for t3.micro) or 1 (for t2.micro) |
 | RAM | 1 GB |
 | Baseline CPU | 10% |
 | Burst CPU | 100% (using credits) |
@@ -785,52 +984,18 @@ RDS handles automated backups:
 
 ### How Much Traffic Can It Handle?
 
-| Metric | `t2.micro` Capacity |
-|--------|---------------------|
-| **Concurrent users** | ~20–50 at the same time |
+| Metric | `t3.micro / t2.micro` Capacity |
+| :--- | :--- |
+| **Concurrent users** | ~20–50 at the same time (t3.micro handles spikes better) |
 | **Requests per second** | ~10–30 req/s |
 | **Daily unique visitors** | ~2,000–5,000 |
 | **Monthly visitors** | ~50,000–100,000 |
 | **Daily page views** | ~10,000–25,000 |
 | **Pooja bookings per day** | ~500 |
 
-### Performance by Feature
-
-| Action | Response Time | Daily Capacity |
-|--------|---------------|----------------|
-| Homepage load | ~200–400ms | Thousands |
-| Peetha detail page | ~300–500ms | Thousands |
-| Pooja booking + Razorpay | ~500–800ms | ~500 bookings |
-| Media gallery (images from S3) | Fast ✅ | Unlimited (S3 offloads this) |
-| Google OAuth login | ~300ms | Hundreds |
-| Admin dashboard | ~400ms | No issue |
-
-### Understanding CPU Credits (Burstable Performance)
-
-The `t2.micro` uses a **CPU credit system** — think of it like a prepaid mobile plan:
-
-| Traffic Pattern | What Happens | Duration at Full Speed |
-|----------------|-------------|------------------------|
-| **Normal** (< 10% CPU avg) | Credits accumulate ✅ | Indefinitely |
-| **Spike** (500 users at once) | Burns stored credits ⚡ | ~1–2 hours |
-| **Moderate spike** (100 users) | Gradual credit use | ~4–6 hours |
-| **Sustained high load** (hours of > 20% CPU) | Credits deplete → throttled to 10% 🐢 | Site becomes slow |
-
-### When to Upgrade
-
-| Signal | Action |
-|--------|--------|
-| CPU credits consistently at 0 | Upgrade to `t3.small` (~$15/month) |
-| Response times > 2 seconds | Increase Gunicorn workers (needs more RAM) |
-| > 200 concurrent users during festivals | Temporarily upgrade (see Section 17) |
-| > 500 daily pooja bookings | Consider RDS `db.t3.small` |
-
-> [!NOTE]
-> For a temple/spiritual platform like Panchapeetas, typical early traffic is **100–500 visitors/day** — well within `t2.micro` capacity. You'll only hit limits during viral moments or major festivals.
-
 ---
 
-## 16. Live Streaming — How It Actually Works
+## 18. Live Streaming — How It Actually Works
 
 Your app uses **embedded YouTube live streams** (via the `live_youtube_url` field on each Peetha). This is critical to understand for capacity planning:
 
@@ -838,15 +1003,15 @@ Your app uses **embedded YouTube live streams** (via the `live_youtube_url` fiel
 
 ```mermaid
 graph LR
-    U["👤 3000 Devotees"] -->|"1 page load<br/>(one-time request)"| EC2["Your EC2<br/>t2.micro"]
-    U -->|"Video stream<br/>(10 hrs continuous)"| YT["YouTube Servers<br/>Google Infrastructure"]
-    
+    U["👤 3000 Devotees"] -->|"1 page load\n(one-time request)"| EC2["Your EC2\nt3.micro"]
+    U -->|"Video stream\n(10 hrs continuous)"| YT["YouTube Servers\nGoogle Infrastructure"]
+
     style EC2 fill:#4ade80,stroke:#166534
     style YT fill:#ef4444,stroke:#991b1b
 ```
 
 | Action | Hits Your EC2? | Load on Your Server |
-|--------|---------------|---------------------|
+| :--- | :--- | :--- |
 | Opening the peetha page | ✅ Yes | **1 request per user** |
 | Watching YouTube live stream for hours | ❌ No | **Zero** — YouTube handles it |
 | Refreshing the page | ✅ Yes | 1 request |
@@ -856,7 +1021,7 @@ graph LR
 ### Real Scenario: 3000 Users × 10 Hours × 10 Days
 
 | Metric | Value |
-|--------|-------|
+| :--- | :--- |
 | **Peak EC2 load** | ~3000 page loads when users first open the page |
 | **Sustained EC2 load while watching** | **Nearly zero** |
 | **YouTube cost to you** | **$0** — YouTube hosts everything for free |
@@ -864,20 +1029,9 @@ graph LR
 | **S3 data transfer** | Images on the page = ~3 GB total |
 | **Your total cost** | **$0** (Free Tier) |
 
-### Can `t2.micro` Handle the Initial Rush?
-
-| If 3000 users arrive... | Result |
-|--------------------------|--------|
-| Over 2–3 hours (gradual) | ✅ **Fine** — ~15 req/sec is manageable |
-| Within 30 minutes | ⚠️ **Sluggish page loads** but functional |
-| All within 5 minutes (simultaneous) | ❌ **Will struggle** — temporarily upgrade to `t3.small` |
-
-> [!TIP]
-> If you announce a live stream time in advance (e.g., "Swamiji's live darshan at 6 PM"), expect most users to arrive within a 15-minute window. In this case, temporarily upgrade to `t3.small` for that day (see next section). After the page loads, your server is essentially idle while 3000 users watch YouTube.
-
 ---
 
-## 17. Temporary Upgrade for Events
+## 19. Temporary Upgrade for Events
 
 For high-traffic events (festivals, special live streams), you can upgrade your EC2 instance temporarily and downgrade after. It takes ~2 minutes and costs very little.
 
@@ -896,74 +1050,19 @@ Step 3: Start the instance
 
 ### How to Downgrade After the Event
 
-Same 3 steps — just change `t3.small` back to `t2.micro`.
+Same 3 steps — just change `t3.small` back to `t3.micro` (or `t2.micro`).
 
 > [!NOTE]
 > Your **Elastic IP stays attached** through stop/start, so your domain URL doesn't change. All data, configuration, and deployments remain intact. Nothing needs to be re-configured.
 
-### Downtime During Upgrade
-
-| Step | Duration |
-|------|----------|
-| Stop instance | ~30 seconds |
-| Change type | Instant |
-| Start instance | ~60 seconds |
-| **Total downtime** | **~2 minutes** |
-
-### Cost for Temporary Upgrades
-
-| Instance | Cost/Hour | 1 Day | 3 Days | 10 Days |
-|----------|-----------|-------|--------|---------|
-| `t2.micro` (Free Tier) | $0 | $0 | $0 | $0 |
-| `t3.small` (2 vCPU, 2 GB) | $0.023 | **$0.55** | **$1.66** | **$5.52** |
-| `t3.medium` (2 vCPU, 4 GB) | $0.046 | **$1.10** | **$3.31** | **$11.04** |
-
-### Don't Forget: Update Gunicorn Workers After Upgrade
-
-When you upgrade to `t3.small` (2 GB RAM), increase Gunicorn workers for better performance:
-
-```bash
-# SSH into EC2 after the instance restarts
-ssh -i panchapeethas-key.pem ubuntu@13.235.XX.XX
-
-# Edit the service file
-sudo nano /etc/systemd/system/panchapeethas.service
-# Change: --workers 2  →  --workers 4
-
-# Reload and restart
-sudo systemctl daemon-reload
-sudo systemctl restart panchapeethas
-```
-
-When you downgrade back to `t2.micro`, change workers back to 2.
-
-### Example: Shivaratri Live Event Plan
-
-```
-📅 Day before Shivaratri:
-   └─ Stop → Change to t3.small → Start         (~₹45/day)
-   └─ SSH in → Update Gunicorn workers to 4
-   └─ Test the site is working
-
-🕉️ Shivaratri Day:
-   └─ 3000 devotees watch live darshan            ✅ No issues
-   └─ Pooja bookings come in throughout the day   ✅ Handled
-   └─ YouTube serves all video traffic             ✅ $0 cost
-
-📅 Day after Shivaratri:
-   └─ Stop → Change back to t2.micro → Start      ($0/day)
-   └─ SSH in → Update Gunicorn workers back to 2
-   └─ Total event cost: ~₹45 ($0.55)
-```
-
 ---
 
-## 18. Troubleshooting
+## 20. Troubleshooting
 
 ### Common Issues
 
 | Problem | Cause | Solution |
-|---------|-------|----------|
+| :--- | :--- | :--- |
 | **502 Bad Gateway** | Gunicorn not running or socket mismatch | `sudo systemctl status panchapeethas` → check logs |
 | **Static files missing** | `collectstatic` not run | `python manage.py collectstatic --noinput` |
 | **Media uploads fail** | S3 permissions or bucket policy | Check IAM policy and bucket CORS settings |
@@ -993,10 +1092,11 @@ python manage.py check --deploy
 
 ---
 
-## Quick Reference — Complete Command Summary
+## Quick Reference
+
+### Full First-Time Setup Setup
 
 ```bash
-# ===== FIRST-TIME SETUP =====
 # 1. SSH into EC2
 ssh -i panchapeethas-key.pem ubuntu@13.235.XX.XX
 
@@ -1006,34 +1106,28 @@ sudo apt install -y python3-pip python3-venv python3-dev libpq-dev \
     postgresql-client nginx certbot python3-certbot-nginx git \
     libjpeg-dev zlib1g-dev libfreetype6-dev
 
-# 3. Clone & set up
+# 3. Clone & set up user
 sudo adduser --system --group --home /opt/panchapeethas panchapeethas
-sudo -u panchapeethas git clone <repo-url> /opt/panchapeethas/app
+sudo -u panchapeethas git clone https://github.com/Gurucharan-G/panchapeeta.git /opt/panchapeethas/app
 cd /opt/panchapeethas/app
 sudo -u panchapeethas python3 -m venv venv
 sudo -u panchapeethas venv/bin/pip install -r requirements.txt
 
-# 4. Configure .env, systemd service, nginx (as shown above)
+# 4. Configure .env, systemd service, nginx (as shown in Step 9, 10, 11)
 
-# 5. Deploy
+# 5. Deploy database & statics
 python manage.py migrate
 python manage.py collectstatic --noinput
 python manage.py createsuperuser
 sudo systemctl start panchapeethas
 sudo systemctl start nginx
 
-# 6. SSL
+# 6. Secure with SSL
 sudo certbot --nginx -d panchapeethas.org -d www.panchapeethas.org
-
-# ===== SUBSEQUENT DEPLOYMENTS =====
-/opt/panchapeethas/app/deploy.sh
 ```
 
----
+### Subsequent Deployments
 
-> [!IMPORTANT]
-> **After deployment**, remember to:
-> 1. Update your **Google OAuth** redirect URIs in the Google Cloud Console to use your new AWS domain
-> 2. Re-configure the **Django Sites** framework (`SITE_ID = 1`) via the admin panel to match your new domain
-> 3. Update **Razorpay webhook URLs** in the Razorpay Dashboard to point to your new domain
-> 4. Load your existing Peetha data using `loaddata` or re-enter it via the admin dashboard
+```bash
+/opt/panchapeethas/app/deploy.sh
+```

@@ -26,4 +26,5 @@ DEVOTEE_REGISTRATION = DynamicFeatureFlag('DEVOTEE_REGISTRATION', True)
 # Global Devotional Chanting Player Flag
 DEVOTIONAL_CHANTING = DynamicFeatureFlag('DEVOTIONAL_CHANTING', True)
 
-
+# Devotional Chanting Autoplay Flag
+DEVOTIONAL_CHANTING_AUTOPLAY = DynamicFeatureFlag('DEVOTIONAL_CHANTING_AUTOPLAY', True)
