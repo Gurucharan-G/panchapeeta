@@ -1,0 +1,4795 @@
+[
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$63CLwaP6ngkg0setposglP$23zywTjQwvcSl0HTX3LVeUVfa3mPx0OI6WXZo1jA8Wg=",
+        "last_login": "2026-07-02T07:14:21.265Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@panchapeetha.org",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-06-06T10:55:52.532Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$6hDoCuw5TEqYxuBFgiP1o1$0w4U4pu7xxZsmrFXslCaF5JOHS+3Ws4FyG4uRRsmEds=",
+        "last_login": "2026-06-26T11:36:14.912Z",
+        "is_superuser": false,
+        "username": "rambhapuri_handler",
+        "first_name": "",
+        "last_name": "",
+        "email": "rambhapuri@panchapeetha.org",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-06T10:55:52.847Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$MXCQ17JOFgytcEyK39QuTS$b/PvUDG2vAVtyPqWKDdAz3bGRlj8/MckHyxWQiZXeVo=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ujjaini_handler",
+        "first_name": "",
+        "last_name": "",
+        "email": "ujjaini@panchapeetha.org",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-06T10:55:53.201Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$XWaryh5Xr46BxmObSgHiSo$t75khhumV35gkFTT9jLxlAdEEb8bkLeSQQgkHJJ679c=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "kedara_handler",
+        "first_name": "",
+        "last_name": "",
+        "email": "kedara@panchapeetha.org",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-06T10:55:53.531Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$pEwhvCtcxQBIJoWpXs8sd7$mwbVzYRpuqUr6PTDW3UHZ/Kp+CvT49i4zjSAMRuKMPQ=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "srisaila_handler",
+        "first_name": "",
+        "last_name": "",
+        "email": "srisaila@panchapeetha.org",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-06T10:55:53.859Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$7duoBleaF28ndY5eIIPBNT$BOQUBWw/3GOpH6SLV8jpzgwKPtZix9VJsyXXvvwxfII=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "kashi_handler",
+        "first_name": "",
+        "last_name": "",
+        "email": "kashi@panchapeetha.org",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-06T10:55:54.240Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "!etwqrsxUZTfPR3kofOjWdSA1pscIIxPKpiqLvkVH",
+        "last_login": "2026-06-30T08:50:28.783Z",
+        "is_superuser": false,
+        "username": "gurucharan",
+        "first_name": "Gurucharan",
+        "last_name": "G",
+        "email": "gurubgshetty@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-06-25T05:07:35.632Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "!CNsdSC2oSdRoM2UQKPxpt0ez85mK5qvteq8cT5ks",
+        "last_login": "2026-07-03T12:35:45.031Z",
+        "is_superuser": true,
+        "username": "gurucharan9499",
+        "first_name": "Gurucharan G",
+        "last_name": "",
+        "email": "gurucharan9499@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-06-25T05:09:48.539Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$gOgYdReoCDRT1RA9S9PwLr$bEcVGDi1Glb47ECWAGvj7LVVje0T84YZFQfFX/ane0o=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "testuser123",
+        "first_name": "Test User",
+        "last_name": "",
+        "email": "testuser123@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-25T05:36:44.809Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "!zWmKEcuniVLXPFE4r8nXe8thITT05nENb302jzWB",
+        "last_login": "2026-06-26T11:26:40.151Z",
+        "is_superuser": false,
+        "username": "vid",
+        "first_name": "Vid",
+        "last_name": "Youth",
+        "email": "vidyouth24@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-06-25T09:33:01.764Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$qfNsc6kJoOy6IgGBTcfSoH$5hUNhjhwNfTc0StAhSfJRkHvrUfqZilXjM+ih8DVjMg=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "test_devotee",
+        "first_name": "Test Devotee",
+        "last_name": "",
+        "email": "test@devotee.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-25T10:03:02.852Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$3M397hgooJwmyuFVGQaVuD$5kULTddI/zty67/6Hv1QtSjJiyjhQWYEJYfPDGGvEXo=",
+        "last_login": "2026-06-25T17:06:44.141Z",
+        "is_superuser": false,
+        "username": "testuser999",
+        "first_name": "Test User 999",
+        "last_name": "",
+        "email": "testuser999@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-25T17:05:54.314Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$SoIJLGYudE2xIqtoNcyrkL$gRu7VDlCD3IYIldL4hOGthIsRHReXK8gXsqBbqy+/pY=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_chandrasekhar_356",
+        "first_name": "Chandrasekhar Aradhya",
+        "last_name": "",
+        "email": "devotee_chandrasekhar_356@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:54.712Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$EuVFP9B4y3I4Sjf14vqSEf$iSQc8vZWVecg5aieIj+hXem1QqCp1JQI7sEGW6fsXXs=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_veeresh_421",
+        "first_name": "Veeresh Hiremath",
+        "last_name": "",
+        "email": "devotee_veeresh_421@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:55.007Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$vyD53z7M1Eo3GcGZiqpnIS$r9U/BXBRTxS9Zp7UbYbxWBN7rjuxwKLPuJVo6ARD7+I=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_basavaraj_872",
+        "first_name": "Basavaraj Hegde",
+        "last_name": "",
+        "email": "devotee_basavaraj_872@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:55.304Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$uvsznzwMTEnuV5yqZArjZK$PK/1evDDl47NgDK0aOY5BnhGErs1XrfhP4KWYYzYHFQ=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_rajeshwari_191",
+        "first_name": "Rajeshwari Kulkarni",
+        "last_name": "",
+        "email": "devotee_rajeshwari_191@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:55.587Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$HQBpeEKtj2eHu4GVzuuZA4$OTY3Nobepfs43oVI0mAO4yfdAv+1eepTygDejMs6uKo=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_basavaraj_980",
+        "first_name": "Basavaraj Gowda",
+        "last_name": "",
+        "email": "devotee_basavaraj_980@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:55.873Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$W84UVwdAYXG9FNd7uugHrq$m/aAVLiE/hTWfTP0arbprlrscLzfWDXJYCjxYod9gQc=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_girija_680",
+        "first_name": "Girija Shastri",
+        "last_name": "",
+        "email": "devotee_girija_680@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:56.158Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$QmPkbaogDdz6JDCNes3m7N$aJPy7LyI5J8PJEj+q8g0LkENCxLokoWlwA2wA/MXL68=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_suresh_796",
+        "first_name": "Suresh Rao",
+        "last_name": "",
+        "email": "devotee_suresh_796@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:56.456Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$L5NE9WWnz49yBmKtg5ttX5$SGpkVx2QEuOw51H4jr0ZyCTf/DAcLLwwDMLBSHe0Yww=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_suresh_324",
+        "first_name": "Suresh Shastri",
+        "last_name": "",
+        "email": "devotee_suresh_324@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:56.741Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$phC51rcY7ZnlzEc1Mz7kmU$GrxGxSkr+fAATUP9f2cUCl7GVRFD8QQ9re8IK1DZ6xE=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_veeresh_453",
+        "first_name": "Veeresh Gowda",
+        "last_name": "",
+        "email": "devotee_veeresh_453@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:57.034Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$rvr8UBEm5qTcgAIYwVpHsj$Sw7JZp/zffUslU/lfqRJv3W36NtiBoWBSYRZLex+29I=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_parvati_994",
+        "first_name": "Parvati Rao",
+        "last_name": "",
+        "email": "devotee_parvati_994@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:57.336Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$bE6iAY1SyE5XJRlO5JI2td$aM/IcfNCUm19vIhjoXwcKyQU5i7pNP9PdNcIrtSdwEM=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_chandrasekhar_477",
+        "first_name": "Chandrasekhar Hiremath",
+        "last_name": "",
+        "email": "devotee_chandrasekhar_477@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:57.629Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$2A3jGxHjvBYbLyYVuXm5su$BVhYCK5TbJvOniAxizecjRDrxl4RwoWtg7ZFM0fzyQQ=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_chandrasekhar_746",
+        "first_name": "Chandrasekhar Shastri",
+        "last_name": "",
+        "email": "devotee_chandrasekhar_746@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:57.922Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$d8jaHTzipkSYtj9p9Th1eo$YhW+UQ4+vLO8iGDyi60mJv55h77m0W2rT4zZU315ie8=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_chandrasekhar_333",
+        "first_name": "Chandrasekhar Kulkarni",
+        "last_name": "",
+        "email": "devotee_chandrasekhar_333@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:58.209Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$ywYbS4ihJ1wjRsWHFO5fcd$itzUda2DEO3v39H768wLhcNJnlEUGBrrQ7Ql6Ee/NXg=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_siddheshwar_951",
+        "first_name": "Siddheshwar Kulkarni",
+        "last_name": "",
+        "email": "devotee_siddheshwar_951@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:58.496Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$v4aC9TYcu9HRwuTWswixM4$DRLLAWrnFL1Z/1kE/fGnoCT2Ylua7rHzfbWQHrgZJjc=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "devotee_sharanappa_857",
+        "first_name": "Sharanappa Rao",
+        "last_name": "",
+        "email": "devotee_sharanappa_857@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T05:00:58.784Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "!bDtO27mT29ST29INx3KPZ3uMm3rHuwc2AKWw823J",
+        "last_login": "2026-06-26T10:52:25.597Z",
+        "is_superuser": false,
+        "username": "bhojaraja",
+        "first_name": "Bhojaraja",
+        "last_name": "G Shetty",
+        "email": "bhojagshetty@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-26T10:29:34.144Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "!GZurPkcEvlqCGVYXUK1LFTbiT3RGJOx9O5tsgSwy",
+        "last_login": "2026-06-27T04:46:04.848Z",
+        "is_superuser": false,
+        "username": "maduve",
+        "first_name": "Maduve",
+        "last_name": "Photos",
+        "email": "maduvephotos42@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-06-27T04:46:04.742Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$YeBNxryjrjcK0gbL2SUIOp$are3USZUEe12whm+nJPwTOn7s3WWrlCibMz+LKHK8hQ=",
+        "last_login": "2026-07-02T07:12:29.799Z",
+        "is_superuser": false,
+        "username": "testuser",
+        "first_name": "Test User",
+        "last_name": "",
+        "email": "testuser@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-07-02T07:12:28.750Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$zKfyWMzWEKlKlmq3rS3SHV$YUHQq8I+rojl/gP34KnnhlyyvGZ+093OGVEpx3mz6dM=",
+        "last_login": "2026-07-02T07:13:19.272Z",
+        "is_superuser": false,
+        "username": "kedara_admin",
+        "first_name": "Kedara Admin",
+        "last_name": "",
+        "email": "kedara_admin@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-07-02T07:13:18.022Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "14hltsmvzqes9wzlbqmdvdvc4ilrrqb1",
+    "fields": {
+        "session_data": ".eJwNjstOhDAAAP-lZ9TyyPK4IU8huIAgGmNIKS1bQUAeCwvZf5fbJDOH2cHYYYYahHE3t1M-TmgiI9B2wCxq1XxU_FT8h14vFGhfO-iHDpPx8KDpKtYCDpRoQkBr56bhQF9jkuOuJPmVDIwyMhxhFS_E_7M2PeSXVmBnvxwILNTPeMxcOie2Ea--4Pqia1BHypzEcxJx834vt1RN-vfn17fwEkIq9meF1HK16OkJjqmAfGojs2WGEUTbysNIN6EUBA8FTjyJ-GVnCi-ZfS2X4HhsyTodJ0_gzvGyIkKoCif-UThQlZXv-_0f0P9U4w:1wfK9t:B68CqFHNxS7VTmdJSwIkQJSff8Mf3SqEZi6gYfkLGGM",
+        "expire_date": "2026-07-16T16:21:01.281Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "50si0nbjt86lkye9v8f0wmzou37uaq4a",
+    "fields": {
+        "session_data": "eyJsYW5nIjoia24ifQ:1wVoZf:KN8LDzhTHfc0OiFBnnZJp-1bqIXKSFkE_JncHhxeOtc",
+        "expire_date": "2026-06-20T10:48:19.209Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "7om27m1yrvsvf2dhr8ke8dswlnzxzjdu",
+    "fields": {
+        "session_data": ".eJxVjDsOwjAQBe_iGllZfxJMSZ8zWOvNLg4gW4qTCnF3iJQC2jcz76UibmuOW-MlzpO6KFCn3y0hPbjsYLpjuVVNtazLnPSu6IM2PdaJn9fD_TvI2PK3RvYDBJvEiQUBQR7OwXSCJAYSsgHxtiPoO-qFgnPiAwjZPlnjwmDU-wP4rDf8:1wcl0y:tF8BtcRUJWbWrzSpwdAHBQHp_RhyYd3BimSBQTmssKc",
+        "expire_date": "2026-07-09T14:25:12.630Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "inymcsdseh8o88mbj9mr7imtkjz472j2",
+    "fields": {
+        "session_data": ".eJxVjDsOwjAUBO_iGlnPn8Q2JT1nsNY_HECOFCcV4u4QKQW0OzP7Yh7bWv3W8-KnxM5MsNPvFhAfue0g3dFuM49zW5cp8F3hB-38Oqf8vBzu30FFr98aSgtZBgpKJpchLUEaGoMoedTBJEXQADlEUBBEg83GaqWjNsIWOPb-ANbpN3o:1wfBcr:oZq-FJqBFbBA1Ts6k5FsOMRXPHkFg3mxp4dE_nfh90g",
+        "expire_date": "2026-07-16T07:14:21.362Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "k1frvpl87w11f0oeor3rt6st4ml4kl6h",
+    "fields": {
+        "session_data": ".eJwNzt1OgzAAQOF36TVqCpG_OyCCxiFDh8CMIbUUhBaopWwwwrvL9TkX3wrGATeIIYyHqZfFKJEkI7BX4C_eGNHlhUcH7v9dMmB_rYCLAZNx74ANddMDBZRIImD3E2MK4BSTAg8lKS5ENFVDxD7G1KmdLDul7U_s9RMKHT1Xr3Piv56riqZCNwJ4i96CRPstDx_R5cSKUMzIpfnNC01RpZ_wLGncWqW4tvidz2EslhklKuzYnetP2hFyHar4WOeua4Qs6ViXWA59xgGhTfq0G3syy13yADYFGqaqmdCE1r1umY-Grn5v2z_nNVd5:1wcnWX:xYxk_v97EDuv0B0RLQWHvzTuxN5mppH1k1b6adWrdE4",
+        "expire_date": "2026-07-09T17:05:57.294Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "l4raapcel9o5f5t804tg1aesprf4393c",
+    "fields": {
+        "session_data": "eyJsYW5nIjoiZW4ifQ:1wVoJq:XDrgHBdx3UXr7xqyTBLNwFjil0TlYuj_DbznaGJTwug",
+        "expire_date": "2026-06-20T10:31:58.191Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "m9z2e5yhby35pjht9fc9r8ifec2g4ryv",
+    "fields": {
+        "session_data": ".eJxVj01uhDAMhe_iNUIkIX-z61yjqpCTmAGVkoqEbhB3b6B0gbyxnt_7bG-Qoh9xQu_jOucuZcyU4LHtFfxruOaB5jx6zGOcuy_KQwzF877BXw-POwVKNsODacNbLYQWtVFcclvB9xJ_xkBLSbxifE1UrOt4ABgTolGNaaSWnMumYUop2D8qOPd3a6KlO50GbppD_0nzMcBpOuT6uqI-Pdc41W-3L55X6oYaMA2F45mWyiFz0lkhehuQk-IqiFaqnnwpa41jrRRGt8qynlpnULKgiBseGOy_idhwFA:1wd4kX:qvDRYEH8xO6erhMddt5SohZFsK_-AUWM7x4-vH03XZg",
+        "expire_date": "2026-07-10T11:29:33.902Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "o459qmjxo9bbopqh7hyrfyaf2dy4mquo",
+    "fields": {
+        "session_data": "e30:1wcgvI:C8OjGBasKqamuYtIRBsm0vVJwNt8QiQIjjzNf0be9P4",
+        "expire_date": "2026-07-09T10:03:04.681Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "qoyh80ht214om3rtg6hx47dzwmbukl3u",
+    "fields": {
+        "session_data": ".eJxVjMEOwiAQRP-FsyGluy3i0bvfQJZlkaopSWlPxn-XJj3oaSbzZuatPG1r9luVxU9RXVSvTr9ZIH7KvIP4oPleNJd5Xaag94o-aNW3EuV1Pbp_B5lqbmuXBC0PCTrqmiOL4xkGSTGKHQODMb1hSAgWTRNjhF0I7CAlQEZSny_qyDgw:1wd4r0:bjOKJkaprMfZ5CICp7ix1v5k16C3yTuYid4hSNy4RH4",
+        "expire_date": "2026-07-10T11:36:14.923Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "qpsw2uqmfshhmnkhzpe0mg1wf6m2ct2f",
+    "fields": {
+        "session_data": ".eJxVjDsOwjAQBe_iGllZfxJMSZ8zWOvNLg4gW4qTCnF3iJQC2jcz76UibmuOW-MlzpO6KFCn3y0hPbjsYLpjuVVNtazLnPSu6IM2PdaJn9fD_TvI2PK3RvYDBJvEiQUBQR7OwXSCJAYSsgHxtiPoO-qFgnPiAwjZPlnjwmDU-wP4rDf8:1wckwk:g4AZP_DCq0xV3Ly5436VORQ97tyMr8nL6-x7jY5V0Ug",
+        "expire_date": "2026-07-09T14:20:50.784Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "s6gld92kc0rgnuwzgwv6ex57cbi3iwms",
+    "fields": {
+        "session_data": "eyJsYW5nIjoiZW4ifQ:1wYdDc:vlV85uLBmAQgkVqo9x5SmgMoIgOLMKe_L7dGi9EFuFc",
+        "expire_date": "2026-06-28T05:17:12.118Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "ubq6aa8opbjbfapychvgvs8npt2rkvlr",
+    "fields": {
+        "session_data": ".eJwNzttugjAAgOF36TXZiiAF7whzyiGoQBhzWZpSKmGygi0HlfDucv3_F98EZEMrUhNKm553WHakYxJsJsDcQyois6QP8jyevAxsfibQioYyuXRQN2XFgQIK0hGw4X1dK6C9UoZpUzA8MFFdKiaW0dcG21lvOU_i0cBWlrfjWGCIDLwXMYzrc_Pp5rI_fZVSDW8h1TL83Km2U0E-2ufrePxLesMrie6pAXYG_Z5mEuUuCz2x79OoCHx_-5HcvIv4RzBZ-UP0-Na6ADpod4jSsF2MnN27RfIOZkVF5kqzNKiv3yxNNxFEv_P8AklDVhk:1wcjqv:Hc98zVkGgMOHBnjbRR9HoOwZ51f-j2UQ813ZISe9YVE",
+        "expire_date": "2026-07-09T13:10:45.938Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "vj25imn773t80urzyv251vdajbhm3buc",
+    "fields": {
+        "session_data": ".eJxVjDsOwjAQBe_iGllZfxJMSZ8zWOvNLg4gW4qTCnF3iJQC2jcz76UibmuOW-MlzpO6KFCn3y0hPbjsYLpjuVVNtazLnPSu6IM2PdaJn9fD_TvI2PK3RvYDBJvEiQUBQR7OwXSCJAYSsgHxtiPoO-qFgnPiAwjZPlnjwmDU-wP4rDf8:1wckwu:HEKBT5rhCiCck2nz76-Ty98G5YUJcxzy9Gp39LeZfEs",
+        "expire_date": "2026-07-09T14:21:00.305Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "vjgr9a69wb0fl9rf5mnc9gm09n7j03ek",
+    "fields": {
+        "session_data": ".eJwNjttugjAAQP-lz7gBchtviENhxMklUbcsTVPK2okUKFcJ_z7eTnLOw5mB4JihAmHMu7KFokUtEcCegXv22-mdHczY36kPrwb29wyqhmMiVg8K_stKIIEMtQjYZVcUEqjumEDMMwJ70rCckWYN8ylPxjHSBqseQ9-JmhPd0Kg6p4l3Ctz-gVLFh_jpkiOjmfuRXgf97dP4mpQh3humwzTo3ay809DGd-jBbbJcqJd65w_iKVMkwqtz640g3HuQ97oiwzCJmzunIxy2l-D4h9fHkoztevIKFkkxLXVr6LplvKyoyNbPsvwDs6FWCA:1wccla:zCCDC0dSxNdbzc3YcSJz9RXrBZsgfPoildRc24zuPL0",
+        "expire_date": "2026-07-09T05:36:46.727Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "vux6dbueg1ka0hzauexie13xx128v2ow",
+    "fields": {
+        "session_data": ".eJxVT0tuhDAMvYvXCOVDQmDXuUZVIScxAyolFQndIO4-gaEL5IWt99PzBjG4ESd0Lqxz6mLCRBHabS_gH8M1DTSn0WEaw9z9UBqCz5rPDd43tPcUyN4ELa-NZEbwSpWMsbyqAn6X8Dd6WrLlGcJzoqxdxyOBcymZZoapWgmhskFrDftXAWeBbo20dKfSwA2z6L5pPgicpgMurxrlqbnoWH7c3nhcrlvUgHHIOY7XSlvkVtlGyr7xKEgL7WWldE8uT9MYmx-Spq50w3uqrEHFvSZhhOewvwDFE3As:1wfd7R:j0eG8eWFBpS2jqEGQf_uAvB68mEHTS0_CIbgo6RV5oc",
+        "expire_date": "2026-07-17T12:35:45.042Z"
+    }
+},
+{
+    "model": "sites.site",
+    "fields": {
+        "domain": "127.0.0.1:8000",
+        "name": "Pancha Peethas"
+    }
+},
+{
+    "model": "account.emailaddress",
+    "pk": 1,
+    "fields": {
+        "user": [
+            "gurucharan"
+        ],
+        "email": "gurubgshetty@gmail.com",
+        "verified": true,
+        "primary": true
+    }
+},
+{
+    "model": "account.emailaddress",
+    "pk": 2,
+    "fields": {
+        "user": [
+            "vid"
+        ],
+        "email": "vidyouth24@gmail.com",
+        "verified": true,
+        "primary": true
+    }
+},
+{
+    "model": "account.emailaddress",
+    "pk": 3,
+    "fields": {
+        "user": [
+            "bhojaraja"
+        ],
+        "email": "bhojagshetty@gmail.com",
+        "verified": true,
+        "primary": true
+    }
+},
+{
+    "model": "account.emailaddress",
+    "pk": 4,
+    "fields": {
+        "user": [
+            "maduve"
+        ],
+        "email": "maduvephotos42@gmail.com",
+        "verified": true,
+        "primary": true
+    }
+},
+{
+    "model": "socialaccount.socialaccount",
+    "pk": 1,
+    "fields": {
+        "user": [
+            "gurucharan"
+        ],
+        "provider": "google",
+        "uid": "112027647221549565132",
+        "last_login": "2026-06-30T08:50:28.723Z",
+        "date_joined": "2026-06-25T05:07:35.677Z",
+        "extra_data": {
+            "iss": "https://accounts.google.com",
+            "azp": "92457066813-mt2ldhg001k5kfhalknada9f59u6jspi.apps.googleusercontent.com",
+            "aud": "92457066813-mt2ldhg001k5kfhalknada9f59u6jspi.apps.googleusercontent.com",
+            "sub": "112027647221549565132",
+            "email": "gurubgshetty@gmail.com",
+            "email_verified": true,
+            "at_hash": "eGOnTtARP2kCyAt8hl3fqg",
+            "name": "Gurucharan G",
+            "picture": "https://lh3.googleusercontent.com/a/ACg8ocLIOvrHVzt_tDmNey1ediBbqKDJtxj6kcIiDSvmB5W2kfLjfg=s96-c",
+            "given_name": "Gurucharan",
+            "family_name": "G",
+            "iat": 1782809428,
+            "exp": 1782813028
+        }
+    }
+},
+{
+    "model": "socialaccount.socialaccount",
+    "pk": 2,
+    "fields": {
+        "user": [
+            "vid"
+        ],
+        "provider": "google",
+        "uid": "109286236010083849528",
+        "last_login": "2026-06-26T11:26:40.104Z",
+        "date_joined": "2026-06-25T09:33:01.793Z",
+        "extra_data": {
+            "iss": "https://accounts.google.com",
+            "azp": "92457066813-mt2ldhg001k5kfhalknada9f59u6jspi.apps.googleusercontent.com",
+            "aud": "92457066813-mt2ldhg001k5kfhalknada9f59u6jspi.apps.googleusercontent.com",
+            "sub": "109286236010083849528",
+            "email": "vidyouth24@gmail.com",
+            "email_verified": true,
+            "at_hash": "3qJAOnLyLmjz_uRIsJwOvg",
+            "name": "Vid Youth",
+            "picture": "https://lh3.googleusercontent.com/a/ACg8ocKMkREHSJJsAYiMEEt-e56u3L7TaAllzBqGuO1ppvMQhtMcrA=s96-c",
+            "given_name": "Vid",
+            "family_name": "Youth",
+            "iat": 1782473199,
+            "exp": 1782476799
+        }
+    }
+},
+{
+    "model": "socialaccount.socialaccount",
+    "pk": 3,
+    "fields": {
+        "user": [
+            "bhojaraja"
+        ],
+        "provider": "google",
+        "uid": "113800780705195961384",
+        "last_login": "2026-06-26T10:52:25.524Z",
+        "date_joined": "2026-06-26T10:29:34.187Z",
+        "extra_data": {
+            "iss": "https://accounts.google.com",
+            "azp": "92457066813-mt2ldhg001k5kfhalknada9f59u6jspi.apps.googleusercontent.com",
+            "aud": "92457066813-mt2ldhg001k5kfhalknada9f59u6jspi.apps.googleusercontent.com",
+            "sub": "113800780705195961384",
+            "email": "bhojagshetty@gmail.com",
+            "email_verified": true,
+            "at_hash": "hI-IbpV8Eu7gJskJmL-_KQ",
+            "name": "Bhojaraja G Shetty",
+            "picture": "https://lh3.googleusercontent.com/a/ACg8ocIS6x5ulTmDdGag__vgvsXvqSGWGVW2XlW9FXRd7bMAw09Umg=s96-c",
+            "given_name": "Bhojaraja",
+            "family_name": "G Shetty",
+            "iat": 1782471145,
+            "exp": 1782474745
+        }
+    }
+},
+{
+    "model": "socialaccount.socialaccount",
+    "pk": 4,
+    "fields": {
+        "user": [
+            "maduve"
+        ],
+        "provider": "google",
+        "uid": "110192395349527426961",
+        "last_login": "2026-06-27T04:46:04.778Z",
+        "date_joined": "2026-06-27T04:46:04.778Z",
+        "extra_data": {
+            "iss": "https://accounts.google.com",
+            "azp": "92457066813-mt2ldhg001k5kfhalknada9f59u6jspi.apps.googleusercontent.com",
+            "aud": "92457066813-mt2ldhg001k5kfhalknada9f59u6jspi.apps.googleusercontent.com",
+            "sub": "110192395349527426961",
+            "email": "maduvephotos42@gmail.com",
+            "email_verified": true,
+            "at_hash": "OD62XOjH0gl-nyE96IpKRA",
+            "name": "Maduve Photos",
+            "picture": "https://lh3.googleusercontent.com/a/ACg8ocLSxW3egLpJP1jQeIycoWRPvpy8-atiSyalHVA2lNqskLGIxQ=s96-c",
+            "given_name": "Maduve",
+            "family_name": "Photos",
+            "iat": 1782535563,
+            "exp": 1782539163
+        }
+    }
+},
+{
+    "model": "peethas.peetha",
+    "pk": 1,
+    "fields": {
+        "name": "Rambhapuri Peetha",
+        "slug": "rambhapuri",
+        "acharya": "Jagadguru Renukacharya",
+        "simhasana": "Veera Simhasana",
+        "location": "Balehonnur, Chikkamagaluru",
+        "state": "Karnataka",
+        "current_swamiji": "Shree Shree Shree Jagadguru Prasanna Renuka Veera Someshwara Rajadeshikendra Shivacharya Mahaswamiji",
+        "associated_linga": "Someshvara Linga",
+        "associated_linga_map_url": "https://maps.google.com/?q=Someshwara+Temple+Kolanupaka+Telangana",
+        "color": "#2e7d32",
+        "description": "The Rambhapuri Peetha, also known as the Shri Jagadguru Rambhapuri Veerasimhasana Mahasamsthana Peetha, is the first and oldest among the five sacred Pancha Mahapeethas of the Veerashaiva tradition. Nestled on the banks of the scenic Bhadra River in the lush green valley of Balehonnur (Chikkamagaluru district), a region widely celebrated as the 'Kashmir of Karnataka', this ancient spiritual seat has guided social, cultural, and educational fields for millennia.",
+        "history": "The Rambhapuri Peetha, also known as the Veera Simhasana, is located in Balehonnur, Karnataka on the banks of the Bhadra river. According to Veerashaiva tradition, the Peetha was established by Jagadguru Sri Renukacharya, who emerged from the Someshwara Linga at Kollipaki. Historically, the Peetha has been a supreme center of the Veerashaiva tradition, heavily patronized by the rulers of the Vijayanagara Empire and the Keladi Nayakas. The central shrine features Sri Veerabhadra Swamy and the sacred Someshwara Linga.",
+        "order": 1,
+        "swamiji_photo": "",
+        "swamiji_bio": "",
+        "contact_phone": "",
+        "contact_email": "",
+        "contact_address": "",
+        "live_youtube_url": "",
+        "live_youtube_title": "Dasaradarbar live 26th October",
+        "name_kn": "ರಂಭಾಪುರಿ ಪೀಠ",
+        "acharya_kn": "ಜಗದ್ಗುರು ರೇಣುಕಾಚಾರ್ಯ",
+        "simhasana_kn": "ವೀರ ಸಿಂಹಾಸನ",
+        "location_kn": "ಬಾಳೆಹೊನ್ನೂರು, ಚಿಕ್ಕಮಗಳೂರು",
+        "current_swamiji_kn": "ಶ್ರೀ ಶ್ರೀ ಶ್ರೀ ಜಗದ್ಗುರು ಪ್ರಸನ್ನ ರೇಣುಕಾ ವೀರ ಸೋಮೇಶ್ವರ ರಾಜದೇಶಿಕೇಂದ್ರ ಶಿವಾಚಾರ್ಯ ಮಹಾಸ್ವಾಮೀಜಿ",
+        "associated_linga_kn": "ಸೋಮೇಶ್ವರ ಲಿಂಗ",
+        "description_kn": "ವೀರಶೈವ ಮಹಾಪಂಚಪೀಠಗಳಲ್ಲಿ ಪ್ರಥಮ ಪೀಠವಾದ ಶ್ರೀ ಜಗದ್ಗುರು ರಂಭಾಪುರಿ ವೀರಸಿಂಹಾಸನ ಮಹಾಸಂಸ್ಥಾನ ಪೀಠವು ಅತ್ಯಂತ ಪ್ರಾಚೀನ ಇತಿಹಾಸ ಹೊಂದಿದೆ. ಚಿಕ್ಕಮಗಳೂರು ಜಿಲ್ಲೆಯ ಭದ್ರಾ ನದಿಯ ತಟದಲ್ಲಿರುವ, 'ಕರ್ನಾಟಕದ ಕಾಶ್ಮೀರ' ಎಂದೇ ಪ್ರಸಿದ್ಧವಾದ ಸುಂದರ ಬಾಳೆಹೊನ್ನೂರಿನಲ್ಲಿ ಈ ಪೀಠವು ಸ್ಥಾಪಿತವಾಗಿದ್ದು, ಧಾರ್ಮಿಕ, ಶೈಕ್ಷಣಿಕ ಮತ್ತು ಸಾಮಾಜಿಕ ಕ್ಷೇತ್ರಗಳಲ್ಲಿ ಆದರ್ಶ ಮಾರ್ಗದರ್ಶಿಯಾಗಿದೆ.",
+        "history_kn": "ವೀರ ಸಿಂಹಾಸನ ಎಂದೂ ಕರೆಯಲ್ಪಡುವ ರಂಭಾಪುರಿ ಪೀಠವು ಕರ್ನಾಟಕದ ಬಾಳೆಹೊನ್ನೂರಿನಲ್ಲಿ ಭದ್ರಾ ನದಿಯ ದಡದಲ್ಲಿದೆ. ವೀರಶೈವ ಸಂಪ್ರದಾಯದ ಪ್ರಕಾರ, ಕೊಲ್ಲಿಪಾಕಿಯಲ್ಲಿನ ಸೋಮೇಶ್ವರ ಲಿಂಗದಿಂದ ಹೊರಹೊಮ್ಮಿದ ಜಗದ್ಗುರು ಶ್ರೀ ರೇಣುಕಾಚಾರ್ಯರಿಂದ ಪೀಠವನ್ನು ಸ್ಥಾಪಿಸಲಾಯಿತು. ಐತಿಹಾಸಿಕವಾಗಿ, ಪೀಠವು ವೀರಶೈವ ಸಂಪ್ರದಾಯದ ಅತ್ಯುನ್ನತ ಕೇಂದ್ರವಾಗಿದೆ, ವಿಜಯನಗರ ಸಾಮ್ರಾಜ್ಯದ ಅರಸರು ಮತ್ತು ಕೆಳದಿ ನಾಯಕರಿಂದ ಹೆಚ್ಚು ಪ್ರೋತ್ಸಾಹಿಸಲ್ಪಟ್ಟಿದೆ. ಮಧ್ಯ ದೇವಾಲಯವು ಶ್ರೀ ವೀರಭದ್ರ ಸ್ವಾಮಿ ಮತ್ತು ಪವಿತ್ರ ಸೋಮೇಶ್ವರ ಲಿಂಗವನ್ನು ಒಳಗೊಂಡಿದೆ.",
+        "name_mr": "रंभापुरी पीठ",
+        "acharya_mr": "जगद्गुरु रेणुकाचार्य",
+        "simhasana_mr": "वीर सिंहासन",
+        "location_mr": "बालेहोन्नूर, चिकमगलूर",
+        "current_swamiji_mr": "श्री श्री श्री जगद्गुरु प्रसन्न रेणुका वीर सोमेश्वर राजदेशिकेंद्र  शिवाचार्य महास्वामीजी",
+        "associated_linga_mr": "सोमेश्वर लिंग",
+        "description_mr": "रंभापुरी पीठ, ज्याला श्री जगद्गुरु रंभापुरी वीरसिंहासन महासंस्थान पीठ म्हणूनही ओळखले जाते, हे वीरशैव परंपरेच्या पाच पवित्र पंच महापीठांपैकी पहिले आणि सर्वात जुने आहे. 'कर्नाटकचे काश्मीर' म्हणून प्रसिद्ध असलेल्या बालेहोन्नूर (चिक्कमगळूर जिल्हा) च्या हिरव्यागार दरीत, निसर्गरम्य भद्रा नदीच्या काठावर वसलेले, हे प्राचीन आध्यात्मिक पीठ हजारो वर्षांपासून सामाजिक, सांस्कृतिक आणि शैक्षणिक क्षेत्रांना मार्गदर्शन करत आहे.",
+        "history_mr": "रंभापुरी पीठ, ज्याला वीर सिंहासन असेही म्हणतात, कर्नाटकातील बलेहोन्नूर येथे भद्रा नदीच्या काठी स्थित आहे. वीरशैव परंपरेनुसार, पीठाची स्थापना जगद्गुरू श्री रेणुकाचार्य यांनी केली होती, जे कोल्लीपाकी येथील सोमेश्वर लिंगातून उदयास आले होते. ऐतिहासिकदृष्ट्या, पीठ हे वीरशैव परंपरेचे एक सर्वोच्च केंद्र आहे, ज्याला विजयनगर साम्राज्याच्या शासकांनी आणि केलाडी नायकांनी मोठ्या प्रमाणात संरक्षण दिले आहे. मध्यवर्ती मंदिरामध्ये श्री वीरभद्र स्वामी आणि पवित्र सोमेश्वर लिंग आहे.",
+        "name_hi": "रंभापुरी पीठ",
+        "acharya_hi": "जगद्गुरु रेणुकाचार्य",
+        "simhasana_hi": "वीर सिंहासन",
+        "location_hi": "बालेहोन्नूर, चिकमगलूर",
+        "current_swamiji_hi": "श्री श्री श्री जगद्गुरु प्रसन्न रेणुका वीर सोमेश्वर राजदेशिकेंद्र शिवाचार्य महास्वामीजी",
+        "associated_linga_hi": "सोमेश्वर लिंग",
+        "description_hi": "रंभापुरी पीठ, जिसे श्री जगद्गुरु रंभापुरी वीरसिंहासन महासंस्थान पीठ के नाम से भी जाना जाता है, वीरशैव परंपरा के पांच पवित्र पंच महापीठों में पहला और सबसे पुराना है। 'कर्नाटक के कश्मीर' के रूप में प्रसिद्ध बालेहोन्नूर (चिक्कमगलुरु जिले) की हरी-भरी घाटी में प्राकृतिक सुंदरता से परिपूर्ण भद्रा नदी के तट पर स्थित, इस प्राचीन आध्यात्मिक पीठ ने सहस्राब्दियों से सामाजिक, सांस्कृतिक और शैक्षिक क्षेत्रों का मार्गदर्शन किया है।",
+        "history_hi": "रंभपुरी पीठ, जिसे वीर सिंहासन के नाम से भी जाना जाता है, भद्रा नदी के तट पर कर्नाटक के बालेहोन्नूर में स्थित है। वीरशैव परंपरा के अनुसार, पीठ की स्थापना जगद्गुरु श्री रेणुकाचार्य द्वारा की गई थी, जो कोल्लीपाकी में सोमेश्वर लिंग से प्रकट हुए थे। ऐतिहासिक रूप से, पीठ वीरशैव परंपरा का सर्वोच्च केंद्र रहा है, जिसे विजयनगर साम्राज्य के शासकों और केलाडी नायकों द्वारा भारी संरक्षण प्राप्त था। केंद्रीय मंदिर में श्री वीरभद्र स्वामी और पवित्र सोमेश्वर लिंग हैं।",
+        "name_te": "రంభాపురీ పీఠం",
+        "acharya_te": "జగద్గురు రేణుకాచార్య",
+        "simhasana_te": "వీర సింహాసనం",
+        "location_te": "బలేహోన్నూరు, కర్ణాటక",
+        "current_swamiji_te": "జగద్గురు శ్రీ శ్రీ శ్రీ 1008 ప్రసన్న రేణుక డా. వీరసోమేశ్వర రాజదేశికేంద్ర శివాచార్య",
+        "associated_linga_te": "సోమేశ్వర లింగం",
+        "description_te": "కర్ణాటకలోని చిక్కమగళూరు జిల్లాలో, మలయాచల ప్రాంతంలో భద్రా నది ఒడ్డున ఉన్న రంభాపురీ పీఠం ఒక పవిత్రమైన మఠం. ఇది ఐదు ప్రధాన వీరశైవ పీఠాలలో మొదటిది మరియు ప్రధానమైనదిగా పరిగణించబడుతుంది.",
+        "history_te": "వీర సింహాసనంగా పిలువబడే రంభపురి పీఠం కర్ణాటకలోని బాలెహోన్నూరులో భద్రా నది ఒడ్డున ఉంది. వీరశైవ సంప్రదాయం ప్రకారం కొల్లిపాకిలోని సోమేశ్వర లింగం నుంచి ఉద్భవించిన జగద్గురువులు శ్రీ రేణుకాచార్యులు ఈ పీఠాన్ని స్థాపించారు. చారిత్రాత్మకంగా, ఈ పీఠం వీరశైవ సంప్రదాయానికి అత్యున్నత కేంద్రంగా ఉంది, విజయనగర సామ్రాజ్య పాలకులు మరియు కేలాడి నాయకులచే ఎక్కువగా పోషించబడింది. మధ్య మందిరంలో శ్రీ వీరభద్ర స్వామి మరియు పవిత్ర సోమేశ్వర లింగం ఉన్నాయి.",
+        "name_ta": "ரம்பாபுரி பீடம்",
+        "acharya_ta": "ஜகத்குரு ரேணுகாச்சார்ய",
+        "simhasana_ta": "வீர சிம்மாசனம்",
+        "location_ta": "பலேஹொன்னூர், கர்நாடகா",
+        "current_swamiji_ta": "ஜகத்குரு ஸ்ரீ ஸ்ரீ ஸ்ரீ 1008 பிரசன்ன ரேணுக டாக்டர் வீரசோமேஸ்வர ராஜதேசிகேந்திர சிவாச்சார்ய",
+        "associated_linga_ta": "சோமேஸ்வர லிங்கம்",
+        "description_ta": "கர்நாடகாவின் சிக்கமகளூரு மாவட்டத்தில், மலையாசலப் பகுதியில் பத்ரா நதிக்கரையில் அமைந்துள்ள ரம்பாபுரி பீடம் ஒரு புனிதமான மடமாகும். இது ஐந்து முக்கிய வீரசைவ பீடங்களில் முதல் மற்றும் முதன்மையானதாகக் கருதப்படுகிறது.",
+        "history_ta": "வீர சிம்ஹாசனம் என்று அழைக்கப்படும் ரம்பபுரி பீடம், கர்நாடக மாநிலம், பத்ரா நதிக்கரையில், பாலேஹோன்னூரில் அமைந்துள்ளது. வீரசைவ மரபின்படி, கொல்லிப்பாக்கியில் உள்ள சோமேஸ்வர லிங்கத்திலிருந்து வெளிப்பட்ட ஜகத்குரு ஸ்ரீ ரேணுகாச்சாரியாரால் பீடம் நிறுவப்பட்டது. வரலாற்று ரீதியாக, விஜயநகரப் பேரரசின் ஆட்சியாளர்கள் மற்றும் கேளடி நாயக்கர்களால் பெரிதும் ஆதரிக்கப்பட்ட வீரசைவ பாரம்பரியத்தின் உச்ச மையமாக பீடம் இருந்து வருகிறது. மைய சன்னதியில் ஸ்ரீ வீரபத்ர ஸ்வாமி மற்றும் புனித சோமேஸ்வர லிங்கம் உள்ளது.",
+        "name_ml": "രംഭാപുരീ പീഠം",
+        "acharya_ml": "ജഗദ്ഗുരു രേണുകാചാര്യ",
+        "simhasana_ml": "വീര സിംഹാസനം",
+        "location_ml": "ബലേഹൊന്നൂർ, കർണ്ണാടക",
+        "current_swamiji_ml": "ജഗദ്ഗുരു ശ്രീ ശ്രീ ശ്രീ 1008 പ്രസന്ന രേണുക ഡോ. വീരസോമേശ്വര രാജദേശികേന്ദ്ര ശിവാചാര്യ",
+        "associated_linga_ml": "സോമേശ്വര ലിംഗം",
+        "description_ml": "കർണ്ണാടകയിലെ ചിക്കമഗളൂരു ജില്ലയിൽ മലയാചല പ്രദേശത്ത് ഭദ്രാ നദിക്കരയിൽ സ്ഥിതി ചെയ്യുന്ന രംഭാപുരീ പീഠം പുണ്യമായ ഒരു മഠമാണ്. അഞ്ച് പ്രധാന വീരശൈവ പീഠങ്ങളിൽ ആദ്യത്തേതും പ്രധാനപ്പെട്ടതുമായി ഇത് കണക്കാക്കപ്പെടുന്നു.",
+        "history_ml": "വീരസിംഹാസനം എന്നറിയപ്പെടുന്ന രംഭപുരി പീഠം കർണാടകയിലെ ബാലെഹോന്നൂരിൽ ഭദ്ര നദിയുടെ തീരത്താണ് സ്ഥിതി ചെയ്യുന്നത്. വീരശൈവ പാരമ്പര്യമനുസരിച്ച്, കൊല്ലിപ്പാക്കിയിലെ സോമേശ്വര ലിംഗത്തിൽ നിന്ന് ഉദിച്ച ജഗദ്ഗുരു ശ്രീ രേണുകാചാര്യയാണ് പീഠം സ്ഥാപിച്ചത്. ചരിത്രപരമായി, വീരശൈവ പാരമ്പര്യത്തിൻ്റെ പരമോന്നത കേന്ദ്രമാണ് പീഠം, വിജയനഗര സാമ്രാജ്യത്തിലെ ഭരണാധികാരികളും കേളടി നായകരും വളരെയധികം സംരക്ഷിക്കുന്നു. കേന്ദ്ര ശ്രീകോവിലിൽ ശ്രീ വീരഭദ്ര സ്വാമിയും പവിത്രമായ സോമേശ്വര ലിംഗവും ഉണ്ട്."
+    }
+},
+{
+    "model": "peethas.peetha",
+    "pk": 2,
+    "fields": {
+        "name": "Ujjaini Peetha",
+        "slug": "ujjaini",
+        "acharya": "Jagadguru Marulasiddheshwara (Darukacharya)",
+        "simhasana": "Saddharma Simhasana",
+        "location": "Ujjaini, Kudligi Taluk, Vijayanagara District",
+        "state": "Karnataka",
+        "current_swamiji": "Jagadguru Sri Siddalinga Rajadeshikendra Shivacharya Bhagavatpada Swamiji",
+        "associated_linga": "Siddheshvara Linga",
+        "associated_linga_map_url": "https://maps.google.com/?q=Ujjain+Madhya+Pradesh",
+        "color": "#c62828",
+        "description": "The Ujjaini Saddharma Simhasana Mahapeetha is one of the five ancient Panchapeethas of Veerashaivism. It is located in the historic town of Ujjaini in Karnataka, known for its remarkable temple architecture and sculptures.",
+        "history": "The Ujjaini Saddharma Simhasana Peetha traces its origins to Jagadguru Marulasiddheshwara, one of the Panchacharyas. Originally established in Ujjain, Madhya Pradesh, the Peetha was later relocated during the 15th century to its current location in Kudligi taluk, Karnataka. The site is famous for the ancient Marulasiddheshwar Temple and its unique annual 'Shikara Thailabhisheka' (oil anointing) ceremony.",
+        "order": 2,
+        "swamiji_photo": "",
+        "swamiji_bio": "",
+        "contact_phone": "",
+        "contact_email": "",
+        "contact_address": "",
+        "live_youtube_url": null,
+        "live_youtube_title": null,
+        "name_kn": "ಉಜ್ಜಯಿನಿ ಪೀಠ",
+        "acharya_kn": "ಜಗದ್ಗುರು ಮರುಳಸಿದ್ದೇಶ್ವರ (ದಾರುಕಾಚಾರ್ಯ)",
+        "simhasana_kn": "ಸದ್ಧರ್ಮ ಸಿಂಹಾಸನ",
+        "location_kn": "ಉಜ್ಜಯಿನಿ, ಕುಡ್ಲಿಗಿ, ವಿಜಯನಗರ",
+        "current_swamiji_kn": "ಜಗದ್ಗುರು ಶ್ರೀ ಸಿದ್ಧಲಿಂಗ ರಾಜದೇಶಿಕೇಂದ್ರ ಶಿವಾಚಾರ್ಯ ಭಗವತ್ಪಾದ ಸ್ವಾಮೀಜಿ",
+        "associated_linga_kn": "ಸಿದ್ದೇಶ್ವರ ಲಿಂಗ",
+        "description_kn": "ಉಜ್ಜಯಿನಿ ಸದ್ಧರ್ಮ ಸಿಂಹಾಸನ ಮಹಾಪೀಠವು ವೀರಶೈವ ಧರ್ಮದ ಪಂಚಪೀಠಗಳಲ್ಲಿ ಒಂದಾಗಿದೆ. ಇದು ಕರ್ನಾಟಕದ ವಿಜಯನಗರ ಜಿಲ್ಲೆಯ ಉಜ್ಜಯಿನಿಯಲ್ಲಿದೆ.",
+        "history_kn": "ಉಜ್ಜೈನಿ ಸದ್ಧರ್ಮ ಸಿಂಹಾಸನ ಪೀಠವು ಪಂಚಾಚಾರ್ಯರಲ್ಲಿ ಒಬ್ಬರಾದ ಜಗದ್ಗುರು ಮರುಳಸಿದ್ಧೇಶ್ವರರಿಂದ ತನ್ನ ಮೂಲವನ್ನು ಗುರುತಿಸುತ್ತದೆ. ಮೂಲತಃ ಮಧ್ಯಪ್ರದೇಶದ ಉಜ್ಜಯಿನಿಯಲ್ಲಿ ಸ್ಥಾಪಿತವಾದ ಈ ಪೀಠವನ್ನು ನಂತರ 15 ನೇ ಶತಮಾನದಲ್ಲಿ ಕರ್ನಾಟಕದ ಕೂಡ್ಲಿಗಿ ತಾಲೂಕಿನಲ್ಲಿರುವ ಅದರ ಪ್ರಸ್ತುತ ಸ್ಥಳಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸಲಾಯಿತು. ಈ ಸ್ಥಳವು ಪುರಾತನ ಮರುಳಸಿದ್ಧೇಶ್ವರ ದೇವಸ್ಥಾನ ಮತ್ತು ಅದರ ವಿಶಿಷ್ಟ ವಾರ್ಷಿಕ 'ಶಿಕರ ತೈಲಾಭಿಷೇಕ' (ಎಣ್ಣೆ ಅಭಿಷೇಕ) ಸಮಾರಂಭಕ್ಕೆ ಹೆಸರುವಾಸಿಯಾಗಿದೆ.",
+        "name_mr": "उज्जैनी पीठ",
+        "acharya_mr": "जगद्गुरु मरुळसिद्धेश्वर (दारुकाचार्य)",
+        "simhasana_mr": "सद्धर्म सिंहासन",
+        "location_mr": "उज्जैनी, विजयनगर",
+        "current_swamiji_mr": "जगद्गुरु श्री सिद्धलिंग राजदेशिकेंद्र शिवाचार्य भगवत्पाद स्वामीजी",
+        "associated_linga_mr": "सिद्धेश्वर लिंग",
+        "description_mr": "उज्जैनी सद्धर्म सिंहासन महापीठ हे वीरशैव परंपरेतील पाच प्राचीन पंचपीठांपैकी एक आहे. हे कर्नाटकच्या ऐतिहासिक शहर उज्जैनी येथे स्थित आहे, जे त्याच्या उल्लेखनीय मंदिर वास्तुकला आणि उत्कृष्ट शिल्पांसाठी प्रसिद्ध आहे.",
+        "history_mr": "उज्जयिनी सद्धर्म सिंहासन पीठ हे पंचाचार्यांपैकी एक असलेल्या जगद्गुरु मारुलसिद्धेश्वराच्या उत्पत्तीचे वर्णन करते. मूळतः उज्जैन, मध्य प्रदेश येथे स्थापन झालेल्या पीठाचे नंतर 15 व्या शतकात कर्नाटकातील कुडलिगी तालुक्यात सध्याच्या स्थानावर स्थलांतर करण्यात आले. हे ठिकाण प्राचीन मारुळसिद्धेश्वर मंदिर आणि त्याच्या अनोख्या वार्षिक 'शिकार थैलाभिषेक' (तेल अभिषेक) समारंभासाठी प्रसिद्ध आहे.",
+        "name_hi": "उज्जैनी पीठ",
+        "acharya_hi": "जगद्गुरु मरुळसिद्धेश्वर (दारुकाचार्य)",
+        "simhasana_hi": "सद्धर्म सिंहासन",
+        "location_hi": "उज्जैनी, विजयनगर",
+        "current_swamiji_hi": "जगद्गुरु श्री सिद्धलिंग राजदेशिकेंद्र शिवाचार्य भगवत्पाद स्वामीजी",
+        "associated_linga_hi": "सिद्धेश्वर लिंग",
+        "description_hi": "उज्जैनी सद्धर्म सिंहासन महापीठ वीरशैव संप्रदाय के पांच प्राचीन पंचपीठों में से एक है। यह कर्नाटक के ऐतिहासिक शहर उज्जैनी में स्थित है, जो अपनी उल्लेखनीय मंदिर वास्तुकला और उत्कृष्ट मूर्तिकला के लिए प्रसिद्ध है।",
+        "history_hi": "उज्जयिनी सद्धर्म सिंहासन पीठ की उत्पत्ति पंचाचार्यों में से एक जगद्गुरु मारुलासिद्धेश्वर से मानी जाती है। मूल रूप से मध्य प्रदेश के उज्जैन में स्थापित, पीठ को बाद में 15वीं शताब्दी के दौरान कर्नाटक के कुडलिगी तालुक में अपने वर्तमान स्थान पर स्थानांतरित कर दिया गया था। यह स्थल प्राचीन मारुलासिद्धेश्वर मंदिर और अपने अद्वितीय वार्षिक 'शिकार थाइलाभिषेक' (तेल अभिषेक) समारोह के लिए प्रसिद्ध है।",
+        "name_te": "ఉజ్జయిని పీఠం",
+        "acharya_te": "జగద్గురు దారుకాచార్య",
+        "simhasana_te": "సద్ధర్మ సింహాసనం",
+        "location_te": "ఉజ్జయిని, బళ్లారి జిల్లా, కర్ణాటక",
+        "current_swamiji_te": "జగద్గురు శ్రీ శ్రీ శ్రీ 1008 సిద్ధలింగ రాజదేశికేంద్ర శివాచార్య",
+        "associated_linga_te": "మరుళ సిద్ధేశ్వర లింగం",
+        "description_te": "కర్ణాటకలోని బళ్లారి జిల్లాలో ఉన్న ఉజ్జయిని పీఠం, సద్ధర్మ సింహాసనంగా పిలువబడుతుంది. ఇది సత్య ధర్మాన్ని నిలబెట్టడానికి అంకితమైన ఐదు ప్రధాన వీరశైవ పీఠాలలో ఒకటి.",
+        "history_te": "ఉజ్జయినీ సద్ధర్మ సింహాసన పీఠం పంచాచార్యులలో ఒకరైన జగద్గురు మరుళసిద్ధేశ్వరుని మూలంగా ఉంది. వాస్తవానికి మధ్యప్రదేశ్‌లోని ఉజ్జయినిలో స్థాపించబడిన ఈ పీఠం తర్వాత 15వ శతాబ్దంలో కర్నాటకలోని కుడ్లిగి తాలూకాలోని ప్రస్తుత ప్రదేశానికి మార్చబడింది. ఈ ప్రదేశం పురాతన మరుళసిద్ధేశ్వర దేవాలయం మరియు దాని విశిష్ట వార్షిక 'శికర తైలాభిషేక' (తైలాభిషేకం) వేడుకకు ప్రసిద్ధి చెందింది.",
+        "name_ta": "உஜ்ஜயினி பீடம்",
+        "acharya_ta": "ஜகத்குரு தாருகாச்சார்ய",
+        "simhasana_ta": "சத்தர்ம சிம்மாசனம்",
+        "location_ta": "உஜ்ஜயினி, பல்லாரி மாவட்டம், கர்நாடகா",
+        "current_swamiji_ta": "ஜகத்குரு ஸ்ரீ ஸ்ரீ ஸ்ரீ 1008 சித்தலிங்க ராஜதேசிகேந்திர சிவாச்சார்ய",
+        "associated_linga_ta": "மருள சித்தேஸ்வர லிங்கம்",
+        "description_ta": "கர்நாடகாவின் பல்லாரி மாவட்டத்தில் அமைந்துள்ள உஜ்ஜயினி பீடம், சத்தர்ம சிம்மாசனம் என்று அழைக்கப்படுகிறது. இது சத்திய தர்மத்தை நிலைநாட்டுவதற்காக அர்ப்பணிக்கப்பட்ட ஐந்து முக்கிய வீரசைவ பீடங்களில் ஒன்றாகும்.",
+        "history_ta": "உஜ்ஜைனி சத்தர்ம சிம்ஹாசன பீடமானது பஞ்சாச்சாரியர்களில் ஒருவரான ஜகத்குரு மருளசித்தேஸ்வரரிடம் இருந்து அதன் தோற்றத்தைக் குறிக்கிறது. முதலில் மத்தியப் பிரதேசத்தின் உஜ்ஜைனில் நிறுவப்பட்ட பீடம் பின்னர் 15 ஆம் நூற்றாண்டில் கர்நாடகாவின் குட்லிகி தாலுகாவில் உள்ள அதன் தற்போதைய இடத்திற்கு மாற்றப்பட்டது. பழமையான மருளசித்தேஸ்வரர் கோயில் மற்றும் அதன் தனித்துவமான வருடாந்திர 'சிகர தைலாபிஷேக' (எண்ணெய் அபிஷேகம்) விழாவிற்கு இந்த தளம் பிரபலமானது.",
+        "name_ml": "ഉജ്ജയിനി പീഠം",
+        "acharya_ml": "ജഗദ്ഗുരു ദാരുകാചാര്യ",
+        "simhasana_ml": "സദ്ധർമ്മ സിംഹാസനം",
+        "location_ml": "ഉജ്ജയിനി, ബെല്ലാരി ജില്ല, കർണ്ണാടക",
+        "current_swamiji_ml": "ജഗദ്ഗുരു ശ്രീ ശ്രീ ശ്രീ 1008 സിദ്ധലിംഗ രാജദേശികേന്ദ്ര ശിവാചാര്യ",
+        "associated_linga_ml": "മരുള സിദ്ധേശ്വര ലിംഗം",
+        "description_ml": "കർണ്ണാടകയിലെ ബെല്ലാരി ജില്ലയിൽ സ്ഥിതി ചെയ്യുന്ന ഉജ്ജയിനി പീഠം സദ്ധർമ്മ സിംഹാസനം എന്നറിയപ്പെടുന്നു. സത്യധർമ്മം നിലനിർത്തുന്നതിനായി സമർപ്പിക്കപ്പെട്ട അഞ്ച് പ്രധാന വീരശൈവ പീഠങ്ങളിലൊന്നാണിത്.",
+        "history_ml": "പഞ്ചാചാര്യന്മാരിൽ ഒരാളായ ജഗദ്ഗുരു മറുളസിദ്ധേശ്വരയിൽ നിന്നാണ് ഉജ്ജൈനി സദ്ധർമ്മ സിംഹാസന പീഠത്തിൻ്റെ ഉത്ഭവം. മധ്യപ്രദേശിലെ ഉജ്ജയിനിൽ സ്ഥാപിതമായ ഈ പീഠം പിന്നീട് പതിനഞ്ചാം നൂറ്റാണ്ടിൽ കർണാടകയിലെ കുഡ്‌ലിഗി താലൂക്കിലുള്ള നിലവിലെ സ്ഥലത്തേക്ക് മാറ്റപ്പെട്ടു. പുരാതന മരുളസിദ്ധേശ്വര ക്ഷേത്രത്തിനും അതിൻ്റെ അതുല്യമായ വാർഷിക 'ശിക്കാര തൈലാഭിഷേക' (എണ്ണാഭിഷേകം) ചടങ്ങിനും ഈ സ്ഥലം പ്രസിദ്ധമാണ്."
+    }
+},
+{
+    "model": "peethas.peetha",
+    "pk": 3,
+    "fields": {
+        "name": "Kedara Peetha",
+        "slug": "kedara",
+        "acharya": "Jagadguru Ekoramaradhya",
+        "simhasana": "Vairagya Simhasana",
+        "location": "Kedarnath, Uttarakhand",
+        "state": "Uttarakhand",
+        "current_swamiji": "Jagadguru Kedar Ling Maharaj (325th Jagadguru Rawal)",
+        "associated_linga": "Kedara Linga",
+        "associated_linga_map_url": "https://maps.google.com/?q=Kedarnath+Temple+Uttarakhand",
+        "color": "#1565c0",
+        "description": "The Kedara Peetha, also known as the Himavat Kedar Vairagyapeeth, is one of the five ancient Pancha Mahapeethas. It is associated with the sacred Kedarnath Temple in the Himalayas, one of the holiest shrines in Shaivism.",
+        "history": "The Kedara Vairagya Simhasana Peetha is centered at the highly revered Kedarnath Temple in the Himalayas, Uttarakhand. Tradition holds that it was established by Jagadguru Ekoramaradhya. A unique historical aspect of this Peetha is its deep connection to the Kedarnath temple, where the head priest (the Rawal) traditionally belongs to the Veerashaiva community from Karnataka, maintaining the monastic and administrative activities during both summer (at Kedarnath) and winter (at Ukhimath).",
+        "order": 3,
+        "swamiji_photo": "",
+        "swamiji_bio": "",
+        "contact_phone": "",
+        "contact_email": "",
+        "contact_address": "",
+        "live_youtube_url": null,
+        "live_youtube_title": null,
+        "name_kn": "ಕೇದಾರ ಪೀಠ",
+        "acharya_kn": "ಜಗದ್ಗುರು ಏಕೋರಾಮಾರಾಧ್ಯ",
+        "simhasana_kn": "ವೈರಾಗ್ಯ ಸಿಂಹಾಸನ",
+        "location_kn": "ಕೇದಾರನಾಥ್, ಉತ್ತರಾಖಂಡ",
+        "current_swamiji_kn": "ಜಗದ್ಗುರು ಕೇದಾರ ಲಿಂಗ ಮಹಾರಾಜ್ (೩೨೫ನೇ ರಾವಲ್)",
+        "associated_linga_kn": "ಕೇದಾರ ಲಿಂಗ",
+        "description_kn": "ಕೇದಾರ ಪೀಠವು ಹಿಮಾಲಯದ ಪವಿತ್ರ ಕೇದಾರನಾಥ ಕ್ಷೇತ್ರದೊಂದಿಗೆ ನಿಕಟ ಸಂಪರ್ಕ ಹೊಂದಿರುವ ವೀರಶೈವ ಧರ್ಮದ ಪುರಾತನ ಪೀಠವಾಗಿದೆ.",
+        "history_kn": "ಕೇದಾರ ವೈರಾಗ್ಯ ಸಿಂಹಾಸನ ಪೀಠವು ಉತ್ತರಾಖಂಡದ ಹಿಮಾಲಯದಲ್ಲಿರುವ ಅತ್ಯಂತ ಗೌರವಾನ್ವಿತ ಕೇದಾರನಾಥ ದೇವಾಲಯದಲ್ಲಿ ಕೇಂದ್ರೀಕೃತವಾಗಿದೆ. ಇದನ್ನು ಜಗದ್ಗುರು ಏಕೋಮಾರಾಧ್ಯರು ಸ್ಥಾಪಿಸಿದರು ಎಂಬುದು ಸಂಪ್ರದಾಯ. ಈ ಪೀಠದ ಒಂದು ಅನನ್ಯ ಐತಿಹಾಸಿಕ ಅಂಶವೆಂದರೆ ಕೇದಾರನಾಥ ದೇವಸ್ಥಾನಕ್ಕೆ ಅದರ ಆಳವಾದ ಸಂಪರ್ಕ, ಅಲ್ಲಿ ಪ್ರಧಾನ ಅರ್ಚಕ (ರಾವಲ್) ಸಾಂಪ್ರದಾಯಿಕವಾಗಿ ಕರ್ನಾಟಕದಿಂದ ವೀರಶೈವ ಸಮುದಾಯಕ್ಕೆ ಸೇರಿದವರು, ಬೇಸಿಗೆಯಲ್ಲಿ (ಕೇದಾರನಾಥದಲ್ಲಿ) ಮತ್ತು ಚಳಿಗಾಲದಲ್ಲಿ (ಉಖಿಮಠದಲ್ಲಿ) ಸನ್ಯಾಸಿಗಳ ಮತ್ತು ಆಡಳಿತಾತ್ಮಕ ಚಟುವಟಿಕೆಗಳನ್ನು ನಿರ್ವಹಿಸುತ್ತಾರೆ.",
+        "name_mr": "केदार पीठ",
+        "acharya_mr": "जगद्गुरु एकोरामाराध्य",
+        "simhasana_mr": "वैराग्य सिंहासन",
+        "location_mr": "केदारनाथ, उत्तराखंड",
+        "current_swamiji_mr": "जगद्गुरु केदार लिंग महाराज (३२५ वे रावल)",
+        "associated_linga_mr": "केदार लिंग",
+        "description_mr": "केदार पीठ, ज्याला हिमवत केदार वैराग्यपीठ म्हणूनही ओळखले जाते, हे पाच प्राचीन पंच महापीठांपैकी एक आहे. हे हिमालयातील पवित्र केदारनाथ मंदिराशी संबंधित आहे, जे शैव धर्मातील सर्वात पवित्र आणि प्रमुख तीर्थक्षेत्रांपैकी एक आहे.",
+        "history_mr": "केदार वैराग्य सिंहासन पीठ हे हिमालय, उत्तराखंडमधील अत्यंत पूजनीय केदारनाथ मंदिरात केंद्रित आहे. जगद्गुरु एकोरामराध्या यांनी त्याची स्थापना केली असे परंपरेचे म्हणणे आहे. या पीठाचा एक अनोखा ऐतिहासिक पैलू म्हणजे केदारनाथ मंदिराशी त्याचा खोल संबंध आहे, जेथे मुख्य पुजारी (रावल) पारंपारिकपणे कर्नाटकातील वीरशैव समुदायाचे आहेत, उन्हाळ्यात (केदारनाथ येथे) आणि हिवाळ्यात (उखीमठ येथे) मठ आणि प्रशासकीय कार्ये सांभाळतात.",
+        "name_hi": "केदार पीठ",
+        "acharya_hi": "जगद्गुरु एकोरामाराध्य",
+        "simhasana_hi": "वैराग्य सिंहासन",
+        "location_hi": "केदारनाथ, उत्तराखंड",
+        "current_swamiji_hi": "जगद्गुरु केदार लिंग महाराज (३२५वें रावल)",
+        "associated_linga_hi": "केदार लिंग",
+        "description_hi": "केदार पीठ, जिसे हिमवत केदार वैराग्यपीठ भी कहा जाता है, पांच प्राचीन पंच महापीठों में से एक है। यह हिमालय में पवित्र केदारनाथ मंदिर से जुड़ा हुआ है, जो शैव धर्म के सबसे पवित्र और प्रमुख तीर्थस्थलों में से एक है।",
+        "history_hi": "केदार वैराग्य सिंहासन पीठ हिमालय, उत्तराखंड में अत्यधिक पूजनीय केदारनाथ मंदिर में केंद्रित है। परंपरा यह मानती है कि इसकी स्थापना जगद्गुरु एकोरामाराध्य ने की थी। इस पीठ का एक अनूठा ऐतिहासिक पहलू इसका केदारनाथ मंदिर से गहरा संबंध है, जहां मुख्य पुजारी (रावल) पारंपरिक रूप से कर्नाटक के वीरशैव समुदाय से होते हैं, जो गर्मियों (केदारनाथ में) और सर्दियों (उखीमठ में) दोनों के दौरान मठवासी और प्रशासनिक गतिविधियों को बनाए रखते हैं।",
+        "name_te": "కేదార పీఠం",
+        "acharya_te": "జగద్గురు ఘంటాకర్ణాచార్య",
+        "simhasana_te": "వైరాగ్య సింహాసనం",
+        "location_te": "కేదార్నాథ్, ఉత్తరాఖండ్ / ఉఖిమఠ్",
+        "current_swamiji_te": "జగద్గురు శ్రీ శ్రీ ஸ்ரீ 1008 భీమాశంకరలింగ శివాచార్య",
+        "associated_linga_te": "కేదారేశ్వర లింగం",
+        "description_te": "హిమాలయాలలోని పవిత్ర కేదార్నాథ్ క్షేత్రంలో ఉన్న కేదార పీఠం, వైరాగ్య సింహాసనంగా కీర్తించబడింది. అత్యంత ఎత్తైన, కఠినమైన ప్రదేశంలో ఉన్న ఈ మఠం తపస్సుకు, వైరాగ్యానికి మరియు శివ భక్తికి ప్రతీక.",
+        "history_te": "కేదార వైరాగ్య సింహాసన పీఠం ఉత్తరాఖండ్‌లోని హిమాలయాలలోని అత్యంత గౌరవనీయమైన కేదార్‌నాథ్ ఆలయంలో కేంద్రీకృతమై ఉంది. దీనిని జగద్గురువు ఏకోరామారాధ్య స్థాపించినట్లు సంప్రదాయం చెబుతోంది. ఈ పీఠం యొక్క విశిష్ట చారిత్రక అంశం కేదార్‌నాథ్ ఆలయానికి దాని లోతైన సంబంధం, ఇక్కడ ప్రధాన పూజారి (రావల్) సాంప్రదాయకంగా కర్ణాటక నుండి వీరశైవ సమాజానికి చెందినవాడు, వేసవి (కేదార్‌నాథ్‌లో) మరియు శీతాకాలం (ఉఖిమత్‌లో) రెండింటిలోనూ సన్యాస మరియు పరిపాలనా కార్యకలాపాలను నిర్వహిస్తారు.",
+        "name_ta": "கேதார பீடம்",
+        "acharya_ta": "ஜகத்குரு கண்டாகர்ணாச்சார்ய",
+        "simhasana_ta": "வைராக்கிய சிம்மாசனம்",
+        "location_ta": "கேதார்நாத், உத்தரகாண்ட் / உகிமடம்",
+        "current_swamiji_ta": "ஜகத்குரு ஸ்ரீ ஸ்ரீ ஸ்ரீ 1008 பீமாசங்கரலிங்க சிவாச்சார்ய",
+        "associated_linga_ta": "கேதாரேஸ்வர லிங்கம்",
+        "description_ta": "இமயமலையில் உள்ள புனிதமான கேதார்நாத் தலத்தில் அமைந்துள்ள கேதார பீடம், வைராக்கிய சிம்மாசனம் என்று போற்றப்படுகிறது. மிக உயர்ந்த, கடுமையான இடத்தில் உள்ள இந்த மடம் தவம், வைராக்கியம் மற்றும் சிவபக்தியின் அடையாளமாகும்.",
+        "history_ta": "கேதார வைராக்ய சிம்ஹாசன பீடம் உத்தரகாண்ட் மாநிலத்தில் உள்ள இமயமலையில் உள்ள மிகவும் போற்றப்படும் கேதார்நாத் கோவிலில் அமைந்துள்ளது. இது ஜகத்குரு ஏகோராமராத்யாவால் நிறுவப்பட்டது என்று பாரம்பரியம் கூறுகிறது. இந்த பீடத்தின் ஒரு தனித்துவமான வரலாற்று அம்சம் கேதார்நாத் கோவிலுடன் அதன் ஆழமான தொடர்பு ஆகும், அங்கு தலைமை பூசாரி (ராவல்) பாரம்பரியமாக கர்நாடகாவைச் சேர்ந்த வீரசைவ சமூகத்தைச் சேர்ந்தவர், கோடை (கேதார்நாத்தில்) மற்றும் குளிர்காலத்தில் (உக்கிமத்தில்) துறவு மற்றும் நிர்வாக நடவடிக்கைகளைப் பராமரித்து வருகிறார்.",
+        "name_ml": "കേദാര പീഠം",
+        "acharya_ml": "ജഗദ്ഗുരു ഘണ്ടാകർണ്ണാചാര്യ",
+        "simhasana_ml": "വൈരാഗ്യ സിംഹാസനം",
+        "location_ml": "കേദാർനാഥ്, ഉത്തരാഖണ്ഡ് / ഉഖിമഠ്",
+        "current_swamiji_ml": "ജഗദ്ഗുരു ശ്രീ ശ്രീ ശ്രീ 1008 ഭീമാശങ്കരലിംഗ ശിവാചാര്യ",
+        "associated_linga_ml": "കേദാരേശ്വര ലിംഗം",
+        "description_ml": "ഹിമാലയത്തിലെ പുണ്യസ്ഥലമായ കേദാർനാഥിൽ സ്ഥിതിചെയ്യുന്ന കേദാര പീഠം വൈരാഗ്യ സിംഹാസനം എന്ന് വാഴ്ത്തപ്പെടുന്നു. ഏറ്റവും ഉയർന്നതും കഠിനവുമായ പ്രദേശത്ത് സ്ഥിതിചെയ്യുന്ന ഈ മഠം തപസ്സ്, വൈരാഗ്യം, ശിവഭക്തി എന്നിവയുടെ പ്രതീകമാണ്.",
+        "history_ml": "കേദാര വൈരാഗ്യ സിംഹാസന പീഠം ഉത്തരാഖണ്ഡിലെ ഹിമാലയത്തിലെ ഏറ്റവും ആദരണീയമായ കേദാർനാഥ് ക്ഷേത്രത്തിലാണ് കേന്ദ്രീകരിച്ചിരിക്കുന്നത്. ജഗദ്ഗുരു ഏകോരാരാധ്യയാണ് ഇത് സ്ഥാപിച്ചതെന്നാണ് പാരമ്പര്യം. ഈ പീഠത്തിൻ്റെ സവിശേഷമായ ഒരു ചരിത്ര വശം കേദാർനാഥ് ക്ഷേത്രവുമായുള്ള ആഴത്തിലുള്ള ബന്ധമാണ്, അവിടെ പ്രധാന പുരോഹിതൻ (റാവൽ) പരമ്പരാഗതമായി കർണാടകത്തിൽ നിന്നുള്ള വീരശൈവ സമുദായത്തിൽ പെട്ടയാളാണ്, വേനൽക്കാലത്തും (കേദാർനാഥിൽ) ശൈത്യകാലത്തും (ഉഖിമഠിൽ) സന്യാസവും ഭരണപരവുമായ പ്രവർത്തനങ്ങൾ പരിപാലിക്കുന്നു."
+    }
+},
+{
+    "model": "peethas.peetha",
+    "pk": 4,
+    "fields": {
+        "name": "Srisaila Peetha",
+        "slug": "srisaila",
+        "acharya": "Jagadguru Panditaradhya",
+        "simhasana": "Surya Simhasana",
+        "location": "Srisailam, Nallamala Hills, Nandyal District",
+        "state": "Andhra Pradesh",
+        "current_swamiji": "Sri Chinnasiddharama Panditaradhya Shivacharya Mahaswami (32nd Peethadhipathi)",
+        "associated_linga": "Mallikarjuna Linga",
+        "associated_linga_map_url": "https://maps.google.com/?q=Mallikarjuna+Temple+Srisailam+Andhra+Pradesh",
+        "color": "#ffffff",
+        "description": "The Srisaila Peetha, also known as the Surya Simhasana, is located at Srisailam in the Nallamala Hills of Andhra Pradesh. Srisailam is both one of the twelve Jyotirlingas and one of the eighteen Shakti Peethas, making it one of the holiest shrines in all of Hinduism.",
+        "history": "The Srisaila Surya Simhasana Peetha is located in the sacred town of Srisailam, Andhra Pradesh, home to the Mallikarjuna Swamy Jyotirlinga. The Peetha is associated with Jagadguru Panditaradhya. Srisailam has been a flourishing center of Veerashaiva philosophy for centuries, patronized by ancient dynasties including the Satavahanas, Kakatiyas, and the Vijayanagara Empire. It served as a spiritual hub for renowned Veerashaiva saints and scholars like Palkuriki Somanatha.",
+        "order": 4,
+        "swamiji_photo": "",
+        "swamiji_bio": "",
+        "contact_phone": "",
+        "contact_email": "",
+        "contact_address": "",
+        "live_youtube_url": null,
+        "live_youtube_title": null,
+        "name_kn": "ಶ್ರೀಶೈಲ ಪೀಠ",
+        "acharya_kn": "ಜಗದ್ಗುರು ಪಂಡಿತಾರಾಧ್ಯ",
+        "simhasana_kn": "ಸೂರ್ಯ ಸಿಂಹಾಸನ",
+        "location_kn": "ಶ್ರೀಶೈಲಂ, ಆಂಧ್ರಪ್ರದೇಶ",
+        "current_swamiji_kn": "ಶ್ರೀ ಚನ್ನಸಿದ್ಧರಾಮ ಪಂಡಿತಾರಾಧ್ಯ ಶಿವಾಚಾರ್ಯ ಮಹಾಸ್ವಾಮಿಗಳು (೩೨ನೇ ಪೀಠಾಧಿಪತಿ)",
+        "associated_linga_kn": "ಮಲ್ಲಿಕಾರ್ಜುನ ಲಿಂಗ",
+        "description_kn": "ಶ್ರೀಶೈಲ ಪೀಠವು ಆಂಧ್ರಪ್ರದೇಶದ ಶ್ರೀಶೈಲಂನ ಮಲ್ಲಿಕಾರ್ಜುನ ಜ್ಯೋತಿರ್ಲಿಂಗ ಕ್ಷೇತ್ರದಲ್ಲಿ ಸ್ಥಾಪಿತವಾಗಿರುವ ವೀರಶೈವ ಧರ್ಮದ ಪುರಾತನ ಸೂರ್ಯ ಸಿಂಹಾಸನ ಪೀಠವಾಗಿದೆ.",
+        "history_kn": "ಶ್ರೀಶೈಲ ಸೂರ್ಯ ಸಿಂಹಾಸನ ಪೀಠವು ಆಂಧ್ರಪ್ರದೇಶದ ಶ್ರೀಶೈಲಂನ ಪವಿತ್ರ ಪಟ್ಟಣದಲ್ಲಿದೆ, ಇದು ಮಲ್ಲಿಕಾರ್ಜುನ ಸ್ವಾಮಿ ಜ್ಯೋತಿರ್ಲಿಂಗದ ನೆಲೆಯಾಗಿದೆ. ಪೀಠವು ಜಗದ್ಗುರು ಪಂಡಿತಾರಾಧ್ಯರೊಂದಿಗೆ ಸಂಬಂಧ ಹೊಂದಿದೆ. ಶ್ರೀಶೈಲವು ಶತಮಾನಗಳಿಂದಲೂ ವೀರಶೈವ ತತ್ತ್ವಶಾಸ್ತ್ರದ ಪ್ರವರ್ಧಮಾನಕ್ಕೆ ಬಂದ ಕೇಂದ್ರವಾಗಿದೆ, ಶಾತವಾಹನರು, ಕಾಕತೀಯರು ಮತ್ತು ವಿಜಯನಗರ ಸಾಮ್ರಾಜ್ಯ ಸೇರಿದಂತೆ ಪ್ರಾಚೀನ ರಾಜವಂಶಗಳಿಂದ ಪ್ರೋತ್ಸಾಹಿಸಲ್ಪಟ್ಟಿದೆ. ಇದು ಹೆಸರಾಂತ ವೀರಶೈವ ಸಂತರು ಮತ್ತು ಪಾಲ್ಕುರಿಕಿ ಸೋಮನಾಥರಂತಹ ವಿದ್ವಾಂಸರಿಗೆ ಆಧ್ಯಾತ್ಮಿಕ ಕೇಂದ್ರವಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸಿತು.",
+        "name_mr": "श्रीशैल पीठ",
+        "acharya_mr": "जगद्गुरु पंडिताराध्य",
+        "simhasana_mr": "सूर्य सिंहासन",
+        "location_mr": "श्रीशैलम, आंध्र प्रदेश",
+        "current_swamiji_mr": "श्री चन्नसिद्धराम पंडिताराध्य शिवाचार्य महास्वामी (३२ वे पीठाधिपती)",
+        "associated_linga_mr": "मल्लिकार्जुन लिंग",
+        "description_mr": "श्रीशैल पीठ, ज्याला सूर्य सिंहासन म्हणूनही ओळखले जाते, हे आंध्र प्रदेशातील नल्लामल्ला पर्वतरांगांमध्ये श्रीशैलम येथे स्थित आहे. श्रीशैलम हे बारा ज्योतिर्लिंगांपैकी एक आणि अठरा शक्तीपीठांपैकी एक आहे, ज्यामुळे ते संपूर्ण हिंदू धर्मातील सर्वात पवित्र तीर्थक्षेत्रांपैकी एक बनले आहे.",
+        "history_mr": "श्रीशैल सूर्य सिंहासन पीठ हे मल्लिकार्जुन स्वामी ज्योतिर्लिंगाचे निवासस्थान असलेल्या आंध्र प्रदेशातील श्रीशैलम या पवित्र शहरात आहे. पीठ जगद्गुरू पंडितराध्याशी संबंधित आहे. श्रीशैलम हे शतकानुशतके वीरशैव तत्त्वज्ञानाचे भरभराटीचे केंद्र राहिले आहे, ज्याला सातवाहन, काकतीया आणि विजयनगर साम्राज्यासह प्राचीन राजवंशांनी संरक्षण दिले आहे. हे प्रसिद्ध वीरशैव संत आणि पालकुरीकी सोमनाथा सारख्या विद्वानांसाठी आध्यात्मिक केंद्र म्हणून काम करते.",
+        "name_hi": "श्रीशैल पीठ",
+        "acharya_hi": "जगद्गुरु पंडिताराध्य",
+        "simhasana_hi": "सूर्य सिंहासन",
+        "location_hi": "श्रीशैलम, आंध्र प्रदेश",
+        "current_swamiji_hi": "श्री चन्नसिद्धराम पंडिताराध्य शिवाचार्य महास्वामी (३२वें पीठाधिपति)",
+        "associated_linga_hi": "मल्लिकार्जुन लिंग",
+        "description_hi": "श्रीशैल पीठ, जिसे सूर्य सिंहासन के नाम से भी जाना जाता है, आंध्र प्रदेश की नल्लामल्ला पहाड़ियों में श्रीशैलम में स्थित है। श्रीशैलम बारह ज्योतिर्लिंगों में से एक और अठारह शक्तिपीठों में से एक है, जो इसे पूरे हिंदू धर्म के सबसे पवित्र तीर्थस्थलों में से एक बनाता है।",
+        "history_hi": "श्रीशैल सूर्य सिंहासन पीठ आंध्र प्रदेश के पवित्र शहर श्रीशैलम में स्थित है, जो मल्लिकार्जुन स्वामी ज्योतिर्लिंग का घर है। यह पीठ जगद्गुरु पंडिताराध्य से जुड़ी है। श्रीशैलम सदियों से वीरशैव दर्शन का एक समृद्ध केंद्र रहा है, जिसे सातवाहन, काकतीय और विजयनगर साम्राज्य सहित प्राचीन राजवंशों द्वारा संरक्षण प्राप्त था। यह प्रसिद्ध वीरशैव संतों और पाल्कुरिकी सोमनाथ जैसे विद्वानों के लिए आध्यात्मिक केंद्र के रूप में कार्य करता था।",
+        "name_te": "శ్రీశైల పీఠం",
+        "acharya_te": "జగద్గురు ధేనుకార్ణాచార్య (పండితారాధ్య)",
+        "simhasana_te": "సూర్య సింహాసనం",
+        "location_te": "శ్రీశైలం, ఆంధ్రప్రదేశ్",
+        "current_swamiji_te": "జగద్గురు శ్రీ శ్రీ శ్రీ 1008 డా. చన్నసిద్ధరామ పండితారాధ్య శివాచార్య",
+        "associated_linga_te": "మల్లికార్జున లింగం",
+        "description_te": "ఆంధ్రప్రదేశ్ రాష్ట్రంలోని పవిత్ర జ్యోతిర్లింగ క్షేత్రమైన శ్రీశైలంలో ఉన్న ఈ పీఠం సూర్య సింహాసనంగా పిలువబడుతుంది. ఇది సూర్యుని వలె జ్ఞాన ప్రకాశాన్ని వ్యాప్తి చేయడానికి అంకితమైన వీరశైవ మహాపీఠం.",
+        "history_te": "శ్రీశైల సూర్య సింహాసన పీఠం మల్లికార్జున స్వామి జ్యోతిర్లింగానికి నిలయమైన ఆంధ్రప్రదేశ్‌లోని శ్రీశైలం పవిత్ర పట్టణంలో ఉంది. పీఠం జగద్గురువు పండితారాధ్యతో ముడిపడి ఉంది. శాతవాహనులు, కాకతీయులు మరియు విజయనగర సామ్రాజ్యంతో సహా పురాతన రాజవంశాలచే పోషించబడిన శతాబ్దాలుగా శ్రీశైలం వీరశైవ తత్వశాస్త్రం యొక్క అభివృద్ధి చెందుతున్న కేంద్రంగా ఉంది. పాల్కురికి సోమనాథ వంటి ప్రఖ్యాత వీరశైవ సాధువులు మరియు పండితులకు ఇది ఆధ్యాత్మిక కేంద్రంగా పనిచేసింది.",
+        "name_ta": "ஸ்ரீசைல பீடம்",
+        "acharya_ta": "ஜகத்குரு தேனுகர்ணாச்சார்ய (பண்டிதாராத்ய)",
+        "simhasana_ta": "சூர்ய சிம்மாசனம்",
+        "location_ta": "ஸ்ரீசைலம், ஆந்திரப் பிரதேசம்",
+        "current_swamiji_ta": "ஜகத்குரு ஸ்ரீ ஸ்ரீ ஸ்ரீ 1008 டாக்டர் சன்னசித்தரராம பண்டிதாராத்ய சிவாச்சார்ய",
+        "associated_linga_ta": "மல்லிகார்ஜுன லிங்கம்",
+        "description_ta": "ஆந்திரப் பிரதேச மாநிலத்தில் உள்ள புனித ஜோதிர்லிங்கத் தலமான ஸ்ரீசைலத்தில் அமைந்துள்ள இந்த பீடம் சூர்ய சிம்மாசனம் என்று அழைக்கப்படுகிறது. இது சூரியனைப் போல ஞான ஒளியை பரப்ப அர்ப்பணிக்கப்பட்ட வீரசைவ மகாபீடமாகும்.",
+        "history_ta": "ஸ்ரீசைல சூர்ய சிம்ஹாசன பீடம் ஆந்திரப் பிரதேசத்தின் புனித நகரமான ஸ்ரீசைலத்தில் மல்லிகார்ஜுன ஸ்வாமி ஜோதிர்லிங்கத்தின் இல்லத்தில் அமைந்துள்ளது. பீடம் ஜகத்குரு பண்டிதாராத்யாவுடன் தொடர்புடையது. ஸ்ரீசைலம் பல நூற்றாண்டுகளாக வீரசைவ தத்துவத்தின் செழிப்பான மையமாக இருந்து வருகிறது, சாதவாகனர்கள், காகத்தியர்கள் மற்றும் விஜயநகரப் பேரரசு உள்ளிட்ட பண்டைய வம்சங்களால் ஆதரிக்கப்பட்டது. இது புகழ்பெற்ற வீரசைவ துறவிகள் மற்றும் பல்குறிக்கி சோமநாதர் போன்ற அறிஞர்களின் ஆன்மீக மையமாக செயல்பட்டது.",
+        "name_ml": "ശ്രീശൈല പീഠം",
+        "acharya_ml": "ജഗദ്ഗുരു ധേനുകർണ്ണാചാര്യ (പണ്ഡിതാരാധ്യ)",
+        "simhasana_ml": "സൂര്യ സിംഹാസനം",
+        "location_ml": "ശ്രീശൈലം, ആന്ധ്രാപ്രദേശ്",
+        "current_swamiji_ml": "ജഗദ്ഗുരു ശ്രീ ശ്രീ ശ്രീ 1008 ഡോ. ചന്നസിദ്ധരാമ പണ്ഡിതാരാധ്യ ശിവാചാര്യ",
+        "associated_linga_ml": "മല്ലികാർജ്ജുന ലിംഗം",
+        "description_ml": "ആന്ധ്രാപ്രദേശിലെ പുണ്യ ജ്യോതിർലിംഗ ക്ഷേത്രമായ ശ്രീശൈലത്തിൽ സ്ഥിതിചെയ്യുന്ന ഈ പീഠം സൂര്യ സിംഹാസനം എന്ന് വിളിക്കപ്പെടുന്നു. സൂര്യനെപ്പോലെ ജ്ഞാനപ്രകാശം പരത്തുന്നതിനായി സമർപ്പിക്കപ്പെട്ട വീരശൈവ മഹാപീഠമാണിത്.",
+        "history_ml": "മല്ലികാർജുന സ്വാമി ജ്യോതിർലിംഗ പ്രതിഷ്ഠയുള്ള ആന്ധ്രാപ്രദേശിലെ ശ്രീശൈലം എന്ന പുണ്യനഗരത്തിലാണ് ശ്രീശൈല സൂര്യ സിംഹാസന പീഠം സ്ഥിതി ചെയ്യുന്നത്. ജഗദ്ഗുരു പണ്ഡിതാരാധ്യയുമായി ബന്ധപ്പെട്ടതാണ് പീഠം. ശതവാഹനന്മാർ, കാകതീയന്മാർ, വിജയനഗര സാമ്രാജ്യം എന്നിവയുൾപ്പെടെയുള്ള പുരാതന രാജവംശങ്ങൾ സംരക്ഷിക്കുന്ന ശ്രീശൈലം നൂറ്റാണ്ടുകളായി വീരശൈവ തത്ത്വചിന്തയുടെ അഭിവൃദ്ധി പ്രാപിച്ച കേന്ദ്രമാണ്. വിഖ്യാത വീരശൈവ സന്യാസിമാരുടെയും പാൽകുറിക്കി സോമനാഥനെപ്പോലുള്ള പണ്ഡിതന്മാരുടെയും ആത്മീയ കേന്ദ്രമായി ഇത് പ്രവർത്തിച്ചു."
+    }
+},
+{
+    "model": "peethas.peetha",
+    "pk": 5,
+    "fields": {
+        "name": "Kashi Peetha",
+        "slug": "kashi",
+        "acharya": "Jagadguru Vishwaradhya",
+        "simhasana": "Jnana Simhasana",
+        "location": "Varanasi (Kashi)",
+        "state": "Uttar Pradesh",
+        "current_swamiji": "Jagadguru Dr. Mallikarjuna Vishwaradhya Shivacharya Mahaswamiji",
+        "associated_linga": "Vishveshvara Linga",
+        "associated_linga_map_url": "https://maps.google.com/?q=Kashi+Vishwanath+Temple+Varanasi+Uttar+Pradesh",
+        "color": "#f9a825",
+        "description": "The Kashi Peetha, widely known as the Jangamwadi Math, is one of the five major Veerashaiva Peethas. Located in the ancient holy city of Varanasi, it serves as a spiritual center and is renowned for its vast collection of Shivalingas.",
+        "history": "The Kashi Jnana Simhasana Peetha is situated in the holy city of Varanasi (Kashi), Uttar Pradesh. Tradition states it was founded by Jagadguru Vishwaradhya, who manifested from the Kashi Vishwanath Jyotirlinga. The Peetha boasts immense antiquity; a historical copper-plate grant (danapatra) dating back to 574 CE records a land donation by King Jayananda Deo, evidencing its long-standing presence. The Peetha remains a major center for preserving and teaching ancient Veerashaiva philosophy to this day.",
+        "order": 5,
+        "swamiji_photo": "",
+        "swamiji_bio": "",
+        "contact_phone": "",
+        "contact_email": "",
+        "contact_address": "",
+        "live_youtube_url": null,
+        "live_youtube_title": null,
+        "name_kn": "ಕಾಶಿ ಪೀಠ",
+        "acharya_kn": "ಜಗದ್ಗುರು ವಿಶ್ವಾರಾಧ್ಯ",
+        "simhasana_kn": "ಜ್ಞಾನ ಸಿಂಹಾಸನ",
+        "location_kn": "ವಾರಣಾಸಿ (ಕಾಶಿ)",
+        "current_swamiji_kn": "ಜಗದ್ಗುರು ಡಾ. ಮಲ್ಲಿಕಾರ್ಜುನ ವಿಶ್ವಾರಾಧ್ಯ ಶಿವಾಚಾರ್ಯ ಮಹಾಸ್ವಾಮೀಜಿ",
+        "associated_linga_kn": "ವಿಶ್ವೇಶ್ವರ ಲಿಂಗ",
+        "description_kn": "ಕಾಶಿ ಪೀಠವು ವಾರಣಾಸಿಯ ಜಂಗಮವಾಡಿ ಮಠ ಎಂದು ಪ್ರಸಿದ್ಧವಾಗಿದೆ. ಇದು ವೀರಶೈವ ಪಂಚಪೀಠಗಳಲ್ಲಿ ಪ್ರಮುಖವಾಗಿದ್ದು, ಲಕ್ಷಾಂತರ ಶಿವಲಿಂಗಗಳನ್ನು ಹೊಂದಿರುವ ಮಠವಾಗಿದೆ.",
+        "history_kn": "ಕಾಶಿ ಜ್ಞಾನ ಸಿಂಹಾಸನ ಪೀಠವು ಉತ್ತರ ಪ್ರದೇಶದ ವಾರಣಾಸಿ (ಕಾಶಿ) ಎಂಬ ಪವಿತ್ರ ನಗರದಲ್ಲಿ ನೆಲೆಗೊಂಡಿದೆ. ಕಾಶಿ ವಿಶ್ವನಾಥ ಜ್ಯೋತಿರ್ಲಿಂಗದಿಂದ ಪ್ರಕಟವಾದ ಜಗದ್ಗುರು ವಿಶ್ವಾರಾಧ್ಯ ಅವರು ಇದನ್ನು ಸ್ಥಾಪಿಸಿದರು ಎಂದು ಸಂಪ್ರದಾಯ ಹೇಳುತ್ತದೆ. ಪೀಠವು ಅಪಾರ ಪ್ರಾಚೀನತೆಯನ್ನು ಹೊಂದಿದೆ; 574 CE ಗೆ ಹಿಂದಿನ ಐತಿಹಾಸಿಕ ತಾಮ್ರ ಫಲಕದ ಅನುದಾನವು (ದಾನಪತ್ರ) ರಾಜ ಜಯಾನಂದ ಡಿಯೋ ಅವರ ಭೂಮಿ ದಾನವನ್ನು ದಾಖಲಿಸುತ್ತದೆ, ಇದು ಅದರ ದೀರ್ಘಕಾಲದ ಅಸ್ತಿತ್ವವನ್ನು ತೋರಿಸುತ್ತದೆ. ಪ್ರಾಚೀನ ವೀರಶೈವ ತತ್ತ್ವಶಾಸ್ತ್ರವನ್ನು ಇಂದಿಗೂ ಸಂರಕ್ಷಿಸುವ ಮತ್ತು ಕಲಿಸುವ ಪ್ರಮುಖ ಕೇಂದ್ರವಾಗಿ ಪೀಠ ಉಳಿದಿದೆ.",
+        "name_mr": "काशी पीठ",
+        "acharya_mr": "जगद्गुरु विश्वाराध्य",
+        "simhasana_mr": "ज्ञान सिंहासन",
+        "location_mr": "वाराणसी (काशी)",
+        "current_swamiji_mr": "जगद्गुरु डॉ. मल्लिकार्जुन विश्वाराध्य शिवाचार्य महास्वामीजी",
+        "associated_linga_mr": "विश्वेश्वर लिंग",
+        "description_mr": "काशी पीठ, ज्याला जंगमवाडी मठ म्हणूनही ओळखले जाते, हे पाच प्रमुख वीरशैव पीठांपैकी एक आहे. वाराणसी या प्राचीन पवित्र शहरात स्थित, हे एक आध्यात्मिक केंद्र म्हणून कार्य करते आणि येथील शिवलिंगांच्या अफाट संग्रहासाठी ते प्रसिद्ध आहे.",
+        "history_mr": "काशी ज्ञान सिंहासन पीठ हे उत्तर प्रदेशातील वाराणसी (काशी) या पवित्र शहरात वसलेले आहे. काशी विश्वनाथ ज्योतिर्लिंगातून प्रकट झालेल्या जगद्गुरू विश्वाध्याय यांनी त्याची स्थापना केली होती, असे परंपरा सांगते. या पीठाला अपार पुरातनता आहे; 574 CE पासूनचे ऐतिहासिक ताम्रपट अनुदान (दानपत्र) राजा जयनंद देव यांनी दिलेल्या जमिनीच्या देणगीची नोंद करते, जे त्याच्या दीर्घकालीन अस्तित्वाचा पुरावा देते. हे पीठ आजही प्राचीन वीरशैव तत्त्वज्ञानाचे जतन आणि शिकवण्याचे प्रमुख केंद्र आहे.",
+        "name_hi": "काशी पीठ",
+        "acharya_hi": "जगद्गुरु विश्वाराध्य",
+        "simhasana_hi": "ज्ञान सिंहासन",
+        "location_hi": "वाराणसी (काशी)",
+        "current_swamiji_hi": "जगद्गुरु डॉ. मल्लिकार्जुन विश्वाराध्य शिवाचार्य महास्वामीजी",
+        "associated_linga_hi": "विश्वेश्वर लिंग",
+        "description_hi": "काशी पीठ, जिसे व्यापक रूप से जंगमवाड़ी मठ के रूप में जाना जाता है, पांच प्रमुख वीरशैव महापीठों में से एक है। वाराणसी (काशी) के प्राचीन और पवित्र शहर में स्थित, यह एक महान आध्यात्मिक केंद्र के रूप में कार्य करता है और शिवलिंगों के अपने विशाल संग्रह के लिए प्रसिद्ध है।",
+        "history_hi": "काशी ज्ञान सिंहासन पीठ उत्तर प्रदेश के पवित्र शहर वाराणसी (काशी) में स्थित है। परंपरा कहती है कि इसकी स्थापना जगद्गुरु विश्वराध्या ने की थी, जो काशी विश्वनाथ ज्योतिर्लिंग से प्रकट हुए थे। पीठ अत्यधिक प्राचीनता का दावा करती है; 574 ई.पू. का एक ऐतिहासिक ताम्रपत्र अनुदान (दानपत्र) राजा जयानंद देव द्वारा भूमि दान का अभिलेख है, जो इसकी लंबे समय से चली आ रही उपस्थिति का प्रमाण है। यह पीठ आज भी प्राचीन वीरशैव दर्शन के संरक्षण और शिक्षण का एक प्रमुख केंद्र बनी हुई है।",
+        "name_te": "కాశీ పీఠం",
+        "acharya_te": "జగద్గురు విశ్వారాధ్య",
+        "simhasana_te": "జ్ఞాన సింహాసనం",
+        "location_te": "వారణాసి (కాశీ)",
+        "current_swamiji_te": "జగద్గురు డా. మల్లికార్జున విశ్వారాధ్య శివాచార్య మహాస్వామీజీ",
+        "associated_linga_te": "విశ్వేశ్వర లింగం",
+        "description_te": "కాశీ పీఠం, దీనిని జంగమవాడి మఠం అని కూడా పిలుస్తారు, ఇది ఐదు ప్రధాన వీరశైవ పీఠాలలో ఒకటి. ప్రాచీన పవిత్ర నగరమైన వారణాసిలో ఉన్న ఇది ఒక ఆధ్యాత్మిక కేంద్రంగా పనిచేస్తుంది మరియు ఇక్కడ ఉన్న అపారమైన శివలింగాల సేకరణకు ప్రసిద్ధి చెందింది.",
+        "history_te": "కాశీ జ్ఞాన సింహాసన పీఠం ఉత్తర ప్రదేశ్‌లోని పవిత్రమైన వారణాసి (కాశీ)లో ఉంది. కాశీ విశ్వనాథ్ జ్యోతిర్లింగం నుండి వ్యక్తమైన జగద్గురు విశ్వారాధ్య దీనిని స్థాపించారని సంప్రదాయం చెబుతోంది. పీఠం అపారమైన ప్రాచీనతను కలిగి ఉంది; 574 CE నాటి చారిత్రాత్మక రాగి-ఫలకం మంజూరు (దనపత్రం) కింగ్ జయానంద డియో ద్వారా భూమి విరాళాన్ని నమోదు చేసింది, ఇది దాని దీర్ఘకాల ఉనికిని రుజువు చేస్తుంది. ఈ పీఠం నేటికీ ప్రాచీన వీరశైవ తత్వాన్ని పరిరక్షించడానికి మరియు బోధించడానికి ప్రధాన కేంద్రంగా ఉంది.",
+        "name_ta": "காசி பீடம்",
+        "acharya_ta": "ஜகத்குரு விஸ்வாராத்ய",
+        "simhasana_ta": "ஞான சிம்மாசனம்",
+        "location_ta": "வாரணாசி (காசி)",
+        "current_swamiji_ta": "ஜகத்குரு டாக்டர் மல்லிகார்ஜுன விஸ்வாராத்ய சிவாச்சார்ய மகாசுவாமிஜி",
+        "associated_linga_ta": "விஸ்வேஸ்வர லிங்கம்",
+        "description_ta": "காசி பீடம், ஜங்கமவாடி மடம் என்றும் அழைக்கப்படும் ஐந்து முக்கிய வீரசைவ பீடங்களில் ஒன்றாகும். பழங்கால புனித நகரமான வாரணாசியில் அமைந்துள்ள இது ஒரு ஆன்மீக மையமாக செயல்படுகிறது மற்றும் இங்குள்ள பரந்த சிவலிங்கங்களின் தொகுப்பிற்கு பெயர் பெற்றது.",
+        "history_ta": "காசி ஞான சிம்ஹாசன பீடம் உத்தரபிரதேசத்தின் புனித நகரமான வாரணாசியில் (காசி) அமைந்துள்ளது. காசி விஸ்வநாத் ஜோதிர்லிங்கத்திலிருந்து வெளிப்பட்ட ஜகத்குரு விஸ்வராத்யாவால் இது நிறுவப்பட்டது என்று பாரம்பரியம் கூறுகிறது. பீடம் மகத்தான தொன்மையைக் கொண்டுள்ளது; கிபி 574 ஆம் ஆண்டிற்கு முந்தைய ஒரு வரலாற்று செப்புத் தகடு மானியம் (தனபத்ரா) மன்னர் ஜெயானந்த டியோவின் நில நன்கொடையைப் பதிவு செய்கிறது, இது அதன் நீண்டகால இருப்பை நிரூபிக்கிறது. பண்டைய வீரசைவ தத்துவத்தைப் பாதுகாத்து போதிக்கும் முக்கிய மையமாக இன்று வரை பீடம் விளங்குகிறது.",
+        "name_ml": "കാശീ പീഠം",
+        "acharya_ml": "ജഗദ്ഗുരു വിശ്വാരാധ്യ",
+        "simhasana_ml": "ജ്ഞാന സിംഹാസനം",
+        "location_ml": "വാരണാസി (കാശി)",
+        "current_swamiji_ml": "ജഗദ്ഗുരു ഡോ. മല്ലികാർജ്ജുന വിശ്വാരാധ്യ ശിവാചാര്യ മഹാസ്വാമിജി",
+        "associated_linga_ml": "വിശ്വേശ്വര ലിംഗം",
+        "description_ml": "ജംഗമവാഡി മഠം എന്നും അറിയപ്പെടുന്ന കാശീ പീഠം അഞ്ച് പ്രധാന വീരശൈവ പീഠങ്ങളിലൊന്നാണ്. പുരാതന പുണ്യനഗരമായ വാരണാസിയിൽ സ്ഥിതിചെയ്യുന്ന ഇത് ഒരു ആത്മീയ കേന്ദ്രമായി പ്രവർത്തിക്കുന്നു കൂടാതെ ഇവിടുത്തെ വമ്പിച്ച ശിവലിംഗ ശേഖരത്തിന് പ്രശസ്തവുമാണ്.",
+        "history_ml": "ഉത്തർപ്രദേശിലെ പുണ്യനഗരമായ വാരണാസിയിലാണ് (കാശി) കാശി ജ്ഞാന സിംഹാസന പീഠം സ്ഥിതി ചെയ്യുന്നത്. കാശി വിശ്വനാഥ് ജ്യോതിർലിംഗത്തിൽ നിന്ന് പ്രകടമായ ജഗദ്ഗുരു വിശ്വാരാധ്യയാണ് ഇത് സ്ഥാപിച്ചതെന്ന് പാരമ്പര്യം പറയുന്നു. പീഠത്തിന് അപാരമായ പ്രാചീനതയുണ്ട്; 574 CE മുതലുള്ള ചരിത്രപരമായ ഒരു ചെമ്പ് പ്ലേറ്റ് ഗ്രാൻ്റിൽ (ദാനപത്ര) ജയാനന്ദ ദേവ് രാജാവിൻ്റെ ഭൂമി ദാനം രേഖപ്പെടുത്തിയിട്ടുണ്ട്, ഇത് അതിൻ്റെ ദീർഘകാല സാന്നിധ്യം തെളിയിക്കുന്നു. പുരാതന വീരശൈവ തത്ത്വചിന്തകൾ സംരക്ഷിക്കുന്നതിനും പഠിപ്പിക്കുന്നതിനുമുള്ള പ്രധാന കേന്ദ്രമായി ഇന്നും പീഠം നിലകൊള്ളുന്നു."
+    }
+},
+{
+    "model": "peethas.peethahandler",
+    "pk": 2,
+    "fields": {
+        "user": [
+            "ujjaini_handler"
+        ],
+        "peetha": 2
+    }
+},
+{
+    "model": "peethas.peethahandler",
+    "pk": 3,
+    "fields": {
+        "user": [
+            "kedara_handler"
+        ],
+        "peetha": 3
+    }
+},
+{
+    "model": "peethas.peethahandler",
+    "pk": 4,
+    "fields": {
+        "user": [
+            "srisaila_handler"
+        ],
+        "peetha": 4
+    }
+},
+{
+    "model": "peethas.peethahandler",
+    "pk": 5,
+    "fields": {
+        "user": [
+            "kashi_handler"
+        ],
+        "peetha": 5
+    }
+},
+{
+    "model": "peethas.peethahandler",
+    "pk": 6,
+    "fields": {
+        "user": [
+            "rambhapuri_handler"
+        ],
+        "peetha": 1
+    }
+},
+{
+    "model": "peethas.peethahandler",
+    "pk": 9,
+    "fields": {
+        "user": [
+            "vid"
+        ],
+        "peetha": 1
+    }
+},
+{
+    "model": "peethas.peethahandler",
+    "pk": 10,
+    "fields": {
+        "user": [
+            "gurucharan"
+        ],
+        "peetha": 1
+    }
+},
+{
+    "model": "peethas.peethamedia",
+    "pk": 1,
+    "fields": {
+        "peetha": 1,
+        "media_type": "video",
+        "photo_file": "",
+        "youtube_url": "https://www.youtube.com/watch?v=ujyfmBVpbxY",
+        "title": "Rambhapuri Mutt tour",
+        "description": "",
+        "uploaded_at": "2026-06-06T11:01:20.373Z",
+        "title_kn": "",
+        "description_kn": "",
+        "title_mr": "",
+        "description_mr": "",
+        "title_hi": "",
+        "description_hi": "",
+        "title_te": "",
+        "description_te": "",
+        "title_ta": "",
+        "description_ta": "",
+        "title_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.peethamedia",
+    "pk": 19,
+    "fields": {
+        "peetha": 1,
+        "media_type": "video",
+        "photo_file": "",
+        "youtube_url": "https://www.youtube.com/watch?v=nS8laBuWQSo",
+        "title": "Video - nS8laBuWQSo",
+        "description": "",
+        "uploaded_at": "2026-06-07T07:34:39.380Z",
+        "title_kn": "",
+        "description_kn": "",
+        "title_mr": "",
+        "description_mr": "",
+        "title_hi": "",
+        "description_hi": "",
+        "title_te": "",
+        "description_te": "",
+        "title_ta": "",
+        "description_ta": "",
+        "title_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.peethamedia",
+    "pk": 20,
+    "fields": {
+        "peetha": 1,
+        "media_type": "video",
+        "photo_file": "",
+        "youtube_url": "https://www.youtube.com/watch?v=lJatcYcrBdY",
+        "title": "Video - lJatcYcrBdY",
+        "description": "",
+        "uploaded_at": "2026-06-07T07:34:39.397Z",
+        "title_kn": "",
+        "description_kn": "",
+        "title_mr": "",
+        "description_mr": "",
+        "title_hi": "",
+        "description_hi": "",
+        "title_te": "",
+        "description_te": "",
+        "title_ta": "",
+        "description_ta": "",
+        "title_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.travelplan",
+    "pk": 1,
+    "fields": {
+        "peetha": 1,
+        "title": "Visit to Birur",
+        "start_date": "2026-06-01",
+        "end_date": "2026-06-01",
+        "location": "Birur",
+        "description": "",
+        "created_at": "2026-06-06T11:00:08.157Z",
+        "title_kn": "",
+        "location_kn": "",
+        "description_kn": "",
+        "title_mr": "",
+        "location_mr": "",
+        "description_mr": "",
+        "title_hi": "",
+        "location_hi": "",
+        "description_hi": "",
+        "title_te": "",
+        "location_te": "",
+        "description_te": "",
+        "title_ta": "",
+        "location_ta": "",
+        "description_ta": "",
+        "title_ml": "",
+        "location_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.peethapaymentconfig",
+    "pk": 1,
+    "fields": {
+        "peetha": 1,
+        "razorpay_key_id": "rzp_test_5S85rV2n93A17d",
+        "razorpay_key_secret": "testsecret1234567890",
+        "is_active": true
+    }
+},
+{
+    "model": "peethas.peethapaymentconfig",
+    "pk": 2,
+    "fields": {
+        "peetha": 2,
+        "razorpay_key_id": "rzp_test_5S85rV2n93A17d",
+        "razorpay_key_secret": "testsecret1234567890",
+        "is_active": true
+    }
+},
+{
+    "model": "peethas.peethapaymentconfig",
+    "pk": 3,
+    "fields": {
+        "peetha": 3,
+        "razorpay_key_id": "rzp_test_5S85rV2n93A17d",
+        "razorpay_key_secret": "testsecret1234567890",
+        "is_active": true
+    }
+},
+{
+    "model": "peethas.peethapaymentconfig",
+    "pk": 4,
+    "fields": {
+        "peetha": 4,
+        "razorpay_key_id": "rzp_test_5S85rV2n93A17d",
+        "razorpay_key_secret": "testsecret1234567890",
+        "is_active": true
+    }
+},
+{
+    "model": "peethas.peethapaymentconfig",
+    "pk": 5,
+    "fields": {
+        "peetha": 5,
+        "razorpay_key_id": "rzp_test_5S85rV2n93A17d",
+        "razorpay_key_secret": "testsecret1234567890",
+        "is_active": true
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 1,
+    "fields": {
+        "peetha": 1,
+        "name": "Maha Rudrabhisheka",
+        "description": "A sacred ritual involving the continuous pouring of water, milk, honey, and ghee over the Shiva Linga while chanting Sri Rudram.",
+        "price": "1001.00",
+        "category": "daily",
+        "is_active": true,
+        "order": 1,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 2,
+    "fields": {
+        "peetha": 1,
+        "name": "Panchamrutha Abhisheka",
+        "description": "Bathing of the deity with five sacred elements: milk, curd, honey, sugar, and ghee.",
+        "price": "501.00",
+        "category": "special",
+        "is_active": true,
+        "order": 2,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 3,
+    "fields": {
+        "peetha": 1,
+        "name": "Bilvarchana (108 names)",
+        "description": "Archana performed using 108 sacred Bilva leaves.",
+        "price": "251.00",
+        "category": "special",
+        "is_active": true,
+        "order": 3,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 4,
+    "fields": {
+        "peetha": 1,
+        "name": "Maha Mangalarathi",
+        "description": "Daily offering of light and chanting of the devotee's sankalpa.",
+        "price": "51.00",
+        "category": "special",
+        "is_active": true,
+        "order": 4,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 5,
+    "fields": {
+        "peetha": 2,
+        "name": "Sahasranama Archana",
+        "description": "Archana chanting the 1000 names of Lord Shiva for profound blessings.",
+        "price": "501.00",
+        "category": "special",
+        "is_active": true,
+        "order": 1,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 6,
+    "fields": {
+        "peetha": 2,
+        "name": "Eka Vara Rudrabhisheka",
+        "description": "Chanting of Sri Rudram one time with Abhisheka.",
+        "price": "251.00",
+        "category": "special",
+        "is_active": true,
+        "order": 2,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 7,
+    "fields": {
+        "peetha": 2,
+        "name": "Anna Dasoha (Annadana Seva)",
+        "description": "Contribution towards feeding devotees visiting the Peetha.",
+        "price": "1000.00",
+        "category": "special",
+        "is_active": true,
+        "order": 3,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 8,
+    "fields": {
+        "peetha": 2,
+        "name": "Vahana Pooja",
+        "description": "Special blessings for a newly purchased vehicle to ensure safety.",
+        "price": "301.00",
+        "category": "special",
+        "is_active": true,
+        "order": 4,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 9,
+    "fields": {
+        "peetha": 3,
+        "name": "Kedaralingeshwara Abhisheka",
+        "description": "Special abhisheka to the presiding deity of Kedara Peetha.",
+        "price": "1001.00",
+        "category": "special",
+        "is_active": true,
+        "order": 1,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 10,
+    "fields": {
+        "peetha": 3,
+        "name": "Shanti Homa",
+        "description": "Fire ritual to appease navagrahas and bring harmony.",
+        "price": "2501.00",
+        "category": "special",
+        "is_active": true,
+        "order": 2,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 11,
+    "fields": {
+        "peetha": 3,
+        "name": "Bilva Archana",
+        "description": "Offering of sacred Bilva leaves.",
+        "price": "101.00",
+        "category": "special",
+        "is_active": true,
+        "order": 3,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 12,
+    "fields": {
+        "peetha": 4,
+        "name": "Mallikarjuna Swamy Abhishekam",
+        "description": "Sacred abhisheka dedicated to the presiding deity.",
+        "price": "1001.00",
+        "category": "special",
+        "is_active": true,
+        "order": 1,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 13,
+    "fields": {
+        "peetha": 4,
+        "name": "Kumkuma Archana",
+        "description": "Archana performed for Goddess Bhramaramba with sacred kumkum.",
+        "price": "501.00",
+        "category": "special",
+        "is_active": true,
+        "order": 2,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 14,
+    "fields": {
+        "peetha": 4,
+        "name": "Anna Dasoha (Annadana)",
+        "description": "Donation for the daily feeding of pilgrims.",
+        "price": "1000.00",
+        "category": "special",
+        "is_active": true,
+        "order": 3,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 15,
+    "fields": {
+        "peetha": 5,
+        "name": "Vishwanath Abhisheka",
+        "description": "Special abhisheka for Lord Vishwanath.",
+        "price": "1501.00",
+        "category": "special",
+        "is_active": true,
+        "order": 1,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 16,
+    "fields": {
+        "peetha": 5,
+        "name": "Ganga Aarti Sankalpa",
+        "description": "Special sankalpa performed during the evening Ganga Aarti.",
+        "price": "501.00",
+        "category": "special",
+        "is_active": true,
+        "order": 2,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.pooja",
+    "pk": 17,
+    "fields": {
+        "peetha": 5,
+        "name": "Maha Rudrabhisheka",
+        "description": "Elaborate Rudrabhisheka performed at the holy Kshetra.",
+        "price": "2501.00",
+        "category": "special",
+        "is_active": true,
+        "order": 3,
+        "total_slots": 10,
+        "available_days": "all",
+        "name_kn": "",
+        "description_kn": "",
+        "name_mr": "",
+        "description_mr": "",
+        "name_hi": "",
+        "description_hi": "",
+        "name_te": "",
+        "description_te": "",
+        "name_ta": "",
+        "description_ta": "",
+        "name_ml": "",
+        "description_ml": ""
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 1,
+    "fields": {
+        "pooja": 1,
+        "user": [
+            "gurucharan9499"
+        ],
+        "devotee_name": "Gurucharan G",
+        "devotee_phone": "6362656275",
+        "devotee_email": "gurucharan9499@gmail.com",
+        "gotra": "bhoaj",
+        "nakshatra": "skj",
+        "rashi": "kksjd",
+        "family_members": "",
+        "date_of_pooja": "2026-06-25",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "ORD-DUMMY-1782406780",
+        "razorpay_payment_id": "PAY-DUMMY-1782406780",
+        "razorpay_signature": "",
+        "created_at": "2026-06-25T16:59:40.235Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 2,
+    "fields": {
+        "pooja": 1,
+        "user": [
+            "testuser999"
+        ],
+        "devotee_name": "Test User 999Test User",
+        "devotee_phone": "9876543210",
+        "devotee_email": "testuser999@example.com",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "family_members": "",
+        "date_of_pooja": "2026-06-26",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "ORD-DUMMY-1782407297",
+        "razorpay_payment_id": "PAY-DUMMY-1782407297",
+        "razorpay_signature": "",
+        "created_at": "2026-06-25T17:08:17.937Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 3,
+    "fields": {
+        "pooja": 10,
+        "user": [
+            "devotee_basavaraj_872"
+        ],
+        "devotee_name": "Basavaraj Hegde",
+        "devotee_phone": "8050190021",
+        "devotee_email": "devotee_basavaraj_872@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Makara",
+        "family_members": "",
+        "date_of_pooja": "2025-12-22",
+        "amount": "2501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9880202940",
+        "razorpay_payment_id": "pay_9900828109",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2025-12-17T05:00:59.080Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 4,
+    "fields": {
+        "pooja": 10,
+        "user": [
+            "devotee_basavaraj_872"
+        ],
+        "devotee_name": "Basavaraj Hegde",
+        "devotee_phone": "8050190021",
+        "devotee_email": "devotee_basavaraj_872@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Makara",
+        "family_members": "[{\"name\": \"Anitha Kumar\", \"gotra\": \"Haritasya\", \"nakshatra\": \"Ashlesha\", \"rashi\": \"Dhanu\"}, {\"name\": \"Vijayalaxmi Devi\", \"gotra\": \"Gautama\", \"nakshatra\": \"\", \"rashi\": \"Dhanu\"}, {\"name\": \"Mahesh Angadi\", \"gotra\": \"Atri\", \"nakshatra\": \"\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2026-07-02",
+        "amount": "2501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9880417343",
+        "razorpay_payment_id": "pay_9900155639",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:00:59.111Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 5,
+    "fields": {
+        "pooja": 4,
+        "user": [
+            "devotee_chandrasekhar_333"
+        ],
+        "devotee_name": "Chandrasekhar Kulkarni",
+        "devotee_phone": "9448708778",
+        "devotee_email": "devotee_chandrasekhar_333@gmail.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Punarvasu",
+        "rashi": "Vrishchika",
+        "family_members": "",
+        "date_of_pooja": "2026-04-23",
+        "amount": "51.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9880546695",
+        "razorpay_payment_id": "pay_8050510999",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-04-20T05:00:59.128Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 6,
+    "fields": {
+        "pooja": 14,
+        "user": null,
+        "devotee_name": "Girija Joshi",
+        "devotee_phone": "9880247744",
+        "devotee_email": "guest_girija_89@example.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Punarvasu",
+        "rashi": "Kanya",
+        "family_members": "",
+        "date_of_pooja": "2026-01-16",
+        "amount": "1000.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9845840268",
+        "razorpay_payment_id": "pay_9845529393",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-01-15T05:00:59.143Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 7,
+    "fields": {
+        "pooja": 1,
+        "user": [
+            "devotee_parvati_994"
+        ],
+        "devotee_name": "Parvati Rao",
+        "devotee_phone": "9448677583",
+        "devotee_email": "devotee_parvati_994@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Punarvasu",
+        "rashi": "Mithuna",
+        "family_members": "[{\"name\": \"Basamma Rao\", \"gotra\": \"\", \"nakshatra\": \"Mrigashira\", \"rashi\": \"Mesha\"}, {\"name\": \"Siddheshwar Bhat\", \"gotra\": \"Haritasya\", \"nakshatra\": \"Rohini\", \"rashi\": \"Kanya\"}, {\"name\": \"Veeresh Patil\", \"gotra\": \"\", \"nakshatra\": \"Mrigashira\", \"rashi\": \"Karka\"}]",
+        "date_of_pooja": "2026-06-26",
+        "amount": "1001.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9845834542",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:00:59.152Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 8,
+    "fields": {
+        "pooja": 4,
+        "user": [
+            "devotee_chandrasekhar_333"
+        ],
+        "devotee_name": "Chandrasekhar Kulkarni",
+        "devotee_phone": "9448708778",
+        "devotee_email": "devotee_chandrasekhar_333@gmail.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Punarvasu",
+        "rashi": "Vrishchika",
+        "family_members": "[{\"name\": \"Veeresh Kumar\", \"gotra\": \"Gautama\", \"nakshatra\": \"Magha\", \"rashi\": \"Tula\"}, {\"name\": \"Basavaraj Prasad\", \"gotra\": \"Gautama\", \"nakshatra\": \"\", \"rashi\": \"Kumbha\"}]",
+        "date_of_pooja": "2026-03-27",
+        "amount": "51.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9845744671",
+        "razorpay_payment_id": "pay_8050221454",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-03-25T05:00:59.168Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 9,
+    "fields": {
+        "pooja": 5,
+        "user": [
+            "devotee_suresh_324"
+        ],
+        "devotee_name": "Suresh Shastri",
+        "devotee_phone": "9448961992",
+        "devotee_email": "devotee_suresh_324@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Dhanu",
+        "family_members": "[{\"name\": \"Siddheshwar Prasad\", \"gotra\": \"\", \"nakshatra\": \"Ashwini\", \"rashi\": \"Vrishabha\"}, {\"name\": \"Girija Shastri\", \"gotra\": \"Vashistha\", \"nakshatra\": \"Ardra\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2025-07-20",
+        "amount": "501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_8050178815",
+        "razorpay_payment_id": "pay_9900733897",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2025-07-18T05:00:59.185Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 10,
+    "fields": {
+        "pooja": 12,
+        "user": [
+            "devotee_veeresh_421"
+        ],
+        "devotee_name": "Veeresh Hiremath",
+        "devotee_phone": "9880193696",
+        "devotee_email": "devotee_veeresh_421@gmail.com",
+        "gotra": "Gautama",
+        "nakshatra": "Uttara Phalguni",
+        "rashi": "Simha",
+        "family_members": "[{\"name\": \"Girija Rao\", \"gotra\": \"Vishwamitra\", \"nakshatra\": \"\", \"rashi\": \"Kanya\"}, {\"name\": \"Suresh Joshi\", \"gotra\": \"Atri\", \"nakshatra\": \"\", \"rashi\": \"Karka\"}, {\"name\": \"Veeresh Hegde\", \"gotra\": \"Gautama\", \"nakshatra\": \"Punarvasu\", \"rashi\": \"Kumbha\"}]",
+        "date_of_pooja": "2025-12-26",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9900938816",
+        "razorpay_payment_id": "pay_9480157923",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2025-12-26T05:00:59.200Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 11,
+    "fields": {
+        "pooja": 15,
+        "user": null,
+        "devotee_name": "Vijayalaxmi Hiremath",
+        "devotee_phone": "9900169461",
+        "devotee_email": "guest_vijayalaxmi_21@example.com",
+        "gotra": "Atri",
+        "nakshatra": "Hasta",
+        "rashi": "Mithuna",
+        "family_members": "[{\"name\": \"Basamma Kulkarni\", \"gotra\": \"Agastya\", \"nakshatra\": \"Pushya\", \"rashi\": \"Makara\"}]",
+        "date_of_pooja": "2026-06-26",
+        "amount": "1501.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9480274559",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:00:59.209Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 12,
+    "fields": {
+        "pooja": 5,
+        "user": null,
+        "devotee_name": "Veeresh Gowda",
+        "devotee_phone": "9448599156",
+        "devotee_email": "guest_veeresh_18@example.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Karka",
+        "family_members": "",
+        "date_of_pooja": "2026-06-26",
+        "amount": "501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9480931535",
+        "razorpay_payment_id": "pay_9480419584",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:00:59.216Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 13,
+    "fields": {
+        "pooja": 8,
+        "user": null,
+        "devotee_name": "Basamma Kumar",
+        "devotee_phone": "9480769057",
+        "devotee_email": "guest_basamma_27@example.com",
+        "gotra": "Kashyapa",
+        "nakshatra": "Mrigashira",
+        "rashi": "Vrishabha",
+        "family_members": "[{\"name\": \"Vijayalaxmi Shastri\", \"gotra\": \"Gautama\", \"nakshatra\": \"Swati\", \"rashi\": \"\"}, {\"name\": \"Rajeshwari Patil\", \"gotra\": \"Angirasa\", \"nakshatra\": \"\", \"rashi\": \"Kanya\"}]",
+        "date_of_pooja": "2026-07-21",
+        "amount": "301.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9900216675",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:00:59.224Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 14,
+    "fields": {
+        "pooja": 9,
+        "user": [
+            "devotee_siddheshwar_951"
+        ],
+        "devotee_name": "Siddheshwar Kulkarni",
+        "devotee_phone": "9480821675",
+        "devotee_email": "devotee_siddheshwar_951@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Swati",
+        "rashi": "Karka",
+        "family_members": "[{\"name\": \"Chandrasekhar Angadi\", \"gotra\": \"Bharadwaj\", \"nakshatra\": \"Ardra\", \"rashi\": \"Kumbha\"}, {\"name\": \"Ramesh Hegde\", \"gotra\": \"Atri\", \"nakshatra\": \"Bharani\", \"rashi\": \"Vrishabha\"}]",
+        "date_of_pooja": "2025-11-06",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9845911736",
+        "razorpay_payment_id": "pay_9900681023",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2025-11-05T05:00:59.239Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 15,
+    "fields": {
+        "pooja": 4,
+        "user": [
+            "devotee_suresh_796"
+        ],
+        "devotee_name": "Suresh Rao",
+        "devotee_phone": "9845497613",
+        "devotee_email": "devotee_suresh_796@gmail.com",
+        "gotra": "Kashyapa",
+        "nakshatra": "Mrigashira",
+        "rashi": "Kumbha",
+        "family_members": "[{\"name\": \"Veeresh Shastri\", \"gotra\": \"Kashyapa\", \"nakshatra\": \"Rohini\", \"rashi\": \"\"}, {\"name\": \"Vijayalaxmi Bhat\", \"gotra\": \"Agastya\", \"nakshatra\": \"\", \"rashi\": \"Meena\"}, {\"name\": \"Veeresh Joshi\", \"gotra\": \"\", \"nakshatra\": \"\", \"rashi\": \"Vrishabha\"}]",
+        "date_of_pooja": "2026-06-11",
+        "amount": "51.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9448152350",
+        "razorpay_payment_id": "pay_9480406894",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-10T05:00:59.255Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 16,
+    "fields": {
+        "pooja": 15,
+        "user": [
+            "devotee_veeresh_421"
+        ],
+        "devotee_name": "Veeresh Hiremath",
+        "devotee_phone": "9880193696",
+        "devotee_email": "devotee_veeresh_421@gmail.com",
+        "gotra": "Gautama",
+        "nakshatra": "Uttara Phalguni",
+        "rashi": "Simha",
+        "family_members": "[{\"name\": \"Mallikarjun Bhat\", \"gotra\": \"Gautama\", \"nakshatra\": \"Ardra\", \"rashi\": \"Vrishchika\"}, {\"name\": \"Anitha Devi\", \"gotra\": \"Kashyapa\", \"nakshatra\": \"\", \"rashi\": \"\"}, {\"name\": \"Vijayalaxmi Shastri\", \"gotra\": \"\", \"nakshatra\": \"Ashwini\", \"rashi\": \"Kumbha\"}]",
+        "date_of_pooja": "2026-06-02",
+        "amount": "1501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_8050282943",
+        "razorpay_payment_id": "pay_8050735124",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-05-28T05:00:59.270Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 17,
+    "fields": {
+        "pooja": 1,
+        "user": [
+            "devotee_sharanappa_857"
+        ],
+        "devotee_name": "Sharanappa Rao",
+        "devotee_phone": "9448507167",
+        "devotee_email": "devotee_sharanappa_857@gmail.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Meena",
+        "family_members": "",
+        "date_of_pooja": "2026-02-03",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9845544241",
+        "razorpay_payment_id": "pay_8050358388",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-02-03T05:00:59.287Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 18,
+    "fields": {
+        "pooja": 4,
+        "user": [
+            "devotee_basavaraj_872"
+        ],
+        "devotee_name": "Basavaraj Hegde",
+        "devotee_phone": "8050190021",
+        "devotee_email": "devotee_basavaraj_872@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Makara",
+        "family_members": "[{\"name\": \"Siddheshwar Gowda\", \"gotra\": \"Angirasa\", \"nakshatra\": \"Swati\", \"rashi\": \"Dhanu\"}, {\"name\": \"Basamma Patil\", \"gotra\": \"\", \"nakshatra\": \"Uttara Phalguni\", \"rashi\": \"\"}, {\"name\": \"Ramesh Bhat\", \"gotra\": \"Kashyapa\", \"nakshatra\": \"\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2025-07-25",
+        "amount": "51.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_8050771126",
+        "razorpay_payment_id": "pay_9480785553",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2025-07-22T05:00:59.301Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 19,
+    "fields": {
+        "pooja": 10,
+        "user": [
+            "devotee_parvati_994"
+        ],
+        "devotee_name": "Parvati Rao",
+        "devotee_phone": "9448677583",
+        "devotee_email": "devotee_parvati_994@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Punarvasu",
+        "rashi": "Mithuna",
+        "family_members": "[{\"name\": \"Siddheshwar Shastri\", \"gotra\": \"Shandilya\", \"nakshatra\": \"Krittika\", \"rashi\": \"Meena\"}, {\"name\": \"Chandrasekhar Angadi\", \"gotra\": \"Atri\", \"nakshatra\": \"Ashwini\", \"rashi\": \"\"}, {\"name\": \"Veeresh Hegde\", \"gotra\": \"Haritasya\", \"nakshatra\": \"\", \"rashi\": \"Makara\"}]",
+        "date_of_pooja": "2025-10-15",
+        "amount": "2501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9880791097",
+        "razorpay_payment_id": "pay_8050360551",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2025-10-15T05:00:59.318Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 20,
+    "fields": {
+        "pooja": 4,
+        "user": [
+            "devotee_chandrasekhar_356"
+        ],
+        "devotee_name": "Chandrasekhar Aradhya",
+        "devotee_phone": "9448681672",
+        "devotee_email": "devotee_chandrasekhar_356@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Vrishabha",
+        "family_members": "[{\"name\": \"Suresh Kumar\", \"gotra\": \"Shandilya\", \"nakshatra\": \"Chitra\", \"rashi\": \"Dhanu\"}, {\"name\": \"Siddheshwar Kulkarni\", \"gotra\": \"\", \"nakshatra\": \"Rohini\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2026-06-27",
+        "amount": "51.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9900178633",
+        "razorpay_payment_id": "pay_8050840659",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:00:59.326Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 21,
+    "fields": {
+        "pooja": 17,
+        "user": [
+            "devotee_siddheshwar_951"
+        ],
+        "devotee_name": "Siddheshwar Kulkarni",
+        "devotee_phone": "9480821675",
+        "devotee_email": "devotee_siddheshwar_951@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Swati",
+        "rashi": "Karka",
+        "family_members": "[{\"name\": \"Mallikarjun Prasad\", \"gotra\": \"\", \"nakshatra\": \"\", \"rashi\": \"Tula\"}, {\"name\": \"Basamma Kulkarni\", \"gotra\": \"\", \"nakshatra\": \"\", \"rashi\": \"Mithuna\"}, {\"name\": \"Chandrasekhar Aradhya\", \"gotra\": \"\", \"nakshatra\": \"\", \"rashi\": \"Meena\"}]",
+        "date_of_pooja": "2026-06-29",
+        "amount": "2501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9880481526",
+        "razorpay_payment_id": "pay_9448234977",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:00:59.334Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 22,
+    "fields": {
+        "pooja": 9,
+        "user": null,
+        "devotee_name": "Parvati Gowda",
+        "devotee_phone": "8050360356",
+        "devotee_email": "guest_parvati_56@example.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Rohini",
+        "rashi": "Vrishchika",
+        "family_members": "[{\"name\": \"Veeresh Kumar\", \"gotra\": \"Atri\", \"nakshatra\": \"\", \"rashi\": \"Kumbha\"}]",
+        "date_of_pooja": "2026-02-22",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9448329847",
+        "razorpay_payment_id": "pay_9845962404",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-02-17T05:00:59.348Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 23,
+    "fields": {
+        "pooja": 6,
+        "user": [
+            "devotee_chandrasekhar_746"
+        ],
+        "devotee_name": "Chandrasekhar Shastri",
+        "devotee_phone": "9480797958",
+        "devotee_email": "devotee_chandrasekhar_746@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashwini",
+        "rashi": "Mithuna",
+        "family_members": "",
+        "date_of_pooja": "2025-07-05",
+        "amount": "251.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_8050618121",
+        "razorpay_payment_id": "pay_8050847653",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2025-06-30T05:00:59.373Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 24,
+    "fields": {
+        "pooja": 2,
+        "user": null,
+        "devotee_name": "Siddheshwar Joshi",
+        "devotee_phone": "9845861398",
+        "devotee_email": "guest_siddheshwar_26@example.com",
+        "gotra": "Bharadwaj",
+        "nakshatra": "Rohini",
+        "rashi": "Kumbha",
+        "family_members": "[{\"name\": \"Ramesh Hiremath\", \"gotra\": \"Vashistha\", \"nakshatra\": \"Krittika\", \"rashi\": \"Dhanu\"}, {\"name\": \"Anitha Rao\", \"gotra\": \"Haritasya\", \"nakshatra\": \"\", \"rashi\": \"Mithuna\"}]",
+        "date_of_pooja": "2026-04-26",
+        "amount": "501.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9900360337",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-04-22T05:00:59.388Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 25,
+    "fields": {
+        "pooja": 10,
+        "user": [
+            "devotee_chandrasekhar_477"
+        ],
+        "devotee_name": "Chandrasekhar Hiremath",
+        "devotee_phone": "9880896146",
+        "devotee_email": "devotee_chandrasekhar_477@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Hasta",
+        "rashi": "Kanya",
+        "family_members": "[{\"name\": \"Mahesh Kumar\", \"gotra\": \"Angirasa\", \"nakshatra\": \"Swati\", \"rashi\": \"Tula\"}, {\"name\": \"Mahesh Shastri\", \"gotra\": \"\", \"nakshatra\": \"\", \"rashi\": \"Makara\"}]",
+        "date_of_pooja": "2025-12-10",
+        "amount": "2501.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9448992588",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2025-12-08T05:00:59.403Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 26,
+    "fields": {
+        "pooja": 4,
+        "user": [
+            "devotee_veeresh_453"
+        ],
+        "devotee_name": "Veeresh Gowda",
+        "devotee_phone": "9880845457",
+        "devotee_email": "devotee_veeresh_453@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Krittika",
+        "rashi": "Meena",
+        "family_members": "[{\"name\": \"Basamma Devi\", \"gotra\": \"Atri\", \"nakshatra\": \"Bharani\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2026-05-02",
+        "amount": "51.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9900160536",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-04-29T05:00:59.420Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 27,
+    "fields": {
+        "pooja": 12,
+        "user": [
+            "devotee_suresh_324"
+        ],
+        "devotee_name": "Suresh Shastri",
+        "devotee_phone": "9448961992",
+        "devotee_email": "devotee_suresh_324@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Dhanu",
+        "family_members": "",
+        "date_of_pooja": "2026-06-26",
+        "amount": "1001.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9845129046",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:00:59.429Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 28,
+    "fields": {
+        "pooja": 15,
+        "user": [
+            "devotee_rajeshwari_191"
+        ],
+        "devotee_name": "Rajeshwari Kulkarni",
+        "devotee_phone": "9880755234",
+        "devotee_email": "devotee_rajeshwari_191@gmail.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Rohini",
+        "rashi": "Kumbha",
+        "family_members": "[{\"name\": \"Rajeshwari Hiremath\", \"gotra\": \"Agastya\", \"nakshatra\": \"Mrigashira\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2026-06-26",
+        "amount": "1501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_8050213987",
+        "razorpay_payment_id": "pay_9880874396",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:00:59.437Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 29,
+    "fields": {
+        "pooja": 15,
+        "user": [
+            "devotee_veeresh_453"
+        ],
+        "devotee_name": "Veeresh Gowda",
+        "devotee_phone": "9880845457",
+        "devotee_email": "devotee_veeresh_453@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Krittika",
+        "rashi": "Meena",
+        "family_members": "[{\"name\": \"Mallikarjun Joshi\", \"gotra\": \"Agastya\", \"nakshatra\": \"Mrigashira\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2026-02-24",
+        "amount": "1501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9448461508",
+        "razorpay_payment_id": "pay_8050260847",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-02-20T05:00:59.453Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 30,
+    "fields": {
+        "pooja": 7,
+        "user": [
+            "devotee_chandrasekhar_477"
+        ],
+        "devotee_name": "Chandrasekhar Hiremath",
+        "devotee_phone": "9880896146",
+        "devotee_email": "devotee_chandrasekhar_477@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Hasta",
+        "rashi": "Kanya",
+        "family_members": "",
+        "date_of_pooja": "2026-04-12",
+        "amount": "1000.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9880584964",
+        "razorpay_payment_id": "pay_8050244771",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-04-08T05:00:59.469Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 31,
+    "fields": {
+        "pooja": 3,
+        "user": null,
+        "devotee_name": "Basamma Hegde",
+        "devotee_phone": "9880220824",
+        "devotee_email": "guest_basamma_49@example.com",
+        "gotra": "Atri",
+        "nakshatra": "Hasta",
+        "rashi": "Mithuna",
+        "family_members": "",
+        "date_of_pooja": "2026-04-14",
+        "amount": "251.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9448551526",
+        "razorpay_payment_id": "pay_8050682605",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-04-11T05:00:59.483Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 32,
+    "fields": {
+        "pooja": 9,
+        "user": [
+            "devotee_girija_680"
+        ],
+        "devotee_name": "Girija Shastri",
+        "devotee_phone": "8050765368",
+        "devotee_email": "devotee_girija_680@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Magha",
+        "rashi": "Simha",
+        "family_members": "",
+        "date_of_pooja": "2026-05-05",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_8050840686",
+        "razorpay_payment_id": "pay_9845356569",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-05-01T05:00:59.500Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 33,
+    "fields": {
+        "pooja": 8,
+        "user": [
+            "devotee_chandrasekhar_356"
+        ],
+        "devotee_name": "Chandrasekhar Aradhya",
+        "devotee_phone": "9448681672",
+        "devotee_email": "devotee_chandrasekhar_356@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Vrishabha",
+        "family_members": "",
+        "date_of_pooja": "2026-02-20",
+        "amount": "301.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_8050838524",
+        "razorpay_payment_id": "pay_9900399269",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-02-15T05:00:59.516Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 34,
+    "fields": {
+        "pooja": 2,
+        "user": [
+            "devotee_suresh_324"
+        ],
+        "devotee_name": "Suresh Shastri",
+        "devotee_phone": "9448961992",
+        "devotee_email": "devotee_suresh_324@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Dhanu",
+        "family_members": "",
+        "date_of_pooja": "2025-09-03",
+        "amount": "501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_8050304273",
+        "razorpay_payment_id": "pay_9900896244",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2025-08-29T05:00:59.532Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 35,
+    "fields": {
+        "pooja": 15,
+        "user": [
+            "devotee_veeresh_421"
+        ],
+        "devotee_name": "Veeresh Hiremath",
+        "devotee_phone": "9880193696",
+        "devotee_email": "devotee_veeresh_421@gmail.com",
+        "gotra": "Gautama",
+        "nakshatra": "Uttara Phalguni",
+        "rashi": "Simha",
+        "family_members": "",
+        "date_of_pooja": "2026-07-20",
+        "amount": "1501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9845904348",
+        "razorpay_payment_id": "pay_8050925583",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:00:59.541Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 36,
+    "fields": {
+        "pooja": 1,
+        "user": [
+            "devotee_veeresh_453"
+        ],
+        "devotee_name": "Veeresh Gowda",
+        "devotee_phone": "9880845457",
+        "devotee_email": "devotee_veeresh_453@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Krittika",
+        "rashi": "Meena",
+        "family_members": "",
+        "date_of_pooja": "2026-07-18",
+        "amount": "1001.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9448657545",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:00:59.549Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 37,
+    "fields": {
+        "pooja": 16,
+        "user": [
+            "devotee_suresh_796"
+        ],
+        "devotee_name": "Suresh Rao",
+        "devotee_phone": "9845497613",
+        "devotee_email": "devotee_suresh_796@gmail.com",
+        "gotra": "Kashyapa",
+        "nakshatra": "Mrigashira",
+        "rashi": "Kumbha",
+        "family_members": "[{\"name\": \"Chandrasekhar Aradhya\", \"gotra\": \"Shandilya\", \"nakshatra\": \"\", \"rashi\": \"Makara\"}]",
+        "date_of_pooja": "2026-01-31",
+        "amount": "501.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9880106124",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-01-30T05:00:59.565Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 38,
+    "fields": {
+        "pooja": 2,
+        "user": null,
+        "devotee_name": "Parvati Prasad",
+        "devotee_phone": "9448606821",
+        "devotee_email": "guest_parvati_70@example.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Bharani",
+        "rashi": "Mithuna",
+        "family_members": "[{\"name\": \"Sharanappa Aradhya\", \"gotra\": \"\", \"nakshatra\": \"Magha\", \"rashi\": \"Kanya\"}, {\"name\": \"Veeresh Hiremath\", \"gotra\": \"Angirasa\", \"nakshatra\": \"Ashwini\", \"rashi\": \"Mesha\"}, {\"name\": \"Mallikarjun Aradhya\", \"gotra\": \"Bharadwaj\", \"nakshatra\": \"\", \"rashi\": \"Simha\"}]",
+        "date_of_pooja": "2026-06-04",
+        "amount": "501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9900480661",
+        "razorpay_payment_id": "pay_9880857459",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-03T05:00:59.579Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 39,
+    "fields": {
+        "pooja": 15,
+        "user": null,
+        "devotee_name": "Parvati Joshi",
+        "devotee_phone": "9480389551",
+        "devotee_email": "guest_parvati_79@example.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Mrigashira",
+        "rashi": "Kumbha",
+        "family_members": "[{\"name\": \"Rajeshwari Kulkarni\", \"gotra\": \"Agastya\", \"nakshatra\": \"Swati\", \"rashi\": \"Tula\"}, {\"name\": \"Anitha Hegde\", \"gotra\": \"\", \"nakshatra\": \"Chitra\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2026-01-12",
+        "amount": "1501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9845644062",
+        "razorpay_payment_id": "pay_9845451414",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-01-08T05:00:59.593Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 40,
+    "fields": {
+        "pooja": 10,
+        "user": [
+            "devotee_girija_680"
+        ],
+        "devotee_name": "Girija Shastri",
+        "devotee_phone": "8050765368",
+        "devotee_email": "devotee_girija_680@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Magha",
+        "rashi": "Simha",
+        "family_members": "[{\"name\": \"Basavaraj Gowda\", \"gotra\": \"Haritasya\", \"nakshatra\": \"Ashwini\", \"rashi\": \"Mesha\"}, {\"name\": \"Girija Prasad\", \"gotra\": \"Vishwamitra\", \"nakshatra\": \"\", \"rashi\": \"Vrishabha\"}]",
+        "date_of_pooja": "2026-07-21",
+        "amount": "2501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_8050164085",
+        "razorpay_payment_id": "pay_9480162675",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:00:59.602Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 41,
+    "fields": {
+        "pooja": 16,
+        "user": [
+            "devotee_chandrasekhar_746"
+        ],
+        "devotee_name": "Chandrasekhar Shastri",
+        "devotee_phone": "9480797958",
+        "devotee_email": "devotee_chandrasekhar_746@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashwini",
+        "rashi": "Mithuna",
+        "family_members": "",
+        "date_of_pooja": "2026-07-14",
+        "amount": "501.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9480959676",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:00:59.610Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 42,
+    "fields": {
+        "pooja": 11,
+        "user": null,
+        "devotee_name": "Basavaraj Hiremath",
+        "devotee_phone": "9880149923",
+        "devotee_email": "guest_basavaraj_83@example.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Mrigashira",
+        "rashi": "Vrishabha",
+        "family_members": "",
+        "date_of_pooja": "2026-01-29",
+        "amount": "101.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9845599992",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-01-25T05:00:59.624Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 43,
+    "fields": {
+        "pooja": 17,
+        "user": [
+            "devotee_suresh_324"
+        ],
+        "devotee_name": "Suresh Shastri",
+        "devotee_phone": "9448961992",
+        "devotee_email": "devotee_suresh_324@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Dhanu",
+        "family_members": "[{\"name\": \"Ramesh Deshpande\", \"gotra\": \"Haritasya\", \"nakshatra\": \"\", \"rashi\": \"Tula\"}, {\"name\": \"Chandrasekhar Bhat\", \"gotra\": \"Atri\", \"nakshatra\": \"Bharani\", \"rashi\": \"Kanya\"}, {\"name\": \"Basamma Bhat\", \"gotra\": \"Vashistha\", \"nakshatra\": \"\", \"rashi\": \"Dhanu\"}]",
+        "date_of_pooja": "2026-06-27",
+        "amount": "2501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9448178721",
+        "razorpay_payment_id": "pay_9480698259",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:00:59.646Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 44,
+    "fields": {
+        "pooja": 4,
+        "user": [
+            "devotee_veeresh_453"
+        ],
+        "devotee_name": "Veeresh Gowda",
+        "devotee_phone": "9880845457",
+        "devotee_email": "devotee_veeresh_453@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Krittika",
+        "rashi": "Meena",
+        "family_members": "[{\"name\": \"Girija Devi\", \"gotra\": \"Angirasa\", \"nakshatra\": \"\", \"rashi\": \"Meena\"}]",
+        "date_of_pooja": "2025-07-15",
+        "amount": "51.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9900156251",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2025-07-15T05:01:00.736Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 45,
+    "fields": {
+        "pooja": 11,
+        "user": [
+            "devotee_chandrasekhar_746"
+        ],
+        "devotee_name": "Chandrasekhar Shastri",
+        "devotee_phone": "9480797958",
+        "devotee_email": "devotee_chandrasekhar_746@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashwini",
+        "rashi": "Mithuna",
+        "family_members": "[{\"name\": \"Sharanappa Aradhya\", \"gotra\": \"Shandilya\", \"nakshatra\": \"Magha\", \"rashi\": \"Karka\"}, {\"name\": \"Basamma Kumar\", \"gotra\": \"Angirasa\", \"nakshatra\": \"Punarvasu\", \"rashi\": \"\"}, {\"name\": \"Veeresh Aradhya\", \"gotra\": \"Vashistha\", \"nakshatra\": \"Ashwini\", \"rashi\": \"Kanya\"}]",
+        "date_of_pooja": "2026-02-09",
+        "amount": "101.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9448616632",
+        "razorpay_payment_id": "pay_9448970804",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-02-08T05:01:00.751Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 46,
+    "fields": {
+        "pooja": 1,
+        "user": [
+            "devotee_chandrasekhar_477"
+        ],
+        "devotee_name": "Chandrasekhar Hiremath",
+        "devotee_phone": "9880896146",
+        "devotee_email": "devotee_chandrasekhar_477@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Hasta",
+        "rashi": "Kanya",
+        "family_members": "[{\"name\": \"Sharanappa Devi\", \"gotra\": \"Atri\", \"nakshatra\": \"Chitra\", \"rashi\": \"Meena\"}]",
+        "date_of_pooja": "2026-06-26",
+        "amount": "1001.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9880426641",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:01:00.760Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 47,
+    "fields": {
+        "pooja": 12,
+        "user": null,
+        "devotee_name": "Girija Patil",
+        "devotee_phone": "9448671511",
+        "devotee_email": "guest_girija_57@example.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Pushya",
+        "rashi": "Tula",
+        "family_members": "",
+        "date_of_pooja": "2026-06-15",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9900402246",
+        "razorpay_payment_id": "pay_9880948320",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-10T05:01:00.774Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 48,
+    "fields": {
+        "pooja": 15,
+        "user": [
+            "devotee_girija_680"
+        ],
+        "devotee_name": "Girija Shastri",
+        "devotee_phone": "8050765368",
+        "devotee_email": "devotee_girija_680@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Magha",
+        "rashi": "Simha",
+        "family_members": "[{\"name\": \"Girija Kumar\", \"gotra\": \"Gautama\", \"nakshatra\": \"Ardra\", \"rashi\": \"Meena\"}, {\"name\": \"Anitha Gowda\", \"gotra\": \"\", \"nakshatra\": \"Krittika\", \"rashi\": \"Makara\"}]",
+        "date_of_pooja": "2026-07-03",
+        "amount": "1501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9448507465",
+        "razorpay_payment_id": "pay_9448142523",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:01:00.783Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 49,
+    "fields": {
+        "pooja": 13,
+        "user": [
+            "devotee_basavaraj_872"
+        ],
+        "devotee_name": "Basavaraj Hegde",
+        "devotee_phone": "8050190021",
+        "devotee_email": "devotee_basavaraj_872@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Makara",
+        "family_members": "",
+        "date_of_pooja": "2026-06-26",
+        "amount": "501.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9448755837",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:01:00.792Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 50,
+    "fields": {
+        "pooja": 7,
+        "user": [
+            "devotee_veeresh_421"
+        ],
+        "devotee_name": "Veeresh Hiremath",
+        "devotee_phone": "9880193696",
+        "devotee_email": "devotee_veeresh_421@gmail.com",
+        "gotra": "Gautama",
+        "nakshatra": "Uttara Phalguni",
+        "rashi": "Simha",
+        "family_members": "[{\"name\": \"Rajeshwari Angadi\", \"gotra\": \"\", \"nakshatra\": \"\", \"rashi\": \"Dhanu\"}, {\"name\": \"Veeresh Rao\", \"gotra\": \"Haritasya\", \"nakshatra\": \"Punarvasu\", \"rashi\": \"Meena\"}]",
+        "date_of_pooja": "2026-02-20",
+        "amount": "1000.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9480847357",
+        "razorpay_payment_id": "pay_8050813586",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-02-20T05:01:00.808Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 51,
+    "fields": {
+        "pooja": 5,
+        "user": [
+            "devotee_chandrasekhar_333"
+        ],
+        "devotee_name": "Chandrasekhar Kulkarni",
+        "devotee_phone": "9448708778",
+        "devotee_email": "devotee_chandrasekhar_333@gmail.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Punarvasu",
+        "rashi": "Vrishchika",
+        "family_members": "[{\"name\": \"Basamma Devi\", \"gotra\": \"Vishwamitra\", \"nakshatra\": \"Ashwini\", \"rashi\": \"Makara\"}, {\"name\": \"Ramesh Angadi\", \"gotra\": \"Vashistha\", \"nakshatra\": \"Punarvasu\", \"rashi\": \"Mithuna\"}, {\"name\": \"Mahesh Angadi\", \"gotra\": \"Vishwamitra\", \"nakshatra\": \"Chitra\", \"rashi\": \"Vrishabha\"}]",
+        "date_of_pooja": "2026-05-07",
+        "amount": "501.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9900967683",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-05-03T05:01:00.824Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 52,
+    "fields": {
+        "pooja": 13,
+        "user": [
+            "devotee_suresh_324"
+        ],
+        "devotee_name": "Suresh Shastri",
+        "devotee_phone": "9448961992",
+        "devotee_email": "devotee_suresh_324@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Dhanu",
+        "family_members": "[{\"name\": \"Suresh Deshpande\", \"gotra\": \"Vishwamitra\", \"nakshatra\": \"Ashlesha\", \"rashi\": \"Vrishchika\"}, {\"name\": \"Girija Hiremath\", \"gotra\": \"Vishwamitra\", \"nakshatra\": \"Ashlesha\", \"rashi\": \"Mesha\"}, {\"name\": \"Basavaraj Kumar\", \"gotra\": \"Kashyapa\", \"nakshatra\": \"Bharani\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2026-07-12",
+        "amount": "501.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9480830947",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:01:00.832Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 53,
+    "fields": {
+        "pooja": 2,
+        "user": [
+            "devotee_parvati_994"
+        ],
+        "devotee_name": "Parvati Rao",
+        "devotee_phone": "9448677583",
+        "devotee_email": "devotee_parvati_994@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Punarvasu",
+        "rashi": "Mithuna",
+        "family_members": "[{\"name\": \"Basavaraj Aradhya\", \"gotra\": \"Angirasa\", \"nakshatra\": \"Pushya\", \"rashi\": \"Meena\"}]",
+        "date_of_pooja": "2026-06-26",
+        "amount": "501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9448422798",
+        "razorpay_payment_id": "pay_9900361244",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:01:00.840Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 54,
+    "fields": {
+        "pooja": 12,
+        "user": [
+            "devotee_basavaraj_872"
+        ],
+        "devotee_name": "Basavaraj Hegde",
+        "devotee_phone": "8050190021",
+        "devotee_email": "devotee_basavaraj_872@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Makara",
+        "family_members": "[{\"name\": \"Parvati Hiremath\", \"gotra\": \"Vishwamitra\", \"nakshatra\": \"\", \"rashi\": \"\"}, {\"name\": \"Anitha Hegde\", \"gotra\": \"\", \"nakshatra\": \"Bharani\", \"rashi\": \"Vrishabha\"}]",
+        "date_of_pooja": "2026-01-13",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9480897596",
+        "razorpay_payment_id": "pay_9448584327",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-01-09T05:01:00.857Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 55,
+    "fields": {
+        "pooja": 17,
+        "user": null,
+        "devotee_name": "Basavaraj Kumar",
+        "devotee_phone": "9448268578",
+        "devotee_email": "guest_basavaraj_97@example.com",
+        "gotra": "Kashyapa",
+        "nakshatra": "Ardra",
+        "rashi": "Meena",
+        "family_members": "[{\"name\": \"Anitha Hegde\", \"gotra\": \"Gautama\", \"nakshatra\": \"Ashlesha\", \"rashi\": \"Kanya\"}]",
+        "date_of_pooja": "2026-03-19",
+        "amount": "2501.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9480119192",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-03-18T05:01:00.872Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 56,
+    "fields": {
+        "pooja": 12,
+        "user": [
+            "devotee_chandrasekhar_356"
+        ],
+        "devotee_name": "Chandrasekhar Aradhya",
+        "devotee_phone": "9448681672",
+        "devotee_email": "devotee_chandrasekhar_356@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Vrishabha",
+        "family_members": "",
+        "date_of_pooja": "2026-01-15",
+        "amount": "1001.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9880790460",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-01-11T05:01:00.888Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 57,
+    "fields": {
+        "pooja": 17,
+        "user": [
+            "devotee_parvati_994"
+        ],
+        "devotee_name": "Parvati Rao",
+        "devotee_phone": "9448677583",
+        "devotee_email": "devotee_parvati_994@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Punarvasu",
+        "rashi": "Mithuna",
+        "family_members": "[{\"name\": \"Parvati Joshi\", \"gotra\": \"Atri\", \"nakshatra\": \"Mrigashira\", \"rashi\": \"Karka\"}, {\"name\": \"Sharanappa Bhat\", \"gotra\": \"Haritasya\", \"nakshatra\": \"Ardra\", \"rashi\": \"Mithuna\"}]",
+        "date_of_pooja": "2025-06-29",
+        "amount": "2501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9448899010",
+        "razorpay_payment_id": "pay_9900282583",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2025-06-27T05:01:00.903Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 58,
+    "fields": {
+        "pooja": 3,
+        "user": null,
+        "devotee_name": "Veeresh Deshpande",
+        "devotee_phone": "8050989708",
+        "devotee_email": "guest_veeresh_25@example.com",
+        "gotra": "Gautama",
+        "nakshatra": "Punarvasu",
+        "rashi": "Dhanu",
+        "family_members": "",
+        "date_of_pooja": "2025-12-14",
+        "amount": "251.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9480320364",
+        "razorpay_payment_id": "pay_9448591727",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2025-12-10T05:01:00.917Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 59,
+    "fields": {
+        "pooja": 10,
+        "user": null,
+        "devotee_name": "Mallikarjun Patil",
+        "devotee_phone": "9448821521",
+        "devotee_email": "guest_mallikarjun_24@example.com",
+        "gotra": "Atri",
+        "nakshatra": "Hasta",
+        "rashi": "Makara",
+        "family_members": "[{\"name\": \"Vijayalaxmi Gowda\", \"gotra\": \"\", \"nakshatra\": \"Hasta\", \"rashi\": \"\"}, {\"name\": \"Vijayalaxmi Prasad\", \"gotra\": \"Gautama\", \"nakshatra\": \"Ashwini\", \"rashi\": \"Kanya\"}, {\"name\": \"Mahesh Patil\", \"gotra\": \"\", \"nakshatra\": \"\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2026-03-17",
+        "amount": "2501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9900103443",
+        "razorpay_payment_id": "pay_9480299236",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-03-13T05:01:00.931Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 60,
+    "fields": {
+        "pooja": 8,
+        "user": [
+            "devotee_veeresh_453"
+        ],
+        "devotee_name": "Veeresh Gowda",
+        "devotee_phone": "9880845457",
+        "devotee_email": "devotee_veeresh_453@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Krittika",
+        "rashi": "Meena",
+        "family_members": "[{\"name\": \"Basavaraj Kumar\", \"gotra\": \"Agastya\", \"nakshatra\": \"\", \"rashi\": \"Tula\"}]",
+        "date_of_pooja": "2026-06-26",
+        "amount": "301.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9448942158",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:01:00.940Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 61,
+    "fields": {
+        "pooja": 14,
+        "user": null,
+        "devotee_name": "Basavaraj Deshpande",
+        "devotee_phone": "9900873573",
+        "devotee_email": "guest_basavaraj_16@example.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Krittika",
+        "rashi": "Kumbha",
+        "family_members": "",
+        "date_of_pooja": "2025-09-10",
+        "amount": "1000.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9480933356",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2025-09-05T05:01:00.954Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 62,
+    "fields": {
+        "pooja": 8,
+        "user": [
+            "devotee_chandrasekhar_356"
+        ],
+        "devotee_name": "Chandrasekhar Aradhya",
+        "devotee_phone": "9448681672",
+        "devotee_email": "devotee_chandrasekhar_356@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Vrishabha",
+        "family_members": "[{\"name\": \"Basamma Hegde\", \"gotra\": \"Gautama\", \"nakshatra\": \"\", \"rashi\": \"\"}, {\"name\": \"Mahesh Patil\", \"gotra\": \"Bharadwaj\", \"nakshatra\": \"Punarvasu\", \"rashi\": \"Vrishchika\"}]",
+        "date_of_pooja": "2026-06-16",
+        "amount": "301.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9845174465",
+        "razorpay_payment_id": "pay_9448755520",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-16T05:01:00.970Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 63,
+    "fields": {
+        "pooja": 16,
+        "user": [
+            "devotee_basavaraj_980"
+        ],
+        "devotee_name": "Basavaraj Gowda",
+        "devotee_phone": "9448503980",
+        "devotee_email": "devotee_basavaraj_980@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Hasta",
+        "rashi": "Makara",
+        "family_members": "[{\"name\": \"Chandrasekhar Hegde\", \"gotra\": \"Haritasya\", \"nakshatra\": \"Krittika\", \"rashi\": \"Meena\"}]",
+        "date_of_pooja": "2026-07-21",
+        "amount": "501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9880126610",
+        "razorpay_payment_id": "pay_9880452466",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:01:00.980Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 64,
+    "fields": {
+        "pooja": 5,
+        "user": [
+            "devotee_sharanappa_857"
+        ],
+        "devotee_name": "Sharanappa Rao",
+        "devotee_phone": "9448507167",
+        "devotee_email": "devotee_sharanappa_857@gmail.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Meena",
+        "family_members": "[{\"name\": \"Vijayalaxmi Devi\", \"gotra\": \"\", \"nakshatra\": \"Uttara Phalguni\", \"rashi\": \"\"}, {\"name\": \"Mallikarjun Deshpande\", \"gotra\": \"\", \"nakshatra\": \"\", \"rashi\": \"Mesha\"}]",
+        "date_of_pooja": "2025-10-29",
+        "amount": "501.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9845210105",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2025-10-27T05:01:00.997Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 65,
+    "fields": {
+        "pooja": 14,
+        "user": null,
+        "devotee_name": "Anitha Deshpande",
+        "devotee_phone": "8050731073",
+        "devotee_email": "guest_anitha_86@example.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Krittika",
+        "rashi": "Vrishabha",
+        "family_members": "[{\"name\": \"Veeresh Deshpande\", \"gotra\": \"Shandilya\", \"nakshatra\": \"Swati\", \"rashi\": \"Mithuna\"}, {\"name\": \"Siddheshwar Patil\", \"gotra\": \"\", \"nakshatra\": \"Ashlesha\", \"rashi\": \"Mithuna\"}]",
+        "date_of_pooja": "2026-06-26",
+        "amount": "1000.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9845672068",
+        "razorpay_payment_id": "pay_9480709875",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:01:01.004Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 66,
+    "fields": {
+        "pooja": 10,
+        "user": [
+            "devotee_basavaraj_872"
+        ],
+        "devotee_name": "Basavaraj Hegde",
+        "devotee_phone": "8050190021",
+        "devotee_email": "devotee_basavaraj_872@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Makara",
+        "family_members": "",
+        "date_of_pooja": "2026-07-21",
+        "amount": "2501.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_8050245105",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:01:01.013Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 67,
+    "fields": {
+        "pooja": 5,
+        "user": [
+            "devotee_rajeshwari_191"
+        ],
+        "devotee_name": "Rajeshwari Kulkarni",
+        "devotee_phone": "9880755234",
+        "devotee_email": "devotee_rajeshwari_191@gmail.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Rohini",
+        "rashi": "Kumbha",
+        "family_members": "",
+        "date_of_pooja": "2026-04-13",
+        "amount": "501.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_8050443554",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-04-08T05:01:01.029Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 68,
+    "fields": {
+        "pooja": 15,
+        "user": [
+            "devotee_chandrasekhar_333"
+        ],
+        "devotee_name": "Chandrasekhar Kulkarni",
+        "devotee_phone": "9448708778",
+        "devotee_email": "devotee_chandrasekhar_333@gmail.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Punarvasu",
+        "rashi": "Vrishchika",
+        "family_members": "[{\"name\": \"Mallikarjun Angadi\", \"gotra\": \"\", \"nakshatra\": \"\", \"rashi\": \"\"}, {\"name\": \"Rajeshwari Hegde\", \"gotra\": \"Haritasya\", \"nakshatra\": \"Chitra\", \"rashi\": \"Meena\"}]",
+        "date_of_pooja": "2026-06-26",
+        "amount": "1501.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9480319313",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:01:01.039Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 69,
+    "fields": {
+        "pooja": 9,
+        "user": [
+            "devotee_suresh_324"
+        ],
+        "devotee_name": "Suresh Shastri",
+        "devotee_phone": "9448961992",
+        "devotee_email": "devotee_suresh_324@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Dhanu",
+        "family_members": "[{\"name\": \"Parvati Hiremath\", \"gotra\": \"\", \"nakshatra\": \"Swati\", \"rashi\": \"Makara\"}]",
+        "date_of_pooja": "2026-02-18",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9448273398",
+        "razorpay_payment_id": "pay_9845304102",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-02-15T05:01:01.055Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 70,
+    "fields": {
+        "pooja": 8,
+        "user": [
+            "devotee_sharanappa_857"
+        ],
+        "devotee_name": "Sharanappa Rao",
+        "devotee_phone": "9448507167",
+        "devotee_email": "devotee_sharanappa_857@gmail.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Meena",
+        "family_members": "[{\"name\": \"Ramesh Deshpande\", \"gotra\": \"Agastya\", \"nakshatra\": \"\", \"rashi\": \"Meena\"}]",
+        "date_of_pooja": "2026-07-07",
+        "amount": "301.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9480611821",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:01:01.063Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 71,
+    "fields": {
+        "pooja": 16,
+        "user": [
+            "devotee_chandrasekhar_333"
+        ],
+        "devotee_name": "Chandrasekhar Kulkarni",
+        "devotee_phone": "9448708778",
+        "devotee_email": "devotee_chandrasekhar_333@gmail.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Punarvasu",
+        "rashi": "Vrishchika",
+        "family_members": "[{\"name\": \"Suresh Deshpande\", \"gotra\": \"\", \"nakshatra\": \"Uttara Phalguni\", \"rashi\": \"\"}, {\"name\": \"Anitha Hiremath\", \"gotra\": \"Gautama\", \"nakshatra\": \"Krittika\", \"rashi\": \"Karka\"}]",
+        "date_of_pooja": "2026-01-29",
+        "amount": "501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9880519259",
+        "razorpay_payment_id": "pay_9448410528",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-01-28T05:01:01.080Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 72,
+    "fields": {
+        "pooja": 10,
+        "user": [
+            "devotee_suresh_796"
+        ],
+        "devotee_name": "Suresh Rao",
+        "devotee_phone": "9845497613",
+        "devotee_email": "devotee_suresh_796@gmail.com",
+        "gotra": "Kashyapa",
+        "nakshatra": "Mrigashira",
+        "rashi": "Kumbha",
+        "family_members": "[{\"name\": \"Girija Devi\", \"gotra\": \"\", \"nakshatra\": \"Uttara Phalguni\", \"rashi\": \"Simha\"}]",
+        "date_of_pooja": "2025-08-13",
+        "amount": "2501.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9880134597",
+        "razorpay_payment_id": "pay_8050687074",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2025-08-12T05:01:01.095Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 73,
+    "fields": {
+        "pooja": 10,
+        "user": [
+            "devotee_suresh_796"
+        ],
+        "devotee_name": "Suresh Rao",
+        "devotee_phone": "9845497613",
+        "devotee_email": "devotee_suresh_796@gmail.com",
+        "gotra": "Kashyapa",
+        "nakshatra": "Mrigashira",
+        "rashi": "Kumbha",
+        "family_members": "",
+        "date_of_pooja": "2025-08-04",
+        "amount": "2501.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9448414017",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2025-07-31T05:01:01.111Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 74,
+    "fields": {
+        "pooja": 8,
+        "user": [
+            "devotee_sharanappa_857"
+        ],
+        "devotee_name": "Sharanappa Rao",
+        "devotee_phone": "9448507167",
+        "devotee_email": "devotee_sharanappa_857@gmail.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Meena",
+        "family_members": "",
+        "date_of_pooja": "2026-07-13",
+        "amount": "301.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9900819032",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-26T05:01:01.120Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 75,
+    "fields": {
+        "pooja": 12,
+        "user": null,
+        "devotee_name": "Siddheshwar Devi",
+        "devotee_phone": "9480708562",
+        "devotee_email": "guest_siddheshwar_64@example.com",
+        "gotra": "Haritasya",
+        "nakshatra": "Ardra",
+        "rashi": "Tula",
+        "family_members": "[{\"name\": \"Mallikarjun Bhat\", \"gotra\": \"\", \"nakshatra\": \"Mrigashira\", \"rashi\": \"Meena\"}]",
+        "date_of_pooja": "2026-05-02",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9448145366",
+        "razorpay_payment_id": "pay_9880560261",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-04-30T05:01:01.135Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 76,
+    "fields": {
+        "pooja": 4,
+        "user": [
+            "devotee_parvati_994"
+        ],
+        "devotee_name": "Parvati Rao",
+        "devotee_phone": "9448677583",
+        "devotee_email": "devotee_parvati_994@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Punarvasu",
+        "rashi": "Mithuna",
+        "family_members": "",
+        "date_of_pooja": "2026-02-02",
+        "amount": "51.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9880994764",
+        "razorpay_payment_id": "pay_8050555582",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-02-01T05:01:01.152Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 77,
+    "fields": {
+        "pooja": 6,
+        "user": [
+            "devotee_siddheshwar_951"
+        ],
+        "devotee_name": "Siddheshwar Kulkarni",
+        "devotee_phone": "9480821675",
+        "devotee_email": "devotee_siddheshwar_951@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Swati",
+        "rashi": "Karka",
+        "family_members": "",
+        "date_of_pooja": "2026-05-31",
+        "amount": "251.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9845683927",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-05-30T05:01:01.167Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 78,
+    "fields": {
+        "pooja": 12,
+        "user": null,
+        "devotee_name": "Rajeshwari Hegde",
+        "devotee_phone": "9845403109",
+        "devotee_email": "guest_rajeshwari_56@example.com",
+        "gotra": "Atri",
+        "nakshatra": "Punarvasu",
+        "rashi": "Vrishchika",
+        "family_members": "[{\"name\": \"Basamma Bhat\", \"gotra\": \"Atri\", \"nakshatra\": \"Uttara Phalguni\", \"rashi\": \"Mithuna\"}, {\"name\": \"Girija Joshi\", \"gotra\": \"Shandilya\", \"nakshatra\": \"Ashwini\", \"rashi\": \"Simha\"}, {\"name\": \"Ramesh Shastri\", \"gotra\": \"Vishwamitra\", \"nakshatra\": \"\", \"rashi\": \"Vrishabha\"}]",
+        "date_of_pooja": "2025-07-15",
+        "amount": "1001.00",
+        "payment_status": "pending",
+        "razorpay_order_id": "order_9845294789",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2025-07-12T05:01:01.181Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 79,
+    "fields": {
+        "pooja": 1,
+        "user": [
+            "devotee_chandrasekhar_477"
+        ],
+        "devotee_name": "Chandrasekhar Hiremath",
+        "devotee_phone": "9880896146",
+        "devotee_email": "devotee_chandrasekhar_477@gmail.com",
+        "gotra": "Angirasa",
+        "nakshatra": "Hasta",
+        "rashi": "Kanya",
+        "family_members": "[{\"name\": \"Parvati Hegde\", \"gotra\": \"Shandilya\", \"nakshatra\": \"Chitra\", \"rashi\": \"Mesha\"}, {\"name\": \"Mallikarjun Joshi\", \"gotra\": \"Agastya\", \"nakshatra\": \"Magha\", \"rashi\": \"Kanya\"}, {\"name\": \"Basavaraj Devi\", \"gotra\": \"Haritasya\", \"nakshatra\": \"Rohini\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2026-06-26",
+        "amount": "1001.00",
+        "payment_status": "success",
+        "razorpay_order_id": "order_9845711161",
+        "razorpay_payment_id": "pay_8050560233",
+        "razorpay_signature": "sig_dummy_hash_1234567890abcdef",
+        "created_at": "2026-06-26T05:01:01.190Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 80,
+    "fields": {
+        "pooja": 7,
+        "user": [
+            "devotee_chandrasekhar_746"
+        ],
+        "devotee_name": "Chandrasekhar Shastri",
+        "devotee_phone": "9480797958",
+        "devotee_email": "devotee_chandrasekhar_746@gmail.com",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashwini",
+        "rashi": "Mithuna",
+        "family_members": "",
+        "date_of_pooja": "2026-05-09",
+        "amount": "1000.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9448910650",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-05-09T05:01:01.205Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 81,
+    "fields": {
+        "pooja": 3,
+        "user": [
+            "devotee_chandrasekhar_356"
+        ],
+        "devotee_name": "Chandrasekhar Aradhya",
+        "devotee_phone": "9448681672",
+        "devotee_email": "devotee_chandrasekhar_356@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Vrishabha",
+        "family_members": "[{\"name\": \"Anitha Bhat\", \"gotra\": \"Gautama\", \"nakshatra\": \"\", \"rashi\": \"\"}]",
+        "date_of_pooja": "2026-06-10",
+        "amount": "251.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_9845163676",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-06-07T05:01:01.220Z"
+    }
+},
+{
+    "model": "peethas.poojabooking",
+    "pk": 82,
+    "fields": {
+        "pooja": 2,
+        "user": [
+            "devotee_siddheshwar_951"
+        ],
+        "devotee_name": "Siddheshwar Kulkarni",
+        "devotee_phone": "9480821675",
+        "devotee_email": "devotee_siddheshwar_951@gmail.com",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Swati",
+        "rashi": "Karka",
+        "family_members": "",
+        "date_of_pooja": "2026-04-26",
+        "amount": "501.00",
+        "payment_status": "failed",
+        "razorpay_order_id": "order_8050886208",
+        "razorpay_payment_id": "",
+        "razorpay_signature": "",
+        "created_at": "2026-04-25T05:01:01.237Z"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 1,
+    "fields": {
+        "name": "USE_RECTANGULAR_PORTRAITS",
+        "is_enabled": true,
+        "description": "Toggle between Rectangular and Circular portraits on the Home Page"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 2,
+    "fields": {
+        "name": "rambhapuri_overall",
+        "is_enabled": true,
+        "description": "Master toggle for all features of this Peetha (Rambhapuri Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 3,
+    "fields": {
+        "name": "ujjaini_overall",
+        "is_enabled": false,
+        "description": "Master toggle for all features of this Peetha (Ujjaini Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 4,
+    "fields": {
+        "name": "kedara_overall",
+        "is_enabled": false,
+        "description": "Master toggle for all features of this Peetha (Kedara Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 5,
+    "fields": {
+        "name": "srisaila_overall",
+        "is_enabled": false,
+        "description": "Master toggle for all features of this Peetha (Srisaila Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 6,
+    "fields": {
+        "name": "kashi_overall",
+        "is_enabled": false,
+        "description": "Master toggle for all features of this Peetha (Kashi Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 7,
+    "fields": {
+        "name": "rambhapuri_pooja_booking",
+        "is_enabled": true,
+        "description": "Enable or disable Pooja Booking for this Peetha (Rambhapuri Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 8,
+    "fields": {
+        "name": "ujjaini_pooja_booking",
+        "is_enabled": false,
+        "description": "Enable or disable Pooja Booking for this Peetha (Ujjaini Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 9,
+    "fields": {
+        "name": "kedara_pooja_booking",
+        "is_enabled": false,
+        "description": "Enable or disable Pooja Booking for this Peetha (Kedara Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 10,
+    "fields": {
+        "name": "srisaila_pooja_booking",
+        "is_enabled": false,
+        "description": "Enable or disable Pooja Booking for this Peetha (Srisaila Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 11,
+    "fields": {
+        "name": "kashi_pooja_booking",
+        "is_enabled": false,
+        "description": "Enable or disable Pooja Booking for this Peetha (Kashi Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 12,
+    "fields": {
+        "name": "rambhapuri_accommodation",
+        "is_enabled": true,
+        "description": "Enable or disable Accommodation for this Peetha (Rambhapuri Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 13,
+    "fields": {
+        "name": "ujjaini_accommodation",
+        "is_enabled": false,
+        "description": "Enable or disable Accommodation for this Peetha (Ujjaini Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 14,
+    "fields": {
+        "name": "kedara_accommodation",
+        "is_enabled": false,
+        "description": "Enable or disable Accommodation for this Peetha (Kedara Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 15,
+    "fields": {
+        "name": "srisaila_accommodation",
+        "is_enabled": false,
+        "description": "Enable or disable Accommodation for this Peetha (Srisaila Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 16,
+    "fields": {
+        "name": "kashi_accommodation",
+        "is_enabled": false,
+        "description": "Enable or disable Accommodation for this Peetha (Kashi Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 17,
+    "fields": {
+        "name": "rambhapuri_media_gallery",
+        "is_enabled": true,
+        "description": "Show or hide the Photo & Video gallery (Rambhapuri Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 18,
+    "fields": {
+        "name": "ujjaini_media_gallery",
+        "is_enabled": false,
+        "description": "Show or hide the Photo & Video gallery (Ujjaini Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 19,
+    "fields": {
+        "name": "kedara_media_gallery",
+        "is_enabled": false,
+        "description": "Show or hide the Photo & Video gallery (Kedara Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 20,
+    "fields": {
+        "name": "srisaila_media_gallery",
+        "is_enabled": false,
+        "description": "Show or hide the Photo & Video gallery (Srisaila Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 21,
+    "fields": {
+        "name": "kashi_media_gallery",
+        "is_enabled": false,
+        "description": "Show or hide the Photo & Video gallery (Kashi Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 22,
+    "fields": {
+        "name": "rambhapuri_travel_plans",
+        "is_enabled": true,
+        "description": "Show or hide the Travel Plans timeline (Rambhapuri Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 23,
+    "fields": {
+        "name": "ujjaini_travel_plans",
+        "is_enabled": false,
+        "description": "Show or hide the Travel Plans timeline (Ujjaini Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 24,
+    "fields": {
+        "name": "kedara_travel_plans",
+        "is_enabled": false,
+        "description": "Show or hide the Travel Plans timeline (Kedara Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 25,
+    "fields": {
+        "name": "srisaila_travel_plans",
+        "is_enabled": false,
+        "description": "Show or hide the Travel Plans timeline (Srisaila Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 26,
+    "fields": {
+        "name": "kashi_travel_plans",
+        "is_enabled": false,
+        "description": "Show or hide the Travel Plans timeline (Kashi Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 27,
+    "fields": {
+        "name": "rambhapuri_live_stream",
+        "is_enabled": true,
+        "description": "Show or hide the Live Stream embed (Rambhapuri Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 28,
+    "fields": {
+        "name": "ujjaini_live_stream",
+        "is_enabled": false,
+        "description": "Show or hide the Live Stream embed (Ujjaini Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 29,
+    "fields": {
+        "name": "kedara_live_stream",
+        "is_enabled": false,
+        "description": "Show or hide the Live Stream embed (Kedara Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 30,
+    "fields": {
+        "name": "srisaila_live_stream",
+        "is_enabled": false,
+        "description": "Show or hide the Live Stream embed (Srisaila Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 31,
+    "fields": {
+        "name": "kashi_live_stream",
+        "is_enabled": false,
+        "description": "Show or hide the Live Stream embed (Kashi Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 32,
+    "fields": {
+        "name": "rambhapuri_contact_section",
+        "is_enabled": true,
+        "description": "Show or hide the Contact Us section (Rambhapuri Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 33,
+    "fields": {
+        "name": "ujjaini_contact_section",
+        "is_enabled": false,
+        "description": "Show or hide the Contact Us section (Ujjaini Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 34,
+    "fields": {
+        "name": "kedara_contact_section",
+        "is_enabled": false,
+        "description": "Show or hide the Contact Us section (Kedara Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 35,
+    "fields": {
+        "name": "srisaila_contact_section",
+        "is_enabled": false,
+        "description": "Show or hide the Contact Us section (Srisaila Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 36,
+    "fields": {
+        "name": "kashi_contact_section",
+        "is_enabled": false,
+        "description": "Show or hide the Contact Us section (Kashi Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 37,
+    "fields": {
+        "name": "rambhapuri_devotee_registration",
+        "is_enabled": true,
+        "description": "Allow new devotee sign-ups for this Peetha (Rambhapuri Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 38,
+    "fields": {
+        "name": "ujjaini_devotee_registration",
+        "is_enabled": true,
+        "description": "Allow new devotee sign-ups for this Peetha (Ujjaini Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 39,
+    "fields": {
+        "name": "kedara_devotee_registration",
+        "is_enabled": true,
+        "description": "Allow new devotee sign-ups for this Peetha (Kedara Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 40,
+    "fields": {
+        "name": "srisaila_devotee_registration",
+        "is_enabled": true,
+        "description": "Allow new devotee sign-ups for this Peetha (Srisaila Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 41,
+    "fields": {
+        "name": "kashi_devotee_registration",
+        "is_enabled": true,
+        "description": "Allow new devotee sign-ups for this Peetha (Kashi Peetha)"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 42,
+    "fields": {
+        "name": "DEVOTEE_REGISTRATION",
+        "is_enabled": true,
+        "description": "Allow new devotees to register on the platform"
+    }
+},
+{
+    "model": "peethas.featureflag",
+    "pk": 43,
+    "fields": {
+        "name": "DEVOTIONAL_CHANTING",
+        "is_enabled": true,
+        "description": "Enable the floating devotional chanting player at the bottom right"
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 1,
+    "fields": {
+        "user": [
+            "gurucharan9499"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "profile_pics/my_photo.png",
+        "gender": "male",
+        "gotra": "bhoaj",
+        "nakshatra": "skj",
+        "rashi": "kksjd",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 2,
+    "fields": {
+        "user": [
+            "test_devotee"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 3,
+    "fields": {
+        "user": [
+            "vid"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 4,
+    "fields": {
+        "user": [
+            "testuser123"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 5,
+    "fields": {
+        "user": [
+            "gurucharan"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": "2026-06-27"
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 6,
+    "fields": {
+        "user": [
+            "kashi_handler"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 7,
+    "fields": {
+        "user": [
+            "srisaila_handler"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 8,
+    "fields": {
+        "user": [
+            "kedara_handler"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 9,
+    "fields": {
+        "user": [
+            "ujjaini_handler"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 10,
+    "fields": {
+        "user": [
+            "rambhapuri_handler"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 11,
+    "fields": {
+        "user": [
+            "testuser999"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 12,
+    "fields": {
+        "user": [
+            "devotee_chandrasekhar_356"
+        ],
+        "phone_number": "9448681672",
+        "address": "No. 173, 4th Cross, Belagavi, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Vrishabha",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 13,
+    "fields": {
+        "user": [
+            "devotee_veeresh_421"
+        ],
+        "phone_number": "9880193696",
+        "address": "No. 103, 4th Cross, Rambhapuri, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Gautama",
+        "nakshatra": "Uttara Phalguni",
+        "rashi": "Simha",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 14,
+    "fields": {
+        "user": [
+            "devotee_basavaraj_872"
+        ],
+        "phone_number": "8050190021",
+        "address": "No. 111, 4th Cross, Varanasi, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Ardra",
+        "rashi": "Makara",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 15,
+    "fields": {
+        "user": [
+            "devotee_rajeshwari_191"
+        ],
+        "phone_number": "9880755234",
+        "address": "No. 107, 4th Cross, Kedarnath, India",
+        "profile_pic": "",
+        "gender": "female",
+        "gotra": "Haritasya",
+        "nakshatra": "Rohini",
+        "rashi": "Kumbha",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 16,
+    "fields": {
+        "user": [
+            "devotee_basavaraj_980"
+        ],
+        "phone_number": "9448503980",
+        "address": "No. 150, 4th Cross, Srisailam, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Hasta",
+        "rashi": "Makara",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 17,
+    "fields": {
+        "user": [
+            "devotee_girija_680"
+        ],
+        "phone_number": "8050765368",
+        "address": "No. 59, 4th Cross, Belagavi, India",
+        "profile_pic": "",
+        "gender": "female",
+        "gotra": "Angirasa",
+        "nakshatra": "Magha",
+        "rashi": "Simha",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 18,
+    "fields": {
+        "user": [
+            "devotee_suresh_796"
+        ],
+        "phone_number": "9845497613",
+        "address": "No. 145, 4th Cross, Mysuru, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Kashyapa",
+        "nakshatra": "Mrigashira",
+        "rashi": "Kumbha",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 19,
+    "fields": {
+        "user": [
+            "devotee_suresh_324"
+        ],
+        "phone_number": "9448961992",
+        "address": "No. 69, 4th Cross, Mysuru, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Dhanu",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 20,
+    "fields": {
+        "user": [
+            "devotee_veeresh_453"
+        ],
+        "phone_number": "9880845457",
+        "address": "No. 185, 4th Cross, Hubballi, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Shandilya",
+        "nakshatra": "Krittika",
+        "rashi": "Meena",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 21,
+    "fields": {
+        "user": [
+            "devotee_parvati_994"
+        ],
+        "phone_number": "9448677583",
+        "address": "No. 7, 4th Cross, Bengaluru, India",
+        "profile_pic": "",
+        "gender": "female",
+        "gotra": "Angirasa",
+        "nakshatra": "Punarvasu",
+        "rashi": "Mithuna",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 22,
+    "fields": {
+        "user": [
+            "devotee_chandrasekhar_477"
+        ],
+        "phone_number": "9880896146",
+        "address": "No. 82, 4th Cross, Rambhapuri, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Angirasa",
+        "nakshatra": "Hasta",
+        "rashi": "Kanya",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 23,
+    "fields": {
+        "user": [
+            "devotee_chandrasekhar_746"
+        ],
+        "phone_number": "9480797958",
+        "address": "No. 21, 4th Cross, Kedarnath, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Shandilya",
+        "nakshatra": "Ashwini",
+        "rashi": "Mithuna",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 24,
+    "fields": {
+        "user": [
+            "devotee_chandrasekhar_333"
+        ],
+        "phone_number": "9448708778",
+        "address": "No. 160, 4th Cross, Hubballi, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Haritasya",
+        "nakshatra": "Punarvasu",
+        "rashi": "Vrishchika",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 25,
+    "fields": {
+        "user": [
+            "devotee_siddheshwar_951"
+        ],
+        "phone_number": "9480821675",
+        "address": "No. 49, 4th Cross, Mysuru, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Vishwamitra",
+        "nakshatra": "Swati",
+        "rashi": "Karka",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 26,
+    "fields": {
+        "user": [
+            "devotee_sharanappa_857"
+        ],
+        "phone_number": "9448507167",
+        "address": "No. 159, 4th Cross, Kedarnath, India",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "Haritasya",
+        "nakshatra": "Ashlesha",
+        "rashi": "Meena",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 27,
+    "fields": {
+        "user": [
+            "bhojaraja"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": "2026-06-26"
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 29,
+    "fields": {
+        "user": [
+            "maduve"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 30,
+    "fields": {
+        "user": [
+            "testuser"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 31,
+    "fields": {
+        "user": [
+            "kedara_admin"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.userprofile",
+    "pk": 32,
+    "fields": {
+        "user": [
+            "admin"
+        ],
+        "phone_number": "",
+        "address": "",
+        "profile_pic": "",
+        "gender": "male",
+        "gotra": "",
+        "nakshatra": "",
+        "rashi": "",
+        "date_of_birth": null
+    }
+},
+{
+    "model": "peethas.building",
+    "pk": 1,
+    "fields": {
+        "peetha": 1,
+        "name": "bulding 1",
+        "description": "fwelfjoief",
+        "total_floors": 1,
+        "rooms_per_floor": 5,
+        "ac_floors_count": 1,
+        "ac_room_numbers": "",
+        "ac_room_price": "1000.00",
+        "ordinary_room_price": "500.00",
+        "has_hot_water": false,
+        "hot_water_timings": "",
+        "is_active": true
+    }
+},
+{
+    "model": "peethas.room",
+    "pk": 1,
+    "fields": {
+        "building": 1,
+        "room_number": "G1",
+        "floor": 0,
+        "room_type": "AC",
+        "price_per_night": "1000.00",
+        "is_active": true
+    }
+},
+{
+    "model": "peethas.room",
+    "pk": 2,
+    "fields": {
+        "building": 1,
+        "room_number": "G2",
+        "floor": 0,
+        "room_type": "AC",
+        "price_per_night": "1000.00",
+        "is_active": true
+    }
+},
+{
+    "model": "peethas.room",
+    "pk": 3,
+    "fields": {
+        "building": 1,
+        "room_number": "G3",
+        "floor": 0,
+        "room_type": "AC",
+        "price_per_night": "1000.00",
+        "is_active": true
+    }
+},
+{
+    "model": "peethas.room",
+    "pk": 4,
+    "fields": {
+        "building": 1,
+        "room_number": "G4",
+        "floor": 0,
+        "room_type": "AC",
+        "price_per_night": "1000.00",
+        "is_active": true
+    }
+},
+{
+    "model": "peethas.room",
+    "pk": 5,
+    "fields": {
+        "building": 1,
+        "room_number": "G5",
+        "floor": 0,
+        "room_type": "AC",
+        "price_per_night": "1000.00",
+        "is_active": true
+    }
+}
+]
