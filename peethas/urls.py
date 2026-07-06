@@ -58,5 +58,7 @@ urlpatterns = [
     # Dashboard AJAX APIs
     path('dashboard/api/bookings/', views.dashboard_bookings_list, name='dashboard_bookings_list'),
     path('dashboard/api/search-devotees/', views.dashboard_search_devotees, name='dashboard_search_devotees'),
+    path('dashboard/api/dynamic-content/', views.get_dynamic_content_api, name='get_dynamic_content_api'),
+    path('dashboard/dynamic-content/update/', views.update_dynamic_content, name='update_dynamic_content'),
 ]
 

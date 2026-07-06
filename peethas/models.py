@@ -482,3 +482,51 @@ class AccommodationBooking(models.Model):
         assigned = f"Room {self.room.room_number}" if self.room else "Unassigned"
         return f"{self.devotee_name} - {self.peetha.name} ({assigned}, {self.get_payment_status_display()})"
 
+
+class DynamicParagraph(models.Model):
+    SECTION_CHOICES = (
+        ('heritage_intro', 'Heritage Intro'),
+        ('veerashaiva_intro', 'Veerashaiva Intro'),
+        ('veerashaiva_body', 'Veerashaiva Body'),
+        ('veerashaiva_teachings', 'Veerashaiva Teachings'),
+    )
+    section = models.CharField(max_length=30, choices=SECTION_CHOICES)
+    language = models.CharField(max_length=5)
+    order = models.PositiveIntegerField(default=0)
+    text = models.TextField()
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = "Dynamic Paragraph"
+        verbose_name_plural = "Dynamic Paragraphs"
+
+
+class DynamicContentMeta(models.Model):
+    SECTION_CHOICES = (
+        ('heritage', 'Heritage'),
+        ('veerashaiva', 'Veerashaiva'),
+    )
+    section = models.CharField(max_length=30, choices=SECTION_CHOICES)
+    language = models.CharField(max_length=5)
+    
+    # Text metadata
+    title = models.CharField(max_length=300, blank=True)
+    conclusion = models.TextField(blank=True)
+    
+    # Shlokas
+    shloka_verse = models.TextField(blank=True)
+    shloka_translation = models.TextField(blank=True)
+    shloka_reference = models.CharField(max_length=300, blank=True)
+    
+    # Siddhanta & Teachings (Veerashaiva specific)
+    siddhanta_intro = models.TextField(blank=True)
+    siddhanta_verse = models.TextField(blank=True)
+    siddhanta_translation_label = models.CharField(max_length=100, blank=True)
+    siddhanta_translation = models.TextField(blank=True)
+    teachings_note = models.TextField(blank=True)
+
+    class Meta:
+        unique_together = ('section', 'language')
+        verbose_name = "Dynamic Content Meta"
+        verbose_name_plural = "Dynamic Content Metas"
+

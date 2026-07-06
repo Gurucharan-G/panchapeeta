@@ -1270,6 +1270,124 @@ class BuildingCrudTestCase(TestCase):
         self.assertEqual(Building.objects.filter(pk=building.pk).count(), 0)
 
 
+from io import BytesIO
+
+class DynamicContentTestCase(TestCase):
+    def setUp(self):
+        # Create Superuser (Admin)
+        self.admin_user = User.objects.create_superuser(username='admin', password='password123', email='admin@example.com')
+        # Create Devotee user
+        self.devotee = User.objects.create_user(username='devotee', password='password123')
+        
+        self.client = Client()
+
+    def test_dynamic_content_fallback(self):
+        # By default, helpers should return static dictionary contents
+        from .views import get_dynamic_heritage_content, get_dynamic_veerashaiva_content
+        from .heritage_content import HERITAGE_CONTENT
+        from .veerashaiva_content import VEERASHAIVA_CONTENT
+        
+        heritage = get_dynamic_heritage_content('en')
+        self.assertEqual(heritage['title'], HERITAGE_CONTENT['en']['title'])
+        self.assertEqual(heritage['conclusion'], HERITAGE_CONTENT['en']['conclusion'])
+        
+        veerashaiva = get_dynamic_veerashaiva_content('kn')
+        self.assertEqual(veerashaiva['title'], VEERASHAIVA_CONTENT['kn']['title'])
+
+    def test_update_dynamic_content_unauthorized(self):
+        # Devotee tries to update content -> should fail with 403
+        self.client.login(username='devotee', password='password123')
+        url = reverse('peethas:update_dynamic_content')
+        response = self.client.post(url, {
+            'section': 'heritage',
+            'lang': 'en',
+            'title': 'Test Title'
+        })
+        self.assertEqual(response.status_code, 403)
+
+    def test_update_dynamic_content_success_manual(self):
+        self.client.login(username='admin', password='password123')
+        url = reverse('peethas:update_dynamic_content')
+        
+        # Post new heritage configuration
+        response = self.client.post(url, {
+            'section': 'heritage',
+            'lang': 'en',
+            'title': 'Custom Heritage Title',
+            'conclusion': 'Custom Heritage Conclusion',
+            'shloka_verse': 'Verse text here',
+            'shloka_reference': 'Reference source here',
+            'intro_paragraphs_text': "Para one.\n\nPara two."
+        })
+        
+        # Should redirect back to dashboard
+        self.assertEqual(response.status_code, 302)
+        
+        # Verify database objects created
+        from .models import DynamicContentMeta, DynamicParagraph
+        meta = DynamicContentMeta.objects.get(section='heritage', language='en')
+        self.assertEqual(meta.title, 'Custom Heritage Title')
+        self.assertEqual(meta.conclusion, 'Custom Heritage Conclusion')
+        
+        paras = DynamicParagraph.objects.filter(section='heritage_intro', language='en')
+        self.assertEqual(paras.count(), 2)
+        self.assertEqual(paras[0].text, 'Para one.')
+        self.assertEqual(paras[1].text, 'Para two.')
+
+    def test_update_dynamic_content_file_upload(self):
+        self.client.login(username='admin', password='password123')
+        url = reverse('peethas:update_dynamic_content')
+        
+        # Create a mock text file
+        file_data = b"This is uploaded paragraph one.\n\nThis is uploaded paragraph two."
+        mock_file = BytesIO(file_data)
+        mock_file.name = "paragraphs.txt"
+        
+        response = self.client.post(url, {
+            'section': 'heritage',
+            'lang': 'en',
+            'title': 'Custom Heritage Title File',
+            'intro_paragraphs_file': mock_file
+        })
+        
+        self.assertEqual(response.status_code, 302)
+        
+        from .models import DynamicParagraph
+        paras = DynamicParagraph.objects.filter(section='heritage_intro', language='en')
+        self.assertEqual(paras.count(), 2)
+        self.assertEqual(paras[0].text, 'This is uploaded paragraph one.')
+        self.assertEqual(paras[1].text, 'This is uploaded paragraph two.')
+        
+    def test_get_dynamic_content_api(self):
+        # Populate database record
+        from .models import DynamicContentMeta, DynamicParagraph
+        DynamicContentMeta.objects.create(
+            section='heritage',
+            language='en',
+            title='API Title Test',
+            conclusion='API Conclusion Test',
+            shloka_verse='API Verse Test',
+            shloka_reference='API Reference Test'
+        )
+        DynamicParagraph.objects.create(
+            section='heritage_intro',
+            language='en',
+            order=0,
+            text='API Para Test'
+        )
+        
+        self.client.login(username='admin', password='password123')
+        url = reverse('peethas:get_dynamic_content_api')
+        response = self.client.get(url, {'section': 'heritage', 'lang': 'en'})
+        
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['title'], 'API Title Test')
+        self.assertEqual(data['conclusion'], 'API Conclusion Test')
+        self.assertEqual(data['shloka_verse'], 'API Verse Test')
+        self.assertEqual(data['intro_paragraphs'], 'API Para Test')
+
+
 
 
 

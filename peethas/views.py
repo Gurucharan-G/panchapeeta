@@ -1,14 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
+from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Peetha, TravelPlan, PeethaHandler, PeethaMedia, Pooja, PoojaBooking, PeethaPaymentConfig, FeatureFlag, Building, Room, AccommodationBooking
+from .models import Peetha, TravelPlan, PeethaHandler, PeethaMedia, Pooja, PoojaBooking, PeethaPaymentConfig, FeatureFlag, Building, Room, AccommodationBooking, DynamicParagraph, DynamicContentMeta
 from .forms import TravelPlanForm, PeethaMediaAddForm, PeethaMediaEditForm, PeethaHandlerForm, PeethaPaymentConfigForm, PoojaForm, BuildingForm
-from django.db import models
+from django.db import models, transaction
 
 import datetime
 import json
@@ -439,6 +440,63 @@ def translate_object(obj, lang):
 
 # ===== Public Frontend Views =====
 
+def get_dynamic_heritage_content(lang):
+    meta = DynamicContentMeta.objects.filter(section='heritage', language=lang).first()
+    if not meta:
+        return HERITAGE_CONTENT.get(lang, HERITAGE_CONTENT['en'])
+    
+    paras = DynamicParagraph.objects.filter(section='heritage_intro', language=lang)
+    intro_paragraphs = [p.text for p in paras] if paras.exists() else HERITAGE_CONTENT.get(lang, {}).get('intro_paragraphs', [])
+
+    return {
+        'title': meta.title or HERITAGE_CONTENT.get(lang, {}).get('title', ''),
+        'intro_paragraphs': intro_paragraphs,
+        'shloka': {
+            'verse': meta.shloka_verse or HERITAGE_CONTENT.get(lang, {}).get('shloka', {}).get('verse', ''),
+            'reference': meta.shloka_reference or HERITAGE_CONTENT.get(lang, {}).get('shloka', {}).get('reference', ''),
+        },
+        'peethas': HERITAGE_CONTENT.get(lang, {}).get('peethas', []),
+        'conclusion': meta.conclusion or HERITAGE_CONTENT.get(lang, {}).get('conclusion', ''),
+    }
+
+
+def get_dynamic_veerashaiva_content(lang):
+    meta = DynamicContentMeta.objects.filter(section='veerashaiva', language=lang).first()
+    if not meta:
+        return VEERASHAIVA_CONTENT.get(lang, VEERASHAIVA_CONTENT['en'])
+    
+    intro_paras = [p.text for p in DynamicParagraph.objects.filter(section='veerashaiva_intro', language=lang)]
+    body_paras = [p.text for p in DynamicParagraph.objects.filter(section='veerashaiva_body', language=lang)]
+    teachings_paras = [p.text for p in DynamicParagraph.objects.filter(section='veerashaiva_teachings', language=lang)]
+    
+    if not intro_paras:
+        intro_paras = VEERASHAIVA_CONTENT.get(lang, {}).get('intro_paragraphs', [])
+    if not body_paras:
+        body_paras = VEERASHAIVA_CONTENT.get(lang, {}).get('body_paragraphs', [])
+    if not teachings_paras:
+        teachings_paras = VEERASHAIVA_CONTENT.get(lang, {}).get('teachings', [])
+
+    return {
+        'title': meta.title or VEERASHAIVA_CONTENT.get(lang, {}).get('title', ''),
+        'opening_shloka': {
+            'verse': meta.shloka_verse or VEERASHAIVA_CONTENT.get(lang, {}).get('opening_shloka', {}).get('verse', ''),
+            'translation': meta.shloka_translation or VEERASHAIVA_CONTENT.get(lang, {}).get('opening_shloka', {}).get('translation', ''),
+            'reference': meta.shloka_reference or VEERASHAIVA_CONTENT.get(lang, {}).get('opening_shloka', {}).get('reference', ''),
+        },
+        'intro_paragraphs': intro_paras,
+        'siddhanta': {
+            'intro': meta.siddhanta_intro or VEERASHAIVA_CONTENT.get(lang, {}).get('siddhanta', {}).get('intro', ''),
+            'verse': meta.siddhanta_verse or VEERASHAIVA_CONTENT.get(lang, {}).get('siddhanta', {}).get('verse', ''),
+            'translation_label': meta.siddhanta_translation_label or VEERASHAIVA_CONTENT.get(lang, {}).get('siddhanta', {}).get('translation_label', ''),
+            'translation': meta.siddhanta_translation or VEERASHAIVA_CONTENT.get(lang, {}).get('siddhanta', {}).get('translation', ''),
+        },
+        'body_paragraphs': body_paras,
+        'teachings': teachings_paras,
+        'teachings_note': meta.teachings_note or VEERASHAIVA_CONTENT.get(lang, {}).get('teachings_note', ''),
+        'conclusion': meta.conclusion or VEERASHAIVA_CONTENT.get(lang, {}).get('conclusion', ''),
+    }
+
+
 def home(request):
     lang = get_language(request)
     peethas = [translate_object(p, lang) for p in Peetha.objects.all()]
@@ -461,8 +519,8 @@ def home(request):
         'use_rectangular_portraits': USE_RECTANGULAR_PORTRAITS,
         'lang': lang,
         'labels': TRANSLATIONS[lang],
-        'heritage_content': HERITAGE_CONTENT[lang],
-        'veerashaiva_content': VEERASHAIVA_CONTENT[lang],
+        'heritage_content': get_dynamic_heritage_content(lang),
+        'veerashaiva_content': get_dynamic_veerashaiva_content(lang),
         'is_birthday': is_birthday,
     })
 
@@ -767,6 +825,10 @@ def dashboard_home(request):
         FeatureFlag.objects.get_or_create(
             name='DEVOTIONAL_CHANTING',
             defaults={'is_enabled': True, 'description': 'Enable the floating devotional chanting player at the bottom right'}
+        )
+        FeatureFlag.objects.get_or_create(
+            name='DEVOTIONAL_CHANTING_AUTOPLAY',
+            defaults={'is_enabled': True, 'description': 'Enable autoplay for the devotional chanting player'}
         )
         
         # Forms for action panels
@@ -2313,3 +2375,124 @@ def accommodation_booking_success(request, booking_id):
         'booking': booking,
         'peetha': peetha,
     })
+
+
+@login_required(login_url='peethas:login')
+def get_dynamic_content_api(request):
+    if not (request.user.is_superuser or hasattr(request.user, 'handler_profile') or request.user.is_staff):
+        raise PermissionDenied("You do not have permission to access this API.")
+        
+    section = request.GET.get('section', 'heritage')
+    lang = request.GET.get('lang', 'en')
+    
+    if section == 'heritage':
+        content = get_dynamic_heritage_content(lang)
+        data = {
+            'title': content.get('title', ''),
+            'conclusion': content.get('conclusion', ''),
+            'shloka_verse': content.get('shloka', {}).get('verse', ''),
+            'shloka_reference': content.get('shloka', {}).get('reference', ''),
+            'shloka_translation': '',
+            'intro_paragraphs': "\n\n".join(content.get('intro_paragraphs', [])),
+            'body_paragraphs': "",
+            'teachings_paragraphs': "",
+            'teachings_note': "",
+            'siddhanta_intro': "",
+            'siddhanta_verse': "",
+            'siddhanta_translation_label': "",
+            'siddhanta_translation': "",
+        }
+    else:
+        content = get_dynamic_veerashaiva_content(lang)
+        data = {
+            'title': content.get('title', ''),
+            'conclusion': content.get('conclusion', ''),
+            'shloka_verse': content.get('opening_shloka', {}).get('verse', ''),
+            'shloka_translation': content.get('opening_shloka', {}).get('translation', ''),
+            'shloka_reference': content.get('opening_shloka', {}).get('reference', ''),
+            'intro_paragraphs': "\n\n".join(content.get('intro_paragraphs', [])),
+            'body_paragraphs': "\n\n".join(content.get('body_paragraphs', [])),
+            'teachings_paragraphs': "\n\n".join(content.get('teachings', [])),
+            'teachings_note': content.get('teachings_note', ''),
+            'siddhanta_intro': content.get('siddhanta', {}).get('intro', ''),
+            'siddhanta_verse': content.get('siddhanta', {}).get('verse', ''),
+            'siddhanta_translation_label': content.get('siddhanta', {}).get('translation_label', ''),
+            'siddhanta_translation': content.get('siddhanta', {}).get('translation', ''),
+        }
+        
+    return JsonResponse(data)
+
+
+@login_required(login_url='peethas:login')
+def update_dynamic_content(request):
+    if not (request.user.is_superuser or hasattr(request.user, 'handler_profile') or request.user.is_staff):
+        raise PermissionDenied("You do not have permission to perform this action.")
+        
+    if request.method == 'POST':
+        section = request.POST.get('section')
+        lang = request.POST.get('lang')
+        
+        if section not in ['heritage', 'veerashaiva'] or lang not in ['en', 'kn', 'hi', 'mr', 'te', 'ta', 'ml']:
+            messages.error(request, "Invalid section or language selection.")
+            return redirect('peethas:dashboard_home')
+            
+        meta, created = DynamicContentMeta.objects.get_or_create(section=section, language=lang)
+        meta.title = request.POST.get('title', '').strip()
+        meta.conclusion = request.POST.get('conclusion', '').strip()
+        meta.shloka_verse = request.POST.get('shloka_verse', '').strip()
+        meta.shloka_reference = request.POST.get('shloka_reference', '').strip()
+        meta.shloka_translation = request.POST.get('shloka_translation', '').strip()
+        
+        if section == 'veerashaiva':
+            meta.siddhanta_intro = request.POST.get('siddhanta_intro', '').strip()
+            meta.siddhanta_verse = request.POST.get('siddhanta_verse', '').strip()
+            meta.siddhanta_translation_label = request.POST.get('siddhanta_translation_label', '').strip()
+            meta.siddhanta_translation = request.POST.get('siddhanta_translation', '').strip()
+            meta.teachings_note = request.POST.get('teachings_note', '').strip()
+            
+        meta.save()
+        
+        def get_clean_paragraphs(raw_text):
+            lines = raw_text.replace('\r\n', '\n').split('\n\n')
+            return [l.strip() for l in lines if l.strip()]
+
+        paragraph_types = []
+        if section == 'heritage':
+            paragraph_types = [('heritage_intro', 'intro_paragraphs_text', 'intro_paragraphs_file')]
+        else:
+            paragraph_types = [
+                ('veerashaiva_intro', 'intro_paragraphs_text', 'intro_paragraphs_file'),
+                ('veerashaiva_body', 'body_paragraphs_text', 'body_paragraphs_file'),
+                ('veerashaiva_teachings', 'teachings_paragraphs_text', 'teachings_paragraphs_file'),
+            ]
+            
+        for db_sec, text_field, file_field in paragraph_types:
+            paras_list = []
+            
+            uploaded_file = request.FILES.get(file_field)
+            if uploaded_file:
+                try:
+                    file_content = uploaded_file.read().decode('utf-8')
+                    paras_list = get_clean_paragraphs(file_content)
+                except Exception as e:
+                    messages.error(request, f"Error reading uploaded file for {db_sec}: {str(e)}")
+                    raw_text = request.POST.get(text_field, '')
+                    paras_list = get_clean_paragraphs(raw_text)
+            else:
+                raw_text = request.POST.get(text_field, '')
+                paras_list = get_clean_paragraphs(raw_text)
+                
+            with transaction.atomic():
+                DynamicParagraph.objects.filter(section=db_sec, language=lang).delete()
+                for idx, para_text in enumerate(paras_list):
+                    DynamicParagraph.objects.create(
+                        section=db_sec,
+                        language=lang,
+                        order=idx,
+                        text=para_text
+                    )
+                    
+        messages.success(request, f"Homepage content for {section.capitalize()} ({lang.upper()}) updated successfully!")
+        return redirect(reverse('peethas:dashboard_home') + '#homepage-content-section')
+
+    return redirect('peethas:dashboard_home')

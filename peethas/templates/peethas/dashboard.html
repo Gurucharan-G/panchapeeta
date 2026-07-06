@@ -914,6 +914,10 @@
                             <span class="menu-icon">🔍</span>
                             <span class="menu-text">Devotee Search</span>
                         </button>
+                        <button class="sidebar-menu-item tab-btn" onclick="switchTab('homepage-content-section', this)">
+                            <span class="menu-icon">📝</span>
+                            <span class="menu-text">Homepage Paragraphs</span>
+                        </button>
                         {% endif %}
                     {% else %}
                         <!-- Peetha Sidebar Menu -->
@@ -1003,6 +1007,10 @@
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('accommodation-section', this)">
                             <span class="menu-icon">🏨</span>
                             <span class="menu-text">Stays & Rooms</span>
+                        </button>
+                        <button class="sidebar-menu-item tab-btn" onclick="switchTab('homepage-content-section', this)">
+                            <span class="menu-icon">📝</span>
+                            <span class="menu-text">Homepage Paragraphs</span>
                         </button>
                     {% endif %}
                 </nav>
@@ -2540,6 +2548,176 @@
 
         </div>
         {% endif %}
+
+        <!-- TAB: Homepage Content Management (Both Super Admin and Handlers) -->
+        <div id="homepage-content-section" class="tab-content">
+            <div class="dashboard-card" style="padding: clamp(16px, 3vw, 32px); border-radius: 14px; box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04); background: white; border: 1px solid #e2e8f0; margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 16px;">
+                    <h3 style="margin: 0; font-family: 'Playfair Display', serif; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; color: var(--dark);">
+                        <span>📝</span> Homepage Paragraphs & Shlokas
+                    </h3>
+                    <p style="margin: 0; font-size: 0.85rem; background: #fff8f0; border: 1px solid #ffe2ca; color: #c2410c; padding: 4px 12px; border-radius: 9999px; font-weight: 600;">
+                        Live Website Editor
+                    </p>
+                </div>
+                
+                <p style="font-size: 0.92rem; color: #64748b; margin-top: 0; margin-bottom: 24px; line-height: 1.5;">
+                    Select the target section and language to customize the content on the home page. You can either edit the text fields directly or upload a text file (`.txt`) containing the paragraphs. Note: separate individual paragraphs with an empty line (double newlines) in text files or textareas.
+                </p>
+
+                <form method="post" action="{% url 'peethas:update_dynamic_content' %}" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
+                    {% csrf_token %}
+                    
+                    <!-- Selectors -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                        <div>
+                            <label for="content-section-select" style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 6px;">Select Page Section</label>
+                            <select name="section" id="content-section-select" onchange="loadDynamicContent()" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: inherit; cursor: pointer; background: white; outline: none; transition: border-color 0.2s;" required>
+                                <option value="heritage">Panchapeetas / Heritage Section</option>
+                                <option value="veerashaiva">Srimad Veerashiva Section</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="content-lang-select" style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 6px;">Select Language</label>
+                            <select name="lang" id="content-lang-select" onchange="loadDynamicContent()" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: inherit; cursor: pointer; background: white; outline: none; transition: border-color 0.2s;" required>
+                                <option value="en">English (EN)</option>
+                                <option value="kn">Kannada (KN)</option>
+                                <option value="hi">Hindi (HI)</option>
+                                <option value="mr">Marathi (MR)</option>
+                                <option value="te">Telugu (TE)</option>
+                                <option value="ta">Tamil (TA)</option>
+                                <option value="ml">Malayalam (ML)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Meta Inputs -->
+                    <div style="border-top: 1px solid #f1f5f9; padding-top: 20px; display: flex; flex-direction: column; gap: 16px;">
+                        <h4 style="margin: 0 0 4px; font-size: 1.1rem; color: #334155;">Heading & Details</h4>
+                        
+                        <div>
+                            <label for="content-title" style="display: block; font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Section Title / Header</label>
+                            <input type="text" name="title" id="content-title" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: inherit; box-sizing: border-box; outline: none; transition: border-color 0.2s;" />
+                        </div>
+                    </div>
+
+                    <!-- Shloka Inputs -->
+                    <div style="background: #f8fafc; border: 1px solid #f1f5f9; padding: 16px; border-radius: 10px; display: flex; flex-direction: column; gap: 16px;">
+                        <h4 style="margin: 0; font-size: 1.05rem; color: #334155; display: flex; align-items: center; gap: 8px;">
+                            <span>📜</span> Shloka / Verse Details
+                        </h4>
+                        
+                        <div>
+                            <label for="content-shloka-verse" style="display: block; font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Shloka Text</label>
+                            <textarea name="shloka_verse" id="content-shloka-verse" rows="3" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: monospace; box-sizing: border-box; outline: none; resize: vertical;"></textarea>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                            <div>
+                                <label for="content-shloka-reference" style="display: block; font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Reference Source (e.g. Siddhanta Shikhamani)</label>
+                                <input type="text" name="shloka_reference" id="content-shloka-reference" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: inherit; box-sizing: border-box;" />
+                            </div>
+                            <div class="shloka-translation-wrapper">
+                                <label for="content-shloka-translation" style="display: block; font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Shloka Translation (English/Marathi etc.)</label>
+                                <textarea name="shloka_translation" id="content-shloka-translation" rows="2" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: inherit; box-sizing: border-box;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Siddhanta inputs (Veerashaiva only) -->
+                    <div id="siddhanta-fields-container" style="background: #fffbeb; border: 1px solid #fde68a; padding: 16px; border-radius: 10px; display: flex; flex-direction: column; gap: 16px;">
+                        <h4 style="margin: 0; font-size: 1.05rem; color: #78350f; display: flex; align-items: center; gap: 8px;">
+                            <span>☸️</span> Siddhanta Shikhamani Declaration
+                        </h4>
+                        
+                        <div>
+                            <label for="content-siddhanta-intro" style="display: block; font-size: 0.85rem; font-weight: 600; color: #78350f; margin-bottom: 6px;">Introductory Line</label>
+                            <input type="text" name="siddhanta_intro" id="content-siddhanta-intro" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box;" />
+                        </div>
+                        
+                        <div>
+                            <label for="content-siddhanta-verse" style="display: block; font-size: 0.85rem; font-weight: 600; color: #78350f; margin-bottom: 6px;">Siddhanta Shloka</label>
+                            <textarea name="siddhanta_verse" id="content-siddhanta-verse" rows="2" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: monospace; box-sizing: border-box; resize: vertical;"></textarea>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                            <div>
+                                <label for="content-siddhanta-translation-label" style="display: block; font-size: 0.85rem; font-weight: 600; color: #78350f; margin-bottom: 6px;">Translation Label (e.g. Translation:)</label>
+                                <input type="text" name="siddhanta_translation_label" id="content-siddhanta-translation-label" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box;" />
+                            </div>
+                            <div>
+                                <label for="content-siddhanta-translation" style="display: block; font-size: 0.85rem; font-weight: 600; color: #78350f; margin-bottom: 6px;">Translation Text</label>
+                                <textarea name="siddhanta_translation" id="content-siddhanta-translation" rows="2" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; resize: vertical;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paragraph Inputs -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <h4 style="margin: 0; font-size: 1.1rem; color: #334155;">Section Paragraphs</h4>
+                        
+                        <!-- Intro Paragraphs -->
+                        <div class="paragraph-input-card" style="border: 1px solid #e2e8f0; padding: 16px; border-radius: 10px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+                                <label for="content-intro-paragraphs" style="font-weight: 600; color: #334155; font-size: 0.9rem;">Introductory Paragraphs</label>
+                                <span style="font-size: 0.8rem; color: #64748b;">Separate paragraphs with double newlines (empty lines)</span>
+                            </div>
+                            <textarea name="intro_paragraphs_text" id="content-intro-paragraphs" rows="8" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: inherit; box-sizing: border-box; line-height: 1.5; resize: vertical; outline: none; margin-bottom: 12px;"></textarea>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 4px;">OR: Upload text file (`.txt`) for Intro Paragraphs</label>
+                                <input type="file" name="intro_paragraphs_file" accept=".txt" style="font-size: 0.85rem; font-family: inherit; color: #475569;" />
+                            </div>
+                        </div>
+
+                        <!-- Body Paragraphs (Veerashaiva Only) -->
+                        <div id="body-paragraphs-container" class="paragraph-input-card" style="border: 1px solid #e2e8f0; padding: 16px; border-radius: 10px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+                                <label for="content-body-paragraphs" style="font-weight: 600; color: #334155; font-size: 0.9rem;">Body Paragraphs</label>
+                                <span style="font-size: 0.8rem; color: #64748b;">Separate paragraphs with double newlines (empty lines)</span>
+                            </div>
+                            <textarea name="body_paragraphs_text" id="content-body-paragraphs" rows="8" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: inherit; box-sizing: border-box; line-height: 1.5; resize: vertical; outline: none; margin-bottom: 12px;"></textarea>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 4px;">OR: Upload text file (`.txt`) for Body Paragraphs</label>
+                                <input type="file" name="body_paragraphs_file" accept=".txt" style="font-size: 0.85rem; font-family: inherit; color: #475569;" />
+                            </div>
+                        </div>
+
+                        <!-- Teachings Paragraphs (Veerashaiva Only, usually English) -->
+                        <div id="teachings-paragraphs-container" class="paragraph-input-card" style="border: 1px solid #e2e8f0; padding: 16px; border-radius: 10px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+                                <label for="content-teachings-paragraphs" style="font-weight: 600; color: #334155; font-size: 0.9rem;">Teachings / Points List</label>
+                                <span style="font-size: 0.8rem; color: #64748b;">Separate individual points with double newlines</span>
+                            </div>
+                            <textarea name="teachings_paragraphs_text" id="content-teachings-paragraphs" rows="6" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: inherit; box-sizing: border-box; line-height: 1.5; resize: vertical; outline: none; margin-bottom: 12px;"></textarea>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 4px;">OR: Upload text file (`.txt`) for Teachings</label>
+                                <input type="file" name="teachings_paragraphs_file" accept=".txt" style="font-size: 0.85rem; font-family: inherit; color: #475569;" />
+                            </div>
+                            <div style="margin-top: 16px;">
+                                <label for="content-teachings-note" style="display: block; font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Closing Teachings Note (optional)</label>
+                                <textarea name="teachings_note" id="content-teachings-note" rows="2" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: inherit; box-sizing: border-box; resize: vertical;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conclusion Inputs -->
+                    <div style="border-top: 1px solid #f1f5f9; padding-top: 20px;">
+                        <label for="content-conclusion" style="display: block; font-size: 0.88rem; font-weight: 600; color: #334155; margin-bottom: 6px;">Section Conclusion / Summary</label>
+                        <textarea name="conclusion" id="content-conclusion" rows="4" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: inherit; box-sizing: border-box; line-height: 1.5; resize: vertical; outline: none;"></textarea>
+                    </div>
+
+                    <!-- Submit -->
+                    <div style="border-top: 1px solid #f1f5f9; padding-top: 20px; display: flex; justify-content: flex-end; gap: 12px;">
+                        <button type="submit" style="padding: 12px 30px; background: var(--saffron); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(194, 65, 12, 0.15); transition: background-color 0.2s, transform 0.1s; font-family: inherit;">
+                            Save Homepage Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        </div>
+        {% endif %}
             </main>
         </div>
 
@@ -3112,8 +3290,64 @@
                 });
                 header.appendChild(closeBtn);
             }
+            // Load homepage dynamic content configuration on initialize
+            if (document.getElementById('content-section-select')) {
+                loadDynamicContent();
+            }
         });
     });
+
+    // ========================================
+    // Homepage Dynamic Content Loader API call
+    // ========================================
+    function loadDynamicContent() {
+        const section = document.getElementById('content-section-select').value;
+        const lang = document.getElementById('content-lang-select').value;
+        
+        const siddhantaContainer = document.getElementById('siddhanta-fields-container');
+        const bodyParagraphsContainer = document.getElementById('body-paragraphs-container');
+        const teachingsParagraphsContainer = document.getElementById('teachings-paragraphs-container');
+        const shlokaTranslationWrapper = document.querySelector('.shloka-translation-wrapper');
+
+        if (section === 'heritage') {
+            siddhantaContainer.style.display = 'none';
+            bodyParagraphsContainer.style.display = 'none';
+            teachingsParagraphsContainer.style.display = 'none';
+            shlokaTranslationWrapper.style.display = 'none';
+        } else {
+            siddhantaContainer.style.display = 'flex';
+            bodyParagraphsContainer.style.display = 'block';
+            teachingsParagraphsContainer.style.display = 'block';
+            shlokaTranslationWrapper.style.display = 'block';
+        }
+
+        fetch(`{% url "peethas:get_dynamic_content_api" %}?section=${section}&lang=${lang}`)
+            .then(res => {
+                if (!res.ok) throw new Error("API call failed");
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById('content-title').value = data.title || '';
+                document.getElementById('content-conclusion').value = data.conclusion || '';
+                document.getElementById('content-shloka-verse').value = data.shloka_verse || '';
+                document.getElementById('content-shloka-reference').value = data.shloka_reference || '';
+                document.getElementById('content-shloka-translation').value = data.shloka_translation || '';
+                document.getElementById('content-intro-paragraphs').value = data.intro_paragraphs || '';
+                
+                if (section === 'veerashaiva') {
+                    document.getElementById('content-body-paragraphs').value = data.body_paragraphs || '';
+                    document.getElementById('content-teachings-paragraphs').value = data.teachings_paragraphs || '';
+                    document.getElementById('content-teachings-note').value = data.teachings_note || '';
+                    document.getElementById('content-siddhanta-intro').value = data.siddhanta_intro || '';
+                    document.getElementById('content-siddhanta-verse').value = data.siddhanta_verse || '';
+                    document.getElementById('content-siddhanta-translation-label').value = data.siddhanta_translation_label || '';
+                    document.getElementById('content-siddhanta-translation').value = data.siddhanta_translation || '';
+                }
+            })
+            .catch(err => {
+                console.error("Error loading homepage dynamic content:", err);
+            });
+    }
 
     // ========================================
     // Unified Bookings & Reports Lookup (AJAX)
