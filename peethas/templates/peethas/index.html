@@ -603,65 +603,141 @@
             audio.volume = 0.08;
             audio.muted = true;
             let hasStarted = false;
+            const autoplayEnabled = {{ devotional_chanting_autoplay|yesno:"true,false" }};
+            // Unique ID to identify this specific tab/window
+            const currentTabId = Math.random().toString(36).substring(2, 9);
 
-        function doPlay() {
-            if (hasStarted) return;
-            hasStarted = true;
-            audio.currentTime = 15;   // seek + play in one shot
-            audio.play().then(() => {
-                audio.muted = false;
-                updatePlayerUI(true);
-            }).catch(err => {
-                console.warn('Autoplay blocked:', err);
-                audio.muted = false;
-                hasStarted = false;    // allow retry on interaction
+            let isTimeRestored = false;
+
+            // Robust function to restore saved playback time
+            function restorePlaybackTime() {
+                if (isTimeRestored) return;
+
+                const savedTime = localStorage.getItem('chanting_currentTime');
+                const targetTime = savedTime ? parseFloat(savedTime) : 15;
+                
+                if (!isNaN(targetTime)) {
+                    try {
+                        audio.currentTime = targetTime;
+                        console.log('Chanting Player: Restored time to', targetTime);
+                    } catch (e) {
+                        console.warn('Chanting Player: Failed to seek:', e);
+                    }
+                }
+                isTimeRestored = true;
+            }
+
+            function savePlaybackTime() {
+                if (!isTimeRestored) return; // Guard against overwriting before restore
+                if (audio && audio.currentTime > 0) {
+                    localStorage.setItem('chanting_currentTime', audio.currentTime);
+                }
+            }
+
+            // Save playback position periodically and on page leave
+            let lastSavedTime = 0;
+            audio.addEventListener('timeupdate', () => {
+                const currentTime = audio.currentTime;
+                // Throttle storage writes to once per second
+                if (Math.abs(currentTime - lastSavedTime) >= 1) {
+                    savePlaybackTime();
+                    lastSavedTime = currentTime;
+                }
             });
-        }
+            audio.addEventListener('pause', savePlaybackTime);
+            window.addEventListener('pagehide', savePlaybackTime);
 
-        // Trigger as soon as browser can play
-        if (audio.readyState >= 2) {
-            // Audio already loaded (e.g. cached)
-            doPlay();
-        } else {
-            audio.addEventListener('canplay', doPlay, { once: true });
-        }
+            function doPlay() {
+                if (!autoplayEnabled) return;
+                // If user paused it explicitly in this or another tab, keep it paused
+                if (localStorage.getItem('chanting_paused_by_user') === 'true') return;
+                if (hasStarted) return;
+                hasStarted = true;
 
-        // Hard fallback: first user interaction
-        function onInteract() {
-            doPlay();
-            document.removeEventListener('click', onInteract);
-            document.removeEventListener('scroll', onInteract);
-        }
-        document.addEventListener('click', onInteract);
-        document.addEventListener('scroll', onInteract);
-
-        function updatePlayerUI(playing) {
-            const player = document.getElementById('devotional-player');
-            const playIcon = player.querySelector('.play-icon');
-            const ecg = player.querySelector('.ecg-wave');
-            const toggleBtn = player.querySelector('.player-toggle-btn');
-
-            if (playing) {
-                player.classList.add('playing');
-                toggleBtn.classList.add('playing');
-                playIcon.style.display = 'none';
-                ecg.style.display = 'block';
-            } else {
-                player.classList.remove('playing');
-                toggleBtn.classList.remove('playing');
-                playIcon.style.display = 'block';
-                ecg.style.display = 'none';
+                audio.play().then(() => {
+                    // Seek first, then unmute to make transition completely glitch-free
+                    restorePlaybackTime();
+                    audio.muted = false;
+                    localStorage.setItem('chanting_playing_tab_id', currentTabId);
+                    updatePlayerUI(true);
+                }).catch(err => {
+                    console.warn('Autoplay blocked:', err);
+                    audio.muted = false;
+                    hasStarted = false;    // allow retry on interaction
+                });
             }
-        }
 
-        function togglePlayState() {
-            if (audio.paused) {
-                audio.play().then(() => updatePlayerUI(true)).catch(err => console.error(err));
+            // Trigger as soon as browser can play
+            if (audio.readyState >= 2) {
+                // Audio already loaded (e.g. cached)
+                doPlay();
             } else {
-                audio.pause();
-                updatePlayerUI(false);
+                audio.addEventListener('canplay', doPlay, { once: true });
             }
-        }
+
+            // Hard fallback: first user interaction
+            function onInteract() {
+                doPlay();
+                document.removeEventListener('click', onInteract);
+                document.removeEventListener('scroll', onInteract);
+            }
+            document.addEventListener('click', onInteract);
+            document.addEventListener('scroll', onInteract);
+
+            function updatePlayerUI(playing) {
+                const player = document.getElementById('devotional-player');
+                const playIcon = player.querySelector('.play-icon');
+                const ecg = player.querySelector('.ecg-wave');
+                const toggleBtn = player.querySelector('.player-toggle-btn');
+
+                if (playing) {
+                    player.classList.add('playing');
+                    toggleBtn.classList.add('playing');
+                    playIcon.style.display = 'none';
+                    ecg.style.display = 'block';
+                } else {
+                    player.classList.remove('playing');
+                    toggleBtn.classList.remove('playing');
+                    playIcon.style.display = 'block';
+                    ecg.style.display = 'none';
+                }
+            }
+
+            function togglePlayState() {
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        restorePlaybackTime();
+                        audio.muted = false;
+                        localStorage.setItem('chanting_paused_by_user', 'false');
+                        localStorage.setItem('chanting_playing_tab_id', currentTabId);
+                        updatePlayerUI(true);
+                    }).catch(err => console.error(err));
+                } else {
+                    audio.pause();
+                    localStorage.setItem('chanting_paused_by_user', 'true');
+                    updatePlayerUI(false);
+                }
+            }
+
+            // Expose togglePlayState to the global window scope
+            window.togglePlayState = togglePlayState;
+
+            // Multi-tab synchronization
+            window.addEventListener('storage', (event) => {
+                if (event.key === 'chanting_playing_tab_id' && event.newValue !== currentTabId) {
+                    // Pause if another tab starts playing
+                    if (!audio.paused) {
+                        audio.pause();
+                        updatePlayerUI(false);
+                    }
+                } else if (event.key === 'chanting_paused_by_user' && event.newValue === 'true') {
+                    // Pause if user pauses on any other tab
+                    if (!audio.paused) {
+                        audio.pause();
+                        updatePlayerUI(false);
+                    }
+                }
+            });
         }
     </script>
     {% endif %}
