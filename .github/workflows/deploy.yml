@@ -16,5 +16,4 @@ jobs:
           username: ubuntu
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           script: |
-            cd /opt/panchapeethas/app
-            sudo -u panchapeethas ./deploy.sh
+            sudo -u panchapeethas -H sh -c "cd /opt/panchapeethas/app && ./deploy.sh"
