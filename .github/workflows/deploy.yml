@@ -16,4 +16,6 @@ jobs:
           username: ubuntu
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           script: |
-            sudo -u panchapeethas -H sh -c "cd /opt/panchapeethas/app && ./deploy.sh"
+            sudo -u panchapeethas -H sh -c "cd /opt/panchapeethas/app && git pull origin main && venv/bin/pip install -r requirements.txt && venv/bin/python manage.py migrate --noinput && venv/bin/python manage.py collectstatic --noinput"
+            sudo systemctl restart panchapeethas
+            sudo systemctl restart nginx
