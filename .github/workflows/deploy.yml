@@ -15,7 +15,18 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           key: ${{ secrets.AWS_PRIVATE_KEY }}
+          script_stop: true
           script: |
-            sudo -u panchapeethas -H sh -c "cd /opt/panchapeethas/app && git pull origin main && venv/bin/pip install -r requirements.txt && venv/bin/python manage.py migrate --noinput && venv/bin/python manage.py collectstatic --noinput"
+            echo "=== Pulling latest code ==="
+            sudo -u panchapeethas -H sh -c "cd /opt/panchapeethas/app && git pull origin main"
+
+            echo "=== Installing dependencies ==="
+            sudo -u panchapeethas -H sh -c "cd /opt/panchapeethas/app && venv/bin/pip install -r requirements.txt --quiet"
+
+            echo "=== Restarting services (auto-runs migrate + collectstatic) ==="
             sudo systemctl restart panchapeethas
             sudo systemctl restart nginx
+
+            echo "=== Verifying deployment ==="
+            sleep 3
+            sudo systemctl is-active --quiet panchapeethas && echo "✅ Service is running" || echo "❌ Service failed to start"
