@@ -63,10 +63,14 @@
 
                     <!-- Mutt photo in center -->
                     <div class="card-mutt-photo">
-                        <img loading="lazy" 
-                             src="{% static 'images/mutts/' %}{{ peetha.slug }}.jpg" 
-                             alt="{{ peetha.name }} Photo"
-                             onerror="this.onerror=function(){ this.onerror=function(){ this.parentElement.classList.add('no-image'); }; this.src='{% static 'images/mutts/' %}{{ peetha.slug }}.webp'; }; this.src='{% static 'images/mutts/' %}{{ peetha.slug }}.png';">
+                        {% if peetha.mutt_photo %}
+                            <img loading="lazy" src="{{ peetha.mutt_photo.url }}" alt="{{ peetha.name }} Photo">
+                        {% else %}
+                            <img loading="lazy" 
+                                 src="{% static 'images/mutts/' %}{{ peetha.slug }}.jpg" 
+                                 alt="{{ peetha.name }} Photo"
+                                 onerror="this.onerror=function(){ this.onerror=function(){ this.parentElement.classList.add('no-image'); }; this.src='{% static 'images/mutts/' %}{{ peetha.slug }}.webp'; }; this.src='{% static 'images/mutts/' %}{{ peetha.slug }}.png';">
+                        {% endif %}
                         <div class="mutt-fallback">
                             <span class="mutt-fallback-icon">🛕</span>
                             <span class="mutt-fallback-text">Photo</span>

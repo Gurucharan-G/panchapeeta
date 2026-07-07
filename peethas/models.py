@@ -17,6 +17,9 @@ class Peetha(models.Model):
     history = models.TextField(help_text="Detailed history and origin story")
     order = models.PositiveIntegerField(default=0)
 
+    # Mutt details
+    mutt_photo = models.ImageField(upload_to='peetha_media/mutts/', blank=True, null=True, help_text="Photo of the Mutt/monastery")
+
     # Jagathguru details
     swamiji_photo = models.ImageField(upload_to='peetha_media/swamiji/', blank=True, null=True, help_text="Photo of the current Jagathguru")
     swamiji_bio = models.TextField(blank=True, help_text="Biography of the current Jagathguru")
