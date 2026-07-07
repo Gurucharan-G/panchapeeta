@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panchapeetas — Complete Features Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --saffron: #f97316;
+            --saffron-dark: #ea580c;
+            --saffron-light: #ffedd5;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            --gold: #d97706;
+            --emerald: #10b981;
+            --crimson: #ef4444;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--slate-50);
+            color: var(--slate-900);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar styling */
+        aside {
+            width: var(--sidebar-width);
+            background-color: var(--slate-900);
+            color: white;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--slate-800);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            background: linear-gradient(135deg, var(--saffron-dark), var(--saffron));
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header span {
+            font-size: 0.75rem;
+            opacity: 0.85;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            overflow-y: auto;
+            flex: 1;
+            padding: 16px 12px;
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-menu a:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-menu a.active {
+            color: white;
+            background: linear-gradient(90deg, rgba(249, 115, 22, 0.15), rgba(249, 115, 22, 0.05));
+            border-left: 3px solid var(--saffron);
+            font-weight: 600;
+        }
+
+        /* Main layout */
+        main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        header.main-header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            color: var(--slate-900);
+            margin-bottom: 6px;
+        }
+
+        .header-title p {
+            color: var(--slate-600);
+            font-size: 1rem;
+        }
+
+        /* Interactive Controls */
+        .controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            background-color: white;
+            color: var(--slate-700);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            background-color: var(--slate-100);
+        }
+
+        .lang-btn.active {
+            background-color: var(--saffron);
+            border-color: var(--saffron);
+            color: white;
+            box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2);
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-container input:focus {
+            border-color: var(--saffron);
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+        }
+
+        /* Documentation section styles */
+        section {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            scroll-margin-top: 40px;
+            transition: all 0.3s ease;
+        }
+
+        section:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            border-bottom: 2px solid var(--saffron-light);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            color: var(--slate-900);
+        }
+
+        .section-badge {
+            background-color: var(--saffron-light);
+            color: var(--saffron-dark);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Bilingual blocks */
+        .lang-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 24px;
+        }
+
+        /* For single-column mode */
+        .single-lang .lang-block {
+            grid-template-columns: 1fr;
+        }
+
+        .lang-en, .lang-kn {
+            transition: all 0.2s ease;
+        }
+
+        .lang-kn {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+        }
+
+        .lang-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--slate-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lang-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #cbd5e1;
+        }
+
+        h3.block-subtitle {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            color: var(--slate-800);
+            margin-bottom: 10px;
+        }
+
+        p.description {
+            color: var(--slate-700);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        /* Lists */
+        ul.feature-list {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+
+        ul.feature-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: var(--slate-700);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        ul.feature-list li::before {
+            content: '•';
+            color: var(--saffron);
+            font-weight: bold;
+            font-size: 1.25rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        /* Screenshot component */
+        .screenshot-container {
+            margin: 24px 0;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: var(--slate-100);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .screenshot-header {
+            background-color: white;
+            padding: 10px 16px;
+            border-bottom: 1px solid #cbd5e1;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--slate-600);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .screenshot-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 500px;
+            object-fit: cover;
+            object-position: top center;
+        }
+
+        /* Tables */
+        table.spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            font-size: 0.9rem;
+        }
+
+        table.spec-table th, table.spec-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        table.spec-table th {
+            background-color: var(--slate-50);
+            font-weight: 600;
+            color: var(--slate-800);
+        }
+
+        table.spec-table tr:hover td {
+            background-color: rgba(241, 245, 249, 0.5);
+        }
+
+        /* Callouts / Warnings */
+        .alert {
+            padding: 16px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            gap: 12px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .alert-info {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0284c7;
+            color: #0369a1;
+        }
+
+        .alert-warning {
+            background-color: #fffbeb;
+            border-left: 4px solid var(--gold);
+            color: #b45309;
+        }
+
+        /* Quick stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, white, var(--slate-50));
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .stat-card h4 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--saffron-dark);
+            margin-bottom: 4px;
+        }
+
+        .stat-card p {
+            font-size: 0.85rem;
+            color: var(--slate-600);
+            font-weight: 500;
+        }
+
+        /* Footer styling */
+        footer {
+            margin-top: 60px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 24px;
+            text-align: center;
+            color: var(--slate-500);
+            font-size: 0.88rem;
+        }
+
+        /* Language Toggle Classes */
+        .hide-en .lang-en, .hide-en .lang-title-en {
+            display: none !important;
+        }
+
+        .hide-kn .lang-kn, .hide-kn .lang-title-kn {
+            display: none !important;
+        }
+
+        .single-lang-active .lang-block {
+            grid-template-columns: 1fr !important;
+        }
+
+        /* Highlighting match */
+        .search-highlight {
+            background-color: #fef08a;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="sidebar-header">
+            PANCHAPEETAS
+            <span>User & Admin Guide / ಬಳಕೆದಾರರ ಮಾರ್ಗದರ್ಶಿ</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#overview" class="active">1. Overview / ಪರಿಚಯ</a></li>
+            <li><a href="#multilingual">2. Multilingual Support / ಬಹುಭಾಷಾ ಬೆಂಬಲ</a></li>
+            <li><a href="#landing-page">3. Landing Page / ಮುಖಪುಟ</a></li>
+            <li><a href="#peetha-profiles">4. Peetha Profiles / ಪೀಠದ ವಿವರಗಳು</a></li>
+            <li><a href="#travel-planner">5. Travel Planner / ಪ್ರವಾಸ ಯೋಜನೆ</a></li>
+            <li><a href="#seva-booking">6. Seva Booking / ಸೇವಾ ಬುಕಿಂಗ್</a></li>
+            <li><a href="#accommodation">7. Accommodation / ವಸತಿ ವ್ಯವಸ್ಥೆ</a></li>
+            <li><a href="#dashboard-analytics">8. Management Screen / ನಿರ್ವಾಹಕರ ಸ್ಕ್ರೀನ್</a></li>
+            <li><a href="#content-editor">9. Content Editor / ವಿಷಯ ಮಾರ್ಪಾಡು</a></li>
+            <li><a href="#devotee-experience">10. Devotee Profiles / ಭಕ್ತರ ಖಾತೆ</a></li>
+            <li><a href="#mobile-app">11. Mobile App / ಮೊಬೈಲ್ ಆಪ್</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main>
+        <header class="main-header">
+            <div class="header-title">
+                <h1>Platform Features Guide</h1>
+                <p>Complete guide detailing all features of the website in simple English & Kannada</p>
+            </div>
+            
+            <!-- Language Controls -->
+            <div class="controls">
+                <button class="lang-btn" onclick="toggleLanguage('en')">English Only</button>
+                <button class="lang-btn" onclick="toggleLanguage('kn')">ಕನ್ನಡ ಮಾತ್ರ</button>
+                <button class="lang-btn active" onclick="toggleLanguage('both')">Bilingual / ಎರಡೂ</button>
+            </div>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="docSearch" onkeyup="filterGuide()" placeholder="Search guide modules, keywords... / ಮಾಹಿತಿ ಹುಡುಕಿ...">
+        </div>
+
+        <!-- SECTION 1: OVERVIEW -->
+        <section id="overview">
+            <div class="section-header">
+                <h2>1. System Overview / ಸಮಗ್ರ ಪರಿಚಯ</h2>
+                <span class="section-badge">Introduction</span>
+            </div>
+
+            <div class="lang-block">
+                <div class="lang-en">
+                    <div class="lang-title lang-title-en">English Documentation</div>
+                    <h3 class="block-subtitle">Veerashaiva Panchapeetas Portal</h3>
+                    <p class="description">
+                        The Panchapeetas portal is a unified online platform representing the historical and sacred monasteries (Peethas) of the Veerashaiva tradition: Rambhapuri, Ujjaini, Kedara, Srisaila, and Kashi Peethas.
+                    </p>
+                    <p class="description">
+                        The website is designed for devotees to connect with the Peethas, book holy rituals, schedule accommodations, view swamiji travel programs, and stay updated on latest notifications.
+                    </p>
+                </div>
+                <div class="lang-kn">
+                    <div class="lang-title lang-title-kn">ಕನ್ನಡ ವಿವರಣೆ</div>
+                    <h3 class="block-subtitle">ವೀರಶೈವ ಪಂಚಪೀಠಗಳ ತಾಣ</h3>
+                    <p class="description">
+                        ಪಂಚಪೀಠ ಜಾಲತಾಣವು ವೀರಶೈವ ಸಂಪ್ರದಾಯದ ಐತಿಹಾಸಿಕ ಮತ್ತು ಪರಮ ಪವಿತ್ರ ಜ್ಞಾನಪೀಠಗಳಾದ ರಂಭಾಪುರಿ, ಉಜ್ಜಯಿನಿ, ಕೇದಾರ, ಶ್ರೀಶೈಲ ಮತ್ತು ಕಾಶಿ ಪೀಠಗಳನ್ನು ಒಂದೇ ವೇದಿಕೆಯಲ್ಲಿ ಪ್ರಸ್ತುತಪಡಿಸುವ ತಾಣವಾಗಿದೆ.
+                    </p>
+                    <p class="description">
+                        ಈ ವೆಬ್‌ಸೈಟ್ ಭಕ್ತರಿಗೆ ಪೀಠಗಳೊಂದಿಗೆ ನೇರ ಸಂಪರ್ಕ ಸಾಧಿಸಲು, ಪೂಜೆಗಳನ್ನು ಕಾಯ್ದಿರಿಸಲು, ವಸತಿ ಕೋಣೆಗಳನ್ನು ಬುಕ್ ಮಾಡಲು ಹಾಗೂ ಶ್ರೀ ಜಗದ್ಗುರುಗಳ ಪ್ರವಾಸ ಯೋಜನೆಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.
+                    </p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>7</h4>
+                    <p>Languages / ಭಾಷೆಗಳು</p>
+                </div>
+                <div class="stat-card">
+                    <h4>100%</h4>
+                    <p>Devotee Friendly / ಭಕ್ತಸ್ನೇಹಿ</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Instant</h4>
+                    <p>Confirmations / ತಕ್ಷಣದ ದೃಢೀಕರಣ</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: MULTILINGUAL SYSTEM -->
+        <section id="multilingual">
+            <div class="section-header">
+                <h2>2. Multilingual Support / ಬಹುಭಾಷಾ ಬೆಂಬಲ</h2>
+                <span class="section-badge">Languages</span>
+            </div>
+
+            <div class="lang-block">
+                <div class="lang-en">
+                    <div class="lang-title lang-title-en">English Documentation</div>
+                    <p class="description">
+                        To help devotees from all parts of India, the website is fully available in 7 languages: **English, Kannada, Hindi, Telugu, Tamil, Malayalam, and Marathi**.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>One-Click Language Switch:</strong> Devotees can easily switch the language using the menu at the top, which immediately updates all text, buttons, titles, and details.</li>
+                        <li><strong>Local Language Text:</strong> Essential details like histories, biographies of Swamijis, and seva details are translated carefully to reflect traditional vocabulary.</li>
+                    </ul>
+                </div>
+                <div class="lang-kn">
+                    <div class="lang-title lang-title-kn">ಕನ್ನಡ ವಿವರಣೆ</div>
+                    <p class="description">
+                        ದೇಶದ ವಿವಿಧ ಭಾಗಗಳ ಭಕ್ತರ ಅನುಕೂಲಕ್ಕಾಗಿ, ಈ ವೆಬ್‌ಸೈಟ್ ಸಂಪೂರ್ಣವಾಗಿ 7 ಪ್ರಮುಖ ಭಾಷೆಗಳಲ್ಲಿ ಲಭ್ಯವಿದೆ: **ಇಂಗ್ಲಿಷ್, ಕನ್ನಡ, ಹಿಂದಿ, ತೆಲುಗು, ತಮಿಳು, ಮಲಯಾಳಂ ಮತ್ತು ಮರಾಠಿ**.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>ಸುಲಭ ಭಾಷಾ ಬದಲಾವಣೆ:</strong> ವೆಬ್‌ಸೈಟ್‌ನ ಮೇಲ್ಭಾಗದಲ್ಲಿರುವ ಮೆನು ಕ್ಲಿಕ್ ಮಾಡಿ ಭಾಷೆಯನ್ನು ಬದಲಾಯಿಸಬಹುದು. ಇದು ತಕ್ಷಣವೇ ಎಲ್ಲಾ ಮಾಹಿತಿ, ಬಟನ್ ಮತ್ತು ವಿವರಣೆಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿದ ಭಾಷೆಗೆ ಬದಲಿಸುತ್ತದೆ.</li>
+                        <li><strong>ಅಚ್ಚುಕಟ್ಟಾದ ಭಾಷಾಂತರ:</strong> ಮಠಗಳ ಇತಿಹಾಸ, ಶ್ರೀಗಳ ಪರಿಚಯ ಮತ್ತು ಪೂಜೆಯ ವಿವರಗಳನ್ನು ಭಾಷಾ ಮರ್ಯಾದೆಗೆ ತಕ್ಕಂತೆ ಅಚ್ಚುಕಟ್ಟಾಗಿ ಭಾಷಾಂತರಿಸಲಾಗಿದೆ.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <table class="spec-table">
+                <thead>
+                    <tr>
+                        <th>Language Name / ಭಾಷೆಯ ಹೆಸರು</th>
+                        <th>Coverage / ಬಳಕೆ ವ್ಯಾಪ್ತಿ</th>
+                        <th>User Interface Status / ಸ್ಥಿತಿ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>English</td>
+                        <td>All India & Global</td>
+                        <td>Fully Available / ಪೂರ್ಣ ಲಭ್ಯ</td>
+                    </tr>
+                    <tr>
+                        <td>Kannada / ಕನ್ನಡ</td>
+                        <td>Karnataka state & Devotees</td>
+                        <td>Fully Available / ಪೂರ್ಣ ಲಭ್ಯ</td>
+                    </tr>
+                    <tr>
+                        <td>Hindi / हिन्दी</td>
+                        <td>Northern states & National</td>
+                        <td>Fully Available / ಪೂರ್ಣ ಲಭ್ಯ</td>
+                    </tr>
+                    <tr>
+                        <td>Telugu / తెలుగు</td>
+                        <td>Andhra Pradesh & Telangana</td>
+                        <td>Fully Available / ಪೂರ್ಣ ಲಭ್ಯ</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SECTION 3: LANDING PAGE -->
+        <section id="landing-page">
+            <div class="section-header">
+                <h2>3. Landing Page / ಮುಖಪುಟದ ವಿಶೇಷತೆಗಳು</h2>
+                <span class="section-badge">Homepage</span>
+            </div>
+
+            <div class="lang-block">
+                <div class="lang-en">
+                    <div class="lang-title lang-title-en">English Documentation</div>
+                    <p class="description">
+                        The homepage features a beautiful, clean, spiritual theme with warm saffron and gold highlights.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>Monastery Summary Cards:</strong> Interactive display boxes showing brief details of each Peetha. Each Peetha has its own distinct spiritual color theme (e.g. Kedara uses Teal, Rambhapuri uses Saffron, Srisaila uses Green).</li>
+                        <li><strong>Devotional Music Player:</strong> A small, floating audio player at the bottom corner that plays holy stotras and chanting. It is devotee-friendly (remembers if you paused it even if you refresh or browse other pages).</li>
+                        <li><strong>Heritage & Veerashaivism Info:</strong> Highlights brief stories and holy scriptures (such as Siddhanta Shikhamani quotes) to educate visitors.</li>
+                    </ul>
+                </div>
+                <div class="lang-kn">
+                    <div class="lang-title lang-title-kn">ಕನ್ನಡ ವಿವರಣೆ</div>
+                    <p class="description">
+                        ಮುಖಪುಟವು ಭಕ್ತರಿಗೆ ಉನ್ನತ ಆಧ್ಯಾತ್ಮಿಕ ಅನುಭವ ನೀಡುವಂತೆ ಕೇಸರಿ ಹಾಗೂ ಬಂಗಾರದ ಬಣ್ಣಗಳ ವಿನ್ಯಾಸದಿಂದ ಕಂಗೊಳಿಸುತ್ತದೆ.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>ಪಂಚಪೀಠಗಳ ಪರಿಚಯ ಕಾರ್ಡ್‌ಗಳು:</strong> ಪ್ರತಿ ಪೀಠದ ಸಂಕ್ಷಿಪ್ತ ವಿವರಗಳು ಇಲ್ಲಿ ದೊರೆಯುತ್ತವೆ. ಪ್ರತಿಯೊಂದು ಪೀಠಕ್ಕೂ ತನ್ನದೇ ಆದ ವಿಶಿಷ್ಟ ಧಾರ್ಮಿಕ ಬಣ್ಣವನ್ನು ನೀಡಲಾಗಿದೆ (ಉದಾ: ರಂಭಾಪುರಿ ಪೀಠಕ್ಕೆ ಕೇಸರಿ, ಕೇದಾರಕ್ಕೆ ಹಸಿರು-ನೀಲಿ).</li>
+                        <li><strong>ಆಧ್ಯಾತ್ಮಿಕ ಸಂಗೀತ ವಾಹಕ:</strong> ಪುಟದ ಕೊನೆಯಲ್ಲಿ ಭಕ್ತರಿಗಾಗಿ ಸುಂದರ ಮಂತ್ರ ಜಪ ಕೇಳಲು ಪ್ಲೇಯರ್ ಇದೆ. ನೀವು ಬೇರೆ ಪುಟಗಳಿಗೆ ಹೋದರೂ ಇದು ತಾನಾಗಿಯೇ ಬಂದ್ ಆಗದೆ ಹಾಡುತ್ತಿರುತ್ತದೆ.</li>
+                        <li><strong>ಸಿದ್ಧಾಂತ ಶಿಖಾಮಣಿ ಶ್ಲೋಕಗಳು:</strong> ಸನಾತನ ವೀರಶೈವ ಧರ್ಮದ ಶ್ರೇಷ್ಠ ಶ್ಲೋಕಗಳು ಭಕ್ತರ ಓದಿಗೆ ಲಭ್ಯವಿವೆ.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <span>Main Landing Page UI / ಮುಖಪುಟದ ನೋಟ</span>
+                    <span>screenshots/homepage.png</span>
+                </div>
+                <img src="screenshots/homepage.png" alt="Homepage Screenshot">
+            </div>
+        </section>
+
+        <!-- SECTION 4: PEETHA PROFILES -->
+        <section id="peetha-profiles">
+            <div class="section-header">
+                <h2>4. Peetha Profiles & Live Streams / ಪೀಠದ ವಿವರ ಪುಟಗಳು</h2>
+                <span class="section-badge">Details Page</span>
+            </div>
+
+            <div class="lang-block">
+                <div class="lang-en">
+                    <div class="lang-title lang-title-en">English Documentation</div>
+                    <p class="description">
+                        Each Peetha has its own detailed profile page showing history and schedules.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>Sacred Details:</strong> Shows details of the Throne (Simhasana), Founding Sage, Holy Shiva Linga, Location, Contact numbers, and photos of the current Jagadguru Swamiji.</li>
+                        <li><strong>Live Darshan Screen:</strong> An integrated video player that displays live streaming of daily prayers, special poojas, or festival events directly from the Peetha.</li>
+                        <li><strong>Photo & Video Gallery:</strong> High-quality collections of festival celebrations and holy places.</li>
+                    </ul>
+                </div>
+                <div class="lang-kn">
+                    <div class="lang-title lang-title-kn">ಕನ್ನಡ ವಿವರಣೆ</div>
+                    <p class="description">
+                        ಪ್ರತಿ ಪೀಠಕ್ಕೂ ಪ್ರತ್ಯೇಕ ಪುಟಗಳಿದ್ದು, ಅಲ್ಲಿನ ಸಂಪೂರ್ಣ ಇತಿಹಾಸ ಹಾಗೂ ಕಾರ್ಯಕ್ರಮಗಳನ್ನು ಪ್ರದರ್ಶಿಸಲಾಗುತ್ತದೆ.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>ಪೀಠದ ಪವಿತ್ರ ವಿವರಗಳು:</strong> ಧರ್ಮಪೀಠದ ಸಿಂಹಾಸನ, ಆರಾಧ್ಯ ದೈವ, ಸಂಸ್ಥಾಪಕ ಋಷಿಗಳು ಹಾಗೂ ಪ್ರಸ್ತುತ ಪೀಠಾಧಿಪತಿಗಳ ಹೆಸರು ಮತ್ತು ಪೂಜ್ಯ ಶ್ರೀಗಳ ಭಾವಚಿತ್ರಗಳು ಇಲ್ಲಿವೆ.</li>
+                        <li><strong>ನೇರ ಪ್ರಸಾರ ವಿಭಾಗ (Live Darshan):</strong> ಮಠಗಳಲ್ಲಿ ಜರುಗುವ ನಿತ್ಯ ಪೂಜೆ, ವಿಶೇಷ ಮಹೋತ್ಸವಗಳು ಮತ್ತು ಅಭಿಷೇಕಗಳನ್ನು ಭಕ್ತರು ಮನೆಯಲ್ಲೇ ಕುಳಿತು ನೇರವಾಗಿ ವೀಕ್ಷಿಸಬಹುದು.</li>
+                        <li><strong>ಚಿತ್ರ ಸಂಪುಟ:</strong> ಮಠದ ಪ್ರಮುಖ ಉತ್ಸವಗಳು ಮತ್ತು ಐತಿಹಾಸಿಕ ಸ್ಥಳಗಳ ಸುಂದರ ಚಿತ್ರಗಳು.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <span>Peetha Profile Page / ಪೀಠದ ಪ್ರೊಫೈಲ್</span>
+                    <span>screenshots/peetha_detail.png</span>
+                </div>
+                <img src="screenshots/peetha_detail.png" alt="Peetha Detail Screenshot">
+            </div>
+        </section>
+
+        <!-- SECTION 5: TRAVEL PLANNER -->
+        <section id="travel-planner">
+            <div class="section-header">
+                <h2>5. Swamiji Travel Planner / ಶ್ರೀಗಳ ಪ್ರವಾಸ ಪಟ್ಟಿ</h2>
+                <span class="section-badge">Travel Calendar</span>
+            </div>
+
+            <div class="lang-block">
+                <div class="lang-en">
+                    <div class="lang-title lang-title-en">English Documentation</div>
+                    <p class="description">
+                        An easy-to-use travel schedule system designed to help devotees seek Swamiji's blessings or book local padapooja during their tours.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>Tour Schedules:</strong> Lists the cities Swamiji is visiting, tour dates, purpose of the visit (such as dharmayatra or padapooja), and local contact details.</li>
+                        <li><strong>Calendar Filter:</strong> Allows devotees to select a specific month and year to view upcoming travel schedules.</li>
+                    </ul>
+                </div>
+                <div class="lang-kn">
+                    <div class="lang-title lang-title-kn">ಕನ್ನಡ ವಿವರಣೆ</div>
+                    <p class="description">
+                        ಶ್ರೀ ಜಗದ್ಗುರುಗಳ ದೇಶ ಸಂಚಾರ ಮತ್ತು ಧರ್ಮಪ್ರಚಾರದ ಪ್ರವಾಸ ಪಟ್ಟಿಯನ್ನು ಭಕ್ತರಿಗೆ ಸುಲಭವಾಗಿ ತಲುಪಿಸುವ ಕ್ಯಾಲೆಂಡರ್ ವ್ಯವಸ್ಥೆಯಾಗಿದೆ.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>ಪ್ರವಾಸದ ವಿವರಗಳು:</strong> ಶ್ರೀಗಳು ಭೇಟಿ ನೀಡುವ ಊರು, ಪ್ರವಾಸದ ಅವಧಿ, ಕಾರ್ಯಕ್ರಮದ ಉದ್ದೇಶ ಮತ್ತು ಸ್ಥಳೀಯ ಸಂಘಟಕರ ಸಂಪರ್ಕ ಸಂಖ್ಯೆಯನ್ನು ಪ್ರದರ್ಶಿಸುತ್ತದೆ.</li>
+                        <li><strong>ತಿಂಗಳ ಫಿಲ್ಟರ್:</strong> ಭಕ್ತರು ತಮಗೆ ಬೇಕಾದ ವರ್ಷ ಮತ್ತು ತಿಂಗಳನ್ನು ಆಯ್ದುಕೊಂಡು ಪ್ರವಾಸದ ಮಾಹಿತಿಯನ್ನು ಸುಲಭವಾಗಿ ನೋಡಬಹುದು.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: SEVA BOOKING -->
+        <section id="seva-booking">
+            <div class="section-header">
+                <h2>6. Seva/Pooja Booking / ಸೇವಾ ಮತ್ತು ಪೂಜೆ ಬುಕಿಂಗ್</h2>
+                <span class="section-badge">Seva Portal</span>
+            </div>
+
+            <div class="lang-block">
+                <div class="lang-en">
+                    <div class="lang-title lang-title-en">English Documentation</div>
+                    <p class="description">
+                        Devotees can book stotra recitations, holy archanas, and special sevas online.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>Devotee Family Records:</strong> Devotees can save their family member names along with Nakshatra (Star) and Gotra, which will automatically be printed for sankalpa during rituals.</li>
+                        <li><strong>Smart Date Availability:</strong> Shows how many slots are open for a particular seva on any given date, preventing overbooking.</li>
+                        <li><strong>Receipt Download:</strong> On booking confirmation, a clean downloadable receipt is generated for devotees to show at the counter when visiting.</li>
+                    </ul>
+                </div>
+                <div class="lang-kn">
+                    <div class="lang-title lang-title-kn">ಕನ್ನಡ ವಿವರಣೆ</div>
+                    <p class="description">
+                        ಭಕ್ತರು ಮಠಗಳಲ್ಲಿ ಜರುಗುವ ಅಭಿಷೇಕಗಳು, ವಿಶೇಷ ಪೂಜೆಗಳು ಮತ್ತು ಸೇವೆಗಳನ್ನು ಮನೆಯಿಂದಲೇ ಆನ್‌ಲೈನ್ ಮೂಲಕ ಕಾಯ್ದಿರಿಸಬಹುದು.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>ಕುಟುಂಬ ಸದಸ್ಯರ ವಿವರ:</strong> ಭಕ್ತರು ತಮ್ಮ ಮನೆಯವರ ಹೆಸರು, ಜನ್ಮ ನಕ್ಷತ್ರ ಮತ್ತು ಗೋತ್ರವನ್ನು ನಮೂದಿಸಬಹುದು. ಸಂಕಲ್ಪ ಪೂಜೆಯ ಸಮಯದಲ್ಲಿ ಈ ಹೆಸರುಗಳನ್ನು ಬಳಸಲಾಗುತ್ತದೆ.</li>
+                        <li><strong>ಖಾಲಿ ಇರುವ ಸೀಟುಗಳ ಮಾಹಿತಿ:</strong> ಆಯ್ದುಕೊಂಡ ದಿನದಂದು ಆ ಪೂಜೆಗೆ ಇನ್ನು ಎಷ್ಟು ಅವಕಾಶಗಳಿವೆ ಎಂಬುದನ್ನು ತಾನಾಗಿಯೇ ತೋರಿಸುತ್ತದೆ.</li>
+                        <li><strong>ರಶೀದಿ ಡೌನ್‌ಲೋಡ್:</strong> ಬುಕಿಂಗ್ ಯಶಸ್ವಿಯಾದ ನಂತರ ಭಕ್ತರು ಮೊಬೈಲ್‌ನಲ್ಲೇ ರಶೀದಿಯನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿಕೊಳ್ಳಬಹುದು.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: ACCOMMODATION -->
+        <section id="accommodation">
+            <div class="section-header">
+                <h2>7. Accommodation Booking / ವಸತಿ ಕೊಠಡಿ ಕಾಯ್ದಿರಿಸುವಿಕೆ</h2>
+                <span class="section-badge">Yatri Nivas</span>
+            </div>
+
+            <div class="lang-block">
+                <div class="lang-en">
+                    <div class="lang-title lang-title-en">English Documentation</div>
+                    <p class="description">
+                        Pilgrims can book rooms online at the Peetha’s Yatri Nivas (Guest Houses).
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>Room Selection:</strong> Clearly displays room choices based on categories such as AC, Ordinary Non-AC, and availability of hot water.</li>
+                        <li><strong>Date Selectors:</strong> Enter arrival and departure dates to see room availability.</li>
+                        <li><strong>Guest Limits:</strong> Recommends extra mattresses and highlights maximum guest allowance per room category.</li>
+                    </ul>
+                </div>
+                <div class="lang-kn">
+                    <div class="lang-title lang-title-kn">ಕನ್ನಡ ವಿವರಣೆ</div>
+                    <p class="description">
+                        ಮಠದ ಯಾತ್ರಿ ನಿವಾಸಗಳಲ್ಲಿ ಭಕ್ತರು ಕೊಠಡಿಗಳನ್ನು ಮುಂಚಿತವಾಗಿ ಕಾಯ್ದಿರಿಸಲು ಸಹಾಯ ಮಾಡುವ ವ್ಯವಸ್ಥೆ.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>ಕೊಠಡಿಗಳ ಆಯ್ಕೆ:</strong> ಹವಾನಿಯಂತ್ರಿತ (AC), ಸಾಮಾನ್ಯ ಕೊಠಡಿಗಳು (Non-AC) ಮತ್ತು ಬಿಸಿನೀರಿನ ವ್ಯವಸ್ಥೆ ಇರುವ ಮಾಹಿತಿಗಳನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ಪ್ರದರ್ಶಿಸುತ್ತದೆ.</li>
+                        <li><strong>ದಿನಾಂಕದ ಆಯ್ಕೆ:</strong> ಭಕ್ತರು ಬರುವ ಮತ್ತು ಹೋಗುವ ದಿನಾಂಕವನ್ನು ನಮೂದಿಸಿ ಕೊಠಡಿಗಳು ಲಭ್ಯವಿವೆಯೇ ಎಂದು ಪರಿಶೀಲಿಸಬಹುದು.</li>
+                        <li><strong>ಜನರ ಮಿತಿ:</strong> ಪ್ರತಿ ರೂಮಿನಲ್ಲಿ ಎಷ್ಟು ಜನರಿಗೆ ಅವಕಾಶವಿದೆ ಮತ್ತು ಹೆಚ್ಚಿನ ಹಾಸಿಗೆ ಲಭ್ಯತೆಯ ವಿವರಗಳನ್ನು ನೀಡುತ್ತದೆ.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: DASHBOARD & STATS -->
+        <section id="dashboard-analytics">
+            <div class="section-header">
+                <h2>8. Management Dashboard / ಮಠದ ಆಡಳಿತ ಸ್ಕ್ರೀನ್</h2>
+                <span class="section-badge">Admin Controls</span>
+            </div>
+
+            <div class="lang-block">
+                <div class="lang-en">
+                    <div class="lang-title lang-title-en">English Documentation</div>
+                    <p class="description">
+                        A secure control dashboard for the main administrator (Super Admin) and individual temple managers (Peetha Handlers).
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>Overview Statistics:</strong> Display total registered devotees, number of successful bookings, total donations/revenue collected, and active payment modes.</li>
+                        <li><strong>Task Panels:</strong> Managers can easily add new seva types, enter room categories, modify pricing, upload pictures, and update the Swamiji's travel plan.</li>
+                        <li><strong>Feature Toggles:</strong> Super Admins can turn features on or off instantly (e.g., turn on/off the stotra player).</li>
+                    </ul>
+                </div>
+                <div class="lang-kn">
+                    <div class="lang-title lang-title-kn">ಕನ್ನಡ ವಿವರಣೆ</div>
+                    <p class="description">
+                        ಸೂಪರ್ ಅಡ್ಮಿನ್ ಹಾಗೂ ಆಯಾ ಮಠದ ವ್ಯವಸ್ಥಾಪಕರು ಜಂಟಿಯಾಗಿ ಬಳಸುವ ಸುಲಭ ಮತ್ತು ಭದ್ರವಾದ ಆಡಳಿತ ತಾಣ.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>ಅಂಕಿ-ಅಂಶಗಳ ವಿವರ:</strong> ಒಟ್ಟು ನೊಂದಾಯಿತ ಭಕ್ತರು, ಯಶಸ್ವಿ ಪೂಜೆಗಳು, ಸಂಗ್ರಹವಾದ ಕಾಣಿಕೆ ವಿವರಗಳನ್ನು ಚಾರ್ಟ್‌ಗಳಲ್ಲಿ ಸುಲಭವಾಗಿ ಅರ್ಥವಾಗುವಂತೆ ತೋರಿಸುತ್ತದೆ.</li>
+                        <li><strong>ಸೇವಾ ವಿವರ ಸೇರ್ಪಡೆ:</strong> ಹೊಸ ಸೇವೆಗಳ ಸೇರ್ಪಡೆ, ಬೆಲೆ ನಿಗದಿ, ಶ್ರೀಗಳ ಪ್ರವಾಸ ಯೋಜನೆಗಳು ಮತ್ತು ಮಠದ ಚಿತ್ರಗಳನ್ನು ಮ್ಯಾನೇಜರ್‌ಗಳು ಸ್ವತಃ ಅಪ್‌ಲೋಡ್ ಮಾಡಬಹುದು.</li>
+                        <li><strong>ವೈಶಿಷ್ಟ್ಯಗಳ ನಿಯಂತ್ರಣ (Toggles):</strong> ವೆಬ್‌ಸೈಟ್‌ನ ಪ್ರಮುಖ ವಿಭಾಗಗಳನ್ನು (ಉದಾ: ಮಂತ್ರ ಜಪದ ಪ್ಲೇಯರ್) ಅಗತ್ಯವಿದ್ದಾಗ ಸೂಪರ್ ಅಡ್ಮಿನ್ ಆಫ್ ಅಥವಾ ಆನ್ ಮಾಡಬಹುದು.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <span>Main Management Screen Dashboard / ಪ್ರಧಾನ ನಿರ್ವಹಣಾ ಫಲಕ</span>
+                    <span>screenshots/dashboard_home.png</span>
+                </div>
+                <img src="screenshots/dashboard_home.png" alt="Super Admin Dashboard">
+            </div>
+        </section>
+
+        <!-- SECTION 9: CONTENT EDITOR -->
+        <section id="content-editor">
+            <div class="section-header">
+                <h2>9. Homepage Content Editor / ಮುಖಪುಟದ ವಿಷಯ ನಿರ್ವಾಹಕ</h2>
+                <span class="section-badge">CMS</span>
+            </div>
+
+            <div class="lang-block">
+                <div class="lang-en">
+                    <div class="lang-title lang-title-en">English Documentation</div>
+                    <p class="description">
+                        Allows temple managers to update descriptions on the homepage without needing a web developer to edit code files.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>Direct Text Updates:</strong> Change titles, introductions, shlokas, and conclusions for any section and language dynamically.</li>
+                        <li><strong>Text File Upload:</strong> Upload a simple `.txt` document to instantly update large blocks of paragraphs on the website.</li>
+                    </ul>
+                </div>
+                <div class="lang-kn">
+                    <div class="lang-title lang-title-kn">ಕನ್ನಡ ವಿವರಣೆ</div>
+                    <p class="description">
+                        ವೆಬ್ ಡಿಸೈನರ್‌ಗಳ ಸಹಾಯವಿಲ್ಲದೆಯೇ ಮಠದ ವ್ಯವಸ್ಥಾಪಕರು ತಾವೇ ಮುಖಪುಟದ ಪಠ್ಯಗಳನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಈ ವ್ಯವಸ್ಥೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>ನೇರ ಬದಲಾವಣೆ:</strong> ಶೀರ್ಷಿಕೆಗಳು, ಪರಿಚಯ ಪಠ್ಯಗಳು, ಶ್ಲೋಕಗಳು ಮತ್ತು ಮುಕ್ತಾಯದ ಮಾತುಗಳನ್ನು ಸುಲಭವಾಗಿ ನವೀಕರಿಸಬಹುದು.</li>
+                        <li><strong>ಫೈಲ್ ಅಪ್‌ಲೋಡ್:</strong> ದೊಡ್ಡದಾದ ಲೇಖನಗಳನ್ನು ಕೇವಲ ಟೆಕ್ಸ್ಟ್ ಫೈಲ್ ರೂಪದಲ್ಲಿ ಅಪ್‌ಲೋಡ್ ಮಾಡುವ ಮೂಲಕ ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ಪ್ರಕಟಿಸಬಹುದು.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <span>Handler Content Editor Screen / ವಿಷಯ ನವೀಕರಣ ವ್ಯವಸ್ಥೆ</span>
+                    <span>screenshots/dashboard_peetha.png</span>
+                </div>
+                <img src="screenshots/dashboard_peetha.png" alt="Handler Dashboard">
+            </div>
+        </section>
+
+        <!-- SECTION 10: DEVOTEE EXPERIENCE -->
+        <section id="devotee-experience">
+            <div class="section-header">
+                <h2>10. Devotee Experience & Birthday Wishes / ಭಕ್ತರ ಪ್ರೊಫೈಲ್</h2>
+                <span class="section-badge">Devotee Dashboard</span>
+            </div>
+
+            <div class="lang-block">
+                <div class="lang-en">
+                    <div class="lang-title lang-title-en">English Documentation</div>
+                    <p class="description">
+                        Offers devotees a personal profile dashboard after log-in.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>Devotee Profile Card:</strong> Access personal booking history, download receipts, and keep track of selected nakshatra and gotra details.</li>
+                        <li><strong>Google Sign-In:</strong> Devotees can sign in quickly using their Google account securely.</li>
+                        <li><strong>Birthday Blessings:</strong> If it's a devotee’s birthday, the website automatically greets them with a personalized blessing screen and spiritual wishes from the Jagadgurus.</li>
+                    </ul>
+                </div>
+                <div class="lang-kn">
+                    <div class="lang-title lang-title-kn">ಕನ್ನಡ ವಿವರಣೆ</div>
+                    <p class="description">
+                        ಭಕ್ತರು ಲಾಗಿನ್ ಆದ ನಂತರ ತಮ್ಮ ವೈಯಕ್ತಿಕ ವಿವರಗಳನ್ನು ಪಡೆಯುವ ಪುಟ.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>ಬುಕಿಂಗ್ ಇತಿಹಾಸ:</strong> ತಾವು ಈ ಹಿಂದೆ ಮಾಡಿದ ಬುಕಿಂಗ್‌ಗಳು, ಪಾವತಿಸಿದ ಕಾಣಿಕೆ ಮತ್ತು ರಶೀದಿಗಳನ್ನು ಇಲ್ಲಿ ನೋಡಬಹುದು.</li>
+                        <li><strong>ಗೂಗಲ್ ಲಾಗಿನ್ ಬೆಂಬಲ:</strong> ಭಕ್ತರು ತಮ್ಮ ಗೂಗಲ್ ಇಮೇಲ್ ಐಡಿ ಬಳಸಿ ಯಶಸ್ವಿಯಾಗಿ ಮತ್ತು ಸುಲಭವಾಗಿ ಸೈನ್ ಇನ್ ಮಾಡಬಹುದು.</li>
+                        <li><strong>ಜನ್ಮದಿನದ ಶುಭಾಶಯಗಳು:</strong> ಭಕ್ತರ ಹುಟ್ಟುಹಬ್ಬದಂದು ಸಿಸ್ಟಂ ತಾನಾಗಿಯೇ ಜಗದ್ಗುರುಗಳ ಶುಭ ಸಂದೇಶ ಹಾಗೂ ಆಶೀರ್ವಾದದ ವಿಶೇಷ ಚಿತ್ರವನ್ನು ತೋರಿಸುತ್ತದೆ.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <span>Secure Sign In Screen / ಸುರಕ್ಷಿತ ಲಾಗಿನ್ ಪುಟ</span>
+                    <span>screenshots/login.png</span>
+                </div>
+                <img src="screenshots/login.png" alt="Login UI">
+            </div>
+        </section>
+
+        <!-- SECTION 11: MOBILE APP -->
+        <section id="mobile-app">
+            <div class="section-header">
+                <h2>11. Mobile App Companion / ಮೊಬೈಲ್ ಆಪ್ ಸಂಗಾತಿ</h2>
+                <span class="section-badge">Mobile Companion</span>
+            </div>
+
+            <div class="lang-block">
+                <div class="lang-en">
+                    <div class="lang-title lang-title-en">English Documentation</div>
+                    <p class="description">
+                        A companion mobile app designed especially for temple managers and handlers.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>On-the-go Management:</strong> Allows handlers to manage room bookings and check travel plans directly from their Android smartphones.</li>
+                        <li><strong>Devotee Safety:</strong> Ordinary devotees are restricted from logging into the mobile app, ensuring that administration remains private and secure. Devotees use the website instead.</li>
+                        <li><strong>Stay Logged In:</strong> Re-entering passwords is not needed; the app remembers the admin manager session.</li>
+                    </ul>
+                </div>
+                <div class="lang-kn">
+                    <div class="lang-title lang-title-kn">ಕನ್ನಡ ವಿವರಣೆ</div>
+                    <p class="description">
+                        ವಿಶೇಷವಾಗಿ ಮಠದ ವ್ಯವಸ್ಥಾಪಕರು ಹಾಗೂ ಮ್ಯಾನೇಜರ್‌ಗಳಿಗಾಗಿ ಸಿದ್ಧಪಡಿಸಲಾದ ಆಂಡ್ರಾಯ್ಡ್ ಮೊಬೈಲ್ ಆಪ್.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>ಮೊಬೈಲ್ ಆಡಳಿತ:</strong> ಮ್ಯಾನೇಜರ್‌ಗಳು ತಮ್ಮ ಮೊಬೈಲ್ ಮೂಲಕವೇ ಕೊಠಡಿ ಲಭ್ಯತೆ ನವೀಕರಿಸಬಹುದು ಹಾಗೂ ಬುಕಿಂಗ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಬಹುದು.</li>
+                        <li><strong>ಹೆಚ್ಚಿನ ಭದ್ರತೆ:</strong> ಸಾಮಾನ್ಯ ಭಕ್ತರಿಗೆ ಆಪ್‌ನಲ್ಲಿ ಲಾಗಿನ್ ಅವಕಾಶವಿರುವುದಿಲ್ಲ, ಇದು ಆಡಳಿತದ ಭದ್ರತೆಯನ್ನು ಹೆಚ್ಚಿಸುತ್ತದೆ. ಭಕ್ತರು ಮುಖ್ಯ ಜಾಲತಾಣವನ್ನೇ ಬಳಸಬಹುದು.</li>
+                        <li><strong>ಸದಾ ಸಕ್ರಿಯ ಲಾಗಿನ್:</strong> ಆಪ್ ಅನ್ನು ಪ್ರತಿಸಲ ತೆರೆದಾಗಲೂ ಪಾಸ್‌ವರ್ಡ್ ಹಾಕುವ ಅಗತ್ಯವಿಲ್ಲ, ಇದು ಲಾಗಿನ್ ಸ್ಥಿತಿಯನ್ನು ನೆನಪಿನಲ್ಲಿಟ್ಟುಕೊಳ್ಳುತ್ತದೆ.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Panchapeetas Portal Systems Guide • Created in July 2026</p>
+        </footer>
+    </main>
+
+    <script>
+        // Language Toggle Script
+        function toggleLanguage(lang) {
+            const body = document.body;
+            body.classList.remove('hide-en', 'hide-kn', 'single-lang-active');
+            
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            if (lang === 'en') {
+                body.classList.add('hide-kn', 'single-lang-active');
+                event.target.classList.add('active');
+            } else if (lang === 'kn') {
+                body.classList.add('hide-en', 'single-lang-active');
+                event.target.classList.add('active');
+            } else {
+                event.target.classList.add('active');
+            }
+        }
+
+        // Active Navigation Highlight
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.sidebar-menu a');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Search filtering functionality
+        function filterGuide() {
+            const searchInput = document.getElementById('docSearch').value.toLowerCase();
+            const sections = document.querySelectorAll('section');
+
+            sections.forEach(section => {
+                const text = section.innerText.toLowerCase();
+                if (text.includes(searchInput)) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
