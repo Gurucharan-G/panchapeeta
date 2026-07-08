@@ -1212,7 +1212,7 @@ def update_peetha_live(request, slug):
         if live_url:
             # Validate youtube url format
             import re
-            pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})'
+            pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|live|shorts)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})'
             match = re.search(pattern, live_url)
             if not match:
                 messages.error(request, "Invalid YouTube URL format. Please provide a valid watch, share, or embed link.")

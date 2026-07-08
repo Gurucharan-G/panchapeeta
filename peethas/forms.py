@@ -106,7 +106,7 @@ class PeethaMediaEditForm(forms.ModelForm):
                 self.add_error('youtube_url', 'Please provide a YouTube URL.')
             else:
                 import re
-                pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})'
+                pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|live|shorts)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})'
                 match = re.search(pattern, youtube_url)
                 if not match:
                     self.add_error('youtube_url', 'Invalid YouTube URL. Please provide a valid watch, share, or embed link.')

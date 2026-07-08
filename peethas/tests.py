@@ -1388,6 +1388,36 @@ class DynamicContentTestCase(TestCase):
         self.assertEqual(data['intro_paragraphs'], 'API Para Test')
 
 
+class YouTubeURLTestCase(TestCase):
+    def test_live_youtube_id_extraction(self):
+        peetha = Peetha(
+            name='Test Peetha',
+            slug='test-peetha',
+            live_youtube_url='https://youtube.com/live/ZI1v_UvYj34?feature=share'
+        )
+        self.assertEqual(peetha.get_live_youtube_id(), 'ZI1v_UvYj34')
+
+    def test_other_youtube_formats_extraction(self):
+        peetha = Peetha(name='Test', slug='test')
+        
+        # Test standard watch
+        peetha.live_youtube_url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+        self.assertEqual(peetha.get_live_youtube_id(), 'dQw4w9WgXcQ')
+        
+        # Test short URL
+        peetha.live_youtube_url = 'https://youtu.be/dQw4w9WgXcQ'
+        self.assertEqual(peetha.get_live_youtube_id(), 'dQw4w9WgXcQ')
+        
+        # Test embed URL
+        peetha.live_youtube_url = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+        self.assertEqual(peetha.get_live_youtube_id(), 'dQw4w9WgXcQ')
+        
+        # Test shorts URL
+        peetha.live_youtube_url = 'https://youtube.com/shorts/dQw4w9WgXcQ'
+        self.assertEqual(peetha.get_live_youtube_id(), 'dQw4w9WgXcQ')
+
+
+
 
 
 
