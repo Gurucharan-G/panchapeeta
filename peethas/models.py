@@ -31,6 +31,18 @@ class Peetha(models.Model):
     live_youtube_url = models.URLField(blank=True, null=True, help_text="YouTube Live stream URL (leave blank if not active)")
     live_youtube_title = models.CharField(max_length=200, blank=True, null=True, help_text="Custom title for the live stream (defaults to 'Swamiji Divine Live Stream' if blank)")
 
+    ADVANCE_BOOKING_CHOICES = (
+        (0, 'Unlimited (Any future date)'),
+        (30, '1 Month (30 days)'),
+        (90, '3 Months (90 days)'),
+        (180, '6 Months (180 days)'),
+    )
+    advance_booking_window = models.IntegerField(
+        choices=ADVANCE_BOOKING_CHOICES,
+        default=0,
+        help_text="Restrict how far in advance devotees can book poojas and accommodations."
+    )
+
     # Kannada translations
     name_kn = models.CharField(max_length=200, blank=True)
     acharya_kn = models.CharField(max_length=200, blank=True)
@@ -105,6 +117,23 @@ class Peetha(models.Model):
         pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|live|shorts)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})'
         match = re.search(pattern, self.live_youtube_url)
         return match.group(1) if match else None
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            try:
+                old_instance = Peetha.objects.get(pk=self.pk)
+                if old_instance.live_youtube_url and old_instance.live_youtube_url != self.live_youtube_url:
+                    title = old_instance.live_youtube_title or f"{self.name} Live Stream"
+                    if not self.media.filter(youtube_url=old_instance.live_youtube_url).exists():
+                        self.media.create(
+                            media_type='video',
+                            youtube_url=old_instance.live_youtube_url,
+                            title=title,
+                            description="Automatically saved from live stream."
+                        )
+            except Peetha.DoesNotExist:
+                pass
+        super().save(*args, **kwargs)
 
 
 class PeethaHandler(models.Model):

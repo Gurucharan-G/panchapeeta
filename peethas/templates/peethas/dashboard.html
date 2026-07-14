@@ -3,836 +3,9 @@
 {% block title %}Dashboard — {{ labels.site_title }}{% endblock %}
 
 {% block content %}
-<style>
-    /* Reset container padding and width on dashboard for sidebar layout */
-    .dashboard-section .container {
-        max-width: 100% !important;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    /* Refactored sidebar layout styles */
-    .dashboard-layout-container {
-        display: flex;
-        flex-direction: row; /* Sidebar left, content right */
-        min-height: calc(100vh - 80px);
-        position: relative;
-        background: #f1f5f9;
-        width: 100%;
-    }
-    
-    /* 1. Sleek Light Premium Sidebar */
-    .dashboard-sidebar {
-        width: 280px;
-        background: white; /* White background */
-        border-right: 1px solid #cbd5e1;
-        display: flex;
-        flex-direction: column;
-        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        flex-shrink: 0;
-        position: sticky;
-        top: 80px;
-        height: calc(100vh - 80px);
-        z-index: 100;
-        box-sizing: border-box;
-        box-shadow: 4px 0 15px rgba(15, 23, 42, 0.03);
-    }
-    .dashboard-sidebar.collapsed {
-        width: 78px;
-    }
-    .sidebar-header {
-        padding: 20px 16px;
-        border-bottom: 1px solid #f1f5f9;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    .sidebar-logo {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 700;
-        color: var(--dark);
-        font-size: 1.1rem;
-    }
-    .sidebar-logo span.logo-text {
-        transition: opacity 0.2s;
-    }
-    .dashboard-sidebar.collapsed .sidebar-logo span.logo-text {
-        opacity: 0;
-        width: 0;
-        pointer-events: none;
-    }
-    .sidebar-toggle-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 6px;
-        border-radius: 6px;
-        color: #64748b;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.2s, color 0.2s;
-    }
-    .sidebar-toggle-btn:hover {
-        background: #f1f5f9;
-        color: var(--saffron);
-    }
-    .sidebar-menu {
-        flex: 1;
-        padding: 16px 8px;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-    .sidebar-menu-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 14px;
-        border-radius: 8px;
-        color: #475569;
-        font-weight: 500;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        border: none;
-        background: none;
-        width: 100%;
-        text-align: left;
-        cursor: pointer;
-        font-family: inherit;
-        font-size: 0.95rem;
-        white-space: nowrap;
-        box-sizing: border-box;
-    }
-    .sidebar-menu-item:hover {
-        background: #f8fafc;
-        color: var(--saffron);
-    }
-    .sidebar-menu-item.active {
-        background: #fff8f0;
-        color: var(--saffron);
-        font-weight: 600;
-        border-left: 3px solid var(--saffron);
-        border-radius: 0 8px 8px 0;
-    }
-    .sidebar-menu-item span.menu-text {
-        transition: opacity 0.2s;
-    }
-    .dashboard-sidebar.collapsed .sidebar-menu-item span.menu-text {
-        opacity: 0;
-        width: 0;
-        pointer-events: none;
-        display: none;
-    }
-    .dashboard-sidebar.collapsed .sidebar-menu-item {
-        padding: 12px;
-        justify-content: center;
-    }
-    .dashboard-sidebar.collapsed .sidebar-menu-item span.menu-icon {
-        font-size: 1.25rem;
-    }
-    .sidebar-peetha-title {
-        padding: 10px 14px;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        color: #94a3b8;
-        font-weight: 700;
-        border-bottom: 1px solid #f1f5f9;
-        margin-bottom: 10px;
-    }
-    .dashboard-sidebar.collapsed .sidebar-peetha-title {
-        display: none;
-    }
-    .sidebar-footer {
-        padding: 16px;
-        border-top: 1px solid #f1f5f9;
-        overflow: hidden;
-        white-space: nowrap;
-        text-align: center;
-        display: block !important;
-    }
-    .dashboard-sidebar.collapsed .sidebar-footer {
-        display: none;
-    }
-
-    /* Submenus in left sidebar */
-    .sidebar-submenu {
-        padding-left: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        margin-bottom: 6px;
-        transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-        overflow: hidden;
-    }
-    .sidebar-submenu.collapsed {
-        max-height: 0;
-        opacity: 0;
-        margin-bottom: 0;
-        pointer-events: none;
-    }
-    .sidebar-submenu-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 12px;
-        border-radius: 6px;
-        color: #64748b;
-        font-weight: 500;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        border: none;
-        background: none;
-        width: 100%;
-        text-align: left;
-        cursor: pointer;
-        font-family: inherit;
-        font-size: 0.88rem;
-        white-space: nowrap;
-        box-sizing: border-box;
-    }
-    .sidebar-submenu-item:hover {
-        background: #f8fafc;
-        color: var(--saffron);
-    }
-    .sidebar-submenu-item.active {
-        background: #fff8f0;
-        color: var(--saffron);
-        font-weight: 600;
-    }
-    .dashboard-sidebar.collapsed .sidebar-submenu {
-        display: none;
-    }
-
-    /* 2. Clean Main Content Workspace */
-    .dashboard-main {
-        flex: 1;
-        padding: 24px clamp(16px, 3vw, 40px) 40px;
-        overflow-y: auto;
-        background: #f8fafc;
-        box-sizing: border-box;
-        min-width: 0;
-    }
-    .dashboard-main > .dashboard-header-bar,
-    .dashboard-main > .messages-container,
-    .dashboard-main > .tab-content,
-    .dashboard-main > .peetha-dashboard-wrapper {
-        width: 100%;
-        max-width: 1440px;
-        margin-left: auto;
-        margin-right: auto;
-        box-sizing: border-box;
-    }
-
-    .dashboard-header-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 20px;
-        margin-bottom: 20px;
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 14px;
-        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.03);
-    }
-    .dashboard-header-copy {
-        min-width: 0;
-    }
-    .dashboard-eyebrow {
-        margin: 0 0 4px;
-        color: #c2410c;
-        font-size: 0.7rem;
-        font-weight: 800;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-    }
-    .dashboard-header-bar h2 {
-        margin: 0;
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: #0f172a;
-        line-height: 1.2;
-    }
-    .dashboard-header-description {
-        max-width: 720px;
-        margin: 6px 0 0;
-        color: #64748b;
-        font-size: 0.85rem;
-        line-height: 1.5;
-    }
-    .dashboard-header-meta {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 10px;
-        flex-wrap: wrap;
-        flex-shrink: 0;
-    }
-    .dashboard-user-chip,
-    .dashboard-header-action {
-        min-height: 38px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 12px;
-        border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        background: #fff;
-        color: #334155;
-        font-size: 0.8rem;
-        font-weight: 700;
-        text-decoration: none;
-        box-sizing: border-box;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-    }
-    .dashboard-header-action:hover {
-        border-color: #fdba74;
-        background: #fff7ed;
-        color: #c2410c;
-    }
-    .dashboard-user-avatar {
-        width: 24px;
-        height: 24px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        background: #fff7ed;
-        color: #c2410c;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        font-weight: 800;
-    }
-    .role-badge {
-        display: inline-block;
-        padding: 3px 8px;
-        font-size: 0.72rem;
-        font-weight: 600;
-        border-radius: 6px;
-        margin-top: 6px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    .role-badge.role-superadmin {
-        background: #fff7ed;
-        color: #c2410c;
-        border: 1px solid #ffedd5;
-    }
-    .role-badge.role-staff {
-        background: #eff6ff;
-        color: #1d4ed8;
-        border: 1px solid #dbeafe;
-    }
-    .role-badge.role-handler {
-        background: #ecfdf5;
-        color: #047857;
-        border: 1px solid #d1fae5;
-    }
-
-    /* Access notification chip */
-    .dashboard-access-note {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        max-width: 1440px;
-        margin: 0 auto 16px;
-        padding: 10px 14px;
-        border: 1px solid #bfdbfe;
-        border-radius: 10px;
-        background: #eff6ff;
-        color: #1e3a8a;
-        font-size: 0.82rem;
-        line-height: 1.4;
-        box-sizing: border-box;
-    }
-    .dashboard-access-note strong {
-        display: block;
-        margin-bottom: 2px;
-    }
-
-    /* 3. Metrics Section: Compact cards and stats */
-    .dashboard-stat-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 16px;
-        margin-bottom: 20px;
-    }
-    .dashboard-stat-card {
-        position: relative;
-        min-height: 110px;
-        padding: 16px 20px !important;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        text-align: left !important;
-        border: 1px solid #e2e8f0 !important;
-        border-radius: 12px !important;
-        background: #ffffff !important;
-        box-shadow: 0 4px 12px rgba(15,23,42,0.02) !important;
-        overflow: hidden;
-    }
-    .dashboard-stat-card::before {
-        content: "";
-        position: absolute;
-        inset: 0 auto 0 0;
-        width: 4px;
-        background: var(--stat-color, var(--saffron));
-    }
-    .dashboard-stat-icon {
-        width: 32px;
-        height: 32px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 8px !important;
-        border-radius: 8px;
-        background: var(--stat-bg, #fff7ed);
-        font-size: 1.1rem !important;
-    }
-    .dashboard-stat-card h4 {
-        margin: 0 0 4px !important;
-        color: #64748b !important;
-        font-size: 0.7rem !important;
-        font-weight: 800;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-    }
-    .dashboard-stat-card p {
-        font-size: 1.55rem !important;
-        font-weight: 700;
-        color: #0f172a !important;
-        line-height: 1.1;
-        margin: 0 !important;
-    }
-
-    /* 4. Drawer slide-out overlay cards (Less Scroll) */
-    .sub-tab-content[id$="-add"] {
-        position: fixed !important;
-        top: 0 !important;
-        right: -520px !important;
-        width: 500px !important;
-        max-width: 90vw !important;
-        height: 100vh !important;
-        background: white !important;
-        z-index: 10000 !important;
-        box-shadow: -10px 0 30px rgba(15, 23, 42, 0.15) !important;
-        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
-        display: block !important;
-        visibility: hidden;
-        padding: 0 !important;
-        box-sizing: border-box;
-    }
-    .sub-tab-content[id$="-add"].active {
-        right: 0 !important;
-        visibility: visible !important;
-    }
-    .sub-tab-content[id$="-add"] .collapsible-card {
-        border: none !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        height: 100vh !important;
-        margin: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-    }
-    .sub-tab-content[id$="-add"] .card-header {
-        border-bottom: 1px solid #e2e8f0 !important;
-        border-radius: 0 !important;
-        background: #f8fafc !important;
-        padding: 16px 20px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-    }
-    .sub-tab-content[id$="-add"] .card-body {
-        flex: 1 !important;
-        overflow-y: auto !important;
-        padding: 20px !important;
-        box-sizing: border-box !important;
-    }
-    .drawer-backdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(15, 23, 42, 0.4);
-        backdrop-filter: blur(4px);
-        z-index: 9999;
-        display: none;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    .drawer-backdrop.show {
-        display: block;
-        opacity: 1;
-    }
-
-    /* Force sibling list views to remain always visible behind drawers */
-    .tab-content.active .sub-tab-content[id$="-list"] {
-        display: block !important;
-    }
-
-    /* 5. General Dashboard Layout Cards */
-    .dashboard-card {
-        border: 1px solid #cbd5e1;
-        border-radius: 12px;
-        background: #ffffff;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.02);
-        padding: 20px !important;
-        margin-bottom: 20px;
-    }
-    .dashboard-card h3 {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #0f172a;
-        margin-top: 0;
-        margin-bottom: 12px;
-    }
-
-    /* Internal Table scroll constraint */
-    .media-table-wrapper {
-        max-height: 420px;
-        overflow-y: auto;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        scrollbar-width: thin;
-        scrollbar-color: #cbd5e1 transparent;
-    }
-    .media-table-wrapper::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-    .media-table-wrapper::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    .media-table-wrapper::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 3px;
-    }
-    .media-table-wrapper::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-    }
-
-    /* Sticky headers */
-    .media-table-wrapper table thead th {
-        position: sticky;
-        top: 0;
-        background: #f8fafc;
-        z-index: 10;
-        box-shadow: inset 0 -1px 0 #cbd5e1;
-    }
-
-    .dashboard-table {
-        margin: 0 !important;
-    }
-    .dashboard-table th {
-        font-size: 0.72rem !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding: 10px 12px !important;
-        font-weight: 700 !important;
-    }
-    .dashboard-table td {
-        padding: 10px 12px !important;
-        font-size: 0.82rem !important;
-    }
-    .dashboard-table tbody tr {
-        transition: background-color 0.16s ease;
-    }
-    .dashboard-table tbody tr:hover {
-        background: #f8fafc;
-    }
-
-    /* Collapsible card styling updates */
-    .collapsible-card {
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(15,23,42,0.02);
-        background: white;
-        border: 1px solid #cbd5e1;
-        overflow: hidden;
-        margin-bottom: 20px;
-    }
-    .collapsible-card .card-header {
-        padding: 14px 20px;
-        background: #f8fafc;
-        border-bottom: 1px solid #e2e8f0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        cursor: pointer;
-        user-select: none;
-        transition: background 0.2s;
-    }
-    .collapsible-card .card-header:hover {
-        background: #f1f5f9;
-    }
-    .collapsible-card .card-header h3 {
-        margin: 0;
-        font-family: 'Playfair Display', serif;
-        font-size: 1.05rem;
-        color: #0f172a;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .collapsible-card .card-collapse-icon {
-        font-size: 0.8rem;
-        color: #94a3b8;
-        transition: transform 0.2s ease;
-        display: inline-block;
-    }
-    .collapsible-card .card-body {
-        padding: 20px;
-        display: block;
-    }
-
-    /* 6. Responsive styling and mobile updates */
-    @media (max-width: 768px) {
-        .dashboard-main {
-            padding: 16px 12px 30px;
-        }
-        .dashboard-header-bar {
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 16px;
-            gap: 12px;
-        }
-        .dashboard-header-meta {
-            width: 100%;
-            justify-content: flex-start;
-        }
-        .dashboard-stat-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-        }
-        .dashboard-stat-card {
-            min-height: 96px;
-            padding: 12px 14px !important;
-        }
-        .dashboard-sidebar {
-            position: fixed !important;
-            left: -280px !important;
-            top: 80px !important;
-            height: calc(100vh - 80px) !important;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.1) !important;
-            z-index: 1000 !important;
-            background: white !important;
-            width: 280px !important;
-            border-right: 1px solid #cbd5e1 !important;
-        }
-        .dashboard-sidebar.mobile-open {
-            left: 0 !important;
-        }
-        .dashboard-sidebar.mobile-open .sidebar-menu-item span.menu-text,
-        .dashboard-sidebar.mobile-open .sidebar-logo span.logo-text {
-            opacity: 1 !important;
-            width: auto !important;
-            display: inline !important;
-        }
-        .sidebar-toggle-btn {
-            display: none !important;
-        }
-        .mobile-menu-trigger {
-            display: flex !important;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            background: white;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #475569;
-            font-size: 0.85rem;
-            width: fit-content;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-        .sidebar-backdrop {
-            display: none;
-            position: fixed;
-            top: 80px;
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 80px);
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 999;
-        }
-        .sidebar-backdrop.show {
-            display: block;
-        }
-    }
-    @media (max-width: 520px) {
-        .dashboard-header-bar h2 {
-            font-size: 1.25rem;
-        }
-        .dashboard-stat-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-    @media (min-width: 769px) {
-        .mobile-menu-trigger {
-            display: none !important;
-        }
-        .sidebar-backdrop {
-            display: none !important;
-        }
-    }
-
-    /* PDF Print Preview Modal styling */
-    .pdf-modal-backdrop {
-        display: none;
-        position: fixed;
-        z-index: 10000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background-color: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(8px);
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    .pdf-modal-backdrop.show {
-        display: flex;
-        opacity: 1;
-    }
-    .pdf-modal-container {
-        background-color: #f8fafc;
-        border: 1px solid #e2e8f0;
-        width: 95%;
-        max-width: 960px;
-        border-radius: 16px;
-        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-        display: flex;
-        flex-direction: column;
-        max-height: 90vh;
-        transform: scale(0.95);
-        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .pdf-modal-backdrop.show .pdf-modal-container {
-        transform: scale(1);
-    }
-    .pdf-modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 18px 24px;
-        border-bottom: 1px solid #e2e8f0;
-        background: white;
-        border-top-left-radius: 16px;
-        border-top-right-radius: 16px;
-    }
-    .pdf-modal-header h3 {
-        margin: 0;
-        font-family: 'Playfair Display', serif;
-        color: #1e293b;
-        font-size: 1.25rem;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .pdf-modal-close-btn {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: #94a3b8;
-        transition: color 0.2s, transform 0.2s;
-        line-height: 1;
-        padding: 4px;
-    }
-    .pdf-modal-close-btn:hover {
-        color: #ef4444;
-        transform: rotate(90deg);
-    }
-    .pdf-modal-body {
-        flex: 1;
-        overflow: auto;
-        background-color: #475569;
-        padding: 24px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-    }
-    @media (min-width: 850px) {
-        .pdf-modal-body {
-            justify-content: center;
-        }
-    }
-    .pdf-preview-sheet-wrapper {
-        background: white;
-        width: 790px;
-        min-height: 1117px;
-        padding: 20px;
-        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
-        box-sizing: border-box;
-        font-family: 'Inter', sans-serif;
-        border-radius: 4px;
-    }
-    .pdf-modal-footer {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        padding: 16px 24px;
-        border-top: 1px solid #e2e8f0;
-        background: white;
-        border-bottom-left-radius: 16px;
-        border-bottom-right-radius: 16px;
-    }
-    .pdf-modal-btn-cancel {
-        padding: 10px 20px;
-        background-color: #f1f5f9;
-        color: #475569;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    .pdf-modal-btn-cancel:hover {
-        background-color: #e2e8f0;
-        color: #1e293b;
-    }
-    .pdf-modal-btn-download {
-        padding: 10px 24px;
-        background-color: #0284c7;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 4px 10px rgba(2,132,199,0.25);
-    }
-    .pdf-modal-btn-download:hover {
-        background-color: #0369a1;
-        box-shadow: 0 4px 12px rgba(2,132,199,0.35);
-    }
-    
-    /* Dynamic tab & subtab visibility toggle */
-    .tab-content {
-        display: none;
-    }
-    .tab-content.active {
-        display: block;
-    }
-    .sub-tab-content {
-        display: none;
-    }
-    .sub-tab-content.active {
-        display: block;
-    }
-</style>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/dashboard_new.css' %}?v=1.0">
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
 <section class="dashboard-section">
     <div class="container">
         
@@ -841,11 +14,11 @@
             <aside class="dashboard-sidebar" id="dashboard-sidebar">
                 <div class="sidebar-header">
                     <div class="sidebar-logo">
-                        <span class="logo-icon">🏯</span>
+                        <span class="logo-icon"><svg class="logo-icon-svg" viewBox="0 0 24 24" style="width:24px;height:24px;fill:var(--dash-saffron);"><path d="M12 2L1 21h22L12 2zm0 4.88L18.8 17H5.2L12 6.88z"/></svg></span>
                         <span class="logo-text">Control Panel</span>
                     </div>
                     <button type="button" class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Collapse Menu">
-                        <span class="toggle-icon">◀</span>
+                        <span class="toggle-icon"><svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></span>
                     </button>
                 </div>
                 
@@ -853,165 +26,170 @@
                     {% if is_admin and not peetha %}
                         <!-- Super Admin Sidebar Menu -->
                         <button class="sidebar-menu-item tab-btn active" onclick="switchTab('overview-section', this)">
-                            <span class="menu-icon">📊</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v6h-2v-6H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
                             <span class="menu-text">Overview & Analytics</span>
                         </button>
                         <!-- Sub-options for Overview & Analytics -->
                         <div class="sidebar-submenu" id="overview-submenu">
                             <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('overview-metrics', this, 'Overview &amp; Analytics')">
-                                <span class="menu-icon">📈</span>
+                                <svg class="submenu-icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
                                 <span class="menu-text">Overview</span>
                             </button>
                             <button type="button" class="sidebar-submenu-item" onclick="switchSubTab('overview-recent', this, 'Overview &amp; Analytics')">
-                                <span class="menu-icon">📜</span>
+                                <svg class="submenu-icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
                                 <span class="menu-text">Recent Bookings</span>
                             </button>
                             <button type="button" class="sidebar-submenu-item" onclick="switchSubTab('overview-reports', this, 'Overview &amp; Analytics')">
-                                <span class="menu-icon">📅</span>
+                                <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
                                 <span class="menu-text">Bookings & Reports</span>
                             </button>
                         </div>
                         {% if is_superuser %}
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('content-section', this)">
-                            <span class="menu-icon">🏯</span>
+                            <svg class="logo-icon-svg" viewBox="0 0 24 24" style="width:24px;height:24px;fill:var(--dash-saffron);"><path d="M12 2L1 21h22L12 2zm0 4.88L18.8 17H5.2L12 6.88z"/></svg>
                             <span class="menu-text">Peetha Content</span>
                         </button>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('roles-section', this)">
-                            <span class="menu-icon">🔑</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
                             <span class="menu-text">Roles & Permissions</span>
                         </button>
                         <!-- Sub-options for Roles & Permissions -->
                         <div class="sidebar-submenu collapsed" id="roles-submenu">
                             <button type="button" class="sidebar-submenu-item active" onclick="switchRolesSubView('create-account-view', this)">
-                                <span class="menu-icon">👤</span>
+                                <svg class="submenu-icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                                 <span class="menu-text">Create User Account</span>
                             </button>
                             <button type="button" class="sidebar-submenu-item" onclick="switchRolesSubView('assign-handler-view', this)">
-                                <span class="menu-icon">🔑</span>
+                                <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
                                 <span class="menu-text">Assign Handler Role</span>
                             </button>
                             <button type="button" class="sidebar-submenu-item" onclick="switchRolesSubView('active-handlers-view', this)">
-                                <span class="menu-icon">👥</span>
+                                <svg class="submenu-icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h14v-3.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V20h6v-3.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
                                 <span class="menu-text">Current Active Handlers</span>
                             </button>
                         </div>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('tech-section', this)">
-                            <span class="menu-icon">⚙️</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
                             <span class="menu-text">Tech & Payments</span>
                         </button>
                         <!-- Sub-options for Tech & Payments -->
                         <div class="sidebar-submenu collapsed" id="tech-submenu">
                             <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('tech-config', this, 'Tech & Payments')">
-                                <span class="menu-icon">💳</span>
+                                <svg class="submenu-icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
                                 <span class="menu-text">Payment Gateways</span>
                             </button>
                             <button type="button" class="sidebar-submenu-item" onclick="switchSubTab('tech-features', this, 'Tech & Payments')">
-                                <span class="menu-icon">🚩</span>
+                                <svg class="submenu-icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>
                                 <span class="menu-text">Feature Flags</span>
                             </button>
                         </div>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('devotee-search-section', this)">
-                            <span class="menu-icon">🔍</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                             <span class="menu-text">Devotee Search</span>
                         </button>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('homepage-content-section', this)">
-                            <span class="menu-icon">📝</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                             <span class="menu-text">Homepage Paragraphs</span>
                         </button>
+                        
+                        <a href="{% url 'peethas:home' %}" class="sidebar-menu-item sidebar-back-link" style="margin-top: 10px; border-top: 1px solid var(--dash-border); border-radius: 0; padding-top: 16px;">
+                            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor; vertical-align: middle; margin-right: 6px;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                            <span class="menu-text">Back to Home</span>
+                        </a>
                         {% endif %}
                     {% else %}
                         <!-- Peetha Sidebar Menu -->
-                        {% if is_admin %}
-                        <a href="{% url 'peethas:dashboard_home' %}" class="sidebar-menu-item sidebar-back-link">
-                            <span class="menu-icon">←</span>
-                            <span class="menu-text">Back to Admin</span>
-                        </a>
-                        {% endif %}
                         <div class="sidebar-peetha-title" style="padding: 10px 14px; font-size: 0.8rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; border-bottom: 1px solid #f1f5f9; margin-bottom: 10px;">
                             {{ peetha.name }}
                         </div>
                         <button class="sidebar-menu-item tab-btn active" onclick="switchTab('media-section', this)">
-                            <span class="menu-icon">📸</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><circle cx="12" cy="12" r="3.2"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
                             <span class="menu-text">Media Gallery</span>
                         </button>
                         <!-- Sub-options for Media Gallery -->
                         <div class="sidebar-submenu" id="media-submenu">
                             {% if request.user.is_staff and not request.user.is_superuser %}
                             <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('media-list', this, 'Media Gallery')">
-                                <span class="menu-icon">🖼️</span>
+                                <svg class="submenu-icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
                                 <span class="menu-text">Media List</span>
                             </button>
                             {% else %}
                             <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('media-add', this, 'Media Gallery')">
-                                <span class="menu-icon">➕</span>
+                                <svg class="submenu-icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                                 <span class="menu-text">Add Media</span>
                             </button>
                             <button type="button" class="sidebar-submenu-item" onclick="switchSubTab('media-list', this, 'Media Gallery')">
-                                <span class="menu-icon">🖼️</span>
+                                <svg class="submenu-icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
                                 <span class="menu-text">Media List</span>
                             </button>
                             {% endif %}
                         </div>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('travel-section', this)">
-                            <span class="menu-icon">📅</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
                             <span class="menu-text">Swamiji Travel Plans</span>
                         </button>
                         <!-- Sub-options for Swamiji Travel Plans -->
                         <div class="sidebar-submenu collapsed" id="travel-submenu">
                             {% if request.user.is_staff and not request.user.is_superuser %}
                             <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('travel-list', this, 'Swamiji Travel Plans')">
-                                <span class="menu-icon">📅</span>
+                                <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
                                 <span class="menu-text">Travel List</span>
                             </button>
                             {% else %}
                             <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('travel-add', this, 'Swamiji Travel Plans')">
-                                <span class="menu-icon">➕</span>
+                                <svg class="submenu-icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                                 <span class="menu-text">Add Travel Plan</span>
                             </button>
                             <button type="button" class="sidebar-submenu-item" onclick="switchSubTab('travel-list', this, 'Swamiji Travel Plans')">
-                                <span class="menu-icon">📅</span>
+                                <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
                                 <span class="menu-text">Travel List</span>
                             </button>
                             {% endif %}
                         </div>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('pooja-section', this)">
-                            <span class="menu-icon">🕉️</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5h2v-2h-2v2zm1.07-7.75c.65 0 1.07.42 1.07.97s-.42.97-1.07.97c-.65 0-1.07-.42-1.07-.97s.42-.97 1.07-.97z"/></svg>
                             <span class="menu-text">Pooja Management</span>
                         </button>
                         <!-- Sub-options for Pooja Management -->
                         <div class="sidebar-submenu collapsed" id="pooja-submenu">
                             {% if request.user.is_staff and not request.user.is_superuser %}
                             <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('pooja-list', this, 'Pooja Management')">
-                                <span class="menu-icon">🕉️</span>
+                                <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5h2v-2h-2v2zm1.07-7.75c.65 0 1.07.42 1.07.97s-.42.97-1.07.97c-.65 0-1.07-.42-1.07-.97s.42-.97 1.07-.97z"/></svg>
                                 <span class="menu-text">Configured Poojas</span>
                             </button>
                             {% else %}
                             <button type="button" class="sidebar-submenu-item active" onclick="switchSubTab('pooja-add', this, 'Pooja Management')">
-                                <span class="menu-icon">➕</span>
+                                <svg class="submenu-icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                                 <span class="menu-text">Add Pooja/Seva</span>
                             </button>
                             <button type="button" class="sidebar-submenu-item" onclick="switchSubTab('pooja-list', this, 'Pooja Management')">
-                                <span class="menu-icon">🕉️</span>
+                                <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5h2v-2h-2v2zm1.07-7.75c.65 0 1.07.42 1.07.97s-.42.97-1.07.97c-.65 0-1.07-.42-1.07-.97s.42-.97 1.07-.97z"/></svg>
                                 <span class="menu-text">Configured Poojas</span>
                             </button>
                             {% endif %}
                         </div>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('live-section', this)">
-                            <span class="menu-icon">📺</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
                             <span class="menu-text">YouTube Live Stream</span>
                         </button>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('handler-bookings-section', this)">
-                            <span class="menu-icon">📅</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
                             <span class="menu-text">Bookings & Reports</span>
                         </button>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('accommodation-section', this)">
-                            <span class="menu-icon">🏨</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/></svg>
                             <span class="menu-text">Stays & Rooms</span>
                         </button>
                         <button class="sidebar-menu-item tab-btn" onclick="switchTab('homepage-content-section', this)">
-                            <span class="menu-icon">📝</span>
+                            <svg class="menu-icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                             <span class="menu-text">Homepage Paragraphs</span>
                         </button>
+                        {% if is_admin %}
+                        <a href="{% url 'peethas:dashboard_home' %}" class="sidebar-menu-item sidebar-back-link" style="margin-top: 10px; border-top: 1px solid var(--dash-border); border-radius: 0; padding-top: 16px;">
+                            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor; vertical-align: middle; margin-right: 6px;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                            <span class="menu-text">Back to Admin</span>
+                        </a>
+                        {% endif %}
                     {% endif %}
                 </nav>
                 
@@ -1069,6 +247,20 @@
                             <span class="dashboard-user-avatar">{{ request.user.username|slice:":1" }}</span>
                             <span>{{ request.user.username }}</span>
                         </div>
+                        <div class="dashboard-global-nav" style="position: relative;">
+                            <button class="global-nav-btn" onclick="document.getElementById('global-nav-dropdown').classList.toggle('show')" title="Global Navigation">
+                                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                            </button>
+                            <div id="global-nav-dropdown" class="global-nav-dropdown">
+                                <div class="nav-title">Global Navigation</div>
+                                <a href="{% url 'peethas:home' %}">Home</a>
+                                <a href="{% url 'peethas:home' %}#divine-heritage">Divine Heritage</a>
+                                <a href="{% url 'peethas:home' %}#veerashaiva-section">Veerashaiva Peethas</a>
+                                <a href="{% url 'peethas:home' %}#spiritual-section">Spiritual Leadership</a>
+                                <a href="{% url 'peethas:home' %}#global-section">Global Initiatives</a>
+                                <a href="{% url 'peethas:home' %}#contact-section">Contact</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1099,30 +291,46 @@
             <!-- Stats Cards Grid -->
             <div class="dashboard-stat-grid">
                 <!-- Stat Card 1 -->
-                <div class="dashboard-card dashboard-stat-card" style="--stat-color: var(--saffron); --stat-bg: #fff7ed;">
-                    <div class="dashboard-stat-icon">👥</div>
-                    <h4 style="color: #666; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; margin-top: 0;">Total Users</h4>
-                    <p style="font-size: 2rem; font-weight: bold; color: var(--dark); margin: 0;">{{ total_users }}</p>
+                <div class="dashboard-stat-card" style="--stat-color: var(--dash-saffron); --stat-bg: var(--dash-saffron-light); --card-hover-border: var(--dash-saffron);">
+                    <div class="dashboard-stat-icon">
+                        <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: currentColor;"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h14v-3.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V20h6v-3.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                    </div>
+                    <div class="dashboard-stat-info">
+                        <h4>Total Devotees</h4>
+                        <p>{{ total_users }}</p>
+                    </div>
                 </div>
                 <!-- Stat Card 2 -->
-                <div class="dashboard-card dashboard-stat-card" style="--stat-color: #16a34a; --stat-bg: #f0fdf4;">
-                    <div class="dashboard-stat-icon">🙏</div>
-                    <h4 style="color: #666; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; margin-top: 0;">Pooja Bookings</h4>
-                    <p style="font-size: 2rem; font-weight: bold; color: var(--dark); margin: 0;">{{ total_bookings }}</p>
+                <div class="dashboard-stat-card" style="--stat-color: #16a34a; --stat-bg: #f0fdf4; --card-hover-border: #16a34a;">
+                    <div class="dashboard-stat-icon">
+                        <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                    </div>
+                    <div class="dashboard-stat-info">
+                        <h4>Pooja Bookings</h4>
+                        <p>{{ total_bookings }}</p>
+                    </div>
                 </div>
                 <!-- Stat Card 3 -->
                 {% if not request.user.is_staff or request.user.is_superuser %}
-                <div class="dashboard-card dashboard-stat-card" style="--stat-color: #2563eb; --stat-bg: #eff6ff;">
-                    <div class="dashboard-stat-icon">₹</div>
-                    <h4 style="color: #666; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; margin-top: 0;">Total Revenue</h4>
-                    <p style="font-size: 2rem; font-weight: bold; color: var(--dark); margin: 0;">₹{{ total_revenue }}</p>
+                <div class="dashboard-stat-card" style="--stat-color: #2563eb; --stat-bg: #eff6ff; --card-hover-border: #2563eb;">
+                    <div class="dashboard-stat-icon">
+                        <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 13h-2v-2h2v2zm0-4h-2V7h2v4z"/></svg>
+                    </div>
+                    <div class="dashboard-stat-info">
+                        <h4>Total Revenue</h4>
+                        <p>₹{{ total_revenue }}</p>
+                    </div>
                 </div>
                 {% endif %}
                 <!-- Stat Card 4 -->
-                <div class="dashboard-card dashboard-stat-card" style="--stat-color: #d97706; --stat-bg: #fffbeb;">
-                    <div class="dashboard-stat-icon">💳</div>
-                    <h4 style="color: #666; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; margin-top: 0;">Active Gateways</h4>
-                    <p style="font-size: 2rem; font-weight: bold; color: var(--dark); margin: 0;">{{ active_payments }}</p>
+                <div class="dashboard-stat-card" style="--stat-color: var(--dash-gold); --stat-bg: var(--dash-gold-light); --card-hover-border: var(--dash-gold);">
+                    <div class="dashboard-stat-icon">
+                        <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: currentColor;"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                    </div>
+                    <div class="dashboard-stat-info">
+                        <h4>Active Gateways</h4>
+                        <p>{{ active_payments }}</p>
+                    </div>
                 </div>
             </div>
             </div>
@@ -1383,12 +591,21 @@
                                             <td>{{ h.user.email }}</td>
                                             <td><span style="display:inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; background-color: var(--light); border-left: 4px solid {{ h.peetha.color }}">{{ h.peetha.name }}</span></td>
                                             <td>
-                                                <form action="{% url 'peethas:assign_handler' %}" method="post" onsubmit="return confirm('Are you sure you want to remove handler access for this user?');" style="display:inline;">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="action" value="delete">
-                                                    <input type="hidden" name="handler_id" value="{{ h.pk }}">
-                                                    <button type="submit" class="btn-delete" style="padding: 6px 12px; font-size: 0.85rem;">Revoke Access</button>
-                                                </form>
+                                                <div class="action-menu-container">
+                                                    <button type="button" class="action-menu-trigger-btn" onclick="toggleActionMenu(this, event)">
+                                                        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                                    </button>
+                                                    <div class="action-dropdown-list">
+                                                        <form action="{% url 'peethas:assign_handler' %}" method="post" onsubmit="return confirm('Are you sure you want to remove handler access for this user?');" style="display:inline;">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="action" value="delete">
+                                                            <input type="hidden" name="handler_id" value="{{ h.pk }}">
+                                                            <button type="submit" class="action-dropdown-item item-danger">
+                                                                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg> Revoke Access
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         {% empty %}
@@ -1434,12 +651,21 @@
                                                 {% if s.is_superuser and s.pk == request.user.pk %}
                                                 <span style="font-size: 0.85rem; color: #aaa; font-style: italic;">Cannot revoke self</span>
                                                 {% else %}
-                                                <form action="{% url 'peethas:assign_handler' %}" method="post" onsubmit="return confirm('Are you sure you want to revoke access for this user?');" style="display:inline;">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="action" value="revoke_staff">
-                                                    <input type="hidden" name="user_id" value="{{ s.pk }}">
-                                                    <button type="submit" class="btn-delete" style="padding: 6px 12px; font-size: 0.85rem;">Revoke Access</button>
-                                                </form>
+                                                <div class="action-menu-container">
+                                                    <button type="button" class="action-menu-trigger-btn" onclick="toggleActionMenu(this, event)">
+                                                        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                                    </button>
+                                                    <div class="action-dropdown-list">
+                                                        <form action="{% url 'peethas:assign_handler' %}" method="post" onsubmit="return confirm('Are you sure you want to revoke access for this user?');" style="display:inline;">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="action" value="revoke_staff">
+                                                            <input type="hidden" name="user_id" value="{{ s.pk }}">
+                                                            <button type="submit" class="action-dropdown-item item-danger">
+                                                                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg> Revoke Access
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                                 {% endif %}
                                             </td>
                                         </tr>
@@ -1517,11 +743,22 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            <a href="javascript:void(0);" onclick="populatePaymentConfigForm('{{ c.peetha.pk }}', '{{ c.razorpay_key_id|escapejs }}', '{{ c.razorpay_key_secret|escapejs }}', {{ c.is_active|yesno:'true,false' }})" class="btn-edit" style="padding: 6px 12px; font-size: 0.85rem; display: inline-block; margin-right: 5px;">Edit</a>
-                                            <form action="{% url 'peethas:delete_payment_config' c.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this payment configuration?');" style="display:inline;">
-                                                {% csrf_token %}
-                                                <button type="submit" class="btn-delete" style="padding: 6px 12px; font-size: 0.85rem;">Delete</button>
-                                            </form>
+                                            <div class="action-menu-container">
+                                                <button type="button" class="action-menu-trigger-btn" onclick="toggleActionMenu(this, event)">
+                                                    <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                                </button>
+                                                <div class="action-dropdown-list">
+                                                    <button type="button" onclick="populatePaymentConfigForm('{{ c.peetha.pk }}', '{{ c.razorpay_key_id|escapejs }}', '{{ c.razorpay_key_secret|escapejs }}', {{ c.is_active|yesno:'true,false' }})" class="action-dropdown-item">
+                                                        <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg> Edit
+                                                    </button>
+                                                    <form action="{% url 'peethas:delete_payment_config' c.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this payment configuration?');" style="display:inline;">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="action-dropdown-item item-danger">
+                                                            <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg> Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     {% empty %}
@@ -1846,12 +1083,21 @@
                                             </td>
                                             {% if not request.user.is_staff or request.user.is_superuser %}
                                             <td>
-                                                <div class="table-actions">
-                                                    <a href="{% url 'peethas:media_edit' peetha.slug item.pk %}" class="btn-edit">Edit</a>
-                                                    <form action="{% url 'peethas:media_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this media item?');" style="display:inline;">
-                                                        {% csrf_token %}
-                                                        <button type="submit" class="btn-delete">Delete</button>
-                                                    </form>
+                                                <div class="action-menu-container">
+                                                    <button type="button" class="action-menu-trigger-btn" onclick="toggleActionMenu(this, event)">
+                                                        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                                    </button>
+                                                    <div class="action-dropdown-list">
+                                                        <a href="{% url 'peethas:media_edit' peetha.slug item.pk %}" class="action-dropdown-item">
+                                                            <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg> Edit
+                                                        </a>
+                                                        <form action="{% url 'peethas:media_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this media item?');" style="display:inline;">
+                                                            {% csrf_token %}
+                                                            <button type="submit" class="action-dropdown-item item-danger">
+                                                                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg> Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </td>
                                             {% endif %}
@@ -1880,56 +1126,64 @@
                             <span class="card-collapse-icon">▼</span>
                         </div>
                         <div class="card-body">
-                            <form method="post" action="{% url 'peethas:travel_add' peetha.slug %}" class="dashboard-form">
+                            <form method="post" action="{% url 'peethas:travel_add' peetha.slug %}" class="dashboard-form modal-2col-body">
                             {% csrf_token %}
                             
-                            <div class="form-group">
-                                <label>Start Date</label>
-                                {{ travel_form.start_date }}
-                            </div>
-                            <div class="form-group">
-                                <label>End Date (Optional)</label>
-                                {{ travel_form.end_date }}
-                            </div>
-                            <div class="form-group">
-                                <label>Location (English)</label>
-                                {{ travel_form.location }}
-                            </div>
-                            <div class="form-group">
-                                <label>Title / Event Name (English)</label>
-                                {{ travel_form.title }}
-                            </div>
-                            <div class="form-group">
-                                <label>Description (English)</label>
-                                {{ travel_form.description }}
-                            </div>
-
-                            <!-- Multilingual collapse -->
-                            <details class="multilingual-details">
-                                <summary>Add Translations (Kannada, Marathi, Hindi)</summary>
-                                <div class="translation-fields">
-                                    <div class="lang-section-block">
-                                        <h5>ಕನ್ನಡ (Kannada)</h5>
-                                        {{ travel_form.title_kn }}
-                                        {{ travel_form.location_kn }}
-                                        {{ travel_form.description_kn }}
-                                    </div>
-                                    <div class="lang-section-block">
-                                        <h5>मराठी (Marathi)</h5>
-                                        {{ travel_form.title_mr }}
-                                        {{ travel_form.location_mr }}
-                                        {{ travel_form.description_mr }}
-                                    </div>
-                                    <div class="lang-section-block">
-                                        <h5>हिन्दी (Hindi)</h5>
-                                        {{ travel_form.title_hi }}
-                                        {{ travel_form.location_hi }}
-                                        {{ travel_form.description_hi }}
-                                    </div>
+                            <div class="modal-2col-left">
+                                <div id="travel-inline-calendar"></div>
+                                <div style="display: none;">
+                                    {{ travel_form.start_date }}
+                                    {{ travel_form.end_date }}
                                 </div>
-                            </details>
+                                <div style="font-size: 0.8rem; color: #64748b; margin-top: 10px; text-align: center;">
+                                    Select start and end dates. <br>Click the same date twice for a single-day event.
+                                </div>
+                            </div>
+                            
+                            <div class="modal-2col-right">
+                                <div class="lang-section-block" style="margin-bottom: 15px;">
+                                    <h5>English (Primary)</h5>
+                                </div>
+                                <div class="form-group">
+                                    <label>Location</label>
+                                    {{ travel_form.location }}
+                                </div>
+                                <div class="form-group">
+                                    <label>Title / Event Name</label>
+                                    {{ travel_form.title }}
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    {{ travel_form.description }}
+                                </div>
 
-                            <button type="submit" class="btn-primary">Add Event</button>
+                                <!-- Multilingual collapse -->
+                                <details class="multilingual-details">
+                                    <summary>Add Translations (Kannada, Marathi, Hindi)</summary>
+                                    <div class="translation-fields">
+                                        <div class="lang-section-block">
+                                            <h5>ಕನ್ನಡ (Kannada)</h5>
+                                            {{ travel_form.title_kn }}
+                                            {{ travel_form.location_kn }}
+                                            {{ travel_form.description_kn }}
+                                        </div>
+                                        <div class="lang-section-block">
+                                            <h5>मराठी (Marathi)</h5>
+                                            {{ travel_form.title_mr }}
+                                            {{ travel_form.location_mr }}
+                                            {{ travel_form.description_mr }}
+                                        </div>
+                                        <div class="lang-section-block">
+                                            <h5>हिन्दी (Hindi)</h5>
+                                            {{ travel_form.title_hi }}
+                                            {{ travel_form.location_hi }}
+                                            {{ travel_form.description_hi }}
+                                        </div>
+                                    </div>
+                                </details>
+
+                                <button type="submit" class="btn-primary" style="margin-top: 20px;">Add Event</button>
+                            </div>
                         </form>
                         </div>
                     </div>
@@ -1978,12 +1232,21 @@
                                             {% if item.title_hi %}<div class="lang-indicator">HI: {{ item.title_hi }}</div>{% endif %}
                                         </td>
                                         <td>
-                                            <div class="table-actions">
-                                                <a href="{% url 'peethas:travel_edit' peetha.slug item.pk %}" class="btn-edit">Edit</a>
-                                                <form action="{% url 'peethas:travel_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this travel plan?');" style="display:inline;">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn-delete">Delete</button>
-                                                </form>
+                                            <div class="action-menu-container">
+                                                <button type="button" class="action-menu-trigger-btn" onclick="toggleActionMenu(this, event)">
+                                                    <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                                </button>
+                                                <div class="action-dropdown-list">
+                                                    <a href="{% url 'peethas:travel_edit' peetha.slug item.pk %}" class="action-dropdown-item">
+                                                        <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg> Edit
+                                                    </a>
+                                                    <form action="{% url 'peethas:travel_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this travel plan?');" style="display:inline;">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="action-dropdown-item item-danger">
+                                                            <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg> Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -2178,12 +1441,21 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            <div class="table-actions">
-                                                <a href="{% url 'peethas:pooja_edit' peetha.slug item.pk %}" class="btn-edit">Edit</a>
-                                                <form action="{% url 'peethas:pooja_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this pooja?');" style="display:inline;">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn-delete">Delete</button>
-                                                </form>
+                                            <div class="action-menu-container">
+                                                <button type="button" class="action-menu-trigger-btn" onclick="toggleActionMenu(this, event)">
+                                                    <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                                </button>
+                                                <div class="action-dropdown-list">
+                                                    <a href="{% url 'peethas:pooja_edit' peetha.slug item.pk %}" class="action-dropdown-item">
+                                                        <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg> Edit
+                                                    </a>
+                                                    <form action="{% url 'peethas:pooja_delete' peetha.slug item.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this pooja?');" style="display:inline;">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="action-dropdown-item item-danger">
+                                                            <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg> Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -2204,7 +1476,7 @@
             <div id="live-section" class="tab-content">
                 <div class="collapsible-card" style="max-width: 600px; margin: 0 auto;">
                     <div class="card-header" onclick="toggleCardCollapse(this)">
-                        <h3>📺 Configure YouTube Live Stream</h3>
+                        <h3>⚙️ Peetha Settings & Live Stream</h3>
                         <span class="card-collapse-icon">▼</span>
                     </div>
                     <div class="card-body">
@@ -2229,7 +1501,17 @@
                             <label for="live-youtube-url-input">YouTube Live Link</label>
                             <input type="url" name="live_youtube_url" id="live-youtube-url-input" class="form-input" placeholder="e.g. https://www.youtube.com/watch?v=live_stream_id" value="{{ peetha.live_youtube_url|default:'' }}">
                         </div>
-                        <button type="submit" class="btn-primary">Update Live Link</button>
+                        <div class="form-group" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+                            <label for="advance-booking-input">Advance Booking Window</label>
+                            <p style="font-size: 0.8rem; color: #666; margin-bottom: 8px;">Restrict how far in advance devotees can book poojas and stays.</p>
+                            <select name="advance_booking_window" id="advance-booking-input" class="form-input">
+                                <option value="0" {% if peetha.advance_booking_window == 0 %}selected{% endif %}>Unlimited (Any future date)</option>
+                                <option value="30" {% if peetha.advance_booking_window == 30 %}selected{% endif %}>1 Month (30 days)</option>
+                                <option value="90" {% if peetha.advance_booking_window == 90 %}selected{% endif %}>3 Months (90 days)</option>
+                                <option value="180" {% if peetha.advance_booking_window == 180 %}selected{% endif %}>6 Months (180 days)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary" style="margin-top: 15px;">Save Settings</button>
                     </form>
                     {% endif %}
                     </div>
@@ -2752,6 +2034,30 @@
 <!-- Include html2pdf.js and html2canvas CDN libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
+    // Toggle Three-Dot Action Dropdown Menu
+    window.toggleActionMenu = function(btn, event) {
+        event.stopPropagation();
+        const container = btn.closest('.action-menu-container');
+        
+        // Close all other action dropdowns first
+        document.querySelectorAll('.action-menu-container').forEach(el => {
+            if (el !== container) {
+                el.classList.remove('open');
+            }
+        });
+        
+        container.classList.toggle('open');
+    };
+
+    // Close any open action menu when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.action-menu-container')) {
+            document.querySelectorAll('.action-menu-container.open').forEach(el => {
+                el.classList.remove('open');
+            });
+        }
+    });
+
     // Global Peethas list for inline role upgrades in devotee search
     window.allPeethas = [
         {% for p in peethas %}
@@ -2793,13 +2099,35 @@
             const submenuId = TAB_SUBMENU_MAP[tabId];
             const submenuEl = document.getElementById(submenuId);
             if (submenuEl) {
-                submenuEl.classList.toggle('collapsed');
+                const wasCollapsed = submenuEl.classList.contains('collapsed');
+                // Collapse all submenus first
+                Object.values(TAB_SUBMENU_MAP).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('collapsed');
+                });
+                // If it was previously collapsed, expand it. Otherwise leave it collapsed.
+                if (wasCollapsed) {
+                    submenuEl.classList.remove('collapsed');
+                }
             }
-            return;
+            // Proceed to switch the main tab content and highlight
+        }
+
+        // Collapse all submenus when switching to a main tab that doesn't have a submenu
+        if (!TAB_SUBMENU_MAP[tabId]) {
+            Object.values(TAB_SUBMENU_MAP).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('collapsed');
+            });
         }
 
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
+        });
+        
+        // Remove active class from all add drawers to prevent lingering backdrop
+        document.querySelectorAll('.sub-tab-content[id$="-add"].active').forEach(drawer => {
+            drawer.classList.remove('active');
         });
         document.querySelectorAll('.tab-btn').forEach(button => {
             button.classList.remove('active');
@@ -2836,6 +2164,15 @@
         }
     }
 
+    // Close global nav dropdown if clicked outside
+    document.addEventListener('click', function(event) {
+        const globalNav = document.querySelector('.dashboard-global-nav');
+        const dropdown = document.getElementById('global-nav-dropdown');
+        if (globalNav && dropdown && !globalNav.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+
     function switchSubTab(subTabId, btn, parentName) {
         // Find the parent tab-content that owns this sub-tab
         const targetContent = document.getElementById(subTabId);
@@ -2862,6 +2199,13 @@
             // Scope: only toggle sub-tabs within the same parent section
             parentSection.querySelectorAll('.sub-tab-content').forEach(content => {
                 content.classList.remove('active');
+            });
+            
+            // Remove active class from add drawers in other sections to prevent lingering backdrop
+            document.querySelectorAll('.sub-tab-content[id$="-add"].active').forEach(drawer => {
+                if (!parentSection.contains(drawer)) {
+                    drawer.classList.remove('active');
+                }
             });
         }
         targetContent.classList.add('active');
@@ -2960,6 +2304,11 @@
                 parentBtn.classList.add('active');
             }
         }
+        
+        // Remove active class from all add drawers to prevent lingering backdrop
+        document.querySelectorAll('.sub-tab-content[id$="-add"].active').forEach(drawer => {
+            drawer.classList.remove('active');
+        });
 
         document.querySelectorAll('.roles-sub-view').forEach(view => {
             view.classList.remove('active-sub-view');
@@ -3229,13 +2578,12 @@
             });
         });
 
-        // Close active form drawer
+        // Close active form drawer (fallback in case it's still called)
         window.closeActiveDrawer = function() {
             const activeDrawer = document.querySelector('.sub-tab-content[id$="-add"].active');
             if (activeDrawer) {
                 const parent = activeDrawer.closest('.tab-content');
                 if (parent) {
-                    // Try to click the corresponding list sibling button
                     const parentId = parent.id;
                     const subId = parentId.replace('-section', '-submenu');
                     const listBtn = document.querySelector(`.sidebar-submenu .sidebar-submenu-item[onclick*="-list"]`) || 
@@ -3244,55 +2592,18 @@
                         listBtn.click();
                     } else {
                         activeDrawer.classList.remove('active');
-                        const backdrop = document.getElementById('drawer-backdrop');
-                        if (backdrop) backdrop.classList.remove('show');
                     }
                 }
             }
         };
 
-        // Create drawer backdrop dynamically
-        const backdropEl = document.createElement('div');
-        backdropEl.className = 'drawer-backdrop';
-        backdropEl.id = 'drawer-backdrop';
-        backdropEl.addEventListener('click', window.closeActiveDrawer);
-        document.body.appendChild(backdropEl);
+        // Note: The drawer backdrop and dynamic close buttons have been removed.
+        // Forms now act as standard inline tabs.
 
-        // Watch active class on drawers to toggle backdrop
-        const observer = new MutationObserver(() => {
-            const activeDrawer = document.querySelector('.sub-tab-content[id$="-add"].active');
-            const drawerBackdrop = document.getElementById('drawer-backdrop');
-            if (drawerBackdrop) {
-                if (activeDrawer) {
-                    drawerBackdrop.classList.add('show');
-                } else {
-                    drawerBackdrop.classList.remove('show');
-                }
-            }
-        });
-
-        document.querySelectorAll('.sub-tab-content[id$="-add"]').forEach(drawer => {
-            observer.observe(drawer, { attributes: true, attributeFilter: ['class'] });
-
-            // Create dynamic close cross in headers
-            const header = drawer.querySelector('.card-header');
-            if (header && !header.querySelector('.drawer-close-btn')) {
-                const closeBtn = document.createElement('button');
-                closeBtn.type = 'button';
-                closeBtn.className = 'drawer-close-btn';
-                closeBtn.innerHTML = '&times;';
-                closeBtn.style.cssText = 'background:none; border:none; font-size:1.6rem; cursor:pointer; color:#94a3b8; padding:0 8px; line-height:1; display:flex; align-items:center;';
-                closeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    window.closeActiveDrawer();
-                });
-                header.appendChild(closeBtn);
-            }
-            // Load homepage dynamic content configuration on initialize
-            if (document.getElementById('content-section-select')) {
-                loadDynamicContent();
-            }
-        });
+        // Load homepage dynamic content configuration on initialize
+        if (document.getElementById('content-section-select')) {
+            loadDynamicContent();
+        }
     });
 
     // ========================================
@@ -3539,22 +2850,24 @@
             data.peethas.forEach(peetha => {
                 const hasBookings = peetha.bookings && peetha.bookings.length > 0;
                 const hasSlots = peetha.slot_info && peetha.slot_info.length > 0;
+                
+                let bgGradient = `linear-gradient(135deg, ${peetha.color}15, ${peetha.color}05)`;
 
                 html += `
-                <div style="border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; background: white; border-left: 5px solid ${peetha.color};">
+                <div style="border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; background: white; border-left: 5px solid ${peetha.color}; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                     <!-- Peetha Header -->
-                    <div style="padding: 16px 20px; background: linear-gradient(135deg, ${peetha.color}10, ${peetha.color}05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; cursor: pointer;" onclick="togglePeethaBookingDetail(this)">
+                    <div style="padding: 16px 20px; background: ${bgGradient}; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; cursor: pointer;" onclick="togglePeethaBookingDetail(this)">
                         <div>
                             <h4 style="margin: 0; font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--dark);">${peetha.name}</h4>
-                            <div style="font-size: 0.82rem; color: #888; margin-top: 3px;">
+                            <div style="font-size: 0.82rem; color: #666; margin-top: 3px;">
                                 ${peetha.total_bookings} confirmed · ${peetha.pending_bookings} pending${window.isStaffReadOnly ? '' : ` · ₹${Number(peetha.revenue).toLocaleString('en-IN')} revenue`}
                             </div>
                         </div>
-                        <span style="font-size: 1.2rem; transition: transform 0.3s; display: inline-block;" class="peetha-collapse-icon">▼</span>
+                        <span style="font-size: 1.2rem; transition: transform 0.3s; display: inline-block; color: #888;" class="peetha-collapse-icon">▼</span>
                     </div>
 
                     <!-- Collapsible Detail -->
-                    <div class="peetha-booking-detail" style="display: none; border-top: 1px solid #eee;">
+                    <div class="peetha-booking-detail" style="display: none; border-top: 1px solid #eee; background: white;">
                         ${hasSlots ? renderSlotUtilization(peetha.slot_info, peetha.color) : ''}
                         ${hasBookings ? renderBookingTable(peetha.bookings, peetha.color) : '<div style="text-align: center; padding: 30px; color: #bbb;"><div style="font-size: 2rem; margin-bottom: 8px;">🕊️</div>No bookings found for these filters.</div>'}
                     </div>
@@ -4181,20 +3494,20 @@
     function renderDevoteeCard(d) {
         // Gender icon
         let genderIcon = '👤';
-        let genderColor = '#9e9e9e';
-        if (d.gender_raw === 'male') { genderIcon = '👨'; genderColor = '#2196F3'; }
-        else if (d.gender_raw === 'female') { genderIcon = '👩'; genderColor = '#E91E63'; }
+        let genderClass = 'other';
+        if (d.gender_raw === 'male') { genderIcon = '👨'; genderClass = 'male'; }
+        else if (d.gender_raw === 'female') { genderIcon = '👩'; genderClass = 'female'; }
 
-        // Profile completion bar
-        const completionColor = d.completion >= 80 ? '#4CAF50' : d.completion >= 50 ? '#FF9800' : '#f44336';
+        // Profile completion bar color
+        const completionColor = d.completion >= 80 ? '#22c55e' : d.completion >= 50 ? '#f59e0b' : '#ef4444';
 
         // Booking badge
         let bookingBadge = '';
         if (d.booking_count > 0) {
-            bookingBadge = `<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee;">
-                <div style="font-size: 0.78rem;"><strong>🙏 ${d.booking_count}</strong> bookings</div>
-                <div style="font-size: 0.78rem;"><strong>₹${Number(d.total_spent).toLocaleString('en-IN')}</strong> spent</div>
-                ${d.last_booking_pooja ? `<div style="font-size: 0.78rem; color: #888;">Last: ${d.last_booking_pooja} (${d.last_booking_date})</div>` : ''}
+            bookingBadge = `<div class="devotee-stats-summary">
+                <div><strong>🙏 ${d.booking_count}</strong> bookings</div>
+                <div><strong>₹${Number(d.total_spent).toLocaleString('en-IN')}</strong> spent</div>
+                ${d.last_booking_pooja ? `<div style="color: var(--dash-text-muted);">Last: ${d.last_booking_pooja} (${d.last_booking_date})</div>` : ''}
             </div>`;
         }
 
@@ -4205,77 +3518,102 @@
         if (d.nakshatra) parts.push(`<span><strong>N:</strong> ${d.nakshatra}</span>`);
         if (d.rashi) parts.push(`<span><strong>R:</strong> ${d.rashi}</span>`);
         if (parts.length > 0) {
-            spiritualDetails = `<div style="display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; color: #666; margin-top: 6px;">${parts.join('')}</div>`;
+            spiritualDetails = `<div class="devotee-spiritual-pills">${parts.join('')}</div>`;
         }
 
         return `
-        <div style="border: 1px solid #e8e8e8; border-radius: 12px; padding: 18px; background: white; transition: box-shadow 0.3s, transform 0.2s; cursor: default; position: relative; overflow: hidden;" onmouseenter="this.style.boxShadow='0 6px 20px rgba(0,0,0,0.08)';this.style.transform='translateY(-2px)'" onmouseleave="this.style.boxShadow='none';this.style.transform='none'">
+        <div class="devotee-card">
             <!-- Header -->
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
-                <div style="width: 44px; height: 44px; border-radius: 50%; background: ${genderColor}15; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 2px solid ${genderColor}30; flex-shrink: 0;">${genderIcon}</div>
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <div class="devotee-avatar-container ${genderClass}">${genderIcon}</div>
                 <div style="flex: 1; min-width: 0;">
-                    <div style="font-weight: 700; font-size: 1rem; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${d.full_name}</div>
-                    <div style="font-size: 0.78rem; color: #aaa;">@${d.username} · ${d.gender || 'N/A'}</div>
+                    <div style="font-weight: 700; font-size: 0.95rem; color: var(--dash-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${d.full_name}</div>
+                    <div style="font-size: 0.75rem; color: var(--dash-text-light);">@${d.username} · ${d.gender || 'N/A'}</div>
                 </div>
                 <div style="text-align: right; flex-shrink: 0;">
-                    <div style="font-size: 0.72rem; color: #bbb;">Profile</div>
-                    <div style="width: 50px; height: 6px; background: #f0f0f0; border-radius: 3px; overflow: hidden; margin-top: 3px;">
-                        <div style="height: 100%; background: ${completionColor}; width: ${d.completion}%; border-radius: 3px; transition: width 0.3s;"></div>
+                    <div style="font-size: 0.68rem; color: var(--dash-text-light);">Profile</div>
+                    <div class="devotee-profile-progress-bar">
+                        <div class="devotee-profile-progress-fill" style="background: ${completionColor}; width: ${d.completion}%;"></div>
                     </div>
-                    <div style="font-size: 0.68rem; color: ${completionColor}; font-weight: 600; margin-top: 1px;">${d.completion}%</div>
+                    <div style="font-size: 0.68rem; color: ${completionColor}; font-weight: 700; margin-top: 1px;">${d.completion}%</div>
                 </div>
             </div>
 
             <!-- Contact Details -->
-            <div style="font-size: 0.85rem; color: #555; display: flex; flex-direction: column; gap: 3px;">
+            <div class="devotee-detail-row">
                 ${d.phone ? `<div>📞 ${d.phone}</div>` : ''}
                 ${d.email ? `<div>✉️ ${d.email}</div>` : ''}
-                ${d.address ? `<div style="font-size: 0.8rem; color: #888;">📍 ${d.address.length > 50 ? d.address.substring(0, 50) + '...' : d.address}</div>` : ''}
+                ${d.address ? `<div style="font-size: 0.78rem; color: var(--dash-text-muted);">📍 ${d.address.length > 50 ? d.address.substring(0, 50) + '...' : d.address}</div>` : ''}
             </div>
 
             ${spiritualDetails}
             ${bookingBadge}
 
             <!-- Role Management Action -->
-            <div class="role-mgmt-container" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee;">
-                <div class="role-display-row" id="role-display-row-${d.id}" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="devotee-role-actions">
+                <div class="devotee-role-display" id="role-display-row-${d.id}">
                     <div>
-                        <span style="font-size: 0.78rem; color: #888; font-weight: 500;">Role:</span>
-                        <span class="user-role-badge" style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: bold; color: #9e9e9e; background-color: #f5f5f5;">${d.role_display}</span>
+                        <span style="font-size: 0.75rem; color: var(--dash-text-muted); font-weight: 500;">Role:</span>
+                        <span class="user-role-badge" style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: bold; color: var(--dash-text-muted); background-color: var(--dash-bg); text-transform: uppercase;">${d.role_display}</span>
                     </div>
-                    <button type="button" class="btn-edit" onclick="toggleRoleEdit(${d.id})" style="padding: 4px 8px; font-size: 0.75rem; border-radius: 4px; border: 1px solid var(--saffron); background: white; color: var(--saffron); cursor: pointer; font-weight: 600;">Upgrade Role</button>
+                    <button type="button" class="btn-edit" onclick="toggleRoleEdit(${d.id})" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 6px; border: 1px solid var(--dash-saffron); background: white; color: var(--dash-saffron); cursor: pointer; font-weight: 600; transition: var(--dash-transition);">Upgrade Role</button>
                 </div>
                 
-                <div class="role-edit-row" id="role-edit-row-${d.id}" style="display: none; flex-direction: column; gap: 8px;">
-                    <div style="font-size: 0.8rem; font-weight: bold; color: #555;">Upgrade ${d.full_name}</div>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <select id="role-select-${d.id}" onchange="handleRoleSelectChange(${d.id})" style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.82rem; flex: 1; outline: none; background: white;">
-                                                            <option value="devotee" ${d.role === 'devotee' ? 'selected' : ''}>Devotee (Regular User)</option>
-                                                            <option value="staff" ${d.role === 'staff' ? 'selected' : ''}>Staff (Read-Only Admin)</option>
-                                                            <option value="handler" ${d.role === 'handler' ? 'selected' : ''}>Peetha Handler</option>
-                                                            <option value="superuser" ${d.role === 'superuser' ? 'selected' : ''}>Super Admin (Platform Owner)</option>
-                                                        </select>
+                <div class="devotee-role-edit" id="role-edit-row-${d.id}">
+                    <div style="font-size: 0.78rem; font-weight: 700; color: var(--dash-text);">Upgrade ${d.full_name}</div>
+                    <div class="devotee-role-edit-selects">
+                        <select id="role-select-${d.id}" onchange="handleRoleSelectChange(${d.id})">
+                            <option value="devotee" ${d.role === 'devotee' ? 'selected' : ''}>Devotee (Regular User)</option>
+                            <option value="staff" ${d.role === 'staff' ? 'selected' : ''}>Staff (Read-Only Admin)</option>
+                            <option value="handler" ${d.role === 'handler' ? 'selected' : ''}>Peetha Handler</option>
+                            <option value="superuser" ${d.role === 'superuser' ? 'selected' : ''}>Super Admin (Platform Owner)</option>
+                        </select>
                         
-                        <select id="peetha-select-${d.id}" style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.82rem; flex: 1; outline: none; background: white; display: ${(d.role === 'handler' || d.role === 'staff') ? 'block' : 'none'};">
+                        <select id="peetha-select-${d.id}" style="display: ${(d.role === 'handler' || d.role === 'staff') ? 'block' : 'none'};">
                             <option value="">-- Select Peetha --</option>
                             ${window.allPeethas.map(p => `<option value="${p.id}" ${Number(d.assigned_peetha_id) === Number(p.id) ? 'selected' : ''}>${p.name}</option>`).join('')}
                         </select>
                     </div>
                     <div style="display: flex; gap: 6px; justify-content: flex-end;">
-                        <button type="button" class="btn-delete" onclick="toggleRoleEdit(${d.id})" style="padding: 4px 10px; font-size: 0.75rem; background: #eee; color: #555; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">Cancel</button>
-                        <button type="button" class="btn-edit" onclick="saveUserRole(${d.id})" style="padding: 4px 10px; font-size: 0.75rem; background: var(--saffron); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Save</button>
+                        <button type="button" class="btn-delete" onclick="toggleRoleEdit(${d.id})" style="padding: 4px 10px; font-size: 0.75rem; background: var(--dash-bg); color: var(--dash-text-muted); border: 1px solid var(--dash-border); border-radius: 6px; cursor: pointer;">Cancel</button>
+                        <button type="button" class="btn-edit" onclick="saveUserRole(${d.id})" style="padding: 4px 10px; font-size: 0.75rem; background: var(--dash-saffron); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">Save</button>
                     </div>
                 </div>
             </div>
 
             <!-- Footer -->
-            <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.72rem; color: #bbb;">
+            <div style="display: flex; justify-content: space-between; margin-top: 12px; font-size: 0.7rem; color: var(--dash-text-light); border-top: 1px solid var(--dash-border); padding-top: 8px;">
                 <span>Joined: ${d.date_joined}</span>
                 <span>Last login: ${d.last_login}</span>
             </div>
         </div>`;
     }
 
+    // Initialize Litepicker for Add Travel form inline calendar
+    if (document.getElementById('travel-inline-calendar') && typeof Litepicker !== 'undefined') {
+        const startInput = document.querySelector('#travel-add input[name="start_date"]');
+        const endInput = document.querySelector('#travel-add input[name="end_date"]');
+        
+        const existingTravelDates = [
+            {% for plan in travel_list %}
+                ['{{ plan.start_date|date:"Y-m-d" }}', '{{ plan.end_date|date:"Y-m-d" }}'],
+            {% endfor %}
+        ];
+        
+        new Litepicker({
+            element: document.getElementById('travel-inline-calendar'),
+            inlineMode: true,
+            singleMode: false,
+            format: 'YYYY-MM-DD',
+            lockDays: existingTravelDates,
+            setup: (picker) => {
+                picker.on('selected', (date1, date2) => {
+                    if (startInput) startInput.value = date1 ? date1.format('YYYY-MM-DD') : '';
+                    if (endInput) endInput.value = date2 ? date2.format('YYYY-MM-DD') : '';
+                });
+            }
+        });
+    }
 
 </script>
 {% endblock %}

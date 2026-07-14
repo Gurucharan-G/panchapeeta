@@ -1221,11 +1221,13 @@ def update_peetha_live(request, slug):
                 
         peetha.live_youtube_url = live_url
         peetha.live_youtube_title = live_title if live_title else None
+        
+        advance_window = request.POST.get('advance_booking_window')
+        if advance_window is not None and advance_window.isdigit():
+            peetha.advance_booking_window = int(advance_window)
+            
         peetha.save()
-        if live_url:
-            messages.success(request, f"YouTube Live Stream URL successfully updated for {peetha.name}.")
-        else:
-            messages.success(request, f"Live stream deactivated for {peetha.name}.")
+        messages.success(request, f"Peetha Settings successfully updated for {peetha.name}.")
             
     from django.urls import reverse
     return redirect(reverse('peethas:dashboard_peetha', kwargs={'slug': peetha.slug}) + '#live-section')
@@ -1679,6 +1681,12 @@ def initiate_pooja_booking(request, peetha_slug):
             messages.error(request, "Pooja/Seva booking cannot be made for a past date.")
             return redirect('peethas:peetha_detail', slug=peetha.slug)
 
+        if peetha.advance_booking_window > 0:
+            max_allowed_date = datetime.date.today() + datetime.timedelta(days=peetha.advance_booking_window)
+            if booking_date > max_allowed_date:
+                messages.error(request, f"Advance booking is restricted to {peetha.advance_booking_window} days. Please select a date within this window.")
+                return redirect('peethas:peetha_detail', slug=peetha.slug)
+
         # Validate weekday availability
         weekday_name = booking_date.strftime('%A')
         if pooja.available_days and pooja.available_days != 'all':
@@ -1772,6 +1780,12 @@ def pooja_availability(request, peetha_slug, pooja_id):
         if day_date < today:
             availability[date_str] = 'not_open'
             continue
+            
+        if peetha.advance_booking_window > 0:
+            max_allowed_date = today + datetime.timedelta(days=peetha.advance_booking_window)
+            if day_date > max_allowed_date:
+                availability[date_str] = 'not_open'
+                continue
             
         # Check if weekday is available
         weekday_name = day_date.strftime('%A')
@@ -2268,6 +2282,11 @@ def accommodation_availability(request, peetha_slug):
     if check_in_date < datetime.date.today():
         return JsonResponse({'error': 'Dates cannot be in the past.'}, status=400)
         
+    if peetha.advance_booking_window > 0:
+        max_allowed_date = datetime.date.today() + datetime.timedelta(days=peetha.advance_booking_window)
+        if check_in_date > max_allowed_date:
+            return JsonResponse({'error': f'Advance booking is restricted to {peetha.advance_booking_window} days.'}, status=400)
+        
     availability = {}
     for rtype in ['AC', 'Ordinary']:
         avail_rooms = _get_available_rooms(peetha, rtype, check_in_date, check_out_date)
@@ -2333,6 +2352,12 @@ def initiate_accommodation_booking(request, peetha_slug):
         if check_in_date < datetime.date.today():
             messages.error(request, "Stays cannot be booked for past dates.")
             return redirect('peethas:peetha_detail', slug=peetha.slug)
+            
+        if peetha.advance_booking_window > 0:
+            max_allowed_date = datetime.date.today() + datetime.timedelta(days=peetha.advance_booking_window)
+            if check_in_date > max_allowed_date:
+                messages.error(request, f"Advance booking is restricted to {peetha.advance_booking_window} days. Please select a check-in date within this window.")
+                return redirect('peethas:peetha_detail', slug=peetha.slug)
             
         available_rooms = _get_available_rooms(peetha, room_type, check_in_date, check_out_date)
         if not available_rooms.exists():

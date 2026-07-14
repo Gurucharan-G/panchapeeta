@@ -1153,6 +1153,16 @@
         }
 
         if (nextBtn) {
+            const advanceWindow = parseInt('{{ peetha.advance_booking_window|default:0 }}', 10);
+            if (advanceWindow > 0) {
+                const maxDate = new Date(today);
+                maxDate.setDate(today.getDate() + advanceWindow);
+                const maxYearMonth = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+                if (activeYearMonth >= maxYearMonth) {
+                    nextBtn.disabled = true;
+                }
+            }
+
             nextBtn.addEventListener('click', () => {
                 if (calendarMonth === 11) {
                     calendarMonth = 0;
@@ -1436,9 +1446,22 @@
         const checkoutInput = document.getElementById('stay-checkout-date');
         
         if (checkinInput && checkoutInput) {
-            const todayStr = new Date().toISOString().split('T')[0];
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
             checkinInput.min = todayStr;
             checkoutInput.min = todayStr;
+            
+            const advanceWindow = parseInt('{{ peetha.advance_booking_window|default:0 }}', 10);
+            if (advanceWindow > 0) {
+                const maxDate = new Date(today);
+                maxDate.setDate(today.getDate() + advanceWindow);
+                const maxStr = maxDate.toISOString().split('T')[0];
+                checkinInput.max = maxStr;
+                
+                const maxCheckout = new Date(maxDate);
+                maxCheckout.setDate(maxCheckout.getDate() + 1);
+                checkoutInput.max = maxCheckout.toISOString().split('T')[0];
+            }
             
             checkinInput.addEventListener('change', () => {
                 const checkinVal = checkinInput.value;

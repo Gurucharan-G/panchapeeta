@@ -3576,7 +3576,7 @@ img.progressive-loaded {
 /* ===== Roles & Permissions Sub-panel Sidebar Layout ===== */
 .roles-dashboard-container {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 1fr;
     gap: 30px;
     align-items: start;
     margin-top: 20px;
