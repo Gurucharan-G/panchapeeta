@@ -439,13 +439,15 @@
 
                     <!-- Date Selection Form -->
                     <div class="stay-search-bar" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 15px; align-items: end; background: #fffcf4; border: 1px solid var(--gold); border-radius: var(--radius-md); padding: 20px; margin-bottom: 25px;">
-                        <div class="booking-form-group" style="margin: 0;">
+                        <div class="booking-form-group" style="margin: 0; position: relative;">
                             <label style="font-weight: 600; color: var(--text); display: block; margin-bottom: 8px; font-size: 0.9rem;">Check-in Date *</label>
-                            <input type="date" id="stay-checkin-date" class="booking-form-input" style="width: 100%; border: 1px solid #cbd5e1; padding: 10px; border-radius: var(--radius-md);" required>
+                            <input type="text" id="stay-checkin-date" readonly placeholder="Select Date" class="booking-form-input" style="width: 100%; border: 1px solid #cbd5e1; padding: 10px; border-radius: var(--radius-md); cursor: pointer;" onclick="toggleAccommodationCalendar('checkin')" required>
+                            <div id="checkin-calendar-dropdown" class="custom-calendar-container" style="display: none; position: absolute; top: 100%; left: 0; z-index: 100; background: white; width: 320px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #e2e8f0; margin-top: 5px;"></div>
                         </div>
-                        <div class="booking-form-group" style="margin: 0;">
+                        <div class="booking-form-group" style="margin: 0; position: relative;">
                             <label style="font-weight: 600; color: var(--text); display: block; margin-bottom: 8px; font-size: 0.9rem;">Check-out Date *</label>
-                            <input type="date" id="stay-checkout-date" class="booking-form-input" style="width: 100%; border: 1px solid #cbd5e1; padding: 10px; border-radius: var(--radius-md);" required>
+                            <input type="text" id="stay-checkout-date" readonly placeholder="Select Date" class="booking-form-input" style="width: 100%; border: 1px solid #cbd5e1; padding: 10px; border-radius: var(--radius-md); cursor: pointer;" onclick="toggleAccommodationCalendar('checkout')" required>
+                            <div id="checkout-calendar-dropdown" class="custom-calendar-container" style="display: none; position: absolute; top: 100%; left: 0; z-index: 100; background: white; width: 320px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #e2e8f0; margin-top: 5px;"></div>
                         </div>
                         <button id="stay-search-btn" class="btn-primary" style="background-color: var(--peetha-color); color: white; border: none; padding: 12px 25px; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; height: fit-content; transition: background-color 0.2s; white-space: nowrap;" onclick="checkStayAvailability()">
                             Check Stay Availability
@@ -1046,7 +1048,7 @@
                 return res.json();
             })
             .then(data => {
-                renderCalendarGrid(year, month, data.availability);
+                renderCalendarGrid(year, month, data.availability, 'booking-calendar-container', 'selectPoojaCalendarDate', 'pooja');
             })
             .catch(err => {
                 console.error(err);
@@ -1054,8 +1056,8 @@
             });
     }
 
-    function renderCalendarGrid(year, month, availability) {
-        const container = document.getElementById('booking-calendar-container');
+    function renderCalendarGrid(year, month, availability, containerId, selectFuncName, mode) {
+        const container = document.getElementById(containerId);
         if (!container) return;
 
         const lang = '{{ lang }}' || 'en';
@@ -1067,9 +1069,9 @@
 
         let html = `
             <div class="calendar-header">
-                <button type="button" class="calendar-nav-btn" id="cal-prev-btn">&lt;</button>
+                <button type="button" class="calendar-nav-btn" id="${containerId}-prev">&lt;</button>
                 <div class="calendar-title">${monthName} ${year}</div>
-                <button type="button" class="calendar-nav-btn" id="cal-next-btn">&gt;</button>
+                <button type="button" class="calendar-nav-btn" id="${containerId}-next">&gt;</button>
             </div>
             <div class="calendar-grid">
                 <div class="calendar-weekday">Su</div>
@@ -1086,6 +1088,9 @@
             html += `<div class="calendar-day empty"></div>`;
         }
 
+        const todayDateObj = new Date();
+        todayDateObj.setHours(0,0,0,0);
+
         // Render month days
         for (let day = 1; day <= daysInMonth; day++) {
             const date = new Date(year, month, day);
@@ -1093,21 +1098,46 @@
             const mm = String(date.getMonth() + 1).padStart(2, '0');
             const dd = String(date.getDate()).padStart(2, '0');
             const dateStr = `${yyyy}-${mm}-${dd}`;
+            
+            // Get selected value based on mode
+            let currentSelected = '';
+            if (mode === 'pooja') currentSelected = selectedDateStr;
+            else if (containerId === 'checkin-calendar-dropdown') currentSelected = document.getElementById('stay-checkin-date').value;
+            else if (containerId === 'checkout-calendar-dropdown') currentSelected = document.getElementById('stay-checkout-date').value;
 
-            const status = availability[dateStr] || 'not_open';
-            const isSelected = selectedDateStr === dateStr ? 'selected' : '';
+            const isSelected = currentSelected === dateStr ? 'selected' : '';
             
             let statusClass = 'status-not-open';
             let clickAttr = '';
             
-            if (status === 'available') {
-                statusClass = 'status-available';
-                clickAttr = `onclick="selectCalendarDate('${dateStr}')"`;
-            } else if (status === 'fast') {
-                statusClass = 'status-fast';
-                clickAttr = `onclick="selectCalendarDate('${dateStr}')"`;
-            } else if (status === 'booked') {
-                statusClass = 'status-booked';
+            if (mode === 'pooja') {
+                const status = availability[dateStr] || 'not_open';
+                if (status === 'available') {
+                    statusClass = 'status-available';
+                    clickAttr = `onclick="${selectFuncName}('${dateStr}')"`;
+                } else if (status === 'fast') {
+                    statusClass = 'status-fast';
+                    clickAttr = `onclick="${selectFuncName}('${dateStr}')"`;
+                } else if (status === 'booked') {
+                    statusClass = 'status-booked';
+                }
+            } else if (mode === 'accommodation') {
+                let minDate = new Date(todayDateObj.getFullYear(), todayDateObj.getMonth(), todayDateObj.getDate());
+                if (containerId === 'checkout-calendar-dropdown') {
+                    const checkinVal = document.getElementById('stay-checkin-date').value;
+                    if (checkinVal) {
+                        const parts = checkinVal.split('-');
+                        minDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                        minDate.setDate(minDate.getDate() + 1); // Minimum 1 night
+                    }
+                }
+
+                if (date >= minDate) {
+                    statusClass = 'status-available';
+                    clickAttr = `onclick="${selectFuncName}('${dateStr}', '${containerId}')"`;
+                } else {
+                    statusClass = 'status-not-open';
+                }
             }
 
             html += `
@@ -1119,13 +1149,18 @@
 
         html += `
             </div>
-            <div class="calendar-legend">
-                <div class="legend-item"><span class="legend-color color-avail"></span> Available</div>
-                <div class="legend-item"><span class="legend-color color-fast"></span> Booking Fast</div>
-                <div class="legend-item"><span class="legend-color color-booked"></span> Fully Booked</div>
-                <div class="legend-item"><span class="legend-color color-not-open"></span> Closed</div>
-            </div>
         `;
+        
+        if (mode === 'pooja') {
+            html += `
+                <div class="calendar-legend">
+                    <div class="legend-item"><span class="legend-color color-avail"></span> Available</div>
+                    <div class="legend-item"><span class="legend-color color-fast"></span> Booking Fast</div>
+                    <div class="legend-item"><span class="legend-color color-booked"></span> Fully Booked</div>
+                    <div class="legend-item"><span class="legend-color color-not-open"></span> Closed</div>
+                </div>
+            `;
+        }
 
         container.innerHTML = html;
 
@@ -1134,21 +1169,24 @@
         const currentYearMonth = new Date(today.getFullYear(), today.getMonth(), 1);
         const activeYearMonth = new Date(year, month, 1);
 
-        const prevBtn = document.getElementById('cal-prev-btn');
-        const nextBtn = document.getElementById('cal-next-btn');
+        const prevBtn = document.getElementById(`${containerId}-prev`);
+        const nextBtn = document.getElementById(`${containerId}-next`);
 
         if (prevBtn) {
             if (activeYearMonth <= currentYearMonth) {
                 prevBtn.disabled = true;
             }
-            prevBtn.addEventListener('click', () => {
-                if (calendarMonth === 0) {
-                    calendarMonth = 11;
-                    calendarYear--;
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                let nextMonth = month - 1;
+                let nextYear = year;
+                if (nextMonth < 0) { nextMonth = 11; nextYear--; }
+                if (mode === 'pooja') {
+                    calendarYear = nextYear; calendarMonth = nextMonth;
+                    fetchAndRenderCalendar(calendarYear, calendarMonth);
                 } else {
-                    calendarMonth--;
+                    renderCalendarGrid(nextYear, nextMonth, null, containerId, selectFuncName, mode);
                 }
-                fetchAndRenderCalendar(calendarYear, calendarMonth);
             });
         }
 
@@ -1163,19 +1201,22 @@
                 }
             }
 
-            nextBtn.addEventListener('click', () => {
-                if (calendarMonth === 11) {
-                    calendarMonth = 0;
-                    calendarYear++;
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                let nextMonth = month + 1;
+                let nextYear = year;
+                if (nextMonth > 11) { nextMonth = 0; nextYear++; }
+                if (mode === 'pooja') {
+                    calendarYear = nextYear; calendarMonth = nextMonth;
+                    fetchAndRenderCalendar(calendarYear, calendarMonth);
                 } else {
-                    calendarMonth++;
+                    renderCalendarGrid(nextYear, nextMonth, null, containerId, selectFuncName, mode);
                 }
-                fetchAndRenderCalendar(calendarYear, calendarMonth);
             });
         }
     }
 
-    function selectCalendarDate(dateStr) {
+    function selectPoojaCalendarDate(dateStr) {
         selectedDateStr = dateStr;
         document.getElementById('booking-date-input').value = dateStr;
 
@@ -1442,41 +1483,76 @@
 
     // Set checkin and checkout date constraints
     document.addEventListener('DOMContentLoaded', () => {
-        const checkinInput = document.getElementById('stay-checkin-date');
-        const checkoutInput = document.getElementById('stay-checkout-date');
+        // Original listener removed as inputs are readonly text now.
+        // Close calendar dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#stay-checkin-date') && !e.target.closest('#checkin-calendar-dropdown')) {
+                const dp = document.getElementById('checkin-calendar-dropdown');
+                if (dp) dp.style.display = 'none';
+            }
+            if (!e.target.closest('#stay-checkout-date') && !e.target.closest('#checkout-calendar-dropdown')) {
+                const dp = document.getElementById('checkout-calendar-dropdown');
+                if (dp) dp.style.display = 'none';
+            }
+        });
+    });
+
+    function toggleAccommodationCalendar(type) {
+        const checkinDp = document.getElementById('checkin-calendar-dropdown');
+        const checkoutDp = document.getElementById('checkout-calendar-dropdown');
         
-        if (checkinInput && checkoutInput) {
-            const today = new Date();
-            const todayStr = today.toISOString().split('T')[0];
-            checkinInput.min = todayStr;
-            checkoutInput.min = todayStr;
+        const targetDp = type === 'checkin' ? checkinDp : checkoutDp;
+        const otherDp = type === 'checkin' ? checkoutDp : checkinDp;
+        
+        if (otherDp) otherDp.style.display = 'none'; // close other
+        
+        if (targetDp.style.display === 'block') {
+            targetDp.style.display = 'none';
+        } else {
+            targetDp.style.display = 'block';
             
-            const advanceWindow = parseInt('{{ peetha.advance_booking_window|default:0 }}', 10);
-            if (advanceWindow > 0) {
-                const maxDate = new Date(today);
-                maxDate.setDate(today.getDate() + advanceWindow);
-                const maxStr = maxDate.toISOString().split('T')[0];
-                checkinInput.max = maxStr;
-                
-                const maxCheckout = new Date(maxDate);
-                maxCheckout.setDate(maxCheckout.getDate() + 1);
-                checkoutInput.max = maxCheckout.toISOString().split('T')[0];
+            // Re-render calendar based on current month
+            const today = new Date();
+            let y = today.getFullYear();
+            let m = today.getMonth();
+            
+            // If they already have a date selected, open that month
+            const inputVal = type === 'checkin' ? document.getElementById('stay-checkin-date').value : document.getElementById('stay-checkout-date').value;
+            if (inputVal) {
+                const d = new Date(inputVal);
+                y = d.getFullYear();
+                m = d.getMonth();
             }
             
-            checkinInput.addEventListener('change', () => {
-                const checkinVal = checkinInput.value;
-                if (checkinVal) {
-                    const checkinDate = new Date(checkinVal);
-                    checkinDate.setDate(checkinDate.getDate() + 1);
-                    const minCheckoutStr = checkinDate.toISOString().split('T')[0];
-                    checkoutInput.min = minCheckoutStr;
-                    
-                    if (checkoutInput.value && new Date(checkoutInput.value) <= new Date(checkinVal)) {
-                        checkoutInput.value = minCheckoutStr;
-                    }
-                }
-            });
+            renderCalendarGrid(y, m, null, targetDp.id, 'selectAccommodationCalendarDate', 'accommodation');
         }
-    });
+    }
+
+    function selectAccommodationCalendarDate(dateStr, containerId) {
+        if (containerId === 'checkin-calendar-dropdown') {
+            document.getElementById('stay-checkin-date').value = dateStr;
+            document.getElementById('checkin-calendar-dropdown').style.display = 'none';
+            
+            // Ensure checkout is valid
+            const checkoutInput = document.getElementById('stay-checkout-date');
+            if (checkoutInput.value) {
+                const ciParts = dateStr.split('-');
+                const coParts = checkoutInput.value.split('-');
+                const ciDate = new Date(parseInt(ciParts[0]), parseInt(ciParts[1]) - 1, parseInt(ciParts[2]));
+                const coDate = new Date(parseInt(coParts[0]), parseInt(coParts[1]) - 1, parseInt(coParts[2]));
+                
+                if (coDate <= ciDate) {
+                    // Invalid, reset checkout
+                    checkoutInput.value = '';
+                }
+            }
+            // Optional: automatically open checkout calendar
+            setTimeout(() => { toggleAccommodationCalendar('checkout'); }, 150);
+        } else {
+            document.getElementById('stay-checkout-date').value = dateStr;
+            document.getElementById('checkout-calendar-dropdown').style.display = 'none';
+        }
+    }
+
 </script>
 {% endblock %}
