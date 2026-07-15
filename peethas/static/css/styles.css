@@ -3667,59 +3667,6 @@ img.progressive-loaded {
     background: rgba(255, 59, 48, 0.08);
 }
 
-/* ===== Inline Live Stream Bar ===== */
-.live-stream-inline-bar {
-    background: linear-gradient(135deg, #d32f2f, #b71c1c);
-    color: white !important;
-    padding: 12px 24px;
-    border-radius: var(--radius);
-    margin: 0 auto 35px;
-    max-width: fit-content;
-    min-width: 320px;
-    box-shadow: var(--shadow-card);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    transition: all 0.25s ease;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.live-stream-inline-bar:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(211, 47, 47, 0.25);
-    background: linear-gradient(135deg, #e02d24, #c62828);
-    color: white !important;
-}
-
-.live-stream-inline-bar .live-info-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.live-inline-badge {
-    background-color: white;
-    color: #d32f2f;
-    font-weight: bold;
-    font-size: 0.72rem;
-    padding: 4px 8px;
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.live-stream-inline-bar .live-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.92rem;
-    font-weight: 500;
-}
-
 /* ===== Devotional Audio Player FAB ===== */
 .devotional-audio-player {
     position: fixed;
@@ -3865,11 +3812,11 @@ body.theme-dusk-saffron .player-label {
     letter-spacing: 0.5px;
 }
 .live-title {
-    color: white !important;
+    color: #2d3748;
     font-size: 0.95rem;
 }
 .live-title strong {
-    color: white !important;
+    color: #e53e3e;
 }
 @keyframes pulse-live {
     0% { transform: scale(1); opacity: 1; }
