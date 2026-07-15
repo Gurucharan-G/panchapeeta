@@ -3690,6 +3690,7 @@ img.progressive-loaded {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(211, 47, 47, 0.25);
     background: linear-gradient(135deg, #e02d24, #c62828);
+    color: white !important;
 }
 
 .live-stream-inline-bar .live-info-wrapper {
@@ -3864,11 +3865,11 @@ body.theme-dusk-saffron .player-label {
     letter-spacing: 0.5px;
 }
 .live-title {
-    color: #2d3748;
+    color: white !important;
     font-size: 0.95rem;
 }
 .live-title strong {
-    color: #e53e3e;
+    color: white !important;
 }
 @keyframes pulse-live {
     0% { transform: scale(1); opacity: 1; }
